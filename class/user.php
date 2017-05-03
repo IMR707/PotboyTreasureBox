@@ -2,8 +2,9 @@
 
 use Birke\Rememberme;
 
-  if (!defined("_VALID_PHP"))
-      die('Direct access to this location is not allowed.');
+if (!defined("_VALID_PHP")) {
+    die('Direct access to this location is not allowed.');
+}
   class Users
   {
       const uTable = "customer_entity";
@@ -25,7 +26,7 @@ use Birke\Rememberme;
       public $last;
       private $lastlogin = "NOW()";
       private static $db;
-      function __construct()
+      public function __construct()
       {
           self::$db = Registry::get("Database");
           $this->startSession();
@@ -33,8 +34,9 @@ use Birke\Rememberme;
 
       private function startSession()
       {
-          if (strlen(session_id()) < 1)
+          if (strlen(session_id()) < 1) {
               session_start();
+          }
 
 
           $this->logged_in = $this->loginCheck();
@@ -48,19 +50,19 @@ use Birke\Rememberme;
 
       public function mydetail()
       {
-        return $a=self::$uid;
+          return $a=self::$uid;
       }
 
       private function loginCheck()
       {
           if (isset($_SESSION['email']) && $_SESSION['email'] != "Guest") {
-          $row = $this->getUserInfo($_SESSION['email']);
-          $this->uid = $_SESSION['userid'] = $row->entity_id;
-          $this->email = $row->email;
-          $this->name = $_SESSION['name'] = $row->firstname." ".$row->middlename." ".$row->lastname;
-          $this->userlevel = $_SESSION['userlevel'] = 1;
-          $this->cookie_id = $_SESSION['cookie_id'];
-          return 1;
+              $row = $this->getUserInfo($_SESSION['email']);
+              $this->uid = $_SESSION['userid'] = $row->entity_id;
+              $this->email = $row->email;
+              $this->name = $_SESSION['name'] = $row->firstname." ".$row->middlename." ".$row->lastname;
+              $this->userlevel = $_SESSION['userlevel'] = 1;
+              $this->cookie_id = $_SESSION['cookie_id'];
+              return 1;
           } else {
               return 0;
           }
@@ -72,23 +74,24 @@ use Birke\Rememberme;
 
           $sql = "SELECT * FROM " . self::uTable . " WHERE  email ='" . $email . "'";
           $row = self::$db->first($sql);
-          if (!$email)
+          if (!$email) {
               return false;
+          }
           return ($row) ? $row : 0;
       }
 
-      function redirect($destroySession=false) {
-  if($destroySession) {
-    session_regenerate_id(true);
-    session_destroy();
-  }
-  header("Location: index.php");
-  exit;
-}
+      public function redirect($destroySession=false)
+      {
+          if ($destroySession) {
+              session_regenerate_id(true);
+              session_destroy();
+          }
+          header("Location: index.php");
+          exit;
+      }
 
       public function logout()
       {
-
           unset($_SESSION['email']);
           unset($_SESSION['name']);
 
@@ -102,16 +105,16 @@ use Birke\Rememberme;
           $this->userlevel = 0;
       }
 
-      public function loginadmin($email, $pass,$rememberme=false)
+      public function loginadmin($email, $pass, $rememberme=false)
       {
-        if ($email == "" && $pass == "") {
-            Filter::$msgs['email'] = "Please enter valid email and password.";
-        } else {
-          echo "string";
-        }
+          if ($email == "" && $pass == "") {
+              Filter::$msgs['email'] = "Please enter valid email and password.";
+          } else {
+              echo "string";
+          }
       }
 
-      public function login($email, $pass,$rememberme=false)
+      public function login($email, $pass, $rememberme=false)
       {
           if ($email == "" && $pass == "") {
               Filter::$msgs['email'] = "Please enter valid email and password.";
@@ -144,32 +147,28 @@ use Birke\Rememberme;
               $this->userlevel = $_SESSION['userlevel'] = 1;
               $this->cookie_id = $_SESSION['cookie_id'] = $this->generateRandID();
               return true;
-          } else
+          } else {
               Filter::msgStatus();
+          }
       }
 
 
       public function userDetail($id)
       {
-        $sql = "SELECT * FROM " . self::uTable . "  where id='$id'";
-        $row = self::$db->first($sql);
-        return $row;
-
+          $sql = "SELECT * FROM " . self::uTable . "  where id='$id'";
+          $row = self::$db->first($sql);
+          return $row;
       }
 
-
-
-public function presaleId($id)
-{
-  $sql = "SELECT * FROM " . self::uTable . "  where oldid='$id'";
-  $row = self::$db->first($sql);
-  return $row;
-
-}
+      public function presaleId($id)
+      {
+          $sql = "SELECT * FROM " . self::uTable . "  where oldid='$id'";
+          $row = self::$db->first($sql);
+          return $row;
+      }
 
       public function checkStatus($email, $pass)
       {
-
           $email = sanitize($email);
           $email = self::$db->escape($email);
           $pass = sanitize($pass);
@@ -177,50 +176,46 @@ public function presaleId($id)
           echo $sql = "SELECT * FROM " . self::uTable
       . "\n WHERE email = '" . $email . "'";
           $result = self::$db->query($sql);
-          if (self::$db->numrows($result) == 0)
+          if (self::$db->numrows($result) == 0) {
               return 0;
+          }
 
           $row = self::$db->fetch($result);
-$error='';
-$userData = array("username" =>$email, "password" => $pass);
-$ch = curl_init("http://potboy.com.my/index.php/rest/V1/integration/customer/token");
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($userData));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json", "Content-Lenght: " . strlen(json_encode($userData))));
-$token = curl_exec($ch);
-$obj = json_decode($token);
-if(isset($obj->message)){
-  return 0;
-}
-if(!$error){
-return 5;
-}
-
+          $error='';
+          $userData = array("username" =>$email, "password" => $pass);
+          $ch = curl_init("http://potboy.com.my/index.php/rest/V1/integration/customer/token");
+          curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+          curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($userData));
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+          curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json", "Content-Lenght: " . strlen(json_encode($userData))));
+          $token = curl_exec($ch);
+          $obj = json_decode($token);
+          if (isset($obj->message)) {
+              return 0;
+          }
+          if (!$error) {
+              return 5;
+          }
       }
 
 
       public function isUser()
       {
           return ($this->userlevel == 1);
-
       }
 
-            public function isAdmin()
+      public function isAdmin()
       {
           return ($this->userlevel == 2);
-
       }
 
-            public function isSale()
+      public function isSale()
       {
           return ($this->userlevel == 3);
-
       }
 
-      function confirmUserID($email, $cookie_id)
+      public function confirmUserID($email, $cookie_id)
       {
-
           $sql = "SELECT cookie_id FROM users WHERE email = '" . self::$db->escape($email) . "'";
           $result = self::$db->query($sql);
           if (!$result || (self::$db->numrows($result) < 1)) {
@@ -240,7 +235,7 @@ return 5;
 
       public function getUserLevel($id)
       {
-        switch ($id) {
+          switch ($id) {
           case 1:
             return "Administrator";
             break;
@@ -253,12 +248,11 @@ return 5;
                 break;
 
         }
-
       }
 
       public function getActiveStatus($id)
       {
-        switch ($id) {
+          switch ($id) {
           case 'y':
             return "Active";
             break;
@@ -279,59 +273,62 @@ return 5;
       }
 
       public function getUserbyID($id)
-{
-
-    $sql = "SELECT * FROM " . self::uTable . " WHERE id = '" . $id."'";
-    $row = self::$db->first($sql);
-    if (!$id)
-        return false;
-
-    return ($row) ? $row : 0;
-}
-
-
-public function getUserbyemail($email)
-{
-
-$sql = "SELECT * FROM " . self::uTable . " WHERE email = '" . $email."'";
-$row = self::$db->first($sql);
-if (!$email)
-return false;
-
-return ($row) ? $row : 0;
-}
-
-
-public function getAllUsersSearch($name,$email,$usertype,$contactnumber,$status,$sorting)
-{
-$a='';
-if ($name!='')
-  $a.="AND fullname LIKE '%$name%'";
-
-  if ($email!='')
-    $a.="AND email LIKE '%$email%'";
-
-    if ($contactnumber!='')
-      $a.="AND phonenumber LIKE '%$contactnumber%'";
-
-      if ($usertype!=''&&$usertype!='0')
-        $a.="AND userlevel = '$usertype'";
-
-
-  if ($status!='0')
-  {
-    if ($status!='')
-          $a.="AND active = '$status'";
-          else {
-            $a.="AND active = 'y'";
+      {
+          $sql = "SELECT * FROM " . self::uTable . " WHERE id = '" . $id."'";
+          $row = self::$db->first($sql);
+          if (!$id) {
+              return false;
           }
 
-  }
+          return ($row) ? $row : 0;
+      }
+
+
+      public function getUserbyemail($email)
+      {
+          $sql = "SELECT * FROM " . self::uTable . " WHERE email = '" . $email."'";
+          $row = self::$db->first($sql);
+          if (!$email) {
+              return false;
+          }
+
+          return ($row) ? $row : 0;
+      }
+
+
+      public function getAllUsersSearch($name, $email, $usertype, $contactnumber, $status, $sorting)
+      {
+          $a='';
+          if ($name!='') {
+              $a.="AND fullname LIKE '%$name%'";
+          }
+
+          if ($email!='') {
+              $a.="AND email LIKE '%$email%'";
+          }
+
+          if ($contactnumber!='') {
+              $a.="AND phonenumber LIKE '%$contactnumber%'";
+          }
+
+          if ($usertype!=''&&$usertype!='0') {
+              $a.="AND userlevel = '$usertype'";
+          }
+
+
+          if ($status!='0') {
+              if ($status!='') {
+                  $a.="AND active = '$status'";
+              } else {
+                  $a.="AND active = 'y'";
+              }
+          }
 
 
 
-          if ($sorting!=''&&$sorting!='0')
-            $a.="ORDER BY $sorting";
+          if ($sorting!=''&&$sorting!='0') {
+              $a.="ORDER BY $sorting";
+          }
 
 
   // echo "<br>email[".$email."]";
@@ -340,218 +337,206 @@ if ($name!='')
 
 $sql = "SELECT *"
 . "\n FROM " . self::uTable . " WHERE TRUE $a";
-    $row = self::$db->fetch_all($sql);
-    $a=ObjtoArr($row);
-  return $a;
-
-}
-
+          $row = self::$db->fetch_all($sql);
+          $a=ObjtoArr($row);
+          return $a;
+      }
 
 
-public function getAllUsers()
-{
-$sql = "SELECT u.*"
+
+      public function getAllUsers()
+      {
+          $sql = "SELECT u.*"
 . "\n FROM " . self::uTable . " as u";
-    $row = self::$db->fetch_all($sql);
-    $a=ObjtoArr($row);
-  return $a;
+          $row = self::$db->fetch_all($sql);
+          $a=ObjtoArr($row);
+          return $a;
+      }
 
-}
 
-
-public function getAllAdmin()
-{
-$sql = "SELECT u.*"
+      public function getAllAdmin()
+      {
+          $sql = "SELECT u.*"
 . "\n FROM " . self::uTable . " as u WHERE u.userlevel = 1 AND not id = '".$_SESSION['userid']."'";
-    $row = self::$db->fetch_all($sql);
-  return $row;
+          $row = self::$db->fetch_all($sql);
+          return $row;
+      }
 
-}
-
-public function getAllManager()
-{
-$sql = "SELECT u.*"
+      public function getAllManager()
+      {
+          $sql = "SELECT u.*"
 . "\n FROM " . self::uTable . " as u WHERE u.userlevel = 2 AND not id = '".$_SESSION['userid']."'";
-    $row = self::$db->fetch_all($sql);
-  return $row;
+          $row = self::$db->fetch_all($sql);
+          return $row;
+      }
 
-}
+      public function getAllSale($not=false)
+      {
+          $a="";
 
-public function getAllSale($not=false)
-{
-
-  $a="";
-
-  if($not=='1')
-  {
-    $a="AND not id = '".$_SESSION['userid']."' ";
-   }
-$sql = "SELECT *"
+          if ($not=='1') {
+              $a="AND not id = '".$_SESSION['userid']."' ";
+          }
+          $sql = "SELECT *"
 . "\n FROM " . self::uTable . " WHERE userlevel ='3' AND not id ='36' $a";
-    $row = self::$db->fetch_all($sql);
-  return $row;
+          $row = self::$db->fetch_all($sql);
+          return $row;
+      }
 
-}
+      public function getAllSaleleads($not=false)
+      {
+          $a="";
 
-public function getAllSaleleads($not=false)
-{
-
-  $a="";
-
-  if($not=='1')
-  {
-    $a="AND not id = '".$_SESSION['userid']."' ";
-   }
-$sql = "SELECT *"
+          if ($not=='1') {
+              $a="AND not id = '".$_SESSION['userid']."' ";
+          }
+          $sql = "SELECT *"
 . "\n FROM " . self::uTable . " WHERE userlevel ='3' AND not id ='36' AND not leads ='0' $a";
-    $row = self::$db->fetch_all($sql);
-  return $row;
+          $row = self::$db->fetch_all($sql);
+          return $row;
+      }
 
-}
-
-private function validateToken($token)
-{
-    $token = sanitize($token, 40);
-    $sql = "SELECT token"
+      private function validateToken($token)
+      {
+          $token = sanitize($token, 40);
+          $sql = "SELECT token"
 . "\n FROM " . self::uTable
 . "\n WHERE token ='" . self::$db->escape($token) . "'"
 . "\n LIMIT 1";
-    $result = self::$db->query($sql);
+          $result = self::$db->query($sql);
 
-    if (self::$db->numrows($result))
-        return 1;
-}
-
-
-private function getUniqueCode($length = "")
-{
-    $code = sha1(uniqid(rand(), true));
-    if ($length != "") {
-        return substr($code, 0, $length);
-    } else
-        return $code;
-}
-
-private function generateRandID()
-{
-    return sha1($this->getUniqueCode(24));
-}
-public function levelCheck($levels)
-{
-    $m_arr = explode(",", $levels);
-    reset($m_arr);
-
-    if ($this->logged_in and in_array($this->userlevel, $m_arr))
-        return 1;
-}
-
-private function isValidEmail($email)
-{
-    if (function_exists('filter_var')) {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return 1;
-        } else
-            return 0;
-    } else
-        return preg_match('/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $email);
-}
+          if (self::$db->numrows($result)) {
+              return 1;
+          }
+      }
 
 
-private function emailExists($email)
-{
+      private function getUniqueCode($length = "")
+      {
+          $code = sha1(uniqid(rand(), true));
+          if ($length != "") {
+              return substr($code, 0, $length);
+          } else {
+              return $code;
+          }
+      }
 
-    $sql = self::$db->query("SELECT email"
+      private function generateRandID()
+      {
+          return sha1($this->getUniqueCode(24));
+      }
+      public function levelCheck($levels)
+      {
+          $m_arr = explode(",", $levels);
+          reset($m_arr);
+
+          if ($this->logged_in and in_array($this->userlevel, $m_arr)) {
+              return 1;
+          }
+      }
+
+      private function isValidEmail($email)
+      {
+          if (function_exists('filter_var')) {
+              if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                  return 1;
+              } else {
+                  return 0;
+              }
+          } else {
+              return preg_match('/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $email);
+          }
+      }
+
+
+      private function emailExists($email)
+      {
+          $sql = self::$db->query("SELECT email"
 . "\n FROM " . self::uTable
 . "\n WHERE email = '" . sanitize($email) . "'"
 . "\n LIMIT 1");
 
-    if (self::$db->numrows($sql) == 1) {
-        return 1;
-    } else
-        return 0;
-}
+          if (self::$db->numrows($sql) == 1) {
+              return 1;
+          } else {
+              return 0;
+          }
+      }
 
-private function exEmailExists($oldemail,$newemail)
-{
-
-    $sql = self::$db->query("SELECT email"
+      private function exEmailExists($oldemail, $newemail)
+      {
+          $sql = self::$db->query("SELECT email"
 . "\n FROM " . self::uTable
 . "\n WHERE email != '" . sanitize($oldemail) . "' AND email='" . sanitize($newemail) . "'"
 . "\n LIMIT 1");
 
-    if (self::$db->numrows($sql) == 1) {
-        return 1;
-    } else
-        return 0;
-}
+          if (self::$db->numrows($sql) == 1) {
+              return 1;
+          } else {
+              return 0;
+          }
+      }
 
 
-public function getUserData()
-{
-
-    $sql = "SELECT *, DATE_FORMAT(created, '%a. %d, %M %Y') as cdate,"
+      public function getUserData()
+      {
+          $sql = "SELECT *, DATE_FORMAT(created, '%a. %d, %M %Y') as cdate,"
 . "\n DATE_FORMAT(lastlogin, '%a. %d, %M %Y') as ldate"
 . "\n FROM " . self::uTable
 . "\n WHERE id = " . $this->uid;
-    $row = self::$db->first($sql);
+          $row = self::$db->first($sql);
 
-    return ($row) ? $row : 0;
-}
-
-
-public function edit()
-{
+          return ($row) ? $row : 0;
+      }
 
 
+      public function edit()
+      {
+          Filter::checkPost('email', 'Please Enter Valid Email Address');
+          $old=$this->getUserbyID(Filter::$id);
+          if ($this->exEmailExists($old->email, $_POST['email'])) {
+              Filter::$msgs['email'] = 'Entered Email Address Is Not Valid.';
+          }
 
-Filter::checkPost('email', 'Please Enter Valid Email Address');
-$old=$this->getUserbyID(Filter::$id);
-if ($this->exEmailExists($old->email,$_POST['email']))
-  Filter::$msgs['email'] = 'Entered Email Address Is Not Valid.';
-
-if (!$this->isValidEmail($_POST['email']))
-  Filter::$msgs['email'] = 'Entered Email Address Is Not Valid.';
-if(isset($_POST['address']))
-{
-  $address=$_POST['address'];
-}
-else {
-  $address='';
-}
+          if (!$this->isValidEmail($_POST['email'])) {
+              Filter::$msgs['email'] = 'Entered Email Address Is Not Valid.';
+          }
+          if (isset($_POST['address'])) {
+              $address=$_POST['address'];
+          } else {
+              $address='';
+          }
 
 
-Filter::checkPost('fullname','Full Name');
+          Filter::checkPost('fullname', 'Full Name');
 //Filter::checkPost('leads','Leads Per Round');
-if(!$_POST['leads']||!isset($_POST['leads'])){
-$leads=0;
-}
-else {
-
-  $leads=$_POST['leads'];
-  if($leads==""){
+if (!$_POST['leads']||!isset($_POST['leads'])) {
     $leads=0;
-  }
+} else {
+    $leads=$_POST['leads'];
+    if ($leads=="") {
+        $leads=0;
+    }
 }
- Filter::checkPost('phonenumber','Phone Number');
- Filter::checkPost('userlevel','userlevel');
- Filter::checkPost('active','active');
+          Filter::checkPost('phonenumber', 'Phone Number');
+          Filter::checkPost('userlevel', 'userlevel');
+          Filter::checkPost('active', 'active');
 
-if (isset($_POST['password'])) {
-if ($_POST['password']=='') {
-  $passwd=$old->password;
-}
-else {
-  if (strlen($_POST['password']) < 6)
-      Filter::$msgs['password'] ='Password is too short (less than 6 characters long)' ;
-  elseif (!preg_match("/^.*(?=.{6,})(?=.*[0-9])(?=.*[a-z]).*$/", ($_POST['password'] = trim($_POST['password']))))
-      Filter::$msgs['password'] = 'Password must contain at least one lower, one upper case letter and one digit.';
-else
-  $passwd=sha1($_POST['password']);
-}
-}
-else {
-  $passwd=$old->password;
-}
+          if (isset($_POST['password'])) {
+              if ($_POST['password']=='') {
+                  $passwd=$old->password;
+              } else {
+                  if (strlen($_POST['password']) < 6) {
+                      Filter::$msgs['password'] ='Password is too short (less than 6 characters long)' ;
+                  } elseif (!preg_match("/^.*(?=.{6,})(?=.*[0-9])(?=.*[a-z]).*$/", ($_POST['password'] = trim($_POST['password'])))) {
+                      Filter::$msgs['password'] = 'Password must contain at least one lower, one upper case letter and one digit.';
+                  } else {
+                      $passwd=sha1($_POST['password']);
+                  }
+              }
+          } else {
+              $passwd=$old->password;
+          }
 
 // Filter::checkPost('password','Please Enter Valid Password.');
 
@@ -560,18 +545,17 @@ else {
 
 
 
-    if(isset($_POST['target'])&&$_POST['target']!='')
-    {
-      $target=$_POST['target'];
+    if (isset($_POST['target'])&&$_POST['target']!='') {
+        $target=$_POST['target'];
     }
 
 
-    if (empty(Filter::$msgs)) {
-        $token = (Registry::get("Core")->reg_verify == 1) ? $this->generateRandID() : 0;
-        $pass = sanitize($_POST['password']);
-        $active = sanitize($_POST['active']);
+          if (empty(Filter::$msgs)) {
+              $token = (Registry::get("Core")->reg_verify == 1) ? $this->generateRandID() : 0;
+              $pass = sanitize($_POST['password']);
+              $active = sanitize($_POST['active']);
 
-        $data = array(
+              $data = array(
             'email' => strtolower(sanitize($_POST['email'])),
             'fullname' => strtolower(sanitize($_POST['fullname'])),
             'phonenumber' => strtolower(sanitize($_POST['phonenumber'])),
@@ -589,81 +573,79 @@ else {
     );
 
 
-        (Filter::$id) ? self::$db->update(self::uTable, $data, "id=" . Filter::$id) : $last_id = self::$db->insert(self::uTable, $data);
+              (Filter::$id) ? self::$db->update(self::uTable, $data, "id=" . Filter::$id) : $last_id = self::$db->insert(self::uTable, $data);
 
 
-        if (self::$db->affected()) {
-    $json['type'] = 'OK';
-    $json['title'] = 'Success';
-    $json['message'] = 'the User have successfully registered.';
-    return json_encode($json);
-
-  } else {
-    $json['type'] = 'error';
-    $json['title'] = 'Error';
-    $json['message'] = 'There was an error during registration process. Please contact the administrator...';
-    return json_encode($json);
-  }
-} else {
-  $json['type'] = 'ERROR';
-  $json['title'] = 'Please complete the following fields:';
-  $json['message'] = Filter::msgSingleStatus();
-  return json_encode($json);
-}
-}
-
-public function register()
-{
-Filter::checkPost('email', 'Please Enter Valid Email Address');
-if ($this->emailExists($_POST['email']))
-  Filter::$msgs['email'] = 'Entered Email Address Is Not Valid.';
-if (!$this->isValidEmail($_POST['email']))
-  Filter::$msgs['email'] = 'Entered Email Address Is Not Valid.';
-
-if(isset($_POST['address']))
-  {
-    $address=$_POST['address'];
-  }
-  else {
-    $address='';
-  }
-  $leads=1;
-    if(isset($_POST['leads'])&&$_POST['leads']!='')
-    {
-      $leads=$_POST['leads'];
-    }
-
-    $target=100000;
-      if(isset($_POST['target'])&&$_POST['target']!='')
-      {
-        $target=$_POST['target'];
+              if (self::$db->affected()) {
+                  $json['type'] = 'OK';
+                  $json['title'] = 'Success';
+                  $json['message'] = 'the User have successfully registered.';
+                  return json_encode($json);
+              } else {
+                  $json['type'] = 'error';
+                  $json['title'] = 'Error';
+                  $json['message'] = 'There was an error during registration process. Please contact the administrator...';
+                  return json_encode($json);
+              }
+          } else {
+              $json['type'] = 'ERROR';
+              $json['title'] = 'Please complete the following fields:';
+              $json['message'] = Filter::msgSingleStatus();
+              return json_encode($json);
+          }
       }
 
+      public function register()
+      {
+          Filter::checkPost('email', 'Please Enter Valid Email Address');
+          if ($this->emailExists($_POST['email'])) {
+              Filter::$msgs['email'] = 'Entered Email Address Is Not Valid.';
+          }
+          if (!$this->isValidEmail($_POST['email'])) {
+              Filter::$msgs['email'] = 'Entered Email Address Is Not Valid.';
+          }
 
-Filter::checkPost('fullname','Full Name');
- Filter::checkPost('phonenumber','Phone Number');
- Filter::checkPost('userlevel','userlevel');
- Filter::checkPost('target','Sale Target');
- Filter::checkPost('active','active');
+          if (isset($_POST['address'])) {
+              $address=$_POST['address'];
+          } else {
+              $address='';
+          }
+          $leads=1;
+          if (isset($_POST['leads'])&&$_POST['leads']!='') {
+              $leads=$_POST['leads'];
+          }
+
+          $target=100000;
+          if (isset($_POST['target'])&&$_POST['target']!='') {
+              $target=$_POST['target'];
+          }
+
+
+          Filter::checkPost('fullname', 'Full Name');
+          Filter::checkPost('phonenumber', 'Phone Number');
+          Filter::checkPost('userlevel', 'userlevel');
+          Filter::checkPost('target', 'Sale Target');
+          Filter::checkPost('active', 'active');
 
 
 
 
-Filter::checkPost('password','Please Enter Valid Password.');
-    if (strlen($_POST['password']) < 6)
-        Filter::$msgs['password'] ='Password is too short (less than 6 characters long)' ;
-    elseif (!preg_match("/^.*(?=.{6,})(?=.*[0-9])(?=.*[a-z]).*$/", ($_POST['password'] = trim($_POST['password']))))
-        Filter::$msgs['password'] = 'Password must contain at least one lower, one upper case letter and one digit.';
+          Filter::checkPost('password', 'Please Enter Valid Password.');
+          if (strlen($_POST['password']) < 6) {
+              Filter::$msgs['password'] ='Password is too short (less than 6 characters long)' ;
+          } elseif (!preg_match("/^.*(?=.{6,})(?=.*[0-9])(?=.*[a-z]).*$/", ($_POST['password'] = trim($_POST['password'])))) {
+              Filter::$msgs['password'] = 'Password must contain at least one lower, one upper case letter and one digit.';
+          }
 
 
 
 
-    if (empty(Filter::$msgs)) {
-        $token = (Registry::get("Core")->reg_verify == 1) ? $this->generateRandID() : 0;
-        $pass = sanitize($_POST['password']);
-        $active = sanitize($_POST['active']);
+          if (empty(Filter::$msgs)) {
+              $token = (Registry::get("Core")->reg_verify == 1) ? $this->generateRandID() : 0;
+              $pass = sanitize($_POST['password']);
+              $active = sanitize($_POST['active']);
 
-        $data = array(
+              $data = array(
             'email' => strtolower(sanitize($_POST['email'])),
               'fullname' => strtolower(sanitize($_POST['fullname'])),
             'phonenumber' => strtolower(sanitize($_POST['phonenumber'])),
@@ -680,50 +662,47 @@ Filter::checkPost('password','Please Enter Valid Password.');
 
 
 
-        self::$db->insert(self::uTable, $data);
+              self::$db->insert(self::uTable, $data);
 
 
-        if (self::$db->affected()) {
-    $json['type'] = 'OK';
-    $json['title'] = 'Success';
-    $json['message'] = 'the User have successfully registered.';
-    return json_encode($json);
+              if (self::$db->affected()) {
+                  $json['type'] = 'OK';
+                  $json['title'] = 'Success';
+                  $json['message'] = 'the User have successfully registered.';
+                  return json_encode($json);
+              } else {
+                  $json['type'] = 'error';
+                  $json['title'] = 'Error';
+                  $json['message'] = 'There was an error during registration process. Please contact the administrator...';
+                  return json_encode($json);
+              }
+          } else {
+              $json['type'] = 'ERROR';
+              $json['title'] = 'Please complete the following fields:';
+              $json['message'] = Filter::msgSingleStatus();
+              return json_encode($json);
+          }
+      }
 
-  } else {
-    $json['type'] = 'error';
-    $json['title'] = 'Error';
-    $json['message'] = 'There was an error during registration process. Please contact the administrator...';
-    return json_encode($json);
-  }
-} else {
-  $json['type'] = 'ERROR';
-  $json['title'] = 'Please complete the following fields:';
-  $json['message'] = Filter::msgSingleStatus();
-  return json_encode($json);
-}
-}
 
-
-public function deleteUser($id)
-{
-//$res = self::$db->delete(self::uTable,'id='.$id);
+      public function deleteUser($id)
+      {
+          //$res = self::$db->delete(self::uTable,'id='.$id);
 $data = array(
     'active' => 'n'
 );
-$res = self::$db->update(self::uTable, $data, "id='" .$id. "'");
+          $res = self::$db->update(self::uTable, $data, "id='" .$id. "'");
 
 
-$title="Deleted";
-if($res) :
+          $title="Deleted";
+          if ($res) :
 $json['type'] = 'OK';
-$json['title'] = 'OK';
-$json['message'] =  "User have been ".$title;
-else :
+          $json['title'] = 'OK';
+          $json['message'] =  "User have been ".$title; else :
 $json['type'] = 'ERROR';
-$json['title'] = Core::$word->ALERT;
-$json['message'] = Core::$word->SYSTEM_PROCCESS;
-endif;
-return json_encode($json);
-}
-
+          $json['title'] = Core::$word->ALERT;
+          $json['message'] = Core::$word->SYSTEM_PROCCESS;
+          endif;
+          return json_encode($json);
+      }
   }

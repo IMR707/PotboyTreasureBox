@@ -34,6 +34,17 @@ $core = Registry::get("Core");
 require_once (BASEPATH.CLASSPATH."listing.php");
 Registry::set('Listing', new Listing());
 $list = Registry::get("Listing");
+
+require_once (BASEPATH.CLASSPATH."chunlam.php");
+Registry::set('ChunLam', new ChunLam());
+$cl = Registry::get("ChunLam");
+
+require_once (BASEPATH.CLASSPATH."fazrin.php");
+Registry::set('Fazrin', new Fazrin());
+$fz = Registry::get("Fazrin");
+
+
+
 require_once (BASEPATH.CLASSPATH."paginate.php");
 $pager = Paginator::instance();
 require_once (BASEPATH.CLASSPATH."user.php");
