@@ -8,7 +8,7 @@ require CLASSPATH.'validate.php';
 define("BASEPATH", str_replace("init.php", "", realpath(__FILE__)));
 $configFile = BASEPATH.CLASSPATH.".env";
 if (!file_exists($configFile)) {
-  die('Enviroment file not exist. please check in class/.env or rename from .env.example to .env');
+  die('Enviroment file not exist. please check in class/.env or rename from ex.env to .env');
   exit;
 }
 require 'vendor/autoload.php';
@@ -23,12 +23,9 @@ Registry::set('Database', new Database(getenv('DB_SERVER'), getenv('DB_USER'), g
 $db = Registry::get("Database");
 $db->connect();
 require_once (BASEPATH.CLASSPATH."functions.php");
-// ruzaini please repair
-//Start Core Class
 require_once (BASEPATH.CLASSPATH."core.php");
 define("SITEURLconfig",$_SERVER['HTTP_HOST']);
 define("SITEDIRconfig",dirname($_SERVER['PHP_SELF']));
-// please repair
 Registry::set('Core', new Core());
 $core = Registry::get("Core");
 require_once (BASEPATH.CLASSPATH."listing.php");
@@ -42,8 +39,6 @@ $cl = Registry::get("ChunLam");
 require_once (BASEPATH.CLASSPATH."fazrin.php");
 Registry::set('Fazrin', new Fazrin());
 $fz = Registry::get("Fazrin");
-
-
 
 require_once (BASEPATH.CLASSPATH."paginate.php");
 $pager = Paginator::instance();
@@ -64,13 +59,25 @@ $site_url = $protocol . "://" . $url;
 define("SITEURL", $site_url);
 define("ADMINURL", $site_url . "/admin");
 define("UPLOADS", BASEPATH . "uploads/");
-define("ASSETSURL", "assets/");
-define('_MPDF_PATH', ASSETSURL . "mpdf/");
-define("CSS", ASSETSURL . "css/");
-define("JS", ASSETSURL . "js/");
-define("IMAGE", ASSETSURL . "img/");
-define("ICON", ASSETSURL . "icons/");
+
+define("FRONTASSETSURL", "frontend/");
+define("FRONTCSS", FRONTASSETSURL . "css/");
+define("FRONTJS", FRONTASSETSURL . "js/");
+define("FRONTIMAGE", FRONTASSETSURL . "img/");
+define("FRONTICON", FRONTASSETSURL . "icons/");
+
+define("BACKASSETSURL", "backend/");
+define("BACKCSS", BACKASSETSURL . "css/");
+define("BACKJS", BACKASSETSURL . "js/");
+define("BACKIMAGE", BACKASSETSURL . "img/");
+define("BACKICON", BACKASSETSURL . "icons/");
+
+
 define("UPLOADURL", SITEURL . "/uploads/");
+// define("CSS", ASSETSURL . "css/");
+// define("JS", ASSETSURL . "js/");
+// define("IMAGE", ASSETSURL . "img/");
+// define("ICON", ASSETSURL . "icons/");
 $editfield=0;
 $dt=1;
 $jsonPretty = new Camspiers\JsonPretty\JsonPretty;
