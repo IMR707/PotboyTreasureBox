@@ -8,1476 +8,1370 @@ use Carbon\Carbon;
 if (!$user->logged_in) {
     redirect_to(SITEURL.'/index.php');
 }
-
-pre($user);
-die;
-$user->isAdmin() ? $leadname = 'Total All Leads' : $leadname = 'Total Of My Leads';
-$totalleads = $user->uid;
-$us = $user->userDetail($user->uid);
-$byyear='';
-if(isset($_GET['byyear']))
-{
-  $byyear=$_GET['byyear'];
-}
-  $bymonth='';
-if(isset($_GET['bymonth']))
-{
-  $bymonth=$_GET['bymonth'];
-}
-$bystart='';
-if(isset($_GET['bystart'])){
-  $bystart=$_GET['bystart'];
-}
-
-$byend='';
-if(isset($_GET['byend'])){
-  $byend=$_GET['byend'];
-}
-if(!isset($_GET['byyear'])&&isset($_GET['bymonth'])&&isset($_GET['bystart'])&&isset($_GET['byend'])) {
-  $bymonth=date('m/Y');
-}
-
-if($byyear&&isset($_GET['filteryear']))
-{
-  $targettext= $byyear==date('Y')? 'This Year': 'Year '.$byyear;
-  $filterdash="byyear";
-}
-elseif ($bystart&&$byend&&isset($_GET['filterbystart'])) {
-  $targettext= 'From '.$bystart.' to '.$byend;
-  $filterdash="bystart";
-}
-
-elseif ($bymonth&&isset($_GET['filtermonth'])) {
-  $targettext= $bymonth==date("m")."/".date('Y')? 'This Month': 'For '.$bymonth;
-  $filterdash="bymonth";
-}
-else {
-  $targettext='This Month';
-  $filterdash="thismonth";
-}
-
-
-
-$latestcus=$list->getAllCustomerLatest('10');
-$comingbday = $list->getCusComingBday('10');
-$listinglead=$list->getAllLeadsLatest($user,'10');
-$latestleads=$listinglead[0];
-// $latestleadsmanual=$listinglead[1];
-$fl=$list->getFollowup($user,10);
-$cm=$list->getCompleteFollowup($user,10);
-
-$todo=$list->getTodo($user,10);
-
-
-$cni=$cm['cni'];
-$ccl=$cm['ccl'];
-$ccc=$cni+$ccl;
-
-$accc='';
-if($ccc>0)
-{
-  $accc=' <span class="uk-badge uk-badge-danger uk-badge-notification">'.$ccc.'</span>';
-}
-
-$acni='';
-if($cni>0)
-{
-  $acni=' <span class="uk-badge uk-badge-danger uk-badge-notification">'.$cni.'</span>';
-}
-
-$accl='';
-if($ccl>0)
-{
-  $accl=' <span class="uk-badge uk-badge-danger uk-badge-notification">'.$ccl.'</span>';
-}
-
-
-$cna=$todo['cna'];
-$acna='';
-if($cna>0)
-{
-  $acna=' <span class="uk-badge uk-badge-danger uk-badge-notification">'.$cna.'</span>';
-}
-
-$ci=$todo['ci'];
-$aci='';
-if($ci>0)
-{
-  $aci=' <span class="uk-badge uk-badge-danger uk-badge-notification">'.$ci.'</span>';
-}
-
-$co=$todo['co'];
-$aco='';
-if($co>0)
-{
-  $aco=' <span class="uk-badge uk-badge-danger uk-badge-notification">'.$co.'</span>';
-}
-
-
-
-
-$cfl=count($list->getFollowup($user));
-$cfls='';
-if($cfl>0)
-{
-  $cfls=' <span class="uk-badge uk-badge-danger uk-badge-notification">'.$cfl.'</span>';
-}
-
-switch ($filterdash) {
-            case 'thismonth':
-                $startdate = date('Y').'-'.date('m').'-01';
-                $enddate = date('Y-m-t', strtotime($startdate));
-            break;
-            case 'bymonth':
-                $pieces = explode('/', $_GET['bymonth']);
-                $startdate = $pieces[1].'-'.$pieces[0].'-01';
-                $enddate = date('Y-m-t', strtotime($startdate));
-            break;
-            case 'byyear':
-                $startdate = $_GET['byyear'].'-01-01';
-                $enddate = $_GET['byyear'].'-12-31';
-            break;
-            case 'bystart':
-                $startdate = $_GET['bystart'];
-                $enddate = $_GET['byend'];
-            break;
-            }
-            $lso = $list->getLeadSourcebyID($filterdash,$user);
-            arsort($lso);
-            $lst = $list->getLeadStatusbyID($filterdash,$user);
-            arsort($lst);
 ?>
-    <!doctype html>
-    <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
-    <!--[if gt IE 9]><!-->
-    <html lang="en">
-    <!--<![endif]-->
-    <?php include 'head.php';?>
-    <?php include 'header.php';?>
-
-    <body class=" sidebar_main_open sidebar_main_swipe">
-        <?php include 'menu.php';?>
-        <div id="page_content">
-            <div id="page_content_inner">
-          <div class="md-card uk-margin-bottom ">
-            <div class="md-card-content  ">
-
-              <div class="md-card uk-margin-bottom uk-text-center uk-width-1-1">
-                <div class="md-card-content " >
-
-              <div class="uk-grid uk-grid-width-small-1-2 uk-grid-width-large-1-3 uk-grid-width-xlarge-1-4 uk-text-center" data-uk-grid-margin>
-                  <div >
-                      <div class=" ">
-                          <div class="">
-                              By Year
-                              <input id="yeardatepicker" style="width: 100%;" value="<?php echo $byyear;?>" />
-                          </div>
-                      </div>
-                  </div>
-                  <div>
-                      <div class="">
-                          <div class="">
-                              By Month
-                              <input id="monthdatepicker" style="width: 100%;" value="<?php echo $bymonth;?>" />
-
-                          </div>
-                      </div>
-                  </div>
-                 <div>
-                      <div class="">
-                          <div class="">
-                            From
-                            <input id="start_date" style="width: 100%;" value="<?php echo $startdate;?>" />
-                          </div>
-                      </div>
-                  </div>
-                  <div>
-                      <div class="">
-                          <div class="">
-                            To
-                            <input id="end_date" style="width: 100%;" value="<?php echo $enddate;?>" />
-                        </div>
-                      </div>
-                  </div>
-              </div>
-
-            </div>
-          </div>
+<?php
+ //include 'fehead.php';
+ //include 'feheader.php';
+ ?>
 
 
+ <!DOCTYPE html>
+ <html>
+  	<head>
+ 		<title>Elementy - Responsive HTML5 Template</title>
+ 		<meta charset=utf-8 >
+ 		<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+ 		<meta name="robots" content="index, follow" >
+ 		<meta name="keywords" content="HTML5 Template" >
+ 		<meta name="description" content="Elementy - Responsive HTML5 Template" >
+ 		<meta name="author" content="Vladimir Azarushkin">
+ 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+     <meta name="theme-color" content="#2a2b2f">
 
-              <?php  if($user->isSale()){
-                $target = $us->target;
-                $currentamount = $list->getClosesalebyID($filterdash,$us->id);
-                $precent = ($currentamount / $target) * 100;
-                $target = 'RM'.number_format($target);
-                $currentamount = 'RM'.number_format($currentamount);
+ 		<!-- FAVICONS -->
+     <link rel="shortcut icon" href="images/favicon/favicon.png">
+     <link rel="apple-touch-icon" href="images/favicon/apple-touch-icon.png">
+     <link rel="apple-touch-icon" sizes="72x72" href="images/favicon/apple-touch-icon-72x72.png">
+     <link rel="apple-touch-icon" sizes="114x114" href="images/favicon/apple-touch-icon-114x114.png">
+     <link rel="icon" sizes="192x192" href="images/favicon/icon-192x192.png">
 
-                $cr=$list->getMyLeadsClosingRatio($filterdash,$us->id);
-                $percent=$cr['percent'];
-                $close=$cr['close'];
-                $total=$cr['total'];
-                if($total==0)
-                $per=0;
-                else {
-                $per=number_format(($cr['close']/$cr['total'])*100);
-                }
-                $closepertotal=$cr['close']."/".$cr['total'];
-                //$lso $lst
-                ?>
-                <div class="uk-grid uk-grid-width-small-1-2 uk-grid-width-large-1-3 uk-grid-width-xlarge-1-4 uk-text-center" data-uk-grid-margin style="display:none;">
-                  <div>
-                      <div class="">
-                          <div class="">
-                              <h4 class="heading_c uk-margin-bottom">Sale Target</h4>
-                            <div id="targetsale" class="c3chart">Your Target <?php echo $targettext;?> is <b><?php echo $target;?></b>
-                                      <br>Current Amount is <b><?php echo $currentamount;?></b></div>
-                          </div>
-                      </div>
-                  </div>
-                  <div>
-                      <div class="">
-                          <div class="">
-                              <h4 class="heading_c uk-margin-bottom">Leads Source</h4>
-                              <div id="leadsource" class="c3chart"></div>
-                          </div>
-                      </div>
-                  </div>
-                  <div>
-                      <div class="">
-                          <div class="">
-                              <h4 class="heading_c uk-margin-bottom">Leads Status</h4>
-                              <div id="analysistotalsaleleads" class="c3chart"></div>
-                          </div>
-                      </div>
-                  </div>
-                  <div>
-                      <div class="">
+ <!-- CSS -->
+     <!--  GOOGLE FONT -->
+     <link href='http://fonts.googleapis.com/css?family=Poppins:400,600,300%7COpen+Sans:400,300,700' rel='stylesheet' type='text/css'>
 
+     <!-- REVOSLIDER CSS SETTINGS -->
 
-                          <div class="">
-                              <h4 class="heading_c uk-margin-bottom">Closing Ratio (%)</h4>
-                              <div class="c3chart">
-                                  <div class="epc_chart" data-percent="<?php echo $per;?>" data-bar-color="#005543">
-                                      <span class="epc_chart_text"><span class="countUpMe"><?php echo $per;?></span>%</span>
-                                  </div>Current Closing case is <b><?php echo $closepertotal;?></b></div>
+     <!-- REVOLUTION STYLE SHEETS -->
+     <link href="<?php echo FRONTREVO;?>/css/settings-custom.css" rel="stylesheet" type="text/css">
 
-                          </div>
+     <!--  BOOTSTRAP -->
+ 		<link rel="stylesheet" href="<?php echo FRONTCSS;?>bootstrap.min.css">
 
+     <!-- ICONS ELEGANT FONT & FONT AWESOME & LINEA ICONS  -->
+ 		<link rel="stylesheet" href="<?php echo FRONTCSS;?>icons-fonts.css" >
 
+     <!--  CSS THEME -->
+ 		<link rel="stylesheet" href="<?php echo FRONTCSS;?>style.css" >
 
-                      </div>
-                  </div>
-              </div>
-              <?php } ?>
-            </div>
-          </div> <!-- ///////////////////////////////////////testing------------------------------------>
-          <!-- admin list-->
-          <?php
+     <!-- ANIMATE -->
+ 		<link rel='stylesheet' href="<?php echo FRONTCSS;?>animate.min.css">
 
-          if(!$user->isSale())
-          {
-            $salepts=$user->getAllSale();
-            $sale=array();
-            foreach ($salepts as $key => $value) {
-              $target = $value->target;
-              $currentamount = $list->getClosesalebyID($filterdash,$value->id);
-              $precent = ($currentamount / $target) * 100;
-              $data[$value->id]['name']=$value->fullname;
-              $data[$value->id]['stt']="RM ".number_format($target);
-              $data[$value->id]['stca']="RM ".number_format($currentamount);
-              $data[$value->id]['stp']=$precent." %";
-              $data[$value->id]['art']=$list->getResponsebyID($filterdash,$value->id);
-              $cr=$list->getMyLeadsClosingRatio($filterdash,$value->id);
-              $data[$value->id]['cr']=$cr['percent'];
-              $data[$value->id]['close']=$cr['close'];
-              $data[$value->id]['total']=$cr['total'];
-              $data[$value->id]['closepertotal']=$cr['close']."/".$cr['total'];
-            }
-            ?>
+     <!-- IE Warning CSS -->
+ 		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="css/ie-warning.css" ><![endif]-->
+ 		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="css/ie8-fix.css" ><![endif]-->
 
-            <div class="md-card uk-margin-medium-bottom">
-                <div class="md-card-content">
-                  <h3 class="heading_a uk-margin-bottom">Leads Chart</h3>
+     <!-- Magnific popup, Owl Carousel Assets in style.css -->
 
-                  <div class="uk-grid uk-grid-width-small-1-3 uk-grid-width-large-1-3 uk-grid-width-xlarge-1-3 uk-text-center" data-uk-grid-margin>
+ <!-- CSS end -->
 
-                    <div>
-                        <div class="">
-                            <div class="">
-                                <h4 class="heading_c uk-margin-bottom">Analysis on Total Sales Leads</h4>
-                                <div id="analysistotalsaleleads" class="c3chart"></div>
-                                <div>
-                                  Total : 100
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+ <!-- JS begin some js files in bottom of file-->
 
+ 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+ 		<!--[if lt IE 9]>
+ 		  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ 		  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+ 		<![endif]-->
 
-                    <div>
-                        <div class="">
-                            <div class="">
-                                <h4 class="heading_c uk-margin-bottom">Analysis on Interested</h4>
-                                <div id="analysisinterest" class="c3chart"></div>
-                                <div>
-                                  Total : 100 Sales Leads
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+ 	</head>
+ 	<body>
 
+ 		<!-- LOADER -->
+ 		<div id="loader-overflow">
+       <div id="loader3" class="loader-cont">Please enable JS</div>
+     </div>
+<div class="col-md-8 col-md-offset-2">
+ 		<div id="wrap" class="boxed ">
+ 			<div class="grey-bg"> <!-- Grey BG  -->
 
-                    <div>
-                        <div class="">
-                            <div class="">
-                                <h4 class="heading_c uk-margin-bottom">Analysis on Sales Leads Source</h4>
-                                <div id="analysissalesleadssource" class="c3chart"></div>
-                                <div>
-                                  Total : 100
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+ 				<!--[if lte IE 8]>
+ 				<div id="ie-container">
+ 					<div id="ie-cont-close">
+ 						<a href='#' onclick='javascript&#058;this.parentNode.parentNode.style.display="none"; return false;'><img src='images/ie-warn/ie-warning-close.jpg' style='border: none;' alt='Close'></a>
+ 					</div>
+ 					<div id="ie-cont-content" >
+ 						<div id="ie-cont-warning">
+ 							<img src='images/ie-warn/ie-warning.jpg' alt='Warning!'>
+ 						</div>
+ 						<div id="ie-cont-text" >
+ 							<div id="ie-text-bold">
+ 								You are using an outdated browser
+ 							</div>
+ 							<div id="ie-text">
+ 								For a better experience using this site, please upgrade to a modern web browser.
+ 							</div>
+ 						</div>
+ 						<div id="ie-cont-brows" >
+ 							<a href='http://www.firefox.com' target='_blank'><img src='images/ie-warn/ie-warning-firefox.jpg' alt='Download Firefox'></a>
+ 							<a href='http://www.opera.com/download/' target='_blank'><img src='images/ie-warn/ie-warning-opera.jpg' alt='Download Opera'></a>
+ 							<a href='http://www.apple.com/safari/download/' target='_blank'><img src='images/ie-warn/ie-warning-safari.jpg' alt='Download Safari'></a>
+ 							<a href='http://www.google.com/chrome' target='_blank'><img src='images/ie-warn/ie-warning-chrome.jpg' alt='Download Google Chrome'></a>
+ 						</div>
+ 					</div>
+ 				</div>
+ 				<![endif]-->
 
+ 				<!-- HEADER BOXED FONT WHITE TRANSPARENT -->
+         <div class="header-black-bg"></div> <!-- NEED FOR TRANSPARENT HEADER ON MOBILE -->
+ 				<header id="nav" class="header header-1 header-boxed header-black">
+           <div class="header-wrapper">
 
+             <div class="container relative">
 
+               <div class="clearfix">
+                 <div class="logo-row">
 
+                 <!-- LOGO -->
+                 <div class="logo-container-2">
+                     <div class="logo-2">
+                       <a href="index.html" class="clearfix">
+                         <img src="images/logo-white.png" class="logo-img" alt="Logo">
+                       </a>
+                     </div>
+                   </div>
+                 <!-- BUTTON -->
+                 <div class="menu-btn-respons-container">
+                   <button id="menu-btn" type="button" class="navbar-toggle btn-navbar collapsed" data-toggle="collapse" data-target="#main-menu .navbar-collapse">
+                     <span aria-hidden="true" class="icon_menu hamb-mob-icon"></span>
+                   </button>
+                 </div>
                 </div>
-
-                </div>
-            </div>
-
-
-
-
-          <div class="md-card uk-margin-medium-bottom">
-              <div class="md-card-content">
-                <h3 class="heading_a uk-margin-bottom">Summary</h3>
-                  <div class="uk-grid" data-uk-grid-margin="">
-                      <div class="uk-width-1-1">
-                          <ul class="uk-tab" data-uk-tab="{connect:'#tabs_1'}">
-                              <li class="sps-active" aria-expanded="true"><a href="#">Sale Persons</a></li>
-                              <li class="lso-active" aria-expanded="true"><a href="#">Leads Source</a></li>
-                              <li class="lst-active" aria-expanded="true"><a href="#">Leads Status</a></li>
-                              <li class="uk-tab-responsive uk-active uk-hidden" aria-haspopup="true" aria-expanded="false"><a>Active</a>
-                                  <div class="uk-dropdown uk-dropdown-small">
-                                      <ul class="uk-nav uk-nav-dropdown"></ul>
-                                      <div></div>
-                                  </div>
-                              </li>
-
-<div class="uk-text-right">
-<span class="uk-badge uk-badge-success"><b><?php echo $targettext;?></b></span>
-
-</div>
-
-                          </ul>
-                          <ul id="tabs_1" class="uk-switcher uk-margin">
-                            <li aria-hidden="false" class="sps-active">
-                                <table class="uk-table uk-table-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="uk-width-2-10 uk-text-left">Sale Person Name</th>
-                                            <th class="uk-width-2-10 uk-text-center">Sale Target</th>
-                                            <th class="uk-width-1-10 uk-text-center">Current Sale Amount</th>
-                                            <th class="uk-width-1-10 uk-text-center">Percentage Sale Target</th>
-                                            <th class="uk-width-1-10 uk-text-center">Average Response Time</th>
-                                            <th class="uk-width-1-10 uk-text-center">Closing Ratio</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                              <?php
-                              foreach ($data as $key => $value) {
-                              ?>
-                                <tr>
-                                <td class="uk-text-left"><?php echo styleword($value['name']);?></td>
-                                <td class="uk-text-center"><?php echo $value['stt'];?></td>
-                                <td class="uk-text-center"><?php echo $value['stca'];?></td>
-                                <td class="uk-text-center"><?php echo $value['stp'];?></td>
-                                <td class="uk-text-center"><?php echo $value['art'];?></td>
-                                <td class="uk-text-center"><?php echo $value['cr'];?> (<?php echo $value['closepertotal'];?>)</td>
-                                </tr>
-                              <?php } ?>
-                                    </tbody>
-                                </table>
-                            </li>
-
-
-                            <li aria-hidden="false" class="lso-active">
-                              <?php
-
-                              ?>
-                                <table class="uk-table uk-table-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="uk-width-2-10 uk-text-left">Leads Source</th>
-                                            <th class="uk-width-2-10 uk-text-center">Amount Source <?php echo $targettext;?></th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      <?php
-                                          foreach ($lso as $key => $value) {
-                                            $aa=$list->getSource2($key);
-                                          ?>
-                                          <tr>
-                                              <td class="uk-text-left"><?php echo styleword($aa->name);?></td>
-                                              <td class="uk-text-center"><?php echo $value;?></td>
-
-                                          </tr>
-                                          <?php
-                                        } ?>
-                                    </tbody>
-                                </table>
-
-
-
-                            </li>
-
-
-                            <li aria-hidden="false" class="lst-active">
-                              <?php
-
-                              ?>
-                                <table class="uk-table uk-table-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="uk-width-2-10 uk-text-left">Leads Status</th>
-                                            <th class="uk-width-2-10 uk-text-center">Amount Status <?php echo $targettext;?></th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      <?php
-                                          foreach ($lst as $key => $value) {
-                                            $aa=$list->getStatus2($key);
-                                          ?>
-                                          <tr>
-                                              <td class="uk-text-left"><?php echo styleword($aa->data);?></td>
-                                              <td class="uk-text-center"><?php echo $value;?></td>
-
-                                          </tr>
-                                          <?php
-                                        } ?>
-                                    </tbody>
-                                </table>
-
-
-
-                            </li>
-
-
-
-
-                          </ul>
-                      </div>
-                  </div>
-              </div>
-          </div>
-
-          <!-- admin list-->
-        <?php }?>
-
-
-
-
-
-          <!-- lead list-->
-          <div class="md-card uk-margin-medium-bottom">
-              <div class="md-card-content">
-                <h3 class="heading_a uk-margin-bottom">Sales Leads</h3>
-                  <div class="uk-grid" data-uk-grid-margin="">
-                      <div class="uk-width-1-1">
-                          <ul class="uk-tab" data-uk-tab="{connect:'#tabs_2'}">
-                              <li class="ll-active" aria-expanded="true"><a href="#">New</a></li>
-                              <li class="lml-active" aria-expanded="true"><a href="#">To Do <?php echo $cfls;?></a></li>
-                              <li class="fu-active" aria-expanded="true"><a href="#">Completed <?php echo $accc;?></a></li>
-                              <!-- <li class="lr-active" aria-expanded="true"><a href="#">Latest Referrals</a></li> -->
-                              <li class="uk-tab-responsive uk-active uk-hidden" aria-haspopup="true" aria-expanded="false"><a>Active</a>
-                                  <div class="uk-dropdown uk-dropdown-small">
-                                      <ul class="uk-nav uk-nav-dropdown"></ul>
-                                      <div></div>
-                                  </div>
-                              </li>
-                          </ul>
-                          <ul id="tabs_2" class="uk-switcher uk-margin">
-                              <li aria-hidden="false" class="ll-active">
-                                  <table class="uk-table uk-table-nowrap">
-                                      <thead>
-                                          <tr>
-                                              <th class="uk-width-2-10 uk-text-center">Date</th>
-                                              <th class="uk-width-2-10 uk-text-center">Name</th>
-                                              <th class="uk-width-2-10 uk-text-center">Interested Project</th>
-                                              <th class="uk-width-2-10 uk-text-center">Contact No</th>
-                                              <th class="uk-width-1-10 uk-text-center">Email</th>
-                                              <th class="uk-width-2-10 uk-text-center">Source</th>
-                                              <th class="uk-width-2-10 uk-text-center">Sale Person</th>
-
-
-
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                          <?php
-
-                                          foreach ($latestleads as $key => $value) {
-                                            $pp="<ul>";
-                                            foreach (json_decode($value->interest) as $key2=> $value2) {
-                                                $pp.="<li>";
-                                                $aaa=$list->getProjects($value2);//name
-                                                $pp.=$aaa->name;
-                                                $pp.="</li>";
-                                            }
-                                            $pp.="</ul>";
-
-                                            $sources=$list->getSource($value->source);
-                                            $source=$sources[0]->name;
-                                            $sp=$user->getUserbyID($value->spid);
-
-
-                                            $cre=Carbon::createFromTimeStamp(strtotime($value->created));
-                                            $date=$cre->formatLocalized('%d-%m-%Y');
-
-                                            //pre($cre);
-                                            //$spid=$value->spid;
-
-                                            ?>
-                                          <tr>
-                                              <td class="uk-text-center"><?php echo $date;?></td>
-                                              <td class="uk-text-left"><a href="leadsview.php?lid=<?php echo $value->id;?>"><?php echo styleword($value->leadsname);?></a></td>
-                                              <td class="uk-text-center"><?php echo $pp;?></td>
-                                              <td class="uk-text-center"><?php echo $value->mobile;?></td>
-                                              <td class="uk-text-center"><?php echo $value->leadsemail;?></td>
-                                              <td class="uk-text-center"><?php echo $source;?></td>
-                                              <td class="uk-text-center"><?php echo styleword($sp->fullname);?></td>
-
-                                          </tr>
-                                          <?php } ?>
-                                      </tbody>
-                                  </table>
-
-
-
-                              </li>
-                              <li aria-hidden="false" class="lml-active">
-
-                                <?php
-                                $naid=$todo['na'];
-                                $iid=$todo['i'];
-                                $oid=$todo['o'];
-                                ?>
-
-                                <h3 class="heading_a uk-margin-bottom">Not Attempted <?php echo $acna;?> <a href="leads.php?lstatus=18" class="pull-right">View All</a></h3>
-
-                                <table class="uk-table uk-table-nowrap">
-                                    <thead>
-                                        <tr>
-
-                                            <th class="uk-width-2-10 uk-text-center">Date</th>
-                                            <th class="uk-width-2-10 uk-text-center">Name</th>
-                                            <th class="uk-width-2-10 uk-text-center">Status</th>
-                                            <th class="uk-width-2-10 uk-text-center">Source</th>
-                                            <th class="uk-width-1-10 uk-text-center">Enquiry</th>
-                                            <th class="uk-width-2-10 uk-text-center">Contact No</th>
-                                            <th class="uk-width-2-10 uk-text-center">Email</th>
-                                            <?php if(!$user->isSale()){ ?>
-                                            <th class="uk-width-2-10 uk-text-center">Sale Person</th>
-                                            <?php }?>
-
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-
-
-                                      foreach ($naid as $key => $value) {
-                                          $follow=$list->getLeadsENbyLeadsIDNA($value);
-
-
-
-                                          $cre=Carbon::createFromTimeStamp(strtotime($follow[1]->created));
-                                          $date=$cre->formatLocalized('%d-%m-%Y');
-                                          ?>
-                                          <tr>
-                                            <td class="uk-text-center"><?php echo $date;?></td>
-                                              <td class="uk-text-center"><a href="leadsview.php?lid=<?php echo $follow[0]->id;?>"><?php echo styleword($follow[0]->name);?></a></td>
-                                              <td class="uk-text-center"><span class="uk-badge">
-                                                <?php $status=$list->getStatus2($follow[1]->status);
-                                                echo ($status->data);
-                                              ?></span></td>
-                                              <td class="uk-text-center"><?php
-                                              $source=$list->getSource($follow[1]->source);
-                                              echo ($source[0]->name);?></td>
-                                              <td class="uk-text-center"><?php echo $follow[1]->enquiry;?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->contact_m;?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->email;?></td>
-                                              <?php if(!$user->isSale()){ ?>
-                                                <td class="uk-text-center"><?php
-                                                $slper=$user->getUserbyID($follow[1]->spid);
-                                                echo styleword($slper->fullname);?></td>
-                                              <?php }?>
-                                          </tr>
-                                          <?php }
-
-                                          if(empty($naid)){
-                                            $cols=$user->isSale()? 6: 7;
-                                            ?>
-                                            <tr>
-                                              <td colspan="<?php echo $cols;?>">
-                                                <p class="uk-text-center">-- No Data --</p>
-
-                                              </td>
-                                            </tr>
-                                            <?php
-                                          }
-                                             ?>
-                                    </tbody>
-                                </table>
-
-
-                                <h3 class="heading_a uk-margin-bottom">Interested <?php echo $aci;?> <a href="leads.php?lstatus=19" class="pull-right">View All</a></h3>
-                                <table class="uk-table uk-table-nowrap">
-                                    <thead>
-                                        <tr>
-
-                                            <th class="uk-width-2-10 uk-text-center">Date</th>
-                                            <th class="uk-width-2-10 uk-text-center">Name</th>
-                                            <th class="uk-width-2-10 uk-text-center">Status</th>
-                                            <th class="uk-width-2-10 uk-text-center">Source</th>
-                                            <th class="uk-width-1-10 uk-text-center">Enquiry</th>
-                                            <th class="uk-width-2-10 uk-text-center">Contact No</th>
-                                            <th class="uk-width-2-10 uk-text-center">Email</th>
-                                            <?php if(!$user->isSale()){ ?>
-                                            <th class="uk-width-2-10 uk-text-center">Sale Person</th>
-                                            <?php }?>
-
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-
-
-                                      foreach ($iid as $key => $value) {
-                                          $follow=$list->getLeadsENbyLeadsIDI($value);
-                                          $cre=Carbon::createFromTimeStamp(strtotime($follow[1]->created));
-                                          $date=$cre->formatLocalized('%d-%m-%Y');
-
-                                          ?>
-                                          <tr>
-                                            <td class="uk-text-center"><?php echo $date;?></td>
-                                              <td class="uk-text-center"><a href="leadsview.php?lid=<?php echo $follow[0]->id;?>"><?php echo styleword($follow[0]->name);?></a></td>
-                                              <td class="uk-text-center"><span class="uk-badge">
-                                                <?php $status=$list->getStatus2($follow[1]->status);
-                                                echo ($status->data);
-                                              ?></span></td>
-                                              <td class="uk-text-center"><?php
-                                              $source=$list->getSource($follow[1]->source);
-                                              echo ($source[0]->name);?></td>
-                                              <td class="uk-text-center"><?php echo $follow[1]->enquiry;?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->contact_m;?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->email;?></td>
-                                              <?php if(!$user->isSale()){ ?>
-                                                <td class="uk-text-center"><?php
-                                                $slper=$user->getUserbyID($follow[1]->spid);
-                                                echo styleword($slper->fullname);?></td>
-                                              <?php }?>
-                                          </tr>
-                                          <?php }
-
-                                          if(empty($iid)){
-                                            $cols=$user->isSale()? 6: 7;
-                                            ?>
-                                            <tr>
-                                              <td colspan="<?php echo $cols;?>">
-                                                <p class="uk-text-center">-- No Data --</p>
-
-                                              </td>
-                                            </tr>
-                                            <?php
-                                          }
-                                             ?>
-                                    </tbody>
-                                </table>
-
-
-                                <h3 class="heading_a uk-margin-bottom">Others <?php echo $aco;?><a href="leads.php?lstatus=21" class="pull-right">View All</a></h3>
-                                <table class="uk-table uk-table-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="uk-width-2-10 uk-text-center">Date</th>
-                                            <th class="uk-width-2-10 uk-text-center">Name</th>
-                                            <th class="uk-width-2-10 uk-text-center">Status</th>
-                                            <th class="uk-width-2-10 uk-text-center">Source</th>
-                                            <th class="uk-width-1-10 uk-text-center">Enquiry</th>
-                                            <th class="uk-width-2-10 uk-text-center">Contact No</th>
-                                            <th class="uk-width-2-10 uk-text-center">Email</th>
-                                            <?php if(!$user->isSale()){ ?>
-                                            <th class="uk-width-2-10 uk-text-center">Sale Person</th>
-                                            <?php }?>
-
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-
-
-                                      foreach ($oid as $key => $value) {
-                                          $follow=$list->getLeadsENbyLeadsIDO($value);
-                                          $cre=Carbon::createFromTimeStamp(strtotime($follow[1]->created));
-                                          $date=$cre->formatLocalized('%d-%m-%Y');
-
-                                          ?>
-                                          <tr>
-                                              <td class="uk-text-center"><?php echo $date;?></td>
-                                              <td class="uk-text-center"><a href="leadsview.php?lid=<?php echo $follow[0]->id;?>"><?php echo styleword($follow[0]->name);?></a></td>
-                                              <td class="uk-text-center"><span class="uk-badge">
-                                                <?php $status=$list->getStatus2($follow[1]->status);
-                                                echo ($status->data);
-                                              ?></span></td>
-                                              <td class="uk-text-center"><?php
-                                              $source=$list->getSource($follow[1]->source);
-                                              echo ($source[0]->name);?></td>
-                                              <td class="uk-text-center"><?php echo $follow[1]->enquiry;?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->contact_m;?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->email;?></td>
-                                              <?php if(!$user->isSale()){ ?>
-                                                <td class="uk-text-center"><?php
-                                                $slper=$user->getUserbyID($follow[1]->spid);
-                                                echo styleword($slper->fullname);?></td>
-                                              <?php }?>
-                                          </tr>
-                                          <?php }
-
-                                          if(empty($oid)){
-                                            $cols=$user->isSale()? 6: 7;
-                                            ?>
-                                            <tr>
-                                              <td colspan="<?php echo $cols;?>">
-                                                <p class="uk-text-center">-- No Data --</p>
-
-                                              </td>
-                                            </tr>
-                                            <?php
-                                          }
-                                             ?>
-                                    </tbody>
-                                </table>
-
-
-
-
-                              </li>
-                              <li aria-hidden="false" class="fu-active">
-                                <?php
-
-
-
-                                $nid=$cm['ni'];
-                                $cld=$cm['cl'];
-
-
-
-
-                                ?>
-
-                                <h3 class="heading_a uk-margin-bottom">Not Interest <?php echo $acni;?> <a href="leads.php?lstatus=20" class="pull-right">View All</a></h3>
-                                <table class="uk-table uk-table-nowrap">
-                                    <thead>
-                                        <tr>
-
-                                            <th class="uk-width-2-10 uk-text-center">Date</th>
-                                            <th class="uk-width-2-10 uk-text-center">Name</th>
-                                            <th class="uk-width-2-10 uk-text-center">Status</th>
-                                            <th class="uk-width-2-10 uk-text-center">Source</th>
-                                            <th class="uk-width-1-10 uk-text-center">Enquiry</th>
-                                            <th class="uk-width-2-10 uk-text-center">Contact No</th>
-                                            <th class="uk-width-2-10 uk-text-center">Email</th>
-                                            <?php if(!$user->isSale()){ ?>
-                                            <th class="uk-width-2-10 uk-text-center">Sale Person</th>
-                                            <?php }?>
-
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-
-
-                                      foreach ($nid as $key => $value) {
-                                          $follow=$list->getLeadsENbyLeadsIDNI($value);
-                                          $cre=Carbon::createFromTimeStamp(strtotime($follow[1]->created));
-                                          $date=$cre->formatLocalized('%d-%m-%Y');
-
-                                          ?>
-                                          <tr>
-                                            <td class="uk-text-center"><?php echo $date;?></td>
-                                              <td class="uk-text-center"><a href="leadsview.php?lid=<?php echo $follow[0]->id;?>"><?php echo styleword($follow[0]->name);?></a></td>
-                                              <td class="uk-text-center"><span class="uk-badge">
-                                                <?php $status=$list->getStatus2($follow[1]->status);
-                                                echo ($status->data);
-                                              ?></span></td>
-                                              <td class="uk-text-center"><?php
-                                              $source=$list->getSource($follow[1]->source);
-                                              echo ($source[0]->name);?></td>
-                                              <td class="uk-text-center"><?php echo $follow[1]->enquiry;?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->contact_m;?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->email;?></td>
-                                              <?php if(!$user->isSale()){ ?>
-                                                <td class="uk-text-center"><?php
-                                                $slper=$user->getUserbyID($follow[1]->spid);
-                                                echo styleword($slper->fullname);?></td>
-                                              <?php }?>
-                                          </tr>
-                                          <?php }
-
-                                          if(empty($nid)){
-                                            $cols=$user->isSale()? 6: 7;
-                                            ?>
-                                            <tr>
-                                              <td colspan="<?php echo $cols;?>">
-                                                <p class="uk-text-center">-- No Data --</p>
-
-                                              </td>
-                                            </tr>
-                                            <?php
-                                          }
-                                             ?>
-                                    </tbody>
-                                </table>
-
-                                <h3 class="heading_a uk-margin-bottom">Sale Closed <?php echo  $accl;?></h3>
-                                <table class="uk-table uk-table-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="uk-width-2-10 uk-text-center">Date</th>
-                                            <th class="uk-width-2-10 uk-text-center">Name</th>
-                                            <th class="uk-width-2-10 uk-text-center">Status</th>
-                                            <th class="uk-width-2-10 uk-text-center">Source</th>
-                                            <th class="uk-width-1-10 uk-text-center">Amount</th>
-                                            <th class="uk-width-2-10 uk-text-center">Contact No</th>
-                                            <th class="uk-width-2-10 uk-text-center">Email</th>
-                                            <?php if(!$user->isSale()){ ?>
-                                            <th class="uk-width-2-10 uk-text-center">Sale Person</th>
-                                            <?php }?>
-
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        if(!empty($cld)){
-                                        foreach ($cld as $key => $value) {
-                                          $follow=$list->getLeadsENbyLeadsIDCL($value);
-                                          $cre=Carbon::createFromTimeStamp(strtotime($follow[2][0]->created));
-                                          $date=$cre->formatLocalized('%d-%m-%Y');
-                                          $amount=0;
-                                          foreach ($follow[2] as $key => $value) {
-                                            $amount+=$value->amount;
-                                          }
-                                          ?>
-                                          <tr>
-                                            <td class="uk-text-center"><?php echo $date;?></td>
-                                              <td class="uk-text-center"><a href="leadsview.php?lid=<?php echo $follow[0]->id;?>"><?php echo styleword($follow[0]->name);?></a></td>
-                                              <td class="uk-text-center"><span class="uk-badge">Sale Closed</span></td>
-                                              <td class="uk-text-center"><?php
-                                              $source=$list->getSource($follow[1]->source);
-                                              echo ($source[0]->name);?></td>
-                                              <td class="uk-text-center">RM <?php echo number_format($amount);?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->contact_m;?></td>
-                                              <td class="uk-text-center"><?php echo $follow[0]->email;?></td>
-                                              <?php if(!$user->isSale()){ ?>
-                                                <td class="uk-text-center"><?php
-                                                $slper=$user->getUserbyID($follow[1]->spid);
-                                                echo styleword($slper->fullname);?></td>
-                                              <?php }?>
-                                          </tr>
-                                          <?php }}
-                                          else {
-                                            $cols=$user->isSale()? 6: 7;
-                                            ?>
-                                            <tr>
-                                              <td colspan="<?php echo $cols;?>">
-                                                <p class="uk-text-center">-- No Data --</p>
-                                              </td>
-                                            </tr><?php
-                                          } ?>
-                                    </tbody>
-                                </table>
-
-
-
-                              </li>
-                              <li aria-hidden="false" class="lr-active">
-                                  <table class="uk-table uk-table-nowrap">
-                                      <thead>
-                                          <tr>
-
-                                              <th class="uk-width-2-10 uk-text-center">Name</th>
-                                              <th class="uk-width-2-10 uk-text-center">Referred By</th>
-                                              <th class="uk-width-2-10 uk-text-center">Contact No</th>
-                                              <th class="uk-width-2-10 uk-text-center">Email</th>
-
-
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                          <?php for ($i = 1;$i <= 6;++$i) {
-?>
-                                          <tr>
-                                              <td class="uk-text-center">Fazrin</td>
-                                              <td class="uk-text-center"><span class="uk-badge uk-badge-success">Customer name</span></td>
-                                              <td class="uk-text-center"><a href="tel:+60122244417">+60122244417</a></td>
-                                              <td class="uk-text-center">fazrin@cloone.com.my</td>
-                                          </tr>
-
-                                          <?php
-
-}?>
-                                      </tbody>
-                                  </table>
-                              </li>
-
-                          </ul>
-                      </div>
-                  </div>
-              </div>
-          </div><!-- lead list-->
-                <!-- todo list-->
-                <div class="uk-grid" data-uk-grid-margin data-uk-grid-match="{target:'.md-card-content'}">
-                    <div class="uk-width-medium-1-2">
-                        <div class="md-card">
-                            <div class="md-card-content">
-                                <h3 class="heading_a uk-margin-bottom">Upcoming Birthdays</h3>
-                                <div class="uk-overflow-container">
-                                    <table class="uk-table">
-                                        <thead>
-                                            <tr>
-                                                <th class="uk-text-nowrap">Name</th>
-                                                <th class="uk-text-nowrap uk-text-center">Upcoming Birthday</th>
-                                                <th class="uk-text-nowrap uk-text-center">Contact No</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-
-                                            foreach($comingbday as $key => $row){
-
-                                              $ic = $row->bday_date;
-                                              $ic_arr = explode("-",$ic);
-
-                                              $bday = '';
-
-                                              $b_day = substr($ic_arr[0], 4, 2);
-                                              $b_mon = substr($ic_arr[0], 2, 2);
-
-                                              $bday = $b_day.'-'.$b_mon.'-'.date('Y');
-
-                                              $newbday = date("d M Y",strtotime($bday));
-                                            ?>
-                                            <tr class="uk-table-middle">
-                                                <td class="uk-width-3-10"><a href="customerview.php?id=<?php echo $row->id;?>"><?php echo $row->name?></a></td>
-                                                <td class="uk-width-2-10 uk-text-center uk-text-muted uk-text-small"><?php echo $newbday;?></span></td>
-
-                                                <td class="uk-width-2-10 uk-text-center uk-text-muted uk-text-small"><?php echo $row->contact_m;?></td>
-                                            </tr>
-
-                                            <?php
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="uk-width-medium-1-2">
-                        <div class="md-card">
-                            <div class="md-card-content">
-                                <div class="uk-tab-center">
-                                    <ul class="uk-tab" data-uk-tab="{connect:'#tabs_5'}">
-                                        <li class="uk-active" aria-expanded="true"><a href="#">Latest Customers</a></li>
-                                        <!-- <li aria-expanded="false"><a href="#">Membership</a></li> -->
-
-                                        <li class="uk-tab-responsive uk-active uk-hidden" aria-haspopup="true" aria-expanded="false"><a>Active</a>
-                                            <div class="uk-dropdown uk-dropdown-small">
-                                                <ul class="uk-nav uk-nav-dropdown"></ul>
-                                                <div></div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <ul id="tabs_5" class="uk-switcher uk-margin">
-                                    <li aria-hidden="false" class="uk-active">
-
-                                        <table class="uk-table">
-
-                                            <tbody>
-                                                <?php
-
-                                                foreach($latestcus as $key => $row){
-    ?>
-                                                <tr class="uk-table-middle">
-                                                    <td class="uk-width-3-10 uk-text-center"><a href="customerview.php?id=<?php echo $row->id;?>"><?php echo $row->name;?></a></td>
-
-                                                    <td class="uk-width-2-10 uk-text-center uk-text-muted uk-text-small"><?php echo $row->contact_m?></td>
-                                                </tr>
-
-                                                <?php
-                                                }
-                                                ?>
-                                            </tbody>
-                                        </table>
-
-
-
-                                    </li>
-
-                                    <li aria-hidden="true">
-
-                                        <div class="uk-alert uk-alert-danger" data-uk-alert="">
-                                            All Memberships
-                                            <span class="uk-badge  uk-badge-notification uk-float-right">5</span>
-                                        </div>
-
-                                        <hr />
-                                        <table class="uk-table">
-
-                                            <tbody>
-                                                <?php for ($i = 1;$i <= 5;++$i) {
-    ?>
-                                                <tr class="uk-table-middle">
-                                                    <td class="uk-width-3-10 uk-text-center"><a href="scrum_board.html">Maria</a></td>
-
-                                                    <td class="uk-width-2-10 uk-text-center uk-text-muted uk-text-small">+6012345698</td>
-                                                </tr>
-
-                                                <?php
-
-}?>
-                                            </tbody>
-                                        </table>
-
-
-
-                                    </li>
-
-
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- -->
-
-                <div class="uk-grid" data-uk-grid-margin data-uk-grid-match="{target:'.md-card-content'}">
-                    <!-- <div class="uk-width-medium-1-2">
-                        <div class="md-card">
-                            <div class="md-card-content">
-                                <h3 class="heading_a uk-margin-bottom">To Do List</h3>
-                                <div class="uk-overflow-container">
-                                    <table class="uk-table">
-                                        <thead>
-                                            <tr>
-                                                <th class="uk-text-nowrap">Task</th>
-                                                <th class="uk-text-nowrap">Status</th>
-                                                <th class="uk-text-nowrap">Progress</th>
-                                                <th class="uk-text-nowrap uk-text-right">Due Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="uk-table-middle">
-                                                <td class="uk-width-3-10 uk-text-nowrap"><a href="scrum_board.html">ALTR-231</a></td>
-                                                <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge">In progress</span></td>
-                                                <td class="uk-width-3-10">
-                                                    <div class="uk-progress uk-progress-mini uk-progress-warning uk-margin-remove">
-                                                        <div class="uk-progress-bar" style="width: 40%;"></div>
-                                                    </div>
-                                                </td>
-                                                <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">24.11.2015</td>
-                                            </tr>
-                                            <tr class="uk-table-middle">
-                                                <td class="uk-width-3-10 uk-text-nowrap"><a href="scrum_board.html">ALTR-82</a></td>
-                                                <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge uk-badge-warning">Open</span></td>
-                                                <td class="uk-width-3-10">
-                                                    <div class="uk-progress uk-progress-mini uk-progress-success uk-margin-remove">
-                                                        <div class="uk-progress-bar" style="width: 82%;"></div>
-                                                    </div>
-                                                </td>
-                                                <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">21.11.2015</td>
-                                            </tr>
-                                            <tr class="uk-table-middle">
-                                                <td class="uk-width-3-10 uk-text-nowrap"><a href="scrum_board.html">ALTR-123</a></td>
-                                                <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge uk-badge-primary">New</span></td>
-                                                <td class="uk-width-3-10">
-                                                    <div class="uk-progress uk-progress-mini uk-margin-remove">
-                                                        <div class="uk-progress-bar" style="width: 0;"></div>
-                                                    </div>
-                                                </td>
-                                                <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">12.11.2015</td>
-                                            </tr>
-                                            <tr class="uk-table-middle">
-                                                <td class="uk-width-3-10 uk-text-nowrap"><a href="scrum_board.html">ALTR-164</a></td>
-                                                <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge uk-badge-success">Resolved</span></td>
-                                                <td class="uk-width-3-10">
-                                                    <div class="uk-progress uk-progress-mini uk-progress-primary uk-margin-remove">
-                                                        <div class="uk-progress-bar" style="width: 61%;"></div>
-                                                    </div>
-                                                </td>
-                                                <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">17.11.2015</td>
-                                            </tr>
-                                            <tr class="uk-table-middle">
-                                                <td class="uk-width-3-10 uk-text-nowrap"><a href="scrum_board.html">ALTR-123</a></td>
-                                                <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge uk-badge-danger">Overdue</span></td>
-                                                <td class="uk-width-3-10">
-                                                    <div class="uk-progress uk-progress-mini uk-progress-danger uk-margin-remove">
-                                                        <div class="uk-progress-bar" style="width: 10%;"></div>
-                                                    </div>
-                                                </td>
-                                                <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">12.11.2015</td>
-                                            </tr>
-                                            <tr class="uk-table-middle">
-                                                <td class="uk-width-3-10"><a href="scrum_board.html">ALTR-92</a></td>
-                                                <td class="uk-width-2-10"><span class="uk-badge uk-badge-success">Open</span></td>
-                                                <td class="uk-width-3-10">
-                                                    <div class="uk-progress uk-progress-mini uk-margin-remove">
-                                                        <div class="uk-progress-bar" style="width: 90%;"></div>
-                                                    </div>
-                                                </td>
-                                                <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">08.11.2015</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <!-- <div class="uk-width-medium-1-2">
-                        <div class="md-card">
-                            <div class="md-card-content">
-                                <h3 class="heading_a uk-margin-bottom">Membership Approval</h3>
-                                <div class="uk-overflow-container">
-                                    <table class="uk-table">
-                                        <thead>
-                                            <tr>
-                                                <th class="uk-text-nowrap uk-text-center">Customer Name</th>
-                                                <th class="uk-text-nowrap uk-text-center">Email</th>
-                                                <th class="uk-text-nowrap uk-text-center">Purchase Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <?php for ($i = 1;$i <= 6;++$i) {
-    ?>
-                                            <tr class="uk-table-middle">
-                                                <td class="uk-width-3-10 uk-text-center"><a href="scrum_board.html">Maria</a></td>
-                                                <td class="uk-text-center">ruzaini@ourtech.my</td>
-
-                                                <td class="uk-width-2-10 uk-text-center uk-text-muted uk-text-small">RM 50000</td>
-                                            </tr>
-                                            <?php
-} ?>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-
-
-
-
-                    </div> -->
-                </div>
-
-                <?php include 'footer.php';?>
-                <!-- page specific plugins -->
-                <!-- d3 -->
-                <script src="<?php echo ASSETSURL;?>bower_components/d3/d3.min.js"></script>
-                <!-- metrics graphics (charts) -->
-                <script src="<?php echo ASSETSURL;?>bower_components/metrics-graphics/dist/metricsgraphics.min.js"></script>
-                <!-- chartist (charts) -->
-                <script src="<?php echo ASSETSURL;?>bower_components/chartist/dist/chartist.min.js"></script>
-                <!-- maplace (google maps) -->
-                <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-                <script src="<?php echo ASSETSURL;?>bower_components/maplace.js/src/maplace-0.1.3.js"></script>
-                <!-- peity (small charts) -->
-                <script src="<?php echo ASSETSURL;?>bower_components/peity/jquery.peity.min.js"></script>
-                <!-- easy-pie-chart (circular statistics) -->
-                <script src="<?php echo ASSETSURL;?>bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
-                <!-- countUp -->
-                <script src="<?php echo ASSETSURL;?>bower_components/countUp.js/countUp.min.js"></script>
-                <!-- handlebars.js -->
-                <script src="<?php echo ASSETSURL;?>bower_components/handlebars/handlebars.min.js"></script>
-                <script src="<?php echo JS;?>custom/handlebars_helpers.min.js"></script>
-                <!-- CLNDR -->
-                <script src="<?php echo ASSETSURL;?>bower_components/clndr/src/clndr.js"></script>
-                <!-- fitvids -->
-                <script src="<?php echo ASSETSURL;?>bower_components/fitvids/jquery.fitvids.js"></script>
-
-                <!--  dashbord functions -->
-                <script src="<?php echo JS;?>pages/dashboard.min.js"></script>
-
-
-                <script src="c3js.php?type=leadstatus" type="text/javascript"></script>
-                <script src="c3js.php?type=gauge&name=targetsale&val=<?php echo $precent;?>" type="text/javascript"></script>
-
-
-
-
-                <script>
-
-
-<?php if($user->isSale()){ ?>
-                var c3chart_donut_id = '#leadsource';
-              var chart = c3.generate({
-                bindto: c3chart_donut_id,
-                  data: {
-                      columns: [
-                        <?php
-                        $nodata=0;
-                        foreach ($lso as $key => $value){
-
-                          $aa=$list->getSource2($key);
-                          if($value!=0){
-                            $nodata=1;
-                          echo '["'.$aa->name.'", '.$value.'],'.PHP_EOL;
-                          }
-
-                        }
-                        if(!$nodata)
-                        {
-                          echo "['No Data','1'],".PHP_EOL;
-                        }
-                        ?>
-                      ],
-                      type : 'donut',
-                      onclick: function (d, i) { console.log("onclick", d, i); },
-                      onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-                      onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-                  },
-                  donut: {
-                      title: "",
-                      width: 60
-                  }
-              });
-
-
-              var c3chart_donut_id = '#leadstatus';
-            var chart = c3.generate({
-              bindto: c3chart_donut_id,
-                data: {
-                    columns: [
-                      <?php
-                      $nodata=0;
-                      foreach ($lst as $key => $value){
-                        $aa=$list->getStatus2($key);
-                        if($value!=0){
-                          $nodata=1;
-                        echo '["'.$aa->data.'", '.$value.'],'.PHP_EOL;
-                        }
-
-                      }
-                      if(!$nodata)
-                      {
-                        echo "['No Data','1'],".PHP_EOL;
-                      }
-                      ?>
-                    ],
-                    type : 'donut',
-                    onclick: function (d, i) { console.log("onclick", d, i); },
-                    onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-                    onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-                },
-                donut: {
-                    title: "",
-                    width: 50
-                }
-            });
-
-            <?php }else {
-?>
-var c3chart_donut_id = '#analysistotalsaleleads';
-var chart = c3.generate({
-bindto: c3chart_donut_id,
-  data: {
-      columns: [
-        <?php
-        $nodata=0;
-        foreach ($lso as $key => $value){
-
-          $aa=$list->getSource2($key);
-          if($value!=0){
-            $nodata=1;
-          echo '["'.$aa->name.'", '.$value.'],'.PHP_EOL;
-          }
-
-        }
-        if(!$nodata)
-        {
-          echo "['No Data','1'],".PHP_EOL;
-        }
-        ?>
-      ],
-      type : 'donut',
-      onclick: function (d, i) { console.log("onclick", d, i); },
-      onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-      onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-  },
-  donut: {
-      title: "",
-      width: 60
-  }
-});
-
-
-var c3chart_donut_id = '#analysisinterest';
-var chart = c3.generate({
-bindto: c3chart_donut_id,
-  data: {
-      columns: [
-        <?php
-        $nodata=0;
-        foreach ($lso as $key => $value){
-
-          $aa=$list->getSource2($key);
-          if($value!=0){
-            $nodata=1;
-          echo '["'.$aa->name.'", '.$value.'],'.PHP_EOL;
-          }
-
-        }
-        if(!$nodata)
-        {
-          echo "['No Data','1'],".PHP_EOL;
-        }
-        ?>
-      ],
-      type : 'donut',
-      onclick: function (d, i) { console.log("onclick", d, i); },
-      onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-      onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-  },
-  donut: {
-      title: "",
-      width: 60
-  }
-});
-
-
-var c3chart_donut_id = '#analysissalesleadssource';
-var chart = c3.generate({
-bindto: c3chart_donut_id,
-  data: {
-      columns: [
-        <?php
-        $nodata=0;
-        foreach ($lso as $key => $value){
-
-          $aa=$list->getSource2($key);
-          if($value!=0){
-            $nodata=1;
-          echo '["'.$aa->name.'", '.$value.'],'.PHP_EOL;
-          }
-
-        }
-        if(!$nodata)
-        {
-          echo "['No Data','1'],".PHP_EOL;
-        }
-        ?>
-      ],
-      type : 'donut',
-      onclick: function (d, i) { console.log("onclick", d, i); },
-      onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-      onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-  },
-  donut: {
-      title: "",
-      width: 60
-  }
-});
-            <?php } ?>
-
-
-                               $(document).ready(function() {
-
-                                 $('#start_date,#end_date').on('change',function(){
-
-                                   var start=$('#start_date').val();
-                                   var end=$('#end_date').val();
-                                   var protocol = window.location.protocol;
-                                   var hostname = window.location.hostname;
-                                   var pathname = window.location.pathname;
-                                   var url=protocol+'//'+hostname+pathname+'?bystart='+start+'&byend='+end+'&filterbystart';
-                                   top.location.href = url;
-                                 });
-
-
-
-                                   function startChange() {
-                                       var startDate = start.value(),
-                                       endDate = end.value();
-
-                                       if (startDate) {
-                                           startDate = new Date(startDate);
-                                           startDate.setDate(startDate.getDate());
-                                           end.min(startDate);
-                                       } else if (endDate) {
-                                           start.max(new Date(endDate));
-                                       } else {
-                                           endDate = new Date();
-                                           start.max(endDate);
-                                           end.min(endDate);
-                                       }
-                                   }
-
-                                   function endChange() {
-                                       var endDate = end.value(),
-                                       startDate = start.value();
-
-                                       if (endDate) {
-                                           endDate = new Date(endDate);
-                                           endDate.setDate(endDate.getDate());
-                                           start.max(endDate);
-                                       } else if (startDate) {
-                                           end.min(new Date(startDate));
-                                       } else {
-                                           endDate = new Date();
-                                           start.max(endDate);
-                                           end.min(endDate);
-                                       }
-                                   }
-
-                                   var pastDate = new Date(2015,11,15);
-
-                                   var start = $("#start_date").kendoDatePicker({
-                                     format: "dd/MM/yyyy",
-                                     min: pastDate,
-                                       change: startChange
-                                   }).data("kendoDatePicker");
-
-                                   var end = $("#end_date").kendoDatePicker({
-                                     format: "dd/MM/yyyy",
-
-                                     min: pastDate,
-                                       change: endChange
-                                   }).data("kendoDatePicker");
-
-                                   start.max(end.value());
-                                   end.min(start.value());
-                               });
-                           </script>
-
-    </body>
-
-    </html>
+               </div>
+
+               <!-- MAIN MENU CONTAINER -->
+               <div class="main-menu-container">
+
+                   <div class=" clearfix">
+
+                     <!-- MAIN MENU -->
+                     <div id="main-menu">
+                       <div class="navbar navbar-default" role="navigation">
+
+                         <!-- MAIN MENU LIST -->
+                         <nav class="collapse collapsing navbar-collapse right-1024">
+                           <ul class="nav navbar-nav">
+
+                             <!-- MENU ITEM -->
+                             <li class="parent current">
+                               <a href="#" class="open-sub"><div class="main-menu-title">Home</div></a>
+                               <ul class="sub">
+                               <li class="parent">
+                                 <a class="current open-sub" href="#">Home</a>
+                                 <ul class="sub">
+                                 <li><a href="index.html">Home 1</a></li>
+                                 <li><a href="index2.html">Home 2</a></li>
+                                 <li><a href="index3.html">Home 3</a></li>
+                                 <li><a href="index4.html">Home 4</a></li>
+                                 <li><a href="index5.html">Home 5</a></li>
+                                 <li><a href="index6.html">Home 6</a></li>
+                                 <li><a class="current" href="index7.html">Home 7</a></li>
+                                 <li><a href="index8.html">Home 8</a></li>
+                                 <li><a href="index9.html">Home 9</a></li>
+                             <li><a href="index10.html">Home 10</a></li>
+                                 </ul>
+                               </li>
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Blog</a>
+                                 <ul class="sub">
+                                 <li><a href="index-blog.html">Blog Layout 1</a></li>
+                                 <li><a href="index-blog2.html">Blog Layout 2</a></li>
+                                 </ul>
+                               </li>
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Landing</a>
+                                 <ul class="sub">
+                                   <li><a href="index-landing.html">Landing 1</a></li>
+                                   <li><a href="index-landing2.html">Landing 2</a></li>
+                                   <li><a href="index-landing3.html">Landing 3</a></li>
+                                   <li><a href="index-landing-app.html">App Landing</a></li>
+                                 </ul>
+                               </li>
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Minimal Menu</a>
+                                 <ul class="sub">
+                                   <li><a href="index-side-menu.html">Side Menu</a></li>
+                                   <li><a href="index-full-screen-menu.html">Fullscreen Menu</a></li>
+                                 </ul>
+                               </li>
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Finance</a>
+                                 <ul class="sub">
+                                   <li><a href="index-finance.html">Finance</a></li>
+                                   <li><a href="index-finance2.html">Finance 2</a></li>
+                                 </ul>
+                               </li>
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Construction</a>
+                                 <ul class="sub">
+                                   <li><a href="index-construction.html">Construction</a></li>
+                                   <li><a href="index-construction2.html">Construction 2</a></li>
+                                 </ul>
+                               </li>
+                               <li><a href="index-portfolio.html">Portfolio</a></li>
+                               <li><a href="index-photo.html">Photo</a></li>
+                               <li><a href="index-shop.html">Shop</a></li>
+                               <li><a href="index-cars.html">Car Tuning</a></li>
+                               <li><a href="about-me.html">About Me</a></li>
+                               <li><a href="one-page-travel.html">Travel</a></li>
+                               <li><a href="index-magazine.html">Magazine</a></li>
+                               <li><a href="intro.html#one-pages">One Page</a></li>
+
+                               </ul>
+                             </li>
+
+                             <!-- MENU ITEM -->
+                             <li class="parent">
+                               <a href="#" class="open-sub"><div class="main-menu-title">Features</div></a>
+                               <ul class="sub">
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Headers</a>
+                                 <ul class="sub">
+                                   <li><a href="index7.html">Boxed</a></li>
+                               <li><a href="one-page-index8.html">Bottom</a></li>
+                                   <li><a href="index.html">Black Transp</a></li>
+                                   <li><a href="index-blog2.html">Black No Transp</a></li>
+                                   <li><a href="index2.html">White Transp</a></li>
+                                   <li><a href="index-blog.html">White No Transp</a></li>
+                                   <li><a href="index-shop.html">Shop</a></li>
+                                   <li><a href="index-photo.html">Side Menu</a></li>
+                                   <li><a href="index-side-menu.html">Min Menu</a></li>
+                                   <li><a href="index-full-screen-menu.html">Min Menu 2</a></li>
+
+                                   <li><a href="index-construction.html">Top Bar</a></li>
+                                   <li><a href="index-magazine.html">Magazine</a></li>
+                                 </ul>
+                               </li>
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Static Media</a>
+                                 <ul class="sub">
+                                   <li><a href="static-image.html">Image</a></li>
+                                   <li><a href="static-parallax.html">Parallax</a></li>
+                                   <li><a href="static-text-rotator.html">Text Rotator</a></li>
+                                   <li><a href="static-video.html">HTML5 Video</a></li>
+                                 </ul>
+                               </li>
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Revo Slider</a>
+                                 <ul class="sub">
+                                   <li><a href="index-fullwidth.html">Full-Width</a></li>
+                                   <li><a href="index-fullscreen.html">Full-Screen</a></li>
+                                   <li><a href="index-video.html">Video</a></li>
+                                   <li><a href="index-ken.html">Ken Burns</a></li>
+                                   <li><a href="revo-slider-demo/start-here.html">All Demo</a></li>
+                                 </ul>
+                               </li>
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Page Titles</a>
+                                 <ul class="sub">
+                                   <li><a href="page-title-small-grey.html">Small Grey</a></li>
+                                   <li><a href="page-title-small-white.html">Small White</a></li>
+                                   <li><a href="page-title-small-dark.html">Small Dark</a></li>
+                                   <li><a href="page-title-big-grey.html">Big Grey</a></li>
+                                   <li><a href="page-title-big-white.html">Big White</a></li>
+                                   <li><a href="page-title-big-dark.html">Big Dark</a></li>
+                                   <li><a href="page-title-big-img.html">Big Image</a></li>
+                                   <li><a href="page-title-large-img.html">Large Image</a></li>
+                                   <li><a href="page-title-large2.html">Large 2</a></li>
+                                   <li><a href="page-title-large3-img.html">Large 3 Image</a></li>
+                                   <li><a href="page-title-large4-center.html">Large 4 Center</a></li>
+                                   <li><a href="page-title-large5.html">Large 5</a></li>
+                                 </ul>
+                               </li>
+                               <li class="parent">
+                                 <a href="#" class="open-sub">Footers</a>
+                                 <ul class="sub">
+                                   <li><a href="index3.html#footer1">Footer 1</a></li>
+                                   <li><a href="index-landing-app.html#footer2">Footer 2</a></li>
+                                   <li><a href="about-me.html#footer3">Footer 3</a></li>
+                                   <li><a href="index2.html#footer4">Footer 4</a></li>
+                                   <li><a href="index-cars.html#footer5">Footer 5</a></li>
+                                   <li><a href="index-side-menu.html#footer6">Footer 6</a></li>
+                                   <li><a href="index.html#footer7">Footer 7</a></li>
+                                   <li><a href="404.html#footer8">Footer 8</a></li>
+                                   <li><a href="index-shop.html#footer9">Footer 9</a></li>
+                                 </ul>
+                               </li>
+
+                               </ul>
+                             </li>
+
+                             <!-- MEGA MENU ITEM -->
+                             <li class="parent megamenu">
+                               <a href="#" class="open-sub"><div class="main-menu-title">Elements</div></a>
+                               <ul class="sub">
+                               <li class="clearfix">
+
+                                 <div class="menu-sub-container">
+
+                                   <div class="box col-md-3 ">
+                                     <ul>
+                                       <li><a href="shortcodes.html#accordions"><div class="icon icon-basic-map"></div>Accordions</a></li>
+                                       <li><a href="shortcodes.html#alerts"><div class="icon icon-basic-exclamation"></div>Alerts</a></li>
+                                       <li><a href="animations.html"><div class="icon icon-basic-mixer2"></div> Animations</a></li>
+                                       <li><a href="typography.html#blockquotes"><div class="icon icon-basic-message-txt"></div>Blockquotes</a></li>
+                                       <li><a href="shortcodes.html#buttons"><div class="icon icon-basic-link"></div>Buttons</a></li>
+                                       <li><a href="shortcodes.html#carousels"><div class="icon icon-arrows-expand-horizontal1"></div>Carousels</a></li>
+                                       <li><a href="typography.html#code"><div class="icon icon-basic-webpage-txt"></div>Code</a></li>
+                                       <li><a href="shortcodes.html#counters-charts"><div class="icon icon-ecommerce-graph2"></div>Counters</a></li>
+                                     </ul>
+                                   </div>
+
+                                   <div class="box col-md-3">
+                                     <ul>
+                                       <li><a href="typography.html#dividers"><div class="icon icon-arrows-minus"></div>Dividers</a></li>
+                                       <li><a href="typography.html#dropcaps"><div class="icon icon-software-font-smallcaps"></div>Dropcaps</a></li>
+                                       <li><a href="shortcodes.html#flickr-link"><div class="icon icon-basic-webpage-multiple"></div>Flickr Feeds</a></li>
+                                       <li><a href="typography.html#heading"><div class="icon icon-arrows-drag-vert"></div>Headings</a></li>
+                                       <li><a href="typography.html#highlights"><div class="icon icon-ecommerce-sale"></div>Highlights</a></li>
+                                       <li><a href="icons.html"><div class="icon icon-basic-lightbulb"></div>Icons</a></li>
+                                       <li><a href="shortcodes.html#labels"><div class="icon icon-ecommerce-diamond"></div>Labels</a></li>
+                                       <li><a href="shortcodes.html#lightbox"><div class="icon icon-basic-webpage-multiple"></div>Lightbox</a></li>
+                                     </ul>
+                                   </div>
+
+                                   <div class="box col-md-3">
+                                     <ul>
+                                       <li><a href="typography.html#lists"><div class="icon icon-arrows-check"></div>Lists</a></li>
+                                       <li><a href="shortcodes.html#media"><div class="icon icon-music-play-button"></div>Media</a></li>
+                                       <li><a href="shortcodes.html#modals"><div class="icon icon-basic-webpage-img-txt"></div>Modals</a></li>
+                                       <li><a href="shortcodes.html#pagination"><div class="icon icon-arrows-stretch-horizontal1"></div>Pagination</a></li>
+                                       <li><a href="typography.html#popover"><div class="icon icon-arrows-keyboard-right"></div>Popover</a></li>
+                                       <li><a href="typography.html#pricing-tables"><div class="icon icon-basic-notebook"></div>Pricing Tables</a></li>
+                                       <li><a href="shortcodes.html#progress-bars"><div class="icon icon-basic-server2"></div>Progress Bars</a></li>
+                                       <li><a href="typography.html#tables"><div class="icon icon-arrows-squares"></div>Tables</a></li>
+                                     </ul>
+                                   </div>
+
+                                   <div class="box col-md-3 ">
+                                     <ul>
+                                       <li><a href="shortcodes.html#tabs"><div class="icon icon-basic-folder"></div>Tabs</a></li>
+                                       <li><a href="typography.html#testimonials"><div class="icon icon-arrows-keyboard-cmd-29"></div>Testimonials</a></li>
+                                       <li><a href="typography.html#cd-timeline"><div class="icon icon-arrows-drag-horiz"></div>Timeline</a></li>
+                                       <li><a href="shortcodes.html#toggles"><div class="icon icon-arrows-hamburger1"></div>Toggles</a></li>
+                                       <li><a href="typography.html#tooltips"><div class="icon icon-arrows-sign-right"></div>Tooltips</a></li>
+                                       <li><a href="shortcodes.html#twitter-link"><div class="icon icon-basic-world"></div>Twitter Feeds</a></li>
+                                     </ul>
+                                   </div>
+
+                                 </div>
+
+                               </li>
+                               </ul>
+                             </li>
+
+                             <!-- MENU ITEM -->
+                             <li class="parent">
+                               <a href="#" class="open-sub"><div class="main-menu-title">Portfolio</div></a>
+                               <ul class="sub">
+                                 <li><a href="index-portfolio.html">Home - Portfolio 1</a></li>
+                                 <li><a href="index-photo.html">Home - Portfolio 2</a></li>
+                                 <li><a href="portfolio-grid.html">Portfolio Grid</a></li>
+                                 <li class="parent">
+                                   <a href="#" class="open-sub">Boxed</a>
+                                   <ul class="sub">
+                                     <li><a href="portfolio-boxed-2col.html">2 Columns</a></li>
+                                     <li><a href="portfolio-boxed-3col.html">3 Columns</a></li>
+                                     <li><a href="portfolio-boxed-4col.html">4 Columns</a></li>
+                                     <li><a href="portfolio-boxed-5col.html">5 Columns</a></li>
+                                   </ul>
+                                 </li>
+                                 <li class="parent">
+                                   <a href="#" class="open-sub">Boxed bordered</a>
+                                   <ul class="sub">
+                                     <li><a href="portfolio-boxed-gut-2col.html">2 Columns</a></li>
+                                     <li><a href="portfolio-boxed-gut-3col.html">3 Columns</a></li>
+                                     <li><a href="portfolio-boxed-gut-4col.html">4 Columns</a></li>
+
+                                   </ul>
+                                 </li>
+                                 <li class="parent">
+                                   <a href="#" class="open-sub">Wide</a>
+                                   <ul class="sub">
+                                     <li><a href="portfolio-wide-2col.html">2 Columns</a></li>
+                                     <li><a href="portfolio-wide-3col.html">3 Columns</a></li>
+                                     <li><a href="portfolio-wide-4col.html">4 Columns</a></li>
+                                     <li><a href="portfolio-wide-5col.html">5 Columns</a></li>
+                                   </ul>
+                                 </li>
+                                 <li class="parent">
+                                   <a href="#" class="open-sub">Wide bordered</a>
+                                   <ul class="sub">
+                                     <li><a href="portfolio-wide-gut-2col.html">2 Columns</a></li>
+                                     <li><a href="portfolio-wide-gut-3col.html">3 Columns</a></li>
+                                     <li><a href="portfolio-wide-gut-4col.html">4 Columns</a></li>
+                                     <li><a href="portfolio-wide-gut-5col.html">5 Columns</a></li>
+                                   </ul>
+                                 </li>
+                                 <li class="parent">
+                                   <a href="#" class="open-sub">Masonry</a>
+                                   <ul class="sub">
+                                     <li><a href="portfolio-masonry-2col.html">2 Columns</a></li>
+                                     <li><a href="portfolio-masonry-3col.html">3 Columns</a></li>
+                                     <li><a href="portfolio-masonry-4col.html">4 Columns</a></li>
+
+                                   </ul>
+                                 </li>
+                                 <li class="parent">
+                                   <a href="#" class="open-sub">Portfolio Single</a>
+                                   <ul class="sub">
+                                     <li><a href="portfolio-single1.html">Single 1</a></li>
+                                     <li><a href="portfolio-single2.html">Single 2</a></li>
+                                     <li><a href="portfolio-single3.html">Single 3</a></li>
+                                     <li><a href="portfolio-single4.html">Single 4</a></li>
+                                   </ul>
+                                 </li>
+                               </ul>
+                             </li>
+
+                             <!-- MENU ITEM -->
+                             <li class="parent">
+                               <a href="#" class="open-sub"><div class="main-menu-title">Blog</div></a>
+                               <ul class="sub">
+                                 <li><a href="index-blog.html">Home - Blog 1</a></li>
+                                 <li><a href="index-blog2.html">Home - Blog 2</a></li>
+                                 <li class="parent">
+                                   <a href="#" class="open-sub">Blog Masonry</a>
+                                   <ul class="sub">
+                                     <li><a href="blog-masonry-2col.html">2 Columns</a></li>
+                                     <li><a href="blog-masonry-3col.html">3 Columns</a></li>
+                                     <li><a href="blog-masonry-4col.html">4 Columns</a></li>
+                                   </ul>
+                                 </li>
+                                 <li><a href="blog-full-width.html">Blog Full Width</a></li>
+                                 <li><a href="blog-small-image.html">Blog Small Image</a></li>
+                                 <li><a href="blog-left-sidebar.html">Blog Left Sidebar</a></li>
+                                 <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
+                                 <li class="parent">
+                                   <a href="#" class="open-sub">Blog Single</a>
+                                   <ul class="sub">
+                                   <li><a href="blog-single-disqus.html">Disqus Comments</a></li>
+                                   <li><a href="blog-single-facebook.html">Facebook Comment</a></li>
+                                   <li><a href="blog-single-sidebar-right.html">Right Sidebar</a></li>
+                                   <li><a href="blog-single-sidebar-left.html">Left Sidebar</a></li>
+                                   <li><a href="blog-single-fullwidth.html">Fullwidth</a></li>
+                                   <li><a href="blog-single-fullwidth2.html">Fullwidth 2</a></li>
+                                   </ul>
+                                 </li>
+                               </ul>
+                             </li>
+
+                             <!-- MENU ITEM -->
+                             <li class="parent">
+                               <a href="#" class="open-sub"><div class="main-menu-title">Shop</div></a>
+                               <ul class="sub">
+                                 <li><a href="index-shop.html">Home - Shop</a></li>
+                                 <li><a href="shop-2-col.html">2 Columns</a></li>
+                                 <li><a href="shop-3-col.html">3 Columns</a></li>
+                                 <li><a href="shop-4-col.html">4 Columns</a></li>
+                                 <li><a href="shop-single.html">Shop Single</a></li>
+                                 <li><a href="shop-shoping-cart.html">Shoping Cart</a></li>
+                             <li><a href="shop-checkout.html">Checkout</a></li>
+                               </ul>
+                             </li>
+
+                             <!-- MEGA MENU ITEM -->
+                             <li class="parent megamenu">
+                               <a href="#" class="open-sub"><div class="main-menu-title">Pages</div></a>
+                               <ul class="sub">
+                                 <li>
+
+                                   <div class="menu-sub-container">
+
+                                     <div class="box col-md-3 nofloat closed">
+                                       <h5 class="title open-sub">Pages 01</h5>
+                                       <ul>
+                                         <li><a href="typography.html">Typography</a></li>
+                                         <li><a href="grid-system.html">Grid System</a></li>
+                                         <li><a href="services.html">Services</a></li>
+                                         <li><a href="services2.html">Services 2</a></li>
+                                     <li><a href="login.html">Login / Register</a></li>
+                                       </ul>
+                                     </div>
+
+                                     <div class="box col-md-3 nofloat closed">
+                                       <h5 class="title open-sub">Pages 02</h5>
+                                       <ul>
+                                         <li><a href="coming-soon.html">Coming Soon</a></li>
+                                         <li><a href="coming-soon2.html">Coming Soon 2</a></li>
+                                         <li><a href="404.html">404 Error</a></li>
+                                         <li><a href="maintenance-page.html">Maintenance Page</a></li>
+                                       </ul>
+                                     </div>
+
+                                     <div class="box col-md-3 nofloat closed">
+                                       <h5 class="title open-sub">Pages 03</h5>
+                                       <ul>
+                                         <li><a href="about-us.html">About Us</a></li>
+                                         <li><a href="about-us-2.html">About Us 2</a></li>
+                                         <li><a href="about-me.html">About Me</a></li>
+                                         <li><a href="team.html">Team</a></li>
+                                     <li><a href="loaders.html">Loaders</a></li>
+                                       </ul>
+                                     </div>
+
+                                     <div class="box col-md-3 nofloat closed">
+                                       <h5 class="title open-sub">Pages 04</h5>
+                                       <ul>
+                                         <li><a href="faq.html">FAQ</a></li>
+                                         <li><a href="layout-full-width.html">Layout Full Width</a></li>
+                                         <li><a href="layout-left-sidebar.html">Layout Left Sidebar</a></li>
+                                         <li><a href="layout-right-sidebar.html">Layout Right Sidebar</a></li>
+                                       </ul>
+                                     </div>
+
+                                   </div>
+
+                                 </li>
+                               </ul>
+                             </li>
+
+                             <!-- MENU ITEM -->
+                             <li id="menu-contact-info-big" class="parent megamenu">
+                               <a href="#" class="open-sub"><div class="main-menu-title">Contact</div></a>
+                               <ul class="sub">
+                                 <li class="clearfix" >
+                                   <div class="menu-sub-container">
+
+                                     <div class="box col-md-3 menu-demo-info closed">
+                                       <h5 class="title open-sub">Contact Pages</h5>
+                                       <ul>
+                                       <li><a href="contact.html">Contact Version 1</a></li>
+                                       <li><a href="contact2.html">Contact Version 2</a></li>
+                                       </ul>
+                                     </div>
+
+                                     <div class="col-md-3 menu-contact-info">
+                                       <ul class="contact-list">
+                                         <li class="contact-loc clearfix">
+                                           <div class="loc-icon-container">
+                                             <div class="icon icon-basic-map main-menu-contact-icon"></div>
+                                           </div>
+                                           <div class="menu-contact-text-container">555 California str, 100</div>
+                                         </li>
+                                         <li class="contact-phone clearfix">
+                                           <div class="loc-icon-container">
+                                             <div class="icon icon-basic-smartphone main-menu-contact-icon"></div>
+                                           </div>
+                                           <div class="menu-contact-text-container">1-80-100-10, 1-80-300-10</div>
+                                         </li>
+                                         <li class="contact-mail clearfix" >
+                                           <div class="loc-icon-container">
+                                             <div class="icon icon-basic-mail main-menu-contact-icon"></div>
+                                           </div>
+                                           <div class="menu-contact-text-container">
+                                             <a class="a-mail" href="mailto:info@haswell.com">info@haswell.com</a>
+                                           </div>
+                                         </li>
+                                       </ul>
+                                     </div>
+
+                                     <div class="col-md-6 menu-map-container hide-max-960 ">
+                                       <!-- Google Maps -->
+                                       <div class="google-map-container">
+                                         <img src="images/map-line.png" alt="alt">
+                                       </div>
+                                       <!-- Google Maps / End -->
+                                     </div>
+
+                                   </div>
+                                 </li>
+                               </ul>
+                             </li>
+
+                           </ul>
+
+                         </nav>
+
+                       </div>
+                     </div>
+                     <!-- END main-menu -->
+
+                   </div>
+                   <!-- END container-m-30 -->
+
+               </div>
+               <!-- END main-menu-container -->
+
+               <!-- SEARCH READ DOCUMENTATION -->
+               <ul class="cd-header-buttons">
+                 <li><a class="cd-search-trigger" href="#cd-search"><span></span></a></li>
+               </ul> <!-- cd-header-buttons -->
+               <div id="cd-search" class="cd-search">
+                 <form class="form-search" id="searchForm" action="page-search-results.html" method="get">
+                   <input type="text" value="" name="q" id="q" placeholder="Search...">
+                 </form>
+               </div>
+
+             </div><!-- END container -->
+
+           </div>
+           <!-- END header-wrapper -->
+ 				</header>
+
+         <!-- SLIDER Revo Hero 4 -->
+         <div class="relative">
+
+             <div class="rev_slider_wrapper fullwidthbanner-container" id="rev_slider_280_1_wrapper" style="margin:0px auto;background-color:#101010;padding:0px;margin-top:0px;margin-bottom:0px;">
+                 <!-- START REVOLUTION SLIDER 5.1.4 fullwidth mode -->
+                 <div class="rev_slider fullwidthabanner" data-version="5.1.4" id="rev_slider_280_1" style="display:none;">
+                     <ul>
+
+                         <!-- SLIDE  -->
+                         <li data-index="rs-673" data-transition="zoomout" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="images/revo-slider/constr2-180x110.jpg" data-rotate="0" data-saveperformance="off" data-title="CONSTRUCT WORKS" data-description="">
+                             <!-- MAIN IMAGE -->
+                             <img src="images/revo-slider/index-fullwidth.jpg" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
+                             <!-- LAYERS -->
+
+                             <!-- LAYER NR. 1 -->
+                             <div class="tp-caption font-poppins font-white tp-resizeme rs-parallaxlevel-6" id="slide-8981-layer-1" style="z-index: 8; white-space: nowrap;"
+                             data-fontsize="['20','24','24','24']"
+                             data-fontweight="400"
+                             data-height="none"
+                             data-lineheight="['74','74','74','74']"
+                             data-responsive_offset="on"
+                             data-splitin="none"
+                             data-splitout="none"
+                             data-start="350"
+                             data-transform_idle="o:1;"
+
+ 									 data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:1500;e:Power4.easeInOut;"
+ 									 data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+ 									 data-mask_in="x:0px;y:[100%];s:inherit;e:inherit;"
+ 									 data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;"
+                             data-whitespace="nowrap"
+                             data-width="none"
+                             data-x="['center','center','center','center']"
+                             data-hoffset="['0','0','0',0']"
+                             data-y="['center','center','center','center']"
+                             data-voffset="['-70','-90','-70','-55']">
+                               One & Multi Page Template
+                             </div>
+
+                             <!-- LAYER NR. 2 -->
+                             <div class="tp-caption font-poppins font-white tp-resizeme rs-parallaxlevel-6" id="slide-8981-layer-2" style="z-index: 8; white-space: nowrap;"
+                             data-fontsize="['70','50','80','50']"
+                             data-fontweight="600"
+                             data-height="none"
+                             data-lineheight="['120','130','110','95']"
+                             data-responsive_offset="on"
+                             data-splitin="none"
+                             data-splitout="none"
+                             data-start="550"
+                             data-transform_idle="o:1;"
+
+ 									 data-transform_in="z:0;rX:0deg;rY:0;rZ:0;sX:1.5;sY:1.5;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;"
+ 									 data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+ 									 data-mask_in="x:0px;y:0px;"
+ 									 data-mask_out="x:inherit;y:inherit;"
+                             data-whitespace="nowrap"
+                             data-width="none"
+                             data-x="['center','center','center','center']"
+                             data-hoffset="['0','0','0',0']"
+                             data-y="['center','center','center','center']"
+                             data-voffset="['0','0','0',0']">
+                               CREATIVE STUDIO
+                             </div>
+
+                             <!-- LAYER NR. 3 -->
+                             <div class="tp-caption rs-parallaxlevel-6"
+                                id="slide-1291-layer-3"
+                                data-x="['center','center','center','center']"
+                                data-hoffset="['0','0','0','0']"
+                                data-y="['center','center','center','center']"
+                                data-voffset="['90','120','100',80']"
+                               data-width="none"
+                               data-height="none"
+                               data-whitespace="nowrap"
+                               data-transform_idle="o:1;"
+ 										data-transform_hover="o:1;rX:0;rY:0;rZ:0;z:0;s:300;e:Power1.easeInOut;"
+ 										data-style_hover="c:rgba(255, 255, 255, 1.00);bc:rgba(255, 255, 255, 1.00);cursor:pointer;"
+
+ 									 data-transform_in="y:50px;opacity:0;s:1500;e:Power4.easeInOut;"
+ 									 data-transform_out="y:[175%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+ 									 data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;"
+                               data-start="1000"
+                               data-splitin="none"
+                               data-splitout="none"
+                               data-responsive_offset="on"
+                               data-responsive="off"
+
+                               style="z-index: 8; white-space: nowrap;outline:none;"><a class="tp-button1 button medium full-rounded hover-dark white " href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel">PURCHASE</a><a class="tp-button1 button medium full-rounded thin  white ml-20" href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel">READ MORE</a>
+                             </div>
+
+                         </li>
+
+                     </ul>
+                     <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
+                 </div>
+             </div>
+             <!-- END REVOLUTION SLIDER -->
+
+         </div>
+ 				<!-- FEATURES 1 -->
+ 				<div id="about" class="page-section">
+ 					<div class="container fes1-cont pb-0">
+ 						<div class="row">
+
+ 							<div class="col-md-8">
+
+                 <div class="row">
+                   <div class="col-md-12">
+                     <div class="fes1-main-title-cont wow fadeInDown">
+                       <div class="fes1-title-50 font-poppins">
+                         <strong>We are<br>creative</strong>
+                       </div>
+                     </div>
+                   </div>
+ 								</div>
+
+                 <div class="row">
+
+                   <div class="col-md-6 col-sm-6">
+                     <div class="fes1-box wow fadeIn" >
+                       <div class="fes1-box-icon">
+                         <div class="icon icon-basic-mixer2"></div>
+                       </div>
+                       <h3>Fully Responsive</h3>
+
+                     </div>
+                   </div>
+
+                   <div class="col-md-6 col-sm-6">
+                     <div class="fes1-box wow fadeIn" data-wow-delay="200ms">
+                       <div class="fes1-box-icon">
+                         <div class="icon icon-basic-lightbulb"></div>
+                       </div>
+                       <h3>Retina Ready</h3>
+
+                     </div>
+                   </div>
+
+                 </div>
+
+                 <div class="row">
+
+                   <div class="col-md-6 col-sm-6">
+                     <div class="fes1-box wow fadeIn" data-wow-delay="400ms">
+                       <div class="fes1-box-icon">
+                         <div class="icon icon-basic-helm"></div>
+                       </div>
+                       <h3>Unique Design</h3>
+
+                     </div>
+                   </div>
+
+                   <div class="col-md-6 col-sm-6">
+                     <div class="fes1-box wow fadeIn"  data-wow-delay="600ms">
+                       <div class="fes1-box-icon">
+                         <div class="icon icon-basic-settings"></div>
+                       </div>
+                       <h3>Easy To Customize</h3>
+
+                     </div>
+                   </div>
+
+                 </div>
+
+ 							</div>
+
+
+ 							<div class="col-md-4 mt-30 fes1-img-cont wow fadeInUp">
+ 								<img src="images/fes11-2.jpg" alt="img" >
+ 							</div>
+
+             </div>
+ 					</div>
+ 				</div>
+
+         <!-- FEATURES 12 HALF COLORED -->
+ 				<div class="page-section">
+ 					<div class="container-fluid">
+ 						<div data-equal=".equal-height" class="row row-sm-fix">
+
+ 							<div class="col-md-6 fes12-img equal-height" style="background-image: url(images/fes12-1.jpg)">
+                 <div class="fes2-main-text-cont text-white">
+                   <div class="fes2-title-45 font-poppins text-white">
+                     <strong>Optimized for<br>mobile</strong>
+                   </div>
+                   <div class="fes2-text-cont">Sed ut perspiciatis unde omnis iste nat eror acus antium que. Asperiores, ea velit enim labore doloribus.</div>
+                   <div class="fes12-btn-cont mt-30">
+                   	<a class="button medium white rounded thin btn-4 btn-4cc" href="#"><span class="button-text-anim">READ MORE</span><span aria-hidden="true" class="button-icon-anim arrow_right"></span></a>
+                   </div>
+                 </div>
+ 							</div>
+
+ 							<div class="col-md-6 fes12-img equal-height" style="background-image: url(images/fes12-2.jpg)">
+                 <div class="fes2-main-text-cont text-black">
+                   <div class="fes2-title-45 font-poppins">
+                     <strong>Powerful<br>Performance</strong>
+                   </div>
+
+                   <div class="fes2-text-cont">Sed ut perspiciatis unde omnis iste nat eror acus antium que. Asperiores, ea velit enim labore doloribus.</div>
+                   <div class="fes12-btn-cont mt-30">
+                   	<a class="button medium rounded thin gray btn-4 btn-4cc" href="#"><span class="button-text-anim">READ MORE</span><span aria-hidden="true" class="button-icon-anim arrow_right"></span></a>
+                   </div>
+                 </div>
+ 							</div>
+
+ 						</div>
+ 					</div>
+ 				</div>
+
+ 				<!-- FEATURES 17 OUR SERVICES 2 -->
+ 				<div class="page-section pt-160-b-120-cont">
+ 					<div class="container">
+             <div class="row">
+
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-ecommerce-graph-increase"></div>
+ 								  	</div>
+ 								  	<h3><strong>Marketing</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="200ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-settings"></div>
+ 								  	</div>
+ 								  	<h3><strong>Development</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="400ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-share"></div>
+ 								  	</div>
+ 								  	<h3><strong>Production</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+
+ 						</div>
+ 						<div class="row">
+
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="600ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-target"></div>
+ 								  	</div>
+ 								  	<h3><strong>Branding</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="800ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-globe"></div>
+ 								  	</div>
+ 								  	<h3><strong>Web Design</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="1000ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-picture"></div>
+ 								  	</div>
+ 								  	<h3><strong>Photography</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+
+             </div>
+ 					</div>
+ 				</div>
+
+ 				<!-- WORK PROCESS 2 -->
+ 				<div class="container-fluid p-110-cont bg-gray">
+ 					<div class="row">
+
+             <div class="col-lg-3 col-md-6 col-sm-6">
+               <div class="work-proc2-cont wow fadeIn"  >
+                 <div class="work-proc2-icon-cont pos-l-12">
+                   01
+                 </div>
+                 <h3><strong>Planning</strong></h3>
+                 <p>Maecenas luctus nisi in sem fermen blandit. In nec elit </p>
+               </div>
+             </div>
+
+             <div class="col-lg-3 col-md-6 col-sm-6">
+               <div class="work-proc2-cont wow fadeIn" data-wow-delay="200ms">
+                 <div class="work-proc2-icon-cont">
+                   02
+                 </div>
+                 <h3><strong>Developmen</strong></h3>
+                 <p>Maecenas luctus nisi in sem fermen blandit. In nec elit </p>
+               </div>
+             </div>
+
+             <div class="col-lg-3 col-md-6 col-sm-6">
+               <div class="work-proc2-cont wow fadeIn" data-wow-delay="400ms">
+                 <div class="work-proc2-icon-cont">
+                   03
+                 </div>
+                 <h3><strong>Launch</strong></h3>
+                 <p>Maecenas luctus nisi in sem fermen blandit. In nec elit </p>
+               </div>
+             </div>
+
+             <div class="col-lg-3 col-md-6 col-sm-6">
+               <div class="work-proc2-a-cont wow fadeIn" data-wow-delay="600ms">
+                 <a class="work-proc2-a" href="#">
+                   <div class="work-proc2-a-text">
+                     Let's work<br><span class="border-bot">together</span>
+                   </div>
+                   <div class="work-proc2-bg-block"></div>
+                 </a>
+               </div>
+             </div>
+
+           </div>
+ 				</div>
+
+         <!-- TESTIMONIALS CAROUSEL 3 -->
+         <div class="pt-110-b-80-cont pb-md-80 owl-plugin fullwidth-slider" >
+
+           <!-- Slide Item -->
+           <div class="container">
+             <div class="relative">
+               <div class="row">
+
+                 <div class="col-md-3">
+                   <div class="ts3-author-cont">
+                     <div class="ts3-author-img">
+                       <img class="img-circle" src="images/testimonials/ts-author.jpg" alt="photo" >
+                     </div>
+                     <div class="ts-author-info text-center">
+                       <div class="ts-name">
+                         <strong>Amanda Eniston</strong>
+                       </div>
+                       <div class="ts-type">Doodle inc.</div>
+                     </div>
+
+                   </div>
+                 </div>
+
+                 <div class="col-md-9">
+                   <blockquote class="testimonial-3">
+                     <p>Nunc nec dictum purus. Nam porttitor molestie dolor nec lacinia. Donec placerat magna erat, non eleifend neque convallis at. Morbi felis sem, molestie, blandit ac quam. Fusce aliquet, est at rhoncus aliquam vehicu.</p>
+                   </blockquote>
+                 </div>
+
+               </div>
+             </div>
+           </div>
+
+           <!-- Slide Item -->
+           <div class="container">
+             <div class="relative">
+               <div class="row">
+
+                 <div class="col-md-3">
+                   <div class="ts3-author-cont">
+                     <div class="ts3-author-img">
+                       <img class="img-circle" src="images/testimonials/ts-author2.jpg" alt="photo" >
+                     </div>
+                     <div class="ts-author-info text-center">
+                       <div class="ts-name">
+                         <strong>Colin Little</strong>
+                       </div>
+                       <div class="ts-type">CEO, Pixate</div>
+                     </div>
+
+                   </div>
+                 </div>
+
+                 <div class="col-md-9">
+                   <blockquote class="testimonial-3">
+                     <p>Donec euismod vulputate augue, ac sagittis lacus lobortis id. Donec varius velit eget interdum semper. Mauris quis nunc eget blandit ac quam elit finibus semper eu non tellus. Donec at eros sed ante. </p>
+                   </blockquote>
+                 </div>
+
+               </div>
+             </div>
+           </div>
+
+           <!-- Slide Item -->
+           <div class="container">
+             <div class="relative">
+               <div class="row">
+
+                 <div class="col-md-3">
+                   <div class="ts3-author-cont">
+                     <div class="ts3-author-img">
+                       <img class="img-circle" src="images/testimonials/ts-author4.jpg" alt="photo" >
+                     </div>
+                     <div class="ts-author-info text-center">
+                       <div class="ts-name">
+                         <strong>Robert Jackson</strong>
+                       </div>
+                       <div class="ts-type">Founder, Drillbox</div>
+                     </div>
+
+                   </div>
+                 </div>
+
+                 <div class="col-md-9">
+                   <blockquote class="testimonial-3">
+                     <p>Etiam vestibulum risus et suscipit finibus. Morbi vitae ligula eget sem dignissim iaculis. Mauris blandit ac quam vitae velit quis arcu mollis pellentesque nec non magna. Pellentesque feu  turpis quis bibendum</p>
+                   </blockquote>
+                 </div>
+
+               </div>
+             </div>
+           </div>
+
+         </div>
+
+         <!-- CLIENTS 2 -->
+         <div class="page-section p-80-cont bg-gray">
+ 					<div class="container">
+
+             <div class="row">
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/2-9.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/3.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/5.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/4.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/8.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/2.png">
+               </div>
+
+             </div>
+
+           </div>
+ 				</div>
+
+         <!-- BLOG SECTION 3 FONT MONTSERRAT -->
+         <div class="page-section blog-sect3">
+           <div class="container p-140-cont">
+
+             <!-- TITLE -->
+           	<div class="row">
+           		<div class="col-md-12">
+           			<h2 class="section-title2 text-center mb-45 p-0"><strong>Latest News</strong></h2>
+           		</div>
+           	</div>
+
+             <!-- BG GRAY -->
+             <div class="bg-gray clearfix">
+
+             	<!-- BLOG ROW -->
+               <div class="row">
+
+                 <div class="col-md-6 pr-0">
+             			<div class="post2-prev-img">
+                     <a href="blog-single-sidebar-right.html"><img src="images/blog/blog-sect3-post-anim.gif" alt="img"></a>
+                   </div>
+            			</div>
+
+               	<div class="col-md-6 pl-0">
+             			<div class="blog-sect3-text-cont">
+             			<div class="pos-v-center">
+             				<div class="post2-prev-title">
+                       <h3><a href="blog-single-sidebar-right.html">User Experience Design Best sources</a></h3>
+                     </div>
+             				<div class="post-prev-info">
+                       Jule 21, 2016<span class="slash-divider">/</span><a href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel">Michael Doe</a>
+                     </div>
+             			</div>
+             			</div>
+             		</div>
+
+               </div>
+
+               <!-- BLOG ROW -->
+               <div class="row">
+
+                 <div class="col-md-6 pos-l-md-50pc pl-0">
+             			<div class="post2-prev-img">
+                     <a href="blog-single-sidebar-right.html"><img src="images/blog/blog-sect3-post-1.jpg" alt="img"></a>
+                   </div>
+            			</div>
+
+               	<div class="col-md-6 pos-r-md-50pc pr-0">
+             			<div class="blog-sect3-text-cont">
+                     <div class="pos-v-center">
+                       <div class="post2-prev-title">
+                         <h3><a href="blog-single-sidebar-right.html">Modern minimalism is the right choice</a></h3>
+                       </div>
+                       <div class="post-prev-info">
+                         Jule 21, 2016<span class="slash-divider">/</span><a href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel">Michael Doe</a>
+                       </div>
+                     </div>
+             			</div>
+             		</div>
+
+               </div>
+
+             </div>
+
+             <!-- VIEW ALL -->
+           	<div class="row">
+           		<div class="col-md-12 blog-sect3-view-all-cont">
+           			<a href="blog-single-sidebar-right.html" class="font-poppins"><strong>view all news</strong></a>
+           		</div>
+           	</div>
+
+           </div>
+         </div>
+
+         <!-- NEWS LETTER -->
+         <div class="page-section nl-cont">
+           <div class="container">
+             <div class="col-sm-8">
+             	<h2 class="section-title2 font-light pr-0 nl-title">Newsletter</h2>
+             </div>
+             <div class="col-sm-4">
+             	<div class="relative" >
+             	  <div id="mc_embed_signup" class="nl-form-container clearfix">
+             	    <form action="http://abcgomel.us9.list-manage.com/subscribe/post-json?u=ba37086d08bdc9f56f3592af0&amp;id=e38247f7cc&amp;c=?" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="newsletterform validate" target="_blank" novalidate>   <!-- EDIT THIS ACTION URL (add "post-json?u" instead of "post?u" and appended "&amp;c=?" to the end of this URL) -->
+             	      <input type="email" value="" name="EMAIL" class="email nl-email-input" id="mce-EMAIL" placeholder="Email address" required>
+             	      <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+             	      <div style="position: absolute; left: -5000px;"><input type="text" name="b_ba37086d08bdc9f56f3592af0_e38247f7cc" tabindex="-1" value=""></div>
+
+             	      <button id="mc-embedded-subscribe" class="nl2-btn" type="submit" name="subscribe">
+             	            <span class="icon icon-arrows-slim-right"></span>
+             	          </button>
+             	    </form>
+             	    <div id="notification_container"  ></div>
+             	  </div>
+             	</div>
+             </div>
+           </div>
+         </div>
+
+         <!-- FOOTER 4 BLACK WITH TWITTER FEED -->
+         <footer id="footer4" class="page-section pt-95 pb-50 footer2-black">
+           <div class="container">
+             <div class="row">
+
+               <div class="col-md-3 col-sm-3 widget">
+                 <div class="logo-footer-cont">
+                   <a href="index.html">
+                     <img class="logo-footer" src="images/logo-footer-white.png" alt="logo">
+                   </a>
+                 </div>
+                 <div class="footer2-text-cont">
+                   <address>
+                     555 California str, Suite 100<br>
+                     San&nbsp;Francisco, CA 94107
+                   </address>
+                 </div>
+                 <div class="footer2-text-cont">
+                   1-800-312-2121<br>
+                   <a class="a-text" href="mailto:info@haswell.com">info@elementy.com</a>
+                 </div>
+                 <div class="footer2-text-cont a-text-main-cont">
+                   <a class="popup-gmaps mfp-plugin font-poppins" href="https://maps.google.com/maps?q=555+California+Street+Building,+California+Street,+San+Francisco,&amp;hl=en&amp;t=v&amp;hnear=555+California+Street+Building,+California+Street,+San+Francisco">Open Map</a>
+                 </div>
+               </div>
+
+               <div class="col-md-2 col-sm-2 widget">
+                 <h4>Navigate</h4>
+                 <ul class="links-list a-text-cont a-text-main-cont font-poppins">
+                   <li><a href="index.html">Home</a></li>
+                   <li><a href="shortcodes.html">Shortcodes</a></li>
+                   <li><a href="services.html">Services</a></li>
+                   <li><a href="index-portfolio.html">Portfolio</a></li>
+                   <li><a href="index-blog.html">Blog</a></li>
+                   <li><a href="index-shop.html">Shop</a></li>
+                   <li><a href="intro.html">Pages</a></li>
+                 </ul>
+               </div>
+
+               <div class="col-md-3 col-sm-3 widget">
+                 <h4>Insights</h4>
+                 <ul class="links-list a-text-cont font-poppins" >
+                   <li><a href="about-us.html">Company</a></li>
+                   <li><a href="services.html">What We Do</a></li>
+                   <li><a href="https://help.market.envato.com/hc/en-us">Help Center</a></li>
+                   <li><a href="http://themeforest.net/legal/market">Terms of Service</a></li>
+                   <li><a href="contact.html">Contact</a></li>
+                 </ul>
+               </div>
+
+               <!-- TWITTER FEEDS -->
+               <div class="col-md-4 col-sm-4 widget">
+                 <h4>Recent Tweets</h4>
+                 <div id="twitter-feeds"></div>
+               </div>
+
+             </div>
+
+             <!-- SUB FOOTER -->
+             <div class="footer2-copy-cont clearfix">
+               <!-- Social Links -->
+               <div class="footer2-soc-a right">
+                 <a href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                 <a href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+                 <a href="https://www.behance.net/abcgomel" title="Behance" target="_blank"><i class="fa fa-behance"></i></a>
+                 <a href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel" title="LinkedIn+" target="_blank"><i class="fa fa-linkedin"></i></a>
+                 <a href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel" title="Dribbble" target="_blank"><i class="fa fa-dribbble"></i></a>
+               </div>
+
+               <!-- Copyright -->
+               <div class="left">
+                 <a class="footer2-copy" href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel" target="_blank">&copy; elementy</a>
+               </div>
+
+             </div>
+
+           </div>
+         </footer>
+
+ 				<!-- BACK TO TOP -->
+ 				<!-- BACK TO TOP -->
+ 				<p id="back-top">
+           <a href="#top" title="Back to Top"><span class="icon icon-arrows-up"></span></a>
+         </p>
+
+ 			</div><!-- End BG -->
+ 		</div><!-- End wrap -->
+  </div>
+
+ <!-- JS begin -->
+
+ 		<!-- jQuery  -->
+ 		<script type="text/javascript" src="<?php echo FRONTJS;?>jquery.min.js"></script>
+
+ 		<!-- Include all compiled plugins (below), or include individual files as needed -->
+     <script src="<?php echo FRONTJS;?>bootstrap.min.js"></script>
+
+ 		<!-- MAGNIFIC POPUP -->
+ 		<script src='<?php echo FRONTJS;?>jquery.magnific-popup.min.js'></script>
+
+     <!-- PORTFOLIO SCRIPTS -->
+     <script type="text/javascript" src="<?php echo FRONTJS;?>isotope.pkgd.min.js"></script>
+     <script type="text/javascript" src="<?php echo FRONTJS;?>imagesloaded.pkgd.min.js"></script>
+     <script type="text/javascript" src="<?php echo FRONTJS;?>masonry.pkgd.min.js"></script>
+
+     <!-- APPEAR -->
+     <script type="text/javascript" src="<?php echo FRONTJS;?>jquery.appear.js"></script>
+
+     <!-- OWL CAROUSEL -->
+     <script type="text/javascript" src="<?php echo FRONTJS;?>owl.carousel.min.js"></script>
+
+     <!-- JQUERY TWEETS -->
+ 		<script src="<?php echo FRONTJS;?>twitter/jquery.tweet.js"></script>
+
+     <!-- MAIN SCRIPT -->
+ 		<script src="<?php echo FRONTJS;?>main.js"></script>
+
+ 		<!-- REVOSLIDER SCRIPTS  -->
+     <script src="revo-slider/js/jquery.themepunch.tools.min.js" type="text/javascript">
+     </script>
+     <script src="revo-slider/js/jquery.themepunch.revolution.min.js" type="text/javascript">
+     </script>
+
+     <!-- SLIDER REVOLUTION 5.0 EXTENSIONS
+       (Load Extensions only on Local File Systems !
+       The following part can be removed on Server for On Demand Loading) -->
+     <script src="revo-slider/js/extensions/revolution.extension.actions.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.carousel.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.kenburn.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.layeranimation.min.js" type="text/javascript">
+     </script>
+     <script src="revo-slider/js/extensions/revolution.extension.migration.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.navigation.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.parallax.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.slideanims.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.video.min.js" type="text/javascript"></script>
+
+     <!-- SLIDER REVOLUTION INITIALIZATION  -->
+     <script type="text/javascript">
+       jQuery(document).ready(function() {
+
+         jQuery("#rev_slider_280_1").show().revolution({
+           sliderType: "hero",
+           jsFileLocation: "revo-slider/js/",
+           sliderLayout: "fullwidth",
+           dottedOverlay: "none",
+           delay: 9000,
+           responsiveLevels: [1240, 1024, 778, 480],
+           visibilityLevels: [1240, 1024, 778, 480],
+           gridwidth: [1240, 1024, 778, 480],
+           gridheight: [610, 550, 550, 550],
+           lazyType: "none",
+           parallax: {
+             type: "off",
+             origo: "slidercenter",
+             speed: 1000,
+             levels: [0],
+             type: "scroll",
+             disable_onmobile: "on"
+           },
+           shadow: 0,
+           spinner: "spinner2",
+           autoHeight: "off",
+           fullScreenAutoWidth: "off",
+           fullScreenAlignForce: "off",
+           fullScreenOffsetContainer: "",
+           fullScreenOffset: "",
+           disableProgressBar: "on",
+           hideThumbsOnMobile: "off",
+           hideSliderAtLimit: 0,
+           hideCaptionAtLimit: 0,
+           hideAllCaptionAtLilmit: 0,
+           debugMode: false,
+           fallbacks: {
+             simplifyAll: "off",
+             disableFocusListener: false,
+           }
+         });
+
+       }); /*ready*/
+     </script>
+
+ <!-- JS end -->
+
+ 	</body>
+ </html>
+ <?php
+  //include 'fefooter.php';
+  ?>

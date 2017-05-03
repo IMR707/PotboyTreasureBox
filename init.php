@@ -61,16 +61,22 @@ define("ADMINURL", $site_url . "/admin");
 define("UPLOADS", BASEPATH . "uploads/");
 
 define("FRONTASSETSURL", "frontend/");
+define("FRONTREVO", FRONTASSETSURL . "revo-slider/");
 define("FRONTCSS", FRONTASSETSURL . "css/");
 define("FRONTJS", FRONTASSETSURL . "js/");
 define("FRONTIMAGE", FRONTASSETSURL . "img/");
 define("FRONTICON", FRONTASSETSURL . "icons/");
-pre($_SERVER);
+//pre($_SERVER);
 define("BACKASSETSURL", "backend/");
 define("BACKCSS", BACKASSETSURL . "css/");
 define("BACKJS", BACKASSETSURL . "js/");
 define("BACKIMAGE", BACKASSETSURL . "img/");
 define("BACKICON", BACKASSETSURL . "icons/");
+
+define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
+
+
+
 
 
 define("UPLOADURL", SITEURL . "/uploads/");

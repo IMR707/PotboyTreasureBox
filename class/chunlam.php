@@ -19,4 +19,12 @@ class ChunLam
     {
       pre($value);
     }
+
+
+    public function CustgetLeads($id)
+    {
+      return "$id test";
+    }
+
+
 }
