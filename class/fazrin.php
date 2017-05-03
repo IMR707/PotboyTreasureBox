@@ -10,20 +10,13 @@ use Httpful\Request;
 class Fazrin
 {
     const lTable = 'leads';
-
-
-
     private static $db;
     public function __construct()
     {
         self::$db = Registry::get('Database');
     }
-
     public function test($value)
     {
       pre($value);
     }
-
-
-
 }
