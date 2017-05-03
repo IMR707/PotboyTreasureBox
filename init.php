@@ -65,7 +65,7 @@ define("FRONTCSS", FRONTASSETSURL . "css/");
 define("FRONTJS", FRONTASSETSURL . "js/");
 define("FRONTIMAGE", FRONTASSETSURL . "img/");
 define("FRONTICON", FRONTASSETSURL . "icons/");
-
+pre($_SERVER);
 define("BACKASSETSURL", "backend/");
 define("BACKCSS", BACKASSETSURL . "css/");
 define("BACKJS", BACKASSETSURL . "js/");
