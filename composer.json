@@ -1,0 +1,23 @@
+{
+	"description": "Potboy Treasure box",
+	"name": "cloonegit/PotboyTreasureBox",
+	"type": "project",
+	"homepage": "http://potboy.com.my/treasure",
+	"license": "MIT",
+	"require": {
+		"phpoffice/phpexcel": "dev-master",
+		"birke/rememberme": "^1.0",
+		"symfony/translation": "2.6",
+		"nesbot/carbon": "^1.21",
+		"php-imap/php-imap": "~2.0",
+		"fzaninotto/faker": "^1.5",
+		"vlucas/phpdotenv": "^2.2",
+		"phpunit/php-timer": "^1.0",
+		"swiftmailer/swiftmailer": "@stable",
+		"imagine/imagine": "^0.6.3",
+		"kriswallsmith/buzz": "^0.15.0",
+		 "camspiers/json-pretty": "1.0.*",
+		 "nategood/httpful": "*",
+		 "sunra/php-simple-html-dom-parser": "1.5.1"
+	}
+}
