@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c402ea4c89f93d65c5207ef276d3c050",
+    "content-hash": "8e1a0ae79825b4e244f14afbfd7b6beb",
     "packages": [
         {
             "name": "birke/rememberme",
@@ -393,26 +393,25 @@
         },
         {
             "name": "php-imap/php-imap",
-            "version": "2.0.8",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barbushin/php-imap.git",
-                "reference": "949826c9b109113ec93a5214e85afce31cba000c"
+                "reference": "cc1a49a3f68090db182183c59ffbc09055d59f5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barbushin/php-imap/zipball/949826c9b109113ec93a5214e85afce31cba000c",
-                "reference": "949826c9b109113ec93a5214e85afce31cba000c",
+                "url": "https://api.github.com/repos/barbushin/php-imap/zipball/cc1a49a3f68090db182183c59ffbc09055d59f5b",
+                "reference": "cc1a49a3f68090db182183c59ffbc09055d59f5b",
                 "shasum": ""
             },
             "require": {
-                "ext-imap": "*",
                 "php": ">=5.3.0"
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "PhpImap\\": "src/PhpImap/"
+                "psr-0": {
+                    "PhpImap": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -433,7 +432,7 @@
                 "mail",
                 "php"
             ],
-            "time": "2016-08-13T15:39:00+00:00"
+            "time": "2015-09-16T07:40:39+00:00"
         },
         {
             "name": "phpoffice/phpexcel",
