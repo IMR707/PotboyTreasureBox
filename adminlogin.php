@@ -1,4 +1,5 @@
 <?php
+//hghghghghgh
 strlen(session_id()) < 1? session_start():$testing=0;
 set_time_limit(0);
 ini_set('memory_limit', '-1');
