@@ -5,9 +5,9 @@ $menu = 'Dashboard';
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
-if (!$user->logged_in) {
-    redirect_to(SITEURL.'/index.php');
-}
+// if (!$user->logged_in) {
+//     redirect_to(SITEURL.'/index.php');
+// }
 ?>
 <?php
  //include 'fehead.php';
