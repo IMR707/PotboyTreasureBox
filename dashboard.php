@@ -25,7 +25,8 @@ if (!$user->logged_in) {
  		<meta name="keywords" content="HTML5 Template" >
  		<meta name="description" content="Elementy - Responsive HTML5 Template" >
  		<meta name="author" content="Vladimir Azarushkin">
- 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+ 		<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+    <meta name="viewport" content="width=320">
      <meta name="theme-color" content="#2a2b2f">
 
  		<!-- FAVICONS -->
@@ -80,7 +81,7 @@ if (!$user->logged_in) {
  		<div id="loader-overflow">
        <div id="loader3" class="loader-cont">Please enable JS</div>
      </div>
-<div class="col-md-8 col-md-offset-2">
+<div >
  		<div id="wrap" class="boxed ">
  			<div class="grey-bg"> <!-- Grey BG  -->
 
