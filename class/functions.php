@@ -167,6 +167,18 @@ function isSubMenu($submenu,$compare)
 	echo 'class="act_item"';
 }
 
+function isBackMenu($menu,$compare)
+{
+	if ($menu==$compare)
+	echo 'active open';
+}
+
+function isBackSubMenu($submenu,$compare)
+{
+	if ($submenu==$compare)
+	echo 'active open';
+}
+
 function alert($string){
   echo "<script>alert('".$string."')</script>";
 }

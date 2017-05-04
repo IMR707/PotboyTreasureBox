@@ -68,10 +68,18 @@ define("FRONTIMAGE", FRONTASSETSURL . "img/");
 define("FRONTICON", FRONTASSETSURL . "icons/");
 //pre($_SERVER);
 define("BACKASSETSURL", "backend/");
-define("BACKECSS", BACKASSETSURL . "css/");
+define("BACKCSS", BACKASSETSURL . "css/");
 define("BACKJS", BACKASSETSURL . "js/");
 define("BACKIMAGE", BACKASSETSURL . "img/");
 define("BACKICON", BACKASSETSURL . "icons/");
+
+define("BACK_INC", BACKASSETSURL . "include/");
+define("BACK_PLUGIN", BACKASSETSURL . "assets/global/plugins/");
+define("BACK_SCRIPT", BACKASSETSURL . "assets/global/scripts/");
+define("BACK_CSS", BACKASSETSURL . "assets/global/css/");
+define("BACK_LAYOUT", BACKASSETSURL . "assets/layouts/");
+define("BACK_IMG", BACKASSETSURL . "img/");
+
 
 define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
 
