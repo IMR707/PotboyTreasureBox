@@ -35,7 +35,7 @@ if (!$user->logged_in) {
         <div class="page-head">
             <!-- BEGIN PAGE TITLE -->
             <div class="page-title">
-                <h1>Dashboard
+                <h1><?php echo $pname; ?>
                     <small>
                       <!-- bootstrap form controls and more -->
                     </small>
@@ -48,11 +48,11 @@ if (!$user->logged_in) {
         <!-- BEGIN PAGE BREADCRUMB -->
         <ul class="page-breadcrumb breadcrumb">
             <li>
-                <a href="index.html">Home</a>
+                <a href="admin-dashboard.php">Dashboard</a>
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                <span class="active">Form Stuff</span>
+                <span class="active"><?php echo $pname; ?></span>
             </li>
         </ul>
         <!-- END PAGE BREADCRUMB -->
@@ -132,7 +132,7 @@ if (!$user->logged_in) {
                                         <i class="fa fa-bell-o"></i>
                                         <input type="text" class="form-control input-sm" placeholder="Left icon"> </div>
                                 </div>
-                                
+
 
                             </div>
                             <div class="form-actions">

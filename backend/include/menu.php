@@ -16,6 +16,12 @@
                 <span class="title">Dashboard</span>
             </a>
         </li>
+        <li class="nav-item start <?php isBackMenu($menu,'ADMIN_HOMEPAGE'); ?>">
+            <a href="admin-homepage.php" class="nav-link nav-toggle">
+                <i class="icon-home"></i>
+                <span class="title">Homepage</span>
+            </a>
+        </li>
         <li class="nav-item <?php isBackMenu($menu,'ADMIN_FORM'); ?>">
             <a href="javascript:;" class="nav-link nav-toggle">
                 <i class="icon-settings"></i>
