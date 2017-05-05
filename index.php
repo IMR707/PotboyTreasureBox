@@ -208,226 +208,46 @@ use Carbon\Carbon;
 
         <!-- Grid -->
  				<div class="row">
-          <div class="col-md-6 col-sm-6">
-
+          <div class="col-md-6 col-sm-6 col-xs-6">
  						<!-- Horizontal form -->
  						<div class="panel panel-flat">
  							<div class="panel-body">
- 								<form class="form-horizontal" action="#">
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Text input</label>
- 										<div class="col-lg-10">
- 											<input type="text" class="form-control">
- 										</div>
- 									</div>
-
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Password</label>
- 										<div class="col-lg-10">
- 											<input type="password" class="form-control">
- 										</div>
- 									</div>
-
- 			                        <div class="form-group">
- 			                        	<label class="control-label col-lg-2">Select</label>
- 			                        	<div class="col-lg-10">
- 				                            <select name="select" class="form-control">
- 				                                <option value="opt1">Basic select</option>
- 				                                <option value="opt2">Option 2</option>
- 				                                <option value="opt3">Option 3</option>
- 				                                <option value="opt4">Option 4</option>
- 				                                <option value="opt5">Option 5</option>
- 				                                <option value="opt6">Option 6</option>
- 				                                <option value="opt7">Option 7</option>
- 				                                <option value="opt8">Option 8</option>
- 				                            </select>
- 			                            </div>
- 			                        </div>
-
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Textarea</label>
- 										<div class="col-lg-10">
- 											<textarea rows="5" cols="5" class="form-control" placeholder="Default textarea"></textarea>
- 										</div>
- 									</div>
-
- 									<div class="text-right">
- 										<button type="submit" class="btn btn-primary">Submit form <i class="icon-arrow-right14 position-right"></i></button>
- 									</div>
- 								</form>
+ 								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
  							</div>
  						</div>
  						<!-- /horizotal form -->
-
  					</div>
-
-          <div class="col-md-6  col-sm-6">
-
+          <div class="col-md-6 col-sm-6 col-xs-6">
  						<!-- Horizontal form -->
  						<div class="panel panel-flat">
  							<div class="panel-body">
- 								<form class="form-horizontal" action="#">
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Text input</label>
- 										<div class="col-lg-10">
- 											<input type="text" class="form-control">
- 										</div>
- 									</div>
-
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Password</label>
- 										<div class="col-lg-10">
- 											<input type="password" class="form-control">
- 										</div>
- 									</div>
-
- 			                        <div class="form-group">
- 			                        	<label class="control-label col-lg-2">Select</label>
- 			                        	<div class="col-lg-10">
- 				                            <select name="select" class="form-control">
- 				                                <option value="opt1">Basic select</option>
- 				                                <option value="opt2">Option 2</option>
- 				                                <option value="opt3">Option 3</option>
- 				                                <option value="opt4">Option 4</option>
- 				                                <option value="opt5">Option 5</option>
- 				                                <option value="opt6">Option 6</option>
- 				                                <option value="opt7">Option 7</option>
- 				                                <option value="opt8">Option 8</option>
- 				                            </select>
- 			                            </div>
- 			                        </div>
-
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Textarea</label>
- 										<div class="col-lg-10">
- 											<textarea rows="5" cols="5" class="form-control" placeholder="Default textarea"></textarea>
- 										</div>
- 									</div>
-
- 									<div class="text-right">
- 										<button type="submit" class="btn btn-primary">Submit form <i class="icon-arrow-right14 position-right"></i></button>
- 									</div>
- 								</form>
+ 								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
  							</div>
  						</div>
  						<!-- /horizotal form -->
-
  					</div>
-
-
  				</div>
- 				<!-- /grid -->
-        <!-- Grid -->
- 				<div class="row">
-          <div class="col-md-6  col-sm-6">
 
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-6">
  						<!-- Horizontal form -->
  						<div class="panel panel-flat">
  							<div class="panel-body">
- 								<form class="form-horizontal" action="#">
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Text input</label>
- 										<div class="col-lg-10">
- 											<input type="text" class="form-control">
- 										</div>
- 									</div>
-
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Password</label>
- 										<div class="col-lg-10">
- 											<input type="password" class="form-control">
- 										</div>
- 									</div>
-
- 			                        <div class="form-group">
- 			                        	<label class="control-label col-lg-2">Select</label>
- 			                        	<div class="col-lg-10">
- 				                            <select name="select" class="form-control">
- 				                                <option value="opt1">Basic select</option>
- 				                                <option value="opt2">Option 2</option>
- 				                                <option value="opt3">Option 3</option>
- 				                                <option value="opt4">Option 4</option>
- 				                                <option value="opt5">Option 5</option>
- 				                                <option value="opt6">Option 6</option>
- 				                                <option value="opt7">Option 7</option>
- 				                                <option value="opt8">Option 8</option>
- 				                            </select>
- 			                            </div>
- 			                        </div>
-
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Textarea</label>
- 										<div class="col-lg-10">
- 											<textarea rows="5" cols="5" class="form-control" placeholder="Default textarea"></textarea>
- 										</div>
- 									</div>
-
- 									<div class="text-right">
- 										<button type="submit" class="btn btn-primary">Submit form <i class="icon-arrow-right14 position-right"></i></button>
- 									</div>
- 								</form>
+ 								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
  							</div>
  						</div>
  						<!-- /horizotal form -->
-
  					</div>
-
-          <div class="col-md-6  col-sm-6">
-
+          <div class="col-md-6 col-sm-6 col-xs-6">
  						<!-- Horizontal form -->
  						<div class="panel panel-flat">
  							<div class="panel-body">
- 								<form class="form-horizontal" action="#">
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Text input</label>
- 										<div class="col-lg-10">
- 											<input type="text" class="form-control">
- 										</div>
- 									</div>
-
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Password</label>
- 										<div class="col-lg-10">
- 											<input type="password" class="form-control">
- 										</div>
- 									</div>
-
- 			                        <div class="form-group">
- 			                        	<label class="control-label col-lg-2">Select</label>
- 			                        	<div class="col-lg-10">
- 				                            <select name="select" class="form-control">
- 				                                <option value="opt1">Basic select</option>
- 				                                <option value="opt2">Option 2</option>
- 				                                <option value="opt3">Option 3</option>
- 				                                <option value="opt4">Option 4</option>
- 				                                <option value="opt5">Option 5</option>
- 				                                <option value="opt6">Option 6</option>
- 				                                <option value="opt7">Option 7</option>
- 				                                <option value="opt8">Option 8</option>
- 				                            </select>
- 			                            </div>
- 			                        </div>
-
- 									<div class="form-group">
- 										<label class="control-label col-lg-2">Textarea</label>
- 										<div class="col-lg-10">
- 											<textarea rows="5" cols="5" class="form-control" placeholder="Default textarea"></textarea>
- 										</div>
- 									</div>
-
- 									<div class="text-right">
- 										<button type="submit" class="btn btn-primary">Submit form <i class="icon-arrow-right14 position-right"></i></button>
- 									</div>
- 								</form>
+ 								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
  							</div>
  						</div>
  						<!-- /horizotal form -->
-
  					</div>
-
-
  				</div>
-        <!-- Grid -->
 
  			</div>
  			<!-- /main content -->
