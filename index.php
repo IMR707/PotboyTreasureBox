@@ -170,17 +170,26 @@ use Carbon\Carbon;
 
  				<!-- Simple panel -->
  				<div class="panel panel-flat">
- 					<div class="panel-heading">
- 						<h5 class="panel-title">Simple panel</h5>
- 						<div class="heading-elements">
- 							<ul class="icons-list">
- 		                		<li><a data-action="collapse"></a></li>
- 		                		<li><a data-action="close"></a></li>
- 		                	</ul>
- 	                	</div>
- 					</div>
-
  					<div class="panel-body">
+
+
+
+                <div class="container">
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div id="carousel-notification" class="bootstrap-carousel" data-indicators="true" data-controls="true">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!">
+                        <img src="http://www.howlofadog.org/wp-content/uploads/2015/05/laika-4.jpg" data-title="laika" data-content="Hey ...!">
+                        <img src="http://rack.3.mshcdn.com/media/ZgkyMDEyLzEyLzA0LzlkLzE1YmVzdGNhdG1lLmFIOC5qcGcKcAl0aHVtYgk1NjB4NzUwCmUJanBn/36a99417/5f7/15-best-cat-memes-ever-meow--3283dd863e.jpg" data-title="cat">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+                <script src="<?php echo FRONTJS;?>bootstrap-carousel.js"></script>
+
  						<h6 class="text-semibold">Start your development with no hassle!</h6>
  						<p class="content-group">Common problem of templates is that all code is deeply integrated into the core. This limits your freedom in decreasing amount of code, i.e. it becomes pretty difficult to remove unnecessary code from the project. Limitless allows you to remove unnecessary and extra code easily just by removing the path to specific LESS file with component styling. All plugins and their options are also in separate files. Use only components you actually need!</p>
 
