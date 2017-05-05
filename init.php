@@ -79,9 +79,7 @@ define("BACK_IMG", BACKASSETSURL . "img/");
 define("BACK_UPLOADS", BACKASSETSURL . "uploads/");
 define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
 define("WEBNAME", " | Potboy Treasure box");
-
 define("UPLOADURL", SITEURL . "/uploads/");
-define("SIGNUPURL", "http://potboy.com.my/customer/account/create/");
 define("HOMEURL", "http://potboy.com.my/");
 if (isset($_GET['mobileview'])) {
     switch ($_GET['mobileview']) {
