@@ -1,52 +1,1010 @@
+<?php
+define('_VALID_PHP', true);
+$pname = 'Dashboard';
+$menu = 'Dashboard';
+$submenu = '';
+require_once 'init.php';
+use Carbon\Carbon;
+// if (!$user->logged_in) {
+//     redirect_to(SITEURL.'/index.php');
+// }
+?>
+<?php
+ //include 'fehead.php';
+ //include 'feheader.php';
+ ?>
 
-<html>
 
-<head>
-    <title>Cloone Templates</title>
-    <!-- Custom Style frame.css -->
-    <link rel="stylesheet" href="assets/iframe.css">
-    <!-- jquery.min.js -->
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <!-- Frame.js  -->
-    <script type="text/javascript" src="assets/iframe.js"></script>
-    <!-- Google Font -->
-    <link href='http://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-<script type="text/javascript">
+ <!DOCTYPE html>
+ <html>
+  	<head>
+ 		<title>Elementy - Responsive HTML5 Template</title>
+ 		<meta charset=utf-8 >
+ 		<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+ 		<meta name="robots" content="index, follow" >
+ 		<meta name="keywords" content="HTML5 Template" >
+ 		<meta name="description" content="Elementy - Responsive HTML5 Template" >
+ 		<meta name="author" content="Vladimir Azarushkin">
+ 		<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+    <meta name="viewport" content="width=320">
+     <meta name="theme-color" content="#2a2b2f">
 
-// ReSize Frame Function
-function ReSize(id,h,tb){
-    var obj=document.getElementById(id);
-    obj.style.width=h+'px';
-    document.getElementById(tb).value='width: '+h+'px';
+ 		<!-- FAVICONS -->
+     <link rel="shortcut icon" href="images/favicon/favicon.png">
+     <link rel="apple-touch-icon" href="images/favicon/apple-touch-icon.png">
+     <link rel="apple-touch-icon" sizes="72x72" href="images/favicon/apple-touch-icon-72x72.png">
+     <link rel="apple-touch-icon" sizes="114x114" href="images/favicon/apple-touch-icon-114x114.png">
+     <link rel="icon" sizes="192x192" href="images/favicon/icon-192x192.png">
 
-}
+ <!-- CSS -->
+     <!--  GOOGLE FONT -->
+     <link href='http://fonts.googleapis.com/css?family=Poppins:400,600,300%7COpen+Sans:400,300,700' rel='stylesheet' type='text/css'>
 
-// Show Orignal Size Function (FullScreen)
-function FullSize(id){
-     var obj=document.getElementById(id);
-     obj.style.width='100%';
-     document.getElementById('TB1').value='width: 100%';
+     <!-- REVOSLIDER CSS SETTINGS -->
 
-}
+     <!-- REVOLUTION STYLE SHEETS -->
+     <link href="<?php echo FRONTREVO;?>/css/settings-custom.css" rel="stylesheet" type="text/css">
 
-// Theme Switcher Function
-function DropDown(el) {
-    this.dd = el;
-    this.placeholder = this.dd.children('span');
-    this.opts = this.dd.find('ul.dropdown > li');
-    this.val = '';
-    this.index = -1;
-    this.initEvents();
-}
-</script>
-</head>
-<body onLoad="ReSize('myframe',768,'TB1')">
-    <!-- Center Content Tag -->
-    <center>
-        <iframe width="100%" height="100%" id="myframe" src="http://localhost/Potboy/index2.php">
-        </frame>
-    </center>
-    <!-- End Center Content Tag -->
-</body>
+     <!--  BOOTSTRAP -->
+ 		<link rel="stylesheet" href="<?php echo FRONTCSS;?>bootstrap.min.css">
 
-</html>
+     <!-- ICONS ELEGANT FONT & FONT AWESOME & LINEA ICONS  -->
+ 		<link rel="stylesheet" href="<?php echo FRONTCSS;?>icons-fonts.css" >
+
+     <!--  CSS THEME -->
+ 		<link rel="stylesheet" href="<?php echo FRONTCSS;?>style.css" >
+
+     <!-- ANIMATE -->
+ 		<link rel='stylesheet' href="<?php echo FRONTCSS;?>animate.min.css">
+
+     <!-- IE Warning CSS -->
+ 		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="css/ie-warning.css" ><![endif]-->
+ 		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="css/ie8-fix.css" ><![endif]-->
+
+     <!-- Magnific popup, Owl Carousel Assets in style.css -->
+
+ <!-- CSS end -->
+
+ <!-- JS begin some js files in bottom of file-->
+
+ 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+ 		<!--[if lt IE 9]>
+ 		  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ 		  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+ 		<![endif]-->
+    <style>
+    .container{
+      max-width:970px !important;
+    }
+    @media (min-width: 1200px){
+      .container {
+         max-width: 970px !important;
+      }
+      }
+      @media (min-width: 992px){
+      .container {
+          max-width: 750px;
+      }
+      }
+      @media (min-width: 768px){
+      .container {
+          width: 750px;
+      }
+    }
+    </style>
+ 	</head>
+ 	<body>
+
+ 		<!-- LOADER -->
+ 		<div id="loader-overflow">
+       <div id="loader3" class="loader-cont">Please enable JS</div>
+     </div>
+<div >
+
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+ 		<div id="wrap" class="boxed ">
+
+ 			<div class="grey-bg"> <!-- Grey BG  -->
+
+ 				<!--[if lte IE 8]>
+ 				<div id="ie-container">
+ 					<div id="ie-cont-close">
+ 						<a href='#' onclick='javascript&#058;this.parentNode.parentNode.style.display="none"; return false;'><img src='images/ie-warn/ie-warning-close.jpg' style='border: none;' alt='Close'></a>
+ 					</div>
+ 					<div id="ie-cont-content" >
+ 						<div id="ie-cont-warning">
+ 							<img src='images/ie-warn/ie-warning.jpg' alt='Warning!'>
+ 						</div>
+ 						<div id="ie-cont-text" >
+ 							<div id="ie-text-bold">
+ 								You are using an outdated browser
+ 							</div>
+ 							<div id="ie-text">
+ 								For a better experience using this site, please upgrade to a modern web browser.
+ 							</div>
+ 						</div>
+ 						<div id="ie-cont-brows" >
+ 							<a href='http://www.firefox.com' target='_blank'><img src='images/ie-warn/ie-warning-firefox.jpg' alt='Download Firefox'></a>
+ 							<a href='http://www.opera.com/download/' target='_blank'><img src='images/ie-warn/ie-warning-opera.jpg' alt='Download Opera'></a>
+ 							<a href='http://www.apple.com/safari/download/' target='_blank'><img src='images/ie-warn/ie-warning-safari.jpg' alt='Download Safari'></a>
+ 							<a href='http://www.google.com/chrome' target='_blank'><img src='images/ie-warn/ie-warning-chrome.jpg' alt='Download Google Chrome'></a>
+ 						</div>
+ 					</div>
+ 				</div>
+ 				<![endif]-->
+
+ 				<!-- HEADER BOXED FONT WHITE TRANSPARENT -->
+         <div class="header-black-bg"></div> <!-- NEED FOR TRANSPARENT HEADER ON MOBILE -->
+ 				<header id="nav" class="header header-1 header-boxed header-black">
+           <div class="header-wrapper">
+
+             <div class="container relative">
+
+               <div class="clearfix">
+                 <div class="logo-row">
+
+                 <!-- LOGO -->
+                 <div class="logo-container-2">
+                     <div class="logo-2">
+                       <a href="index.php" class="clearfix">
+                         <!-- <img src="images/logo-white.png" class="logo-img" alt="Logo"> -->
+                         <img src="<?php echo BACK_IMG; ?>logo.png" alt="logo" class="logo-img"/>
+                       </a>
+                     </div>
+                   </div>
+                 <!-- BUTTON -->
+                 <div class="menu-btn-respons-container">
+                   <button id="menu-btn" type="button" class="navbar-toggle btn-navbar collapsed" data-toggle="collapse" data-target="#main-menu .navbar-collapse">
+                     <span aria-hidden="true" class="icon_menu hamb-mob-icon"></span>
+                   </button>
+                 </div>
+                </div>
+               </div>
+
+               <!-- MAIN MENU CONTAINER -->
+               <div class="main-menu-container">
+
+                   <div class=" clearfix">
+
+                     <!-- MAIN MENU -->
+                     <div id="main-menu">
+                       <div class="navbar navbar-default" role="navigation">
+
+                         <!-- MAIN MENU LIST -->
+                         <nav class="collapse collapsing navbar-collapse right-1024">
+                           <ul class="nav navbar-nav">
+
+                             <!-- MENU ITEM -->
+                             <li><a href="index.php">Home</a></li>
+                             <li><a href="index.php">Go Shopping</a></li>
+                             <li><a href="index.php">Bidding</a></li>
+                             <li><a href="index.php">Latest Winner</a></li>
+                             <li><a href="index.php">Wish List Voting</a></li>
+
+                             <?php
+                              if (!$user->logged_in) {?>
+                            <li><a href="index.php">Login</a></li>
+                             <?php }else {
+                               ?>
+                               <li><a href="index.php">My Account</a></li>
+                               <?php
+                             }
+
+                             ?>
+
+
+
+
+
+                           </ul>
+
+                         </nav>
+
+                       </div>
+                     </div>
+                     <!-- END main-menu -->
+
+                   </div>
+                   <!-- END container-m-30 -->
+
+               </div>
+               <!-- END main-menu-container -->
+
+               <!-- SEARCH READ DOCUMENTATION -->
+               <ul class="cd-header-buttons">
+                 <li><a class="cd-search-trigger" href="#cd-search"><span></span></a></li>
+               </ul> <!-- cd-header-buttons -->
+               <div id="cd-search" class="cd-search">
+                 <form class="form-search" id="searchForm" action="page-search-results.html" method="get">
+                   <input type="text" value="" name="q" id="q" placeholder="Search...">
+                 </form>
+               </div>
+
+             </div><!-- END container -->
+
+           </div>
+           <!-- END header-wrapper -->
+ 				</header>
+
+         <!-- SLIDER Revo Hero 4 -->
+         <div class="relative">
+
+             <div class="rev_slider_wrapper fullwidthbanner-container" id="rev_slider_280_1_wrapper" style="margin:0px auto;background-color:#101010;padding:0px;margin-top:0px;margin-bottom:0px;">
+                 <!-- START REVOLUTION SLIDER 5.1.4 fullwidth mode -->
+                 <div class="rev_slider fullwidthabanner" data-version="5.1.4" id="rev_slider_280_1" style="display:none;">
+                     <ul>
+
+                         <!-- SLIDE  -->
+                         <li data-index="rs-673" data-transition="zoomout" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="images/revo-slider/constr2-180x110.jpg" data-rotate="0" data-saveperformance="off" data-title="CONSTRUCT WORKS" data-description="">
+                             <!-- MAIN IMAGE -->
+                             <img src="images/revo-slider/index-fullwidth.jpg" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
+                             <!-- LAYERS -->
+
+                             <!-- LAYER NR. 1 -->
+                             <div class="tp-caption font-poppins font-white tp-resizeme rs-parallaxlevel-6" id="slide-8981-layer-1" style="z-index: 8; white-space: nowrap;"
+                             data-fontsize="['20','24','24','24']"
+                             data-fontweight="400"
+                             data-height="none"
+                             data-lineheight="['74','74','74','74']"
+                             data-responsive_offset="on"
+                             data-splitin="none"
+                             data-splitout="none"
+                             data-start="350"
+                             data-transform_idle="o:1;"
+
+ 									 data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:1500;e:Power4.easeInOut;"
+ 									 data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+ 									 data-mask_in="x:0px;y:[100%];s:inherit;e:inherit;"
+ 									 data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;"
+                             data-whitespace="nowrap"
+                             data-width="none"
+                             data-x="['center','center','center','center']"
+                             data-hoffset="['0','0','0',0']"
+                             data-y="['center','center','center','center']"
+                             data-voffset="['-70','-90','-70','-55']">
+                               One & Multi Page Template
+                             </div>
+
+                             <!-- LAYER NR. 2 -->
+                             <div class="tp-caption font-poppins font-white tp-resizeme rs-parallaxlevel-6" id="slide-8981-layer-2" style="z-index: 8; white-space: nowrap;"
+                             data-fontsize="['70','50','80','50']"
+                             data-fontweight="600"
+                             data-height="none"
+                             data-lineheight="['120','130','110','95']"
+                             data-responsive_offset="on"
+                             data-splitin="none"
+                             data-splitout="none"
+                             data-start="550"
+                             data-transform_idle="o:1;"
+
+ 									 data-transform_in="z:0;rX:0deg;rY:0;rZ:0;sX:1.5;sY:1.5;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;"
+ 									 data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+ 									 data-mask_in="x:0px;y:0px;"
+ 									 data-mask_out="x:inherit;y:inherit;"
+                             data-whitespace="nowrap"
+                             data-width="none"
+                             data-x="['center','center','center','center']"
+                             data-hoffset="['0','0','0',0']"
+                             data-y="['center','center','center','center']"
+                             data-voffset="['0','0','0',0']">
+                               CREATIVE STUDIO
+                             </div>
+
+                             <!-- LAYER NR. 3 -->
+                             <div class="tp-caption rs-parallaxlevel-6"
+                                id="slide-1291-layer-3"
+                                data-x="['center','center','center','center']"
+                                data-hoffset="['0','0','0','0']"
+                                data-y="['center','center','center','center']"
+                                data-voffset="['90','120','100',80']"
+                               data-width="none"
+                               data-height="none"
+                               data-whitespace="nowrap"
+                               data-transform_idle="o:1;"
+ 										data-transform_hover="o:1;rX:0;rY:0;rZ:0;z:0;s:300;e:Power1.easeInOut;"
+ 										data-style_hover="c:rgba(255, 255, 255, 1.00);bc:rgba(255, 255, 255, 1.00);cursor:pointer;"
+
+ 									 data-transform_in="y:50px;opacity:0;s:1500;e:Power4.easeInOut;"
+ 									 data-transform_out="y:[175%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+ 									 data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;"
+                               data-start="1000"
+                               data-splitin="none"
+                               data-splitout="none"
+                               data-responsive_offset="on"
+                               data-responsive="off"
+
+                               style="z-index: 8; white-space: nowrap;outline:none;"><a class="tp-button1 button medium full-rounded hover-dark white " href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel">PURCHASE</a><a class="tp-button1 button medium full-rounded thin  white ml-20" href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel">READ MORE</a>
+                             </div>
+
+                         </li>
+
+                     </ul>
+                     <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
+                 </div>
+             </div>
+             <!-- END REVOLUTION SLIDER -->
+
+         </div>
+
+
+
+
+
+
+ 				<!-- FEATURES 1 -->
+        <div id="about" class="page-section">
+ 					<div class="container fes1-cont pb-0">
+ 						<div class="row">
+
+ 							<div class="">
+
+                 <div class="row">
+
+
+                   <div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner">
+    <div class="item active">
+      <img src="img/la.jpg" alt="Los Angeles">
+    </div>
+
+    <div class="item">
+      <img src="img/chicago.jpg" alt="Chicago">
+    </div>
+
+    <div class="item">
+      <img src="img/ny.jpg" alt="New York">
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+
+ 								</div>
+
+
+
+
+
+ 							</div>
+
+
+
+
+             </div>
+ 					</div>
+ 				</div>
+
+
+
+
+        <div id="about" class="page-section">
+ 					<div class="container fes1-cont pb-0">
+ 						<div class="row">
+
+ 							<div class="col-md-8">
+
+                 <div class="row">
+                   <div class="col-md-12">
+                     <div class="fes1-main-title-cont wow fadeInDown">
+                       <div class="fes1-title-50 font-poppins">
+                         <strong>We are<br>creative</strong>
+                       </div>
+                     </div>
+                   </div>
+ 								</div>
+
+                 <div class="row">
+
+                   <div class="col-md-6 col-sm-6">
+                     <div class="fes1-box wow fadeIn" >
+                       <div class="fes1-box-icon">
+                         <div class="icon icon-basic-mixer2"></div>
+                       </div>
+                       <h3>Fully Responsive</h3>
+
+                     </div>
+                   </div>
+
+                   <div class="col-md-6 col-sm-6">
+                     <div class="fes1-box wow fadeIn" data-wow-delay="200ms">
+                       <div class="fes1-box-icon">
+                         <div class="icon icon-basic-lightbulb"></div>
+                       </div>
+                       <h3>Retina Ready</h3>
+
+                     </div>
+                   </div>
+
+                 </div>
+
+                 <div class="row">
+
+                   <div class="col-md-6 col-sm-6">
+                     <div class="fes1-box wow fadeIn" data-wow-delay="400ms">
+                       <div class="fes1-box-icon">
+                         <div class="icon icon-basic-helm"></div>
+                       </div>
+                       <h3>Unique Design</h3>
+
+                     </div>
+                   </div>
+
+                   <div class="col-md-6 col-sm-6">
+                     <div class="fes1-box wow fadeIn"  data-wow-delay="600ms">
+                       <div class="fes1-box-icon">
+                         <div class="icon icon-basic-settings"></div>
+                       </div>
+                       <h3>Easy To Customize</h3>
+
+                     </div>
+                   </div>
+
+                 </div>
+
+ 							</div>
+
+
+ 							<div class="col-md-4 mt-30 fes1-img-cont wow fadeInUp">
+ 								<img src="images/fes11-2.jpg" alt="img" >
+ 							</div>
+
+             </div>
+ 					</div>
+ 				</div>
+
+         <!-- FEATURES 12 HALF COLORED -->
+ 				<div class="page-section">
+ 					<div class="container-fluid">
+ 						<div data-equal=".equal-height" class="row row-sm-fix">
+
+ 							<div class="col-md-6 fes12-img equal-height" style="background-image: url(images/fes12-1.jpg)">
+                 <div class="fes2-main-text-cont text-white">
+                   <div class="fes2-title-45 font-poppins text-white">
+                     <strong>Optimized for<br>mobile</strong>
+                   </div>
+                   <div class="fes2-text-cont">Sed ut perspiciatis unde omnis iste nat eror acus antium que. Asperiores, ea velit enim labore doloribus.</div>
+                   <div class="fes12-btn-cont mt-30">
+                   	<a class="button medium white rounded thin btn-4 btn-4cc" href="#"><span class="button-text-anim">READ MORE</span><span aria-hidden="true" class="button-icon-anim arrow_right"></span></a>
+                   </div>
+                 </div>
+ 							</div>
+
+ 							<div class="col-md-6 fes12-img equal-height" style="background-image: url(images/fes12-2.jpg)">
+                 <div class="fes2-main-text-cont text-black">
+                   <div class="fes2-title-45 font-poppins">
+                     <strong>Powerful<br>Performance</strong>
+                   </div>
+
+                   <div class="fes2-text-cont">Sed ut perspiciatis unde omnis iste nat eror acus antium que. Asperiores, ea velit enim labore doloribus.</div>
+                   <div class="fes12-btn-cont mt-30">
+                   	<a class="button medium rounded thin gray btn-4 btn-4cc" href="#"><span class="button-text-anim">READ MORE</span><span aria-hidden="true" class="button-icon-anim arrow_right"></span></a>
+                   </div>
+                 </div>
+ 							</div>
+
+ 						</div>
+ 					</div>
+ 				</div>
+
+ 				<!-- FEATURES 17 OUR SERVICES 2 -->
+ 				<div class="page-section pt-160-b-120-cont">
+ 					<div class="container">
+             <div class="row">
+
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-ecommerce-graph-increase"></div>
+ 								  	</div>
+ 								  	<h3><strong>Marketing</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="200ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-settings"></div>
+ 								  	</div>
+ 								  	<h3><strong>Development</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="400ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-share"></div>
+ 								  	</div>
+ 								  	<h3><strong>Production</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+
+ 						</div>
+ 						<div class="row">
+
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="600ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-target"></div>
+ 								  	</div>
+ 								  	<h3><strong>Branding</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="800ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-globe"></div>
+ 								  	</div>
+ 								  	<h3><strong>Web Design</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+ 							<div class="col-xs-12 col-sm-4 col-md-4">
+                 <div class="mb-70 wow fadeIn" data-wow-delay="1000ms">
+ 								  <div class="fes17-title-cont" >
+ 								  	<div class="fes17-box-icon">
+ 								  		<div class="icon icon-basic-picture"></div>
+ 								  	</div>
+ 								  	<h3><strong>Photography</strong></h3>
+ 								  </div>
+ 								  <div class="text-center">
+ 								    Maecenas luctus nisi in sem fermentum blandit. In nec elit sollicitudin, elementum odio et, dictum purus. Proin malesuada quam a volutpat
+ 								  </div>
+ 								</div>
+ 							</div>
+
+             </div>
+ 					</div>
+ 				</div>
+
+ 				<!-- WORK PROCESS 2 -->
+ 				<div class="container-fluid p-110-cont bg-gray">
+ 					<div class="row">
+
+             <div class="col-lg-3 col-md-6 col-sm-6">
+               <div class="work-proc2-cont wow fadeIn"  >
+                 <div class="work-proc2-icon-cont pos-l-12">
+                   01
+                 </div>
+                 <h3><strong>Planning</strong></h3>
+                 <p>Maecenas luctus nisi in sem fermen blandit. In nec elit </p>
+               </div>
+             </div>
+
+             <div class="col-lg-3 col-md-6 col-sm-6">
+               <div class="work-proc2-cont wow fadeIn" data-wow-delay="200ms">
+                 <div class="work-proc2-icon-cont">
+                   02
+                 </div>
+                 <h3><strong>Developmen</strong></h3>
+                 <p>Maecenas luctus nisi in sem fermen blandit. In nec elit </p>
+               </div>
+             </div>
+
+             <div class="col-lg-3 col-md-6 col-sm-6">
+               <div class="work-proc2-cont wow fadeIn" data-wow-delay="400ms">
+                 <div class="work-proc2-icon-cont">
+                   03
+                 </div>
+                 <h3><strong>Launch</strong></h3>
+                 <p>Maecenas luctus nisi in sem fermen blandit. In nec elit </p>
+               </div>
+             </div>
+
+             <div class="col-lg-3 col-md-6 col-sm-6">
+               <div class="work-proc2-a-cont wow fadeIn" data-wow-delay="600ms">
+                 <a class="work-proc2-a" href="#">
+                   <div class="work-proc2-a-text">
+                     Let's work<br><span class="border-bot">together</span>
+                   </div>
+                   <div class="work-proc2-bg-block"></div>
+                 </a>
+               </div>
+             </div>
+
+           </div>
+ 				</div>
+
+         <!-- TESTIMONIALS CAROUSEL 3 -->
+         <div class="pt-110-b-80-cont pb-md-80 owl-plugin fullwidth-slider" >
+
+           <!-- Slide Item -->
+           <div class="container">
+             <div class="relative">
+               <div class="row">
+
+                 <div class="col-md-3">
+                   <div class="ts3-author-cont">
+                     <div class="ts3-author-img">
+                       <img class="img-circle" src="images/testimonials/ts-author.jpg" alt="photo" >
+                     </div>
+                     <div class="ts-author-info text-center">
+                       <div class="ts-name">
+                         <strong>Amanda Eniston</strong>
+                       </div>
+                       <div class="ts-type">Doodle inc.</div>
+                     </div>
+
+                   </div>
+                 </div>
+
+                 <div class="col-md-9">
+                   <blockquote class="testimonial-3">
+                     <p>Nunc nec dictum purus. Nam porttitor molestie dolor nec lacinia. Donec placerat magna erat, non eleifend neque convallis at. Morbi felis sem, molestie, blandit ac quam. Fusce aliquet, est at rhoncus aliquam vehicu.</p>
+                   </blockquote>
+                 </div>
+
+               </div>
+             </div>
+           </div>
+
+           <!-- Slide Item -->
+           <div class="container">
+             <div class="relative">
+               <div class="row">
+
+                 <div class="col-md-3">
+                   <div class="ts3-author-cont">
+                     <div class="ts3-author-img">
+                       <img class="img-circle" src="images/testimonials/ts-author2.jpg" alt="photo" >
+                     </div>
+                     <div class="ts-author-info text-center">
+                       <div class="ts-name">
+                         <strong>Colin Little</strong>
+                       </div>
+                       <div class="ts-type">CEO, Pixate</div>
+                     </div>
+
+                   </div>
+                 </div>
+
+                 <div class="col-md-9">
+                   <blockquote class="testimonial-3">
+                     <p>Donec euismod vulputate augue, ac sagittis lacus lobortis id. Donec varius velit eget interdum semper. Mauris quis nunc eget blandit ac quam elit finibus semper eu non tellus. Donec at eros sed ante. </p>
+                   </blockquote>
+                 </div>
+
+               </div>
+             </div>
+           </div>
+
+           <!-- Slide Item -->
+           <div class="container">
+             <div class="relative">
+               <div class="row">
+
+                 <div class="col-md-3">
+                   <div class="ts3-author-cont">
+                     <div class="ts3-author-img">
+                       <img class="img-circle" src="images/testimonials/ts-author4.jpg" alt="photo" >
+                     </div>
+                     <div class="ts-author-info text-center">
+                       <div class="ts-name">
+                         <strong>Robert Jackson</strong>
+                       </div>
+                       <div class="ts-type">Founder, Drillbox</div>
+                     </div>
+
+                   </div>
+                 </div>
+
+                 <div class="col-md-9">
+                   <blockquote class="testimonial-3">
+                     <p>Etiam vestibulum risus et suscipit finibus. Morbi vitae ligula eget sem dignissim iaculis. Mauris blandit ac quam vitae velit quis arcu mollis pellentesque nec non magna. Pellentesque feu  turpis quis bibendum</p>
+                   </blockquote>
+                 </div>
+
+               </div>
+             </div>
+           </div>
+
+         </div>
+
+         <!-- CLIENTS 2 -->
+         <div class="page-section p-80-cont bg-gray">
+ 					<div class="container">
+
+             <div class="row">
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/2-9.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/3.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/5.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/4.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/8.png">
+               </div>
+
+               <div class="col-xs-6 col-sm-2 client2-item">
+                 <img alt="client" src="images/clients/2.png">
+               </div>
+
+             </div>
+
+           </div>
+ 				</div>
+
+         <!-- BLOG SECTION 3 FONT MONTSERRAT -->
+         <div class="page-section blog-sect3">
+           <div class="container p-140-cont">
+
+             <!-- TITLE -->
+           	<div class="row">
+           		<div class="col-md-12">
+           			<h2 class="section-title2 text-center mb-45 p-0"><strong>Latest News</strong></h2>
+           		</div>
+           	</div>
+
+             <!-- BG GRAY -->
+             <div class="bg-gray clearfix">
+
+             	<!-- BLOG ROW -->
+               <div class="row">
+
+                 <div class="col-md-6 pr-0">
+             			<div class="post2-prev-img">
+                     <a href="blog-single-sidebar-right.html"><img src="images/blog/blog-sect3-post-anim.gif" alt="img"></a>
+                   </div>
+            			</div>
+
+               	<div class="col-md-6 pl-0">
+             			<div class="blog-sect3-text-cont">
+             			<div class="pos-v-center">
+             				<div class="post2-prev-title">
+                       <h3><a href="blog-single-sidebar-right.html">User Experience Design Best sources</a></h3>
+                     </div>
+             				<div class="post-prev-info">
+                       Jule 21, 2016<span class="slash-divider">/</span><a href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel">Michael Doe</a>
+                     </div>
+             			</div>
+             			</div>
+             		</div>
+
+               </div>
+
+               <!-- BLOG ROW -->
+               <div class="row">
+
+                 <div class="col-md-6 pos-l-md-50pc pl-0">
+             			<div class="post2-prev-img">
+                     <a href="blog-single-sidebar-right.html"><img src="images/blog/blog-sect3-post-1.jpg" alt="img"></a>
+                   </div>
+            			</div>
+
+               	<div class="col-md-6 pos-r-md-50pc pr-0">
+             			<div class="blog-sect3-text-cont">
+                     <div class="pos-v-center">
+                       <div class="post2-prev-title">
+                         <h3><a href="blog-single-sidebar-right.html">Modern minimalism is the right choice</a></h3>
+                       </div>
+                       <div class="post-prev-info">
+                         Jule 21, 2016<span class="slash-divider">/</span><a href="http://themeforest.net/user/abcgomel/portfolio?ref=abcgomel">Michael Doe</a>
+                       </div>
+                     </div>
+             			</div>
+             		</div>
+
+               </div>
+
+             </div>
+
+             <!-- VIEW ALL -->
+           	<div class="row">
+           		<div class="col-md-12 blog-sect3-view-all-cont">
+           			<a href="blog-single-sidebar-right.html" class="font-poppins"><strong>view all news</strong></a>
+           		</div>
+           	</div>
+
+           </div>
+         </div>
+
+         <!-- NEWS LETTER -->
+         <div class="page-section nl-cont">
+           <div class="container">
+             <div class="col-sm-8">
+             	<h2 class="section-title2 font-light pr-0 nl-title">Newsletter</h2>
+             </div>
+             <div class="col-sm-4">
+             	<div class="relative" >
+             	  <div id="mc_embed_signup" class="nl-form-container clearfix">
+             	    <form action="http://abcgomel.us9.list-manage.com/subscribe/post-json?u=ba37086d08bdc9f56f3592af0&amp;id=e38247f7cc&amp;c=?" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="newsletterform validate" target="_blank" novalidate>   <!-- EDIT THIS ACTION URL (add "post-json?u" instead of "post?u" and appended "&amp;c=?" to the end of this URL) -->
+             	      <input type="email" value="" name="EMAIL" class="email nl-email-input" id="mce-EMAIL" placeholder="Email address" required>
+             	      <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+             	      <div style="position: absolute; left: -5000px;"><input type="text" name="b_ba37086d08bdc9f56f3592af0_e38247f7cc" tabindex="-1" value=""></div>
+
+             	      <button id="mc-embedded-subscribe" class="nl2-btn" type="submit" name="subscribe">
+             	            <span class="icon icon-arrows-slim-right"></span>
+             	          </button>
+             	    </form>
+             	    <div id="notification_container"  ></div>
+             	  </div>
+             	</div>
+             </div>
+           </div>
+         </div>
+
+         <!-- FOOTER 4 BLACK WITH TWITTER FEED -->
+         <footer id="footer4" class="page-section pt-95 pb-50 footer2-black">
+           <div class="container">
+             <!-- SUB FOOTER -->
+             <div class="footer2-copy-cont clearfix">
+               <!-- Social Links -->
+               <div class="footer2-soc-a right">
+                 <a href="https://facebook.com/Potboy-Groceries-183318985445161" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                 <a href="https://www.instagram.com/potboy_groceries/" title="Twitter" target="_blank"><i class="fa fa-instagram"></i></a>
+               </div>
+
+               <!-- Copyright -->
+               <div class="left">
+                 <a class="footer2-copy" href="<?php echo HOMEURL;?>" target="_blank">©Copyright 2017 by PB Grocery Group Sdn. Bhd. (1209976-H). All Rights Reserved.</a>
+               </div>
+
+             </div>
+
+           </div>
+         </footer>
+
+ 				<!-- BACK TO TOP -->
+ 				<!-- BACK TO TOP -->
+ 				<p id="back-top">
+           <a href="#top" title="Back to Top"><span class="icon icon-arrows-up"></span></a>
+         </p>
+
+ 			</div><!-- End BG -->
+ 		</div><!-- End wrap -->
+    </div>
+    </div>
+  </div>
+
+ <!-- JS begin -->
+
+ 		<!-- jQuery  -->
+ 		<script type="text/javascript" src="<?php echo FRONTJS;?>jquery.min.js"></script>
+
+ 		<!-- Include all compiled plugins (below), or include individual files as needed -->
+     <script src="<?php echo FRONTJS;?>bootstrap.min.js"></script>
+
+ 		<!-- MAGNIFIC POPUP -->
+ 		<script src='<?php echo FRONTJS;?>jquery.magnific-popup.min.js'></script>
+
+     <!-- PORTFOLIO SCRIPTS -->
+     <script type="text/javascript" src="<?php echo FRONTJS;?>isotope.pkgd.min.js"></script>
+     <script type="text/javascript" src="<?php echo FRONTJS;?>imagesloaded.pkgd.min.js"></script>
+     <script type="text/javascript" src="<?php echo FRONTJS;?>masonry.pkgd.min.js"></script>
+
+     <!-- APPEAR -->
+     <script type="text/javascript" src="<?php echo FRONTJS;?>jquery.appear.js"></script>
+
+     <!-- OWL CAROUSEL -->
+     <script type="text/javascript" src="<?php echo FRONTJS;?>owl.carousel.min.js"></script>
+
+     <!-- JQUERY TWEETS -->
+ 		<script src="<?php echo FRONTJS;?>twitter/jquery.tweet.js"></script>
+
+     <!-- MAIN SCRIPT -->
+ 		<script src="<?php echo FRONTJS;?>main.js"></script>
+
+ 		<!-- REVOSLIDER SCRIPTS  -->
+     <script src="revo-slider/js/jquery.themepunch.tools.min.js" type="text/javascript">
+     </script>
+     <script src="revo-slider/js/jquery.themepunch.revolution.min.js" type="text/javascript">
+     </script>
+
+     <!-- SLIDER REVOLUTION 5.0 EXTENSIONS
+       (Load Extensions only on Local File Systems !
+       The following part can be removed on Server for On Demand Loading) -->
+     <script src="revo-slider/js/extensions/revolution.extension.actions.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.carousel.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.kenburn.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.layeranimation.min.js" type="text/javascript">
+     </script>
+     <script src="revo-slider/js/extensions/revolution.extension.migration.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.navigation.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.parallax.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.slideanims.min.js" type="text/javascript"></script>
+     <script src="revo-slider/js/extensions/revolution.extension.video.min.js" type="text/javascript"></script>
+
+     <!-- SLIDER REVOLUTION INITIALIZATION  -->
+     <script type="text/javascript">
+       jQuery(document).ready(function() {
+
+         jQuery("#rev_slider_280_1").show().revolution({
+           sliderType: "hero",
+           jsFileLocation: "revo-slider/js/",
+           sliderLayout: "fullwidth",
+           dottedOverlay: "none",
+           delay: 9000,
+           responsiveLevels: [1240, 1024, 778, 480],
+           visibilityLevels: [1240, 1024, 778, 480],
+           gridwidth: [1240, 1024, 778, 480],
+           gridheight: [610, 550, 550, 550],
+           lazyType: "none",
+           parallax: {
+             type: "off",
+             origo: "slidercenter",
+             speed: 1000,
+             levels: [0],
+             type: "scroll",
+             disable_onmobile: "on"
+           },
+           shadow: 0,
+           spinner: "spinner2",
+           autoHeight: "off",
+           fullScreenAutoWidth: "off",
+           fullScreenAlignForce: "off",
+           fullScreenOffsetContainer: "",
+           fullScreenOffset: "",
+           disableProgressBar: "on",
+           hideThumbsOnMobile: "off",
+           hideSliderAtLimit: 0,
+           hideCaptionAtLimit: 0,
+           hideAllCaptionAtLilmit: 0,
+           debugMode: false,
+           fallbacks: {
+             simplifyAll: "off",
+             disableFocusListener: false,
+           }
+         });
+
+       }); /*ready*/
+     </script>
+
+ <!-- JS end -->
+
+ 	</body>
+ </html>
+ <?php
+  //include 'fefooter.php';
+  ?>

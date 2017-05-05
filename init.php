@@ -82,6 +82,7 @@ define("BACK_IMG", BACKASSETSURL . "img/");
 
 
 define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
+define("HOMEURL","http://potboy.com.my/");
 
 
 
