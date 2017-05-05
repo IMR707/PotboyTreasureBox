@@ -179,9 +179,17 @@ use Carbon\Carbon;
 
                     <div class="col-sm-12 col-md-12">
                       <div id="carousel-notification" class="bootstrap-carousel" data-indicators="true" data-controls="true">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" style="width:100%">
-                        <img src="http://www.howlofadog.org/wp-content/uploads/2015/05/laika-4.jpg" data-title="laika" data-content="Hey ...!"  style="width:100%">
-                        <img src="http://rack.3.mshcdn.com/media/ZgkyMDEyLzEyLzA0LzlkLzE1YmVzdGNhdG1lLmFIOC5qcGcKcAl0aHVtYgk1NjB4NzUwCmUJanBn/36a99417/5f7/15-best-cat-memes-ever-meow--3283dd863e.jpg" data-title="cat" style="width:100%">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+
+
                       </div>
                     </div>
 
@@ -195,9 +203,7 @@ use Carbon\Carbon;
         <!-- Simple panel -->
  				<div class="panel panel-flat">
  					<div class="panel-body">
- 						<p class="content-group">Common problem of templates is that all code is deeply integrated into the core. This limits your freedom in decreasing amount of code,
-               i.e. it becomes pretty difficult to remove unnecessary code from the project. Limitless allows you to remove unnecessary and extra code easily just by
-
+ 						<p class="content-group">Common problem of templates is that
               </p>
  					</div>
  				</div>
@@ -206,21 +212,20 @@ use Carbon\Carbon;
 
 
 
-        <!-- Grid -->
- 				<div class="row">
-          <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:2px !important;padding-right:2px !important;">
  						<!-- Horizontal form -->
- 						<div class="panel panel-flat">
- 							<div class="panel-body">
+ 						<div class="panel panel-flat" style="margin-bottom:5px !important">
+ 							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
  							</div>
  						</div>
  						<!-- /horizotal form -->
  					</div>
-          <div class="col-md-6 col-sm-6 col-xs-6">
+          <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:2px !important;padding-right:2px !important;">
  						<!-- Horizontal form -->
- 						<div class="panel panel-flat">
- 							<div class="panel-body">
+ 						<div class="panel panel-flat" style="margin-bottom:5px !important">
+ 							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
  							</div>
  						</div>
@@ -229,25 +234,27 @@ use Carbon\Carbon;
  				</div>
 
         <div class="row">
-          <div class="col-md-6 col-sm-6 col-xs-6">
+          <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:2px !important;padding-right:2px !important;">
  						<!-- Horizontal form -->
- 						<div class="panel panel-flat">
- 							<div class="panel-body">
+ 						<div class="panel panel-flat" style="margin-bottom:5px !important">
+ 							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
  							</div>
  						</div>
  						<!-- /horizotal form -->
  					</div>
-          <div class="col-md-6 col-sm-6 col-xs-6">
+          <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:2px !important;padding-right:2px !important;">
  						<!-- Horizontal form -->
- 						<div class="panel panel-flat">
- 							<div class="panel-body">
+ 						<div class="panel panel-flat" style="margin-bottom:5px !important">
+ 							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
  							</div>
  						</div>
  						<!-- /horizotal form -->
  					</div>
  				</div>
+
+
 
  			</div>
  			<!-- /main content -->
@@ -261,8 +268,9 @@ use Carbon\Carbon;
 <?php if (!MV) {
      ?>
  	<!-- Footer -->
+  <br>
  	<div class="footer text-muted">
-    ©Copyright <?php echo date('Y'); ?> by  <a href="<?php echo HOMEURL; ?>">PB Grocery Group Sdn. Bhd. (1209976-H)</a>. All Rights Reserved.
+    <center>©Copyright <?php echo date('Y'); ?> by  <a href="<?php echo HOMEURL; ?>">PB Grocery Group Sdn. Bhd. (1209976-H)</a>. All Rights Reserved.</center>
  	</div>
  	<!-- /footer -->
   <?php
