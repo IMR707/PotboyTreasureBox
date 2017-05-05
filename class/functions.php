@@ -30,6 +30,10 @@ function array_flatten($array)
     return $result;
 }
 
+function rd($string){
+  echo '<script>top.location.href="'.$string.'"</script>';
+}
+
 function GetXlsScript($FileName,$st,$highest_col)
         {
 

@@ -16,10 +16,28 @@
                 <span class="title">Dashboard</span>
             </a>
         </li>
-        <li class="nav-item start <?php isBackMenu($menu,'ADMIN_HOMEPAGE'); ?>">
-            <a href="admin-homepage.php" class="nav-link nav-toggle">
+        <li class="nav-item start <?php isBackMenu($menu,'ADMIN_HOMESLIDER'); ?>">
+            <a href="admin-homeslider.php" class="nav-link nav-toggle">
                 <i class="icon-home"></i>
-                <span class="title">Homepage</span>
+                <span class="title">Home Slider</span>
+            </a>
+        </li>
+        <li class="nav-item start <?php isBackMenu($menu,'ADMIN_ANNOUNCEMENT'); ?>">
+            <a href="admin-announcement.php" class="nav-link nav-toggle">
+                <i class="icon-home"></i>
+                <span class="title">Announcement</span>
+            </a>
+        </li>
+        <li class="nav-item start <?php isBackMenu($menu,'ADMIN_DAILYREWARD'); ?>">
+            <a href="admin-dailyreward.php" class="nav-link nav-toggle">
+                <i class="icon-home"></i>
+                <span class="title">Daily Reward</span>
+            </a>
+        </li>
+        <li class="nav-item start <?php isBackMenu($menu,'ADMIN_CONVERSION'); ?>">
+            <a href="admin-conversion.php" class="nav-link nav-toggle">
+                <i class="icon-home"></i>
+                <span class="title">Conversion</span>
             </a>
         </li>
         <li class="nav-item <?php isBackMenu($menu,'ADMIN_FORM'); ?>">

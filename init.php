@@ -79,6 +79,7 @@ define("BACK_SCRIPT", BACKASSETSURL . "assets/global/scripts/");
 define("BACK_CSS", BACKASSETSURL . "assets/global/css/");
 define("BACK_LAYOUT", BACKASSETSURL . "assets/layouts/");
 define("BACK_IMG", BACKASSETSURL . "img/");
+define("BACK_UPLOADS", BACKASSETSURL . "uploads/");
 
 
 define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
