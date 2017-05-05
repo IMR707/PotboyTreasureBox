@@ -239,8 +239,8 @@
   color: #fff;
 }
 .bg-purple {
-  background-color: #673AB7;
-  border-color: #673AB7;
+  background-color: #6F3996;
+  border-color: #6F3996;
   color: #fff;
 }
 .bg-purple-300 {
@@ -703,7 +703,7 @@
   border-color: #6A1B9A;
 }
 .border-purple {
-  border-color: #673AB7;
+  border-color: #6F3996;
 }
 .border-purple-300 {
   border-color: #9575CD;
@@ -997,7 +997,7 @@
   border-top-color: #6A1B9A;
 }
 .border-top-purple {
-  border-top-color: #673AB7;
+  border-top-color: #6F3996;
 }
 .border-top-purple-300 {
   border-top-color: #9575CD;
@@ -1288,7 +1288,7 @@
   border-bottom-color: #6A1B9A;
 }
 .border-bottom-purple {
-  border-bottom-color: #673AB7;
+  border-bottom-color: #6F3996;
 }
 .border-bottom-purple-300 {
   border-bottom-color: #9575CD;
@@ -1579,7 +1579,7 @@
   border-left-color: #6A1B9A;
 }
 .border-left-purple {
-  border-left-color: #673AB7;
+  border-left-color: #6F3996;
 }
 .border-left-purple-300 {
   border-left-color: #9575CD;
@@ -1870,7 +1870,7 @@
   border-right-color: #6A1B9A;
 }
 .border-right-purple {
-  border-right-color: #673AB7;
+  border-right-color: #6F3996;
 }
 .border-right-purple-300 {
   border-right-color: #9575CD;
@@ -2247,7 +2247,7 @@
 .text-purple,
 .text-purple:hover,
 .text-purple:focus {
-  color: #673AB7 !important;
+  color: #6F3996 !important;
 }
 .text-purple-300,
 .text-purple-300:hover,

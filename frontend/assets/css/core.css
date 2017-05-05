@@ -3550,7 +3550,7 @@ select[multiple].input-group-xs > .input-group-btn > .btn {
 }
 .navbar-brand > img {
   margin-top: 2px;
-  height: 16px;
+  height: 40px;
 }
 .navbar-nav {
   margin: 0;
@@ -3611,7 +3611,7 @@ select[multiple].input-group-xs > .input-group-btn > .btn {
 }
 .navbar-nav > .dropdown-user > a,
 .navbar-nav > .dropdown-user > a > span {
-  padding-top: 7.5px;
+  /*padding-top: 7.5px;*/
   padding-bottom: 7.5px;
 }
 .navbar-nav > .dropdown-user > a > span {

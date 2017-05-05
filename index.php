@@ -19,7 +19,7 @@ use Carbon\Carbon;
  	<meta charset="utf-8">
  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
  	<meta name="viewport" content="width=device-width, initial-scale=1">
- 	<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+ 	<title><?php echo $pname.WEBNAME;?></title>
 
  	<!-- Global stylesheets -->
  	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -47,9 +47,11 @@ use Carbon\Carbon;
    <div class="col-md-8 col-md-offset-2">
 
  	<!-- Main navbar -->
- 	<div class="navbar navbar-inverse bg-indigo">
+  <?php if(!MV){?>
+ 	<div class="navbar navbar-inverse bg-purple">
  		<div class="navbar-header">
- 			<a class="navbar-brand" href="index.html"><img src="assets/images/logo_light.png" alt=""></a>
+ 			<a class="navbar-brand" href="index.php"><img src="<?php echo BACK_IMG; ?>logo.png"></a>
+
 
  			<ul class="nav navbar-nav pull-right visible-xs-block">
  				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
@@ -57,47 +59,62 @@ use Carbon\Carbon;
  		</div>
 
  		<div class="navbar-collapse collapse" id="navbar-mobile">
- 			<ul class="nav navbar-nav">
- 				<li><a href="#">Text link</a></li>
 
- 				<li>
- 					<a href="#">
- 						<i class="icon-calendar3"></i>
- 						<span class="visible-xs-inline-block position-right">Icon link</span>
- 					</a>
- 				</li>
- 			</ul>
+
 
  			<ul class="nav navbar-nav navbar-right">
- 				<li><a href="#">Text link</a></li>
 
- 				<li>
- 					<a href="#">
- 						<i class="icon-cog3"></i>
- 						<span class="visible-xs-inline-block position-right">Icon link</span>
- 					</a>
- 				</li>
 
- 				<li class="dropdown dropdown-user">
- 					<a class="dropdown-toggle" data-toggle="dropdown">
- 						<img src="assets/images/image.png" alt="">
- 						<span>Victoria</span>
- 						<i class="caret"></i>
+        <span class="dy-diamond" style="">
+
+
+        </span>
+
+        <li class="dropdown dropdown-user">
+          <a><div class="left" data-toggle="tooltip" title="Potboy Credit - You can use credit to buy groceries. Buy your Potboy Credit at discounted rate today!"> <img src="http://potboy.com.my/pub/media/customercredit/point.png" style="width:15px"> <span id="credit_navlink">RM 0.00</span></div></a>
+        </li>
+
+        <li class="dropdown dropdown-user">
+          <a><div class="left" data-toggle="tooltip" title="Potboy Gold - You can further slash prices with Potboy Gold, collect Potboy Gold today!"> <img src="http://potboy.com.my/pub/media/logo/stores/1/gold.png" style="width:16px"> <span id="gold_navlink">0</span></div></a>
+        </li>
+
+        <li class="dropdown dropdown-user">
+          <a><div class="left" data-toggle="tooltip" title="Potboy Diamond - Earn Diamond with every RM50 purchase, you can convert Potboy Diamond to Potboy Gold!"><img src="http://potboy.com.my/pub/media/logo/stores/1/diamond.png" style="width:16px"> <span id="diamond_navlink">0</span></div></a>
+        </li>
+
+
+          <li class="dropdown dropdown-user">
+ 						<?php
+            if (!$user->logged_in) {
+                ?>
+                <a href="login.php"><span>Guest</span>
+                  <?php
+            }
+            else {
+              ?>
+              <a class="dropdown-toggle" data-toggle="dropdown"><span>User</span><i class="caret"></i>
+                <?php
+            }
+            ?>
+
  					</a>
 
  					<ul class="dropdown-menu dropdown-menu-right">
+
  						<li><a href="#"><i class="icon-user-plus"></i> My profile</a></li>
  						<li><a href="#"><i class="icon-coins"></i> My balance</a></li>
  						<li><a href="#"><span class="badge badge-warning pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li>
  						<li class="divider"></li>
  						<li><a href="#"><i class="icon-cog5"></i> Account settings</a></li>
  						<li><a href="#"><i class="icon-switch2"></i> Logout</a></li>
+
  					</ul>
  				</li>
  			</ul>
  		</div>
  	</div>
  	<!-- /main navbar -->
+
 
 
  	<!-- Second navbar -->
@@ -108,167 +125,35 @@ use Carbon\Carbon;
 
  		<div class="navbar-collapse collapse" id="navbar-second-toggle">
  			<ul class="nav navbar-nav">
- 				<li><a href="../index.html"><i class="icon-display4 position-left"></i> Dashboard</a></li>
+ 				<li><a href="index.php"><i class="icon-display4 position-left"></i> Dashboard</a></li>
+        <li><a href="index.php"><i class="icon-display4 position-left"></i> Bidding</a></li>
+        <li><a href="index.php"><i class="icon-display4 position-left"></i> Latest Winners</a></li>
+        <li><a href="index.php"><i class="icon-display4 position-left"></i> Wishlist Voting</a></li>
+        <?php
+        if (!$user->logged_in) {
+            ?>
+            <li><a href="login.php"><i class="icon-display4 position-left"></i> Login</a></li>
+              <?php
+        }
+        else {
+          ?>
+          <li><a href="index.php"><i class="icon-display4 position-left"></i> My Account</a></li>
+            <?php
+        }
+        ?>
 
- 				<li class="dropdown mega-menu mega-menu-wide">
- 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Mega menu <span class="caret"></span></a>
-
- 					<div class="dropdown-menu dropdown-content">
- 						<div class="dropdown-content-body">
- 							<div class="row">
- 								<div class="col-md-3">
- 									<span class="menu-heading underlined">Column 1 title</span>
- 									<ul class="menu-list">
- 										<li><a href="#">First link, first column</a></li>
- 										<li>
- 											<a href="#">Second link (multilevel)</a>
- 											<ul>
- 												<li><a href="#">Second level, first link</a></li>
- 												<li><a href="#">Second level, second link</a></li>
- 												<li><a href="#">Second level, third link</a></li>
- 												<li><a href="#">Second level, fourth link</a></li>
- 											</ul>
- 										</li>
- 										<li><a href="#">Third link, first column</a></li>
- 										<li><a href="#">Fourth link, first column</a></li>
- 									</ul>
- 								</div>
- 								<div class="col-md-3">
- 									<span class="menu-heading underlined">Column 2 title</span>
- 									<ul class="menu-list">
- 										<li><a href="#">First link, second column</a></li>
- 										<li>
- 											<a href="#">Second link (multilevel)</a>
- 											<ul>
- 												<li><a href="#">Second level, first link</a></li>
- 												<li><a href="#">Second level, second link</a></li>
- 												<li><a href="#">Second level, third link</a></li>
- 												<li><a href="#">Second level, fourth link</a></li>
- 											</ul>
- 										</li>
- 										<li><a href="#">Third link, second column</a></li>
- 										<li><a href="#">Fourth link, second column</a></li>
- 									</ul>
- 								</div>
- 								<div class="col-md-3">
- 									<span class="menu-heading underlined">Column 3 title</span>
- 									<ul class="menu-list">
- 										<li><a href="#">First link, third column</a></li>
- 										<li>
- 											<a href="#">Second link (multilevel)</a>
- 											<ul>
- 												<li><a href="#">Second level, first link</a></li>
- 												<li><a href="#">Second level, second link</a></li>
- 												<li><a href="#">Second level, third link</a></li>
- 												<li><a href="#">Second level, fourth link</a></li>
- 											</ul>
- 										</li>
- 										<li><a href="#">Third link, third column</a></li>
- 										<li><a href="#">Fourth link, third column</a></li>
- 									</ul>
- 								</div>
- 								<div class="col-md-3">
- 									<span class="menu-heading underlined">Column 4 title</span>
- 									<ul class="menu-list">
- 										<li><a href="#">First link, fourth column</a></li>
- 										<li>
- 											<a href="#">Second link (multilevel)</a>
- 											<ul>
- 												<li><a href="#">Second level, first link</a></li>
- 												<li><a href="#">Second level, second link</a></li>
- 												<li><a href="#">Second level, third link</a></li>
- 												<li><a href="#">Second level, fourth link</a></li>
- 											</ul>
- 										</li>
- 										<li><a href="#">Third link, fourth column</a></li>
- 										<li><a href="#">Fourth link, fourth column</a></li>
- 									</ul>
- 								</div>
- 							</div>
- 						</div>
- 					</div>
- 				</li>
-
- 				<li class="dropdown">
- 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
- 						Starter kit <span class="caret"></span>
- 					</a>
-
- 					<ul class="dropdown-menu width-200">
- 						<li class="dropdown-header">Basic layouts</li>
- 						<li class="dropdown-submenu">
- 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-grid2"></i> Columns</a>
- 							<ul class="dropdown-menu">
- 								<li class="dropdown-header highlight">Options</li>
- 								<li class="active"><a href="1_col.html">One column</a></li>
- 								<li><a href="2_col.html">Two columns</a></li>
- 								<li class="dropdown-submenu">
- 									<a href="#">Three columns</a>
- 									<ul class="dropdown-menu">
- 										<li class="dropdown-header highlight">Sidebar position</li>
- 										<li><a href="3_col_dual.html">Dual sidebars</a></li>
- 										<li><a href="3_col_double.html">Double sidebars</a></li>
- 									</ul>
- 								</li>
- 								<li><a href="4_col.html">Four columns</a></li>
- 							</ul>
- 						</li>
- 						<li class="dropdown-submenu">
- 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-paragraph-justify3"></i> Navbars</a>
- 							<ul class="dropdown-menu">
- 								<li class="dropdown-header highlight">Fixed navbars</li>
- 								<li><a href="layout_navbar_fixed_main.html">Fixed main navbar</a></li>
- 								<li><a href="layout_navbar_fixed_secondary.html">Fixed secondary navbar</a></li>
- 								<li><a href="layout_navbar_fixed_both.html">Both navbars fixed</a></li>
- 							</ul>
- 						</li>
- 						<li class="dropdown-header">Optional layouts</li>
- 						<li><a href="layout_boxed.html"><i class="icon-align-center-horizontal"></i> Fixed width</a></li>
- 						<li><a href="layout_sidebar_sticky.html"><i class="icon-flip-vertical3"></i> Sticky sidebar</a></li>
- 					</ul>
- 				</li>
- 			</ul>
-
- 			<ul class="nav navbar-nav navbar-right">
- 				<li><a href="#">Text link</a></li>
-
- 				<li class="dropdown">
- 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
- 						<i class="icon-cog3"></i>
- 						<span class="visible-xs-inline-block position-right">Dropdown</span>
- 						<span class="caret"></span>
- 					</a>
-
- 					<ul class="dropdown-menu dropdown-menu-right">
- 						<li><a href="#">Action</a></li>
- 						<li><a href="#">Another action</a></li>
- 						<li><a href="#">Something else here</a></li>
- 						<li class="divider"></li>
- 						<li><a href="#">One more separated line</a></li>
- 					</ul>
- 				</li>
  			</ul>
  		</div>
  	</div>
  	<!-- /second navbar -->
-
+<?php }?>
 
  	<!-- Page header -->
  	<div class="page-header">
  		<div class="page-header-content">
- 			<div class="page-title">
- 				<h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Starters</span> - One Column</h4>
+ 			<br>
 
- 				<ul class="breadcrumb breadcrumb-caret position-right">
- 					<li><a href="index.html">Home</a></li>
- 				<li><a href="1_col.html">Starters</a></li>
- 				<li class="active">One column</li>
- 				</ul>
- 			</div>
 
- 			<div class="heading-elements">
- 				<a href="#" class="btn btn-labeled btn-labeled-right bg-blue heading-btn">Button <b><i class="icon-menu7"></i></b></a>
- 			</div>
  		</div>
  	</div>
  	<!-- /page header -->
@@ -493,12 +378,13 @@ use Carbon\Carbon;
  	</div>
  	<!-- /page container -->
 
-
+<?php if(!MV){?>
  	<!-- Footer -->
  	<div class="footer text-muted">
     ©Copyright <?php echo date('Y');?> by  <a href="<?php echo HOMEURL;?>">PB Grocery Group Sdn. Bhd. (1209976-H)</a>. All Rights Reserved.
  	</div>
  	<!-- /footer -->
+  <?php }?>
   </div>
  </body>
  </html>

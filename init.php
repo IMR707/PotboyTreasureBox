@@ -23,14 +23,7 @@ require_once(BASEPATH.CLASSPATH."registry.php");
 Registry::set('Database', new Database(getenv('DB_SERVER'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_DATABASE')));
 $db = Registry::get("Database");
 $db->connect();
-
-
-
-
-
 require_once(BASEPATH.CLASSPATH."functions.php");
-echo jp(array('a' => 'a' ));
-
 require_once(BASEPATH.CLASSPATH."core.php");
 define("SITEURLconfig", $_SERVER['HTTP_HOST']);
 define("SITEDIRconfig", dirname($_SERVER['PHP_SELF']));
@@ -66,50 +59,35 @@ $site_url = $protocol . "://" . $url;
 define("SITEURL", $site_url);
 define("ADMINURL", $site_url . "/admin");
 define("UPLOADS", BASEPATH . "uploads/");
-
 define("FRONTASSETSURL", "frontend/");
 define("FRONTREVO", FRONTASSETSURL . "revo-slider/");
 define("FRONTCSS", FRONTASSETSURL . "assets/css/");
 define("FRONTJS", FRONTASSETSURL . "assets/js/");
 define("FRONTIMAGE", FRONTASSETSURL . "img/");
 define("FRONTICON", FRONTASSETSURL . "assets/icons/");
-//pre($_SERVER);
 define("BACKASSETSURL", "backend/");
 define("BACKCSS", BACKASSETSURL . "css/");
 define("BACKJS", BACKASSETSURL . "js/");
 define("BACKIMAGE", BACKASSETSURL . "img/");
 define("BACKICON", BACKASSETSURL . "icons/");
-
 define("BACK_INC", BACKASSETSURL . "include/");
 define("BACK_PLUGIN", BACKASSETSURL . "assets/global/plugins/");
 define("BACK_SCRIPT", BACKASSETSURL . "assets/global/scripts/");
 define("BACK_CSS", BACKASSETSURL . "assets/global/css/");
 define("BACK_LAYOUT", BACKASSETSURL . "assets/layouts/");
 define("BACK_IMG", BACKASSETSURL . "img/");
-
-
+define("WEBNAME", " | Potboy Treasure box");
+define("UPLOADURL", SITEURL . "/uploads/");
 define("SIGNUPURL", "http://potboy.com.my/customer/account/create/");
 define("HOMEURL", "http://potboy.com.my/");
-
 if (isset($_GET['mobileview'])) {
     switch ($_GET['mobileview']) {
     case '0':
       unset($_SESSION['mobileview']);
       break;
-
     default:
       $_SESSION['mobileview']=1;
       break;
   }
 }
-$mobileview=isset($_SESSION['mobileview']) ? 1:0;
-define("UPLOADURL", SITEURL . "/uploads/");
-// define("CSS", ASSETSURL . "css/");
-// define("JS", ASSETSURL . "js/");
-// define("IMAGE", ASSETSURL . "img/");
-// define("ICON", ASSETSURL . "icons/");
-$editfield=0;
-$dt=1;
-
-
-die;
+define("MV",isset($_SESSION['mobileview']) ? 1:0);
