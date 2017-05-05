@@ -13,6 +13,7 @@ class Fazrin
     const tb_an = 'aa_announcement';
     const tb_dr = 'aa_dailyreward';
     const tb_wof = 'aa_fortune';
+    const tb_cr = 'aa_conversion';
     private static $db;
     public function __construct()
     {
@@ -427,9 +428,69 @@ class Fazrin
       echo json_encode($row);
     }
 
+    /********* CONVERSION RATE **********************************************/
 
+    public function create_conversion()
+    {
+      $_SESSION['noti_convert'] = '';
+      $package_name = sanitize($_POST['package_name']);
+      $prio = $_POST['package_prio'];
+      $diamond_amount = $_POST['diamond_amount'];
+      $gold_amount = $_POST['gold_amount'];
 
+      if($_FILES['package_image']['error'] != 0){
+        $_SESSION['noti_convert']['status'] = 'error';
+        $_SESSION['noti_convert']['msg'] = 'Problem with the uploaded file.';
+      }else{
+        $img_tmp = $_FILES['package_image']['tmp_name'];
+        $img_name = $_FILES['package_image']['name'];
+        $save_name = 'conversion-'.date("Ymdhis").uniqid().'.jpg';
 
+        $data = array(
+          'name' => $package_name,
+          'prio' => $prio,
+          'icon' => $save_name,
+          'diamond_amount' => $diamond_amount,
+          'gold_amount' => $gold_amount,
+          'date_updated' => 'now()',
+          'date_created' => 'now()'
+        );
+        $res = self::$db->insert(self::tb_cr, $data);
+        if(!$res){
+          $_SESSION['noti_convert']['status'] = 'error';
+          $_SESSION['noti_convert']['msg'] = 'Problem occured while inserting data.';
+        }else{
+          if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
+            $_SESSION['noti_convert']['status'] = 'success';
+            $_SESSION['noti_convert']['msg'] = 'New conversion package created.';
+          }else{
+            $_SESSION['noti_convert']['status'] = 'error';
+            $_SESSION['noti_convert']['msg'] = 'Problem occured while uploading file.';
+          }
+        }
+      }
+
+      rd('../admin-conversion.php');
+      die;
+
+    }
+
+    public function getConversion()
+    {
+      $sql = "SELECT * FROM ".self::tb_cr." WHERE active = 1 ORDER BY prio";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
+    public function getConversionByID()
+    {
+      $id = $_POST['id'];
+      $sql = "SELECT * FROM ".self::tb_cr." where id='$id'";
+      $row = self::$db->first($sql);
+
+      echo json_encode($row);
+    }
 
 
 

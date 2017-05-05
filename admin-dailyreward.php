@@ -526,6 +526,7 @@ $(document).ready(function(){
   });
 
   $('#modal_update').on('hide.bs.modal',function(){
+    $('#upd_id').val('');
     $('#day_upd').val('');
     $('#gold_upd').prop('checked',false);
     $('#gold_amount_upd').hide();

@@ -57,6 +57,16 @@ elseif($_POST['func'] == 'getWofByID'){
   $fz->getWofByID();
 }
 
+//conversion
+
+elseif($_POST['func'] == 'create_conversion'){
+  $fz->create_conversion();
+}
+
+elseif($_POST['func'] == 'getConversionByID'){
+  $fz->getConversionByID();
+}
+
 
 
 

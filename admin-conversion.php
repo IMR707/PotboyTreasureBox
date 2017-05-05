@@ -65,7 +65,7 @@ if (!$user->logged_in) {
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo">
                             <i class="icon-settings font-red-sunglo"></i>
-                            <span class="caption-subject bold uppercase">Conversion Package</span>
+                            <span class="caption-subject bold uppercase">Conversion Package </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -73,37 +73,43 @@ if (!$user->logged_in) {
                         <div class="col-md-6">
                           <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
                             <h4>Add New Package</h4>
-                              <div class="form-group">
-                                  <label class="col-md-3 control-label">Day</label>
-                                  <div class="col-md-9">
-                                      <input type="number" class="form-control" placeholder="Day" value="1" min="1" name="day" required>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label class="col-md-3 control-label">Item</label>
-                                  <div class="col-md-9">
-                                      <div class="mt-checkbox-list">
-                                          <label class="mt-checkbox mt-checkbox-outline">
-                                              <input type="checkbox" class="gold_check" id="gold_new" name="gold_check" value="1"> Gold
-                                              <span></span>
-                                          </label>
-                                          <span id="gold_amount_new" style="display:none"><input type="number" id="gold_input_new" class="form-control" placeholder="Gold Amount" name="gold_amount"><br></span>
-                                          <label class="mt-checkbox mt-checkbox-outline">
-                                              <input type="checkbox" class="spin_check" id="spin_new" name="spin_check" value="1"> Spin
-                                              <span></span>
-                                          </label>
-                                          <span id="spin_amount_new" style="display:none"><input type="number" id="spin_input_new" class="form-control" placeholder="Spin Amount" name="spin_amount"><br></span>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label class="col-md-3 control-label"></label>
-                                  <div class="col-md-9">
-                                    <button type="submit" class="btn blue">Create</button>
-                                    <button type="button" class="btn default">Cancel</button>
-                                  </div>
-                              </div>
-                              <input type="hidden" name="func" value="create_dailyreward">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Name</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" placeholder="Package Name" name="package_name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Priority</label>
+                                <div class="col-md-9">
+                                    <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="package_prio" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Image</label>
+                                <div class="col-md-9">
+                                    <input type="file" class="form-control" name="package_image" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Rate</label>
+                                <div class="col-md-9">
+                                    <div class="input-group input-large">
+                                        <input type="number" class="form-control" name="diamond_amount" placeholder="Diamond">
+                                        <span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
+                                        <input type="number" class="form-control" name="gold_amount" placeholder="Gold">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                  <button type="submit" class="btn blue">Create</button>
+                                  <button type="button" class="btn default">Cancel</button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="func" value="create_conversion">
                           </form>
                         </div>
                         <div class="clearfix"></div>
@@ -114,26 +120,26 @@ if (!$user->logged_in) {
                             <h4>Package List</h4>
                             <?php
 
-                            if(isset($_SESSION['noti_slider'])){
-                              if($_SESSION['noti_slider']['status'] == 'error'){
-                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_slider']['msg'].'</div>';
-                              }elseif($_SESSION['noti_slider']['status'] == 'success'){
-                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_slider']['msg'].'</div>';
+                            if(isset($_SESSION['noti_convert'])){
+                              if($_SESSION['noti_convert']['status'] == 'error'){
+                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_convert']['msg'].'</div>';
+                              }elseif($_SESSION['noti_convert']['status'] == 'success'){
+                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_convert']['msg'].'</div>';
                               }
-                              unset($_SESSION['noti_slider']);
+                              unset($_SESSION['noti_convert']);
                             }
 
-                            $rewards = $fz->getDailyReward();
+                            $rewards = $fz->getConversion();
                             ?>
 
                             <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
-                                  <th class="text-center">Day</th>
+                                  <th class="text-center">Priority</th>
+                                  <th class="text-center">Icon</th>
+                                  <th class="text-center">Name</th>
+                                  <th class="text-center">Diamond</th>
                                   <th class="text-center">Gold</th>
-                                  <th class="text-center">Gold Amount</th>
-                                  <th class="text-center">Spin</th>
-                                  <th class="text-center">Spin Amount</th>
                                   <th class="text-center" width="15%">Action</th>
                                 </tr>
                               </thead>
@@ -144,30 +150,16 @@ if (!$user->logged_in) {
                             ?>
 
                                 <tr>
-                                  <td class="text-center"><?php echo $row->day_num; ?></td>
+                                  <td class="text-center"><?php echo $row->prio; ?></td>
                                   <td class="text-center">
-                                    <?php
-                                    if($row->gold_check){
-                                      echo '<i class="fa fa-check text-success"></i>';
-                                    }else{
-                                      echo '<i class="fa fa-times text-danger"></i>';
-                                    }
-                                    ?>
+                                    <img src="<?php echo BACK_UPLOADS.$row->icon; ?>" class="img-thumbnail">
                                   </td>
+                                  <td class="text-center"><?php echo $row->name; ?></td>
+                                  <td class="text-center"><?php echo $row->diamond_amount; ?></td>
                                   <td class="text-center"><?php echo $row->gold_amount; ?></td>
-                                  <td class="text-center">
-                                    <?php
-                                    if($row->spin_check){
-                                      echo '<i class="fa fa-check text-success"></i>';
-                                    }else{
-                                      echo '<i class="fa fa-times text-danger"></i>';
-                                    }
-                                    ?>
-                                  </td>
-                                  <td class="text-center"><?php echo $row->spin_amount; ?></td>
 
                                   <td class="text-center">
-                                    <button class="btn btn-sm btn-warning btn_updateDailyReward" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn btn-sm btn-warning btn_updateConversion" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                     <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                   </td>
                                 </tr>
@@ -190,38 +182,45 @@ if (!$user->logged_in) {
                                     </div>
                                     <div class="modal-body">
                                       <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label">Day</label>
-                                              <div class="col-md-9">
-                                                  <input type="number" class="form-control" placeholder="Day" value="1" min="1" name="day" required id="day_upd">
-                                              </div>
-                                          </div>
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label">Item</label>
-                                              <div class="col-md-9">
-                                                  <div class="mt-checkbox-list">
-                                                      <label class="mt-checkbox mt-checkbox-outline">
-                                                          <input type="checkbox" class="gold_check" id="gold_upd" name="gold_check" value="1"> Gold
-                                                          <span></span>
-                                                      </label>
-                                                      <span id="gold_amount_upd" style="display:none"><input type="number" id="gold_input_upd" class="form-control" placeholder="Gold Amount" name="gold_amount"><br></span>
-                                                      <label class="mt-checkbox mt-checkbox-outline">
-                                                          <input type="checkbox" class="spin_check" id="spin_upd" name="spin_check" value="1"> Spin
-                                                          <span></span>
-                                                      </label>
-                                                      <span id="spin_amount_upd" style="display:none"><input type="number" id="spin_input_upd" class="form-control" placeholder="Spin Amount" name="spin_amount"><br></span>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label"></label>
-                                              <div class="col-md-9">
-                                                <button type="submit" class="btn blue">Update</button>
-                                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                              </div>
-                                          </div>
-                                          <input type="hidden" name="func" value="update_dailyreward">
-                                          <input type="hidden" name="id" id="upd_id" value="">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" placeholder="Package Name" name="package_name" required id="package_name_upd">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Priority</label>
+                                            <div class="col-md-9">
+                                                <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="package_prio" required id="package_prio_upd">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Image</label>
+                                            <div class="col-md-9">
+                                                <img src="" id="package_image_upd" class="img-thumbnail">
+                                                <input type="file" class="form-control" name="package_image" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Rate</label>
+                                            <div class="col-md-9">
+                                                <div class="input-group input-large">
+                                                    <input type="number" class="form-control" name="diamond_amount" placeholder="Diamond" id="diamond_amount_upd">
+                                                    <span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
+                                                    <input type="number" class="form-control" name="gold_amount" placeholder="Gold" id="gold_amount_upd">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"></label>
+                                            <div class="col-md-9">
+                                              <button type="submit" class="btn blue">Update</button>
+                                              <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="func" value="update_conversion">
+                                        <input type="hidden" name="id" id="upd_id" value="">
                                       </form>
                                     </div>
                                 </div>
@@ -245,38 +244,12 @@ if (!$user->logged_in) {
 
 $(document).ready(function(){
 
-  $('.gold_check').on('change',function(){
-    var ids = $(this).attr('id');
-    var id_arr = ids.split('_');
-    var id = id_arr[1];
 
-    if($(this).is(':checked')){
-      $('#gold_input_'+id).prop('required',true);
-      $('#gold_amount_'+id).show();
-    }else{
-      $('#gold_input_'+id).prop('required',false);
-      $('#gold_amount_'+id).hide();
-    }
-  });
 
-  $('.spin_check').on('change',function(){
-    var ids = $(this).attr('id');
-    var id_arr = ids.split('_');
-    var id = id_arr[1];
-
-    if($(this).is(':checked')){
-      $('#spin_input_'+id).prop('required',true);
-      $('#spin_amount_'+id).show();
-    }else{
-      $('#spin_input_'+id).prop('required',false);
-      $('#spin_amount_'+id).hide();
-    }
-  });
-
-  $('.btn_updateDailyReward').on('click',function(){
+  $('.btn_updateConversion').on('click',function(){
     var id = $(this).attr('id');
 
-    var dataString = "id="+id+"&func=getWofByID";
+    var dataString = "id="+id+"&func=getConversionByID";
     $.ajax({
       type    : "POST",
       url     : "backend/process.php",
@@ -285,19 +258,11 @@ $(document).ready(function(){
       dataType: 'json',
       success : function(data)
       {
-        $('#day_upd').val(data.day_num);
-        var gold_check = data.gold_check;
-        var spin_check = data.spin_check;
-        if(gold_check == 1){
-          $('#gold_upd').prop('checked',true);
-          $('#gold_amount_upd').show();
-          $('#gold_input_upd').val(data.gold_amount);
-        }
-        if(spin_check == 1){
-          $('#spin_upd').prop('checked',true);
-          $('#spin_amount_upd').show();
-          $('#spin_input_upd').val(data.spin_amount);
-        }
+        $('#package_name_upd').val(data.name);
+        $('#package_prio_upd').val(data.prio);
+        $('#diamond_amount_upd').val(data.diamond_amount);
+        $('#gold_amount_upd').val(data.gold_amount);
+        $('#package_image_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.icon);
         $('#upd_id').val(data.id);
         $('#modal_update').modal('show');
       }
@@ -305,14 +270,12 @@ $(document).ready(function(){
   });
 
   $('#modal_update').on('hide.bs.modal',function(){
-    $('#day_upd').val('');
-    $('#gold_upd').prop('checked',false);
-    $('#gold_amount_upd').hide();
-    $('#gold_input_upd').val('');
-    $('#spin_upd').prop('checked',false);
-    $('#spin_amount_upd').hide();
-    $('#spin_input_upd').val('');
-
+    $('#package_name_upd').val('');
+    $('#package_image_upd').attr('src','');
+    $('#package_prio_upd').val('');
+    $('#diamond_amount_upd').val('');
+    $('#gold_amount_upd').val('');
+    $('#upd_id').val('');
   });
 
 
