@@ -3,9 +3,9 @@
 /************** BASIC CONFIG *************************/
 
 define('_VALID_PHP', true);
-$pname = 'Conversion Rate';
-$menu = 'ADMIN_CONVERSION';
-$submenu = '';
+$pname = 'Sponsor Management';
+$menu = 'ADMIN_BIDDING';
+$submenu = 'ADMIN_BIDDING_SPONSOR';
 require_once 'init.php';
 use Carbon\Carbon;
 
@@ -65,14 +65,14 @@ if (!$user->logged_in) {
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo">
                             <i class="icon-settings font-red-sunglo"></i>
-                            <span class="caption-subject bold uppercase">Conversion Package </span>
+                            <span class="caption-subject bold uppercase">Sponsor Management </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
                       <div class="row">
                         <div class="col-md-6">
                           <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                            <h4>Add New Package</h4>
+                            <h4>Add New Sponsor</h4>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Name</label>
                                 <div class="col-md-9">
@@ -80,27 +80,18 @@ if (!$user->logged_in) {
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Priority</label>
-                                <div class="col-md-9">
-                                    <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="package_prio" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Image</label>
+                                <label class="col-md-3 control-label">Logo</label>
                                 <div class="col-md-9">
                                     <input type="file" class="form-control" name="package_image" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Rate</label>
+                                <label class="col-md-3 control-label">Description</label>
                                 <div class="col-md-9">
-                                    <div class="input-group input-large">
-                                        <input type="number" class="form-control" name="diamond_amount" placeholder="Diamond">
-                                        <span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
-                                        <input type="number" class="form-control" name="gold_amount" placeholder="Gold">
-                                    </div>
+                                    <textarea class="form-control" name="package_image" rows="6" required></textarea>
                                 </div>
                             </div>
+
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label"></label>

@@ -3,9 +3,9 @@
 /************** BASIC CONFIG *************************/
 
 define('_VALID_PHP', true);
-$pname = 'Conversion Rate';
-$menu = 'ADMIN_CONVERSION';
-$submenu = '';
+$pname = 'Product Management';
+$menu = 'ADMIN_BIDDING';
+$submenu = 'ADMIN_BIDDING_PRODUCT';
 require_once 'init.php';
 use Carbon\Carbon;
 
@@ -65,51 +65,69 @@ if (!$user->logged_in) {
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo">
                             <i class="icon-settings font-red-sunglo"></i>
-                            <span class="caption-subject bold uppercase">Conversion Package </span>
+                            <span class="caption-subject bold uppercase">Product Management </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
                       <div class="row">
                         <div class="col-md-6">
                           <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                            <h4>Add New Package</h4>
+                            <h4>Add New Product</h4>
+                            <?php
+
+                            if(isset($_SESSION['noti_add']) && $_SESSION['noti_add'] != ''){
+                              if($_SESSION['noti_add']['status'] == 'error'){
+                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_add']['msg'].'</div>';
+                              }elseif($_SESSION['noti_add']['status'] == 'success'){
+                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_add']['msg'].'</div>';
+                              }
+                              unset($_SESSION['noti_add']);
+                            }
+
+                            ?>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Name</label>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" placeholder="Package Name" name="package_name" required>
+                                    <input type="text" class="form-control" placeholder="Product Name" name="name" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Priority</label>
+                                <label class="col-md-3 control-label">Banner</label>
                                 <div class="col-md-9">
-                                    <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="package_prio" required>
+                                    <input type="file" class="form-control input-file" name="img_banner" required>
+                                    <span></span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Image</label>
+                                <label class="col-md-3 control-label">Header</label>
                                 <div class="col-md-9">
-                                    <input type="file" class="form-control" name="package_image" required>
+                                    <input type="file" class="form-control input-file" name="img_header" required>
+                                    <span></span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Rate</label>
+                                <label class="col-md-3 control-label">Thumbnail</label>
                                 <div class="col-md-9">
-                                    <div class="input-group input-large">
-                                        <input type="number" class="form-control" name="diamond_amount" placeholder="Diamond">
-                                        <span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
-                                        <input type="number" class="form-control" name="gold_amount" placeholder="Gold">
-                                    </div>
+                                    <input type="file" class="form-control input-file" name="img_thumbnail" required>
+                                    <span></span>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Specification & Description</label>
+                                <div class="col-md-9">
+                                    <textarea class="form-control" name="desc" rows="6" required></textarea>
+                                </div>
+                            </div>
+
 
                             <div class="form-group">
                                 <label class="col-md-3 control-label"></label>
                                 <div class="col-md-9">
-                                  <button type="submit" class="btn blue">Create</button>
+                                  <button type="submit" class="btn blue btn_submit">Create</button>
                                   <button type="button" class="btn default">Cancel</button>
                                 </div>
                             </div>
-                            <input type="hidden" name="func" value="create_conversion">
+                            <input type="hidden" name="func" value="create_product">
                           </form>
                         </div>
                         <div class="clearfix"></div>
@@ -117,29 +135,26 @@ if (!$user->logged_in) {
                       </div>
                         <div class="row">
                           <div class="col-md-12">
-                            <h4>Package List</h4>
+                            <h4>Product List</h4>
                             <?php
 
-                            if(isset($_SESSION['noti'])){
-                              if($_SESSION['noti']['status'] == 'error'){
-                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
-                              }elseif($_SESSION['noti']['status'] == 'success'){
-                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
+                            if(isset($_SESSION['noti_upd']) && $_SESSION['noti_upd'] != ''){
+                              if($_SESSION['noti_upd']['status'] == 'error'){
+                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_upd']['msg'].'</div>';
+                              }elseif($_SESSION['noti_upd']['status'] == 'success'){
+                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_upd']['msg'].'</div>';
                               }
-                              unset($_SESSION['noti']);
+                              unset($_SESSION['noti_upd']);
                             }
 
-                            $rewards = $fz->getConversion();
+                            $rewards = $fz->getProduct();
                             ?>
 
                             <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
-                                  <th class="text-center">Priority</th>
-                                  <th class="text-center">Icon</th>
-                                  <th class="text-center">Name</th>
-                                  <th class="text-center">Diamond</th>
-                                  <th class="text-center">Gold</th>
+                                  <th class="text-center" style="width:20%">Thumbnail</th>
+                                  <th class="text-left">Product Name</th>
                                   <th class="text-center" width="15%">Action</th>
                                 </tr>
                               </thead>
@@ -150,13 +165,10 @@ if (!$user->logged_in) {
                             ?>
 
                                 <tr>
-                                  <td class="text-center"><?php echo $row->prio; ?></td>
                                   <td class="text-center">
-                                    <img src="<?php echo BACK_UPLOADS.$row->icon; ?>" class="img-thumbnail">
+                                    <img src="<?php echo BACK_UPLOADS.$row->img_thumbnail; ?>" class="img-thumbnail">
                                   </td>
-                                  <td class="text-center"><?php echo $row->name; ?></td>
-                                  <td class="text-center"><?php echo $row->diamond_amount; ?></td>
-                                  <td class="text-center"><?php echo $row->gold_amount; ?></td>
+                                  <td class="text-left"><?php echo $row->name; ?></td>
 
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateConversion" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
@@ -185,7 +197,7 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Name</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="Package Name" name="package_name" required id="package_name_upd">
+                                                <input type="text" class="form-control" placeholder="Product Name" name="package_name" required id="package_name_upd">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -244,7 +256,38 @@ if (!$user->logged_in) {
 
 $(document).ready(function(){
 
+  var allowedType = [
+    "image/jpeg",
+    "image/jpg",
+    "image/pjpeg",
+    "image/x-png",
+    "image/png"
+  ];
 
+  $(".input-file").change(function () {
+    readURLmultiple(this);
+
+    if($(".input-file").parent().find('span').hasClass('text-danger')){
+      $('.btn_submit').prop('disabled',true);
+    }else{
+      $('.btn_submit').prop('disabled',false);
+    }
+
+  });
+
+  function readURLmultiple(input){
+    $('#multiple_photo_preview').html('');
+
+      $.each(input.files, function( index, value ){
+        if (input.files && input.files[index]){
+          if($.inArray(value.type, allowedType) == -1){
+            $(input).parent().addClass('has-error').find('span').addClass('text-danger').html('File type not allowed');
+          }else{
+            $(input).parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
+          }
+        }
+    });
+  }
 
   $('.btn_updateConversion').on('click',function(){
     var id = $(this).attr('id');

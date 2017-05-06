@@ -40,6 +40,28 @@
                 <span class="title">Conversion</span>
             </a>
         </li>
+        <li class="nav-item <?php isBackMenu($menu,'ADMIN_BIDDING'); ?>">
+            <a href="javascript:;" class="nav-link nav-toggle">
+                <i class="icon-settings"></i>
+                <span class="title">Bidding</span>
+                <span class="selected"></span>
+                <span class="arrow open"></span>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_BIDDING_PRODUCT'); ?>">
+                    <a href="admin-product.php" class="nav-link ">
+                        <span class="title">Product</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>            
+                <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_BIDDING_SPONSOR'); ?>">
+                    <a href="admin-sponsor.php" class="nav-link ">
+                        <span class="title">Sponsor</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li class="nav-item <?php isBackMenu($menu,'ADMIN_FORM'); ?>">
             <a href="javascript:;" class="nav-link nav-toggle">
                 <i class="icon-settings"></i>

@@ -14,7 +14,17 @@ class Fazrin
     const tb_dr = 'aa_dailyreward';
     const tb_wof = 'aa_fortune';
     const tb_cr = 'aa_conversion';
+    const tb_prod = 'aa_product';
     private static $db;
+
+    public static $allowedType = array(
+      "image/jpeg",
+      "image/jpg",
+      "image/pjpeg",
+      "image/x-png",
+      "image/png"
+    );
+
     public function __construct()
     {
         self::$db = Registry::get('Database');
@@ -462,7 +472,7 @@ class Fazrin
         }else{
           if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
             $_SESSION['noti_convert']['status'] = 'success';
-            $_SESSION['noti_convert']['msg'] = 'New conversion package created.';
+            $_SESSION['noti_convert']['msg'] = 'New conversion rate package created.';
           }else{
             $_SESSION['noti_convert']['status'] = 'error';
             $_SESSION['noti_convert']['msg'] = 'Problem occured while uploading file.';
@@ -473,6 +483,57 @@ class Fazrin
       rd('../admin-conversion.php');
       die;
 
+    }
+
+    public function update_conversion()
+    {
+      $_SESSION['noti'] = '';
+      $package_name = sanitize($_POST['package_name']);
+      $prio = $_POST['package_prio'];
+      $diamond_amount = $_POST['diamond_amount'];
+      $gold_amount = $_POST['gold_amount'];
+      $id = $_POST['id'];
+
+      $data = array(
+        'name' => $package_name,
+        'prio' => $prio,
+        'diamond_amount' => $diamond_amount,
+        'gold_amount' => $gold_amount,
+        'date_updated' => 'now()',
+      );
+      $res = self::$db->update(self::tb_cr, $data,"id='$id'");
+      if(!$res){
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while inserting data.';
+      }else{
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Daily reward package updated.';
+
+        if(isset($_FILES)){
+          if($_FILES['package_image']['error'] == 0){
+
+            $img_tmp = $_FILES['package_image']['tmp_name'];
+            $img_name = $_FILES['package_image']['name'];
+            $save_name = 'homeslider-'.date("Ymdhis").uniqid().'.jpg';
+
+            if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
+
+              $data = array(
+                'icon' => $save_name
+              );
+              $res = self::$db->update(self::tb_cr, $data,"id='$id'");
+
+              $_SESSION['noti']['status'] = 'success';
+              $_SESSION['noti']['msg'] = 'Conversion rate package updated.';
+            }else{
+              $_SESSION['noti']['status'] = 'error';
+              $_SESSION['noti']['msg'] = 'Problem occured while uploading file.';
+            }
+          }
+        }
+      }
+      rd('../admin-conversion.php');
+      die;
     }
 
     public function getConversion()
@@ -492,9 +553,74 @@ class Fazrin
       echo json_encode($row);
     }
 
+    /********* PRODUCT **********************************************/
 
+    public function create_product()
+    {
+      $_SESSION['noti_add'] = '';
+      $_SESSION['noti_add']['msg'] = '<ul>';
 
+      $fileTitle = array(
+        'img_banner' => 'Image Banner',
+        'img_header' => 'Image Header',
+        'img_thumbnail' => 'Image Thumbnail'
+      );
 
+      $checkfile = true;
+      foreach($_FILES as $key_file => $eachfile){
+        if($eachfile['error'] != 0){
+          $_SESSION['noti_add']['status'] = 'error';
+          $_SESSION['noti_add']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
+          $checkfile = false;
+        }
+      }
+      $_SESSION['noti_add']['msg'] .= '</ul>';
+
+      if(!$checkfile){
+        rd('../admin-product.php');
+        die;
+      }else{
+        $_SESSION['noti_add']['msg'] = '<ul>';
+        $name = sanitize($_POST['name']);
+        $desc = sanitize($_POST['desc']);
+
+        $data = array(
+          'name' => $name,
+          'desc' => $desc,
+          'date_created' => 'now()',
+          'date_updated' => 'now()'
+        );
+
+        foreach($_FILES as $key_file => $eachfile){
+          $img_tmp = $_FILES[$key_file]['tmp_name'];
+          $img_name = $_FILES[$key_file]['name'];
+          $save_name = 'product-'.date("Ymdhis").uniqid().'.jpg';
+
+          if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
+            $data[$key_file] = $save_name;
+
+            $_SESSION['noti_add']['status'] = 'success';
+            $_SESSION['noti_add']['msg'] = '<li>New product created.</li>';
+          }else{
+            $_SESSION['noti_add']['status'] = 'error';
+            $_SESSION['noti_add']['msg'] .= '<li>Problem occured while uploading file.</li>';
+          }
+        }
+
+        $res = self::$db->insert(self::tb_prod, $data);
+        $_SESSION['noti_add']['msg'] .= '</ul>';
+      }
+      rd('../admin-product.php');
+      die;
+    }
+
+    public function getProduct()
+    {
+      $sql = "SELECT * FROM ".self::tb_prod." WHERE active = 1";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
 
 
 

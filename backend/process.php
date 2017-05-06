@@ -63,8 +63,18 @@ elseif($_POST['func'] == 'create_conversion'){
   $fz->create_conversion();
 }
 
+elseif($_POST['func'] == 'update_conversion'){
+  $fz->update_conversion();
+}
+
 elseif($_POST['func'] == 'getConversionByID'){
   $fz->getConversionByID();
+}
+
+//Product
+
+elseif($_POST['func'] == 'create_product'){
+  $fz->create_product();
 }
 
 

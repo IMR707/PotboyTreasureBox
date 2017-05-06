@@ -497,7 +497,7 @@ $(document).ready(function(){
   $('.btn_updateDailyReward').on('click',function(){
     var id = $(this).attr('id');
 
-    var dataString = "id="+id+"&func=getWofByID";
+    var dataString = "id="+id+"&func=getDailyRewardByID";
     $.ajax({
       type    : "POST",
       url     : "backend/process.php",
@@ -560,11 +560,10 @@ $(document).ready(function(){
     });
   });
 
-  $('#modal_update').on('hide.bs.modal',function(){
+  $('#modal_update_wof').on('hide.bs.modal',function(){
     $('#wof_prio_upd').val('');
     $('#wof_amount_upd').val('');
-    $('#wof_percent_upd').val('');
-    $('input[class=wof_type_upd][name=wof_type][value='+data.wof_type+']').prop('checked', false);
+    $('#wof_percent_upd').val('');    
     $('#wof_icon_upd').attr('src','');
     $('#upd_id_wof').val('');
 

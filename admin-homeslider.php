@@ -70,7 +70,44 @@ if (!$user->logged_in) {
                     </div>
                     <div class="portlet-body form">
                         <div class="row">
+                          <div class="col-md-6">
+                            <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
+                                <div class="form-body">
+                                  <h4>Add New Slider Image</h4>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Title</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" placeholder="Title" name="title" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Priority</label>
+                                        <div class="col-md-9">
+                                            <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="prio" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Image File</label>
+                                        <div class="col-md-9">
+                                            <input type="file" class="form-control input-file-add" name="image_slide" required>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"></label>
+                                        <div class="col-md-9">
+                                          <button type="submit" class="btn blue btn_submit_add">Create</button>
+                                          <button type="button" class="btn default">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="func" value="create_slideimage">
+                            </form>
+                          </div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-12">
+                            <hr>
                             <?php
 
                             if(isset($_SESSION['noti_slider'])){
@@ -88,6 +125,9 @@ if (!$user->logged_in) {
                             ?>
 
                             <div class="row">
+                              <div class="col-md-12">
+                                <h4>Slider Image List</h4>
+                              </div>
                               <div class="col-md-6">
                                 <img src="<?php echo BACK_UPLOADS.$row->img_name; ?>" class="img-thumbnail">
                               </div>
@@ -109,7 +149,8 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Image File</label>
                                             <div class="col-md-9">
-                                                <input type="file" class="form-control" name="image_slide">
+                                                <input type="file" class="form-control input-file-upd" id="upd-<?php echo $row->id; ?>" name="image_slide">
+                                                <span></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -130,7 +171,7 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"></label>
                                             <div class="col-md-9">
-                                              <button type="submit" class="btn blue">Update</button>
+                                              <button type="submit" class="btn blue" id="btn_submit_upd_<?php echo $row->id; ?>">Update</button>
                                               <button type="reset" class="btn default">Cancel</button>
                                             </div>
                                         </div>
@@ -150,41 +191,7 @@ if (!$user->logged_in) {
 
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                                <div class="form-body">
-                                  <h4>Add New Slider Image</h4>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Title</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" placeholder="Title" name="title" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Priority</label>
-                                        <div class="col-md-9">
-                                            <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="prio" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Image File</label>
-                                        <div class="col-md-9">
-                                            <input type="file" class="form-control" name="image_slide" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label"></label>
-                                        <div class="col-md-9">
-                                          <button type="submit" class="btn blue">Create</button>
-                                          <button type="button" class="btn default">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="func" value="create_slideimage">
-                            </form>
-                          </div>
-                        </div>
+
                     </div>
                 </div>
                 <!-- END SAMPLE FORM PORTLET-->
@@ -196,5 +203,67 @@ if (!$user->logged_in) {
 </div>
 
 </div>
+
+<script>
+
+$(document).ready(function(){
+  var allowedType = [
+    "image/jpeg",
+    "image/jpg",
+    "image/pjpeg",
+    "image/x-png",
+    "image/png"
+  ];
+
+  $(".input-file-add").change(function () {
+    readURLmultiple(this);
+
+    if($(".input-file-add").parent().find('span').hasClass('text-danger')){
+      $('.btn_submit_add').prop('disabled',true);
+    }else{
+      $('.btn_submit_add').prop('disabled',false);
+    }
+
+  });
+
+  $(".input-file-upd").change(function () {
+    readURLmultiple_upd(this);
+  });
+
+  function readURLmultiple(input){
+      $.each(input.files, function( index, value ){
+        if (input.files && input.files[index]){
+          if($.inArray(value.type, allowedType) == -1){
+            $(input).parent().addClass('has-error').find('span').addClass('text-danger').html('File type not allowed');
+          }else{
+            $(input).parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
+          }
+        }
+    });
+  }
+
+  function readURLmultiple_upd(input){
+      var ids = $(input).attr('id');
+      var id_arr = ids.split('-');
+      var id = id_arr[1];
+
+      $.each(input.files, function( index, value ){
+        if (input.files && input.files[index]){
+          if($.inArray(value.type, allowedType) == -1){
+            $(input).parent().addClass('has-error').find('span').addClass('text-danger').html('File type not allowed');
+            $('#btn_submit_upd_'+id).prop('disabled',true);
+          }else{
+            $(input).parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
+            $('#btn_submit_upd_'+id).prop('disabled',false);
+          }
+        }
+    });
+  }
+
+
+});
+
+</script>
+
 <!-- END CONTAINER -->
 <?php include BACK_INC.'htmlfooter.php'; ?>
