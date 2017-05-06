@@ -153,13 +153,13 @@ use Carbon\Carbon;
  }?>
 
  	<!-- Page header -->
- 	<div class="page-header">
+ 	<!-- <div class="page-header">
  		<div class="page-header-content">
  			<br>
 
 
  		</div>
- 	</div>
+ 	</div> -->
  	<!-- /page header -->
 
 
