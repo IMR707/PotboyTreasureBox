@@ -81,6 +81,7 @@ define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
 define("WEBNAME", " | Potboy Treasure box");
 define("UPLOADURL", SITEURL . "/uploads/");
 define("HOMEURL", "http://potboy.com.my/");
+define("HOMETBURL", "http://potboy.com.my/treasurebox");
 if (isset($_GET['mobileview'])) {
     switch ($_GET['mobileview']) {
     case '0':
