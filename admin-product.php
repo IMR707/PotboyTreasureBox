@@ -69,10 +69,16 @@ if (!$user->logged_in) {
                         </div>
                     </div>
                     <div class="portlet-body form">
-                      <div class="row">
-                        <div class="col-md-6">
+                      <div class="modal fade in" id="modal_add" tabindex="-1" role="basic" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                      <h4 class="modal-title">Add New Product</h4>
+                                  </div>
+                                  <div class="modal-body">
                           <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                            <h4>Add New Product</h4>
+
                             <?php
 
                             if(isset($_SESSION['noti_add']) && $_SESSION['noti_add'] != ''){
@@ -115,27 +121,26 @@ if (!$user->logged_in) {
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Specification & Description</label>
                                 <div class="col-md-9">
-                                    <textarea class="form-control" name="desc" rows="6" required></textarea>
+                                    <textarea id="" class="summernote" name="desc" rows="6"> </textarea>
                                 </div>
                             </div>
-
-
                             <div class="form-group">
                                 <label class="col-md-3 control-label"></label>
                                 <div class="col-md-9">
                                   <button type="submit" class="btn blue btn_submit">Create</button>
-                                  <button type="button" class="btn default">Cancel</button>
+                                  <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                             <input type="hidden" name="func" value="create_product">
                           </form>
                         </div>
-                        <div class="clearfix"></div>
-                        <hr>
-                      </div>
+                    </div>
+                  </div>
+                </div>
                         <div class="row">
                           <div class="col-md-12">
-                            <h4>Product List</h4>
+                            <h4 class="pull-left">Product List</h4>
+                            <a class="btn green btn-outline sbold pull-right" data-toggle="modal" href="#modal_add"> <i class="fa fa-plus"></i> Product</a>
                             <?php
 
                             if(isset($_SESSION['noti_upd']) && $_SESSION['noti_upd'] != ''){
@@ -171,7 +176,7 @@ if (!$user->logged_in) {
                                   <td class="text-left"><?php echo $row->name; ?></td>
 
                                   <td class="text-center">
-                                    <button class="btn btn-sm btn-warning btn_updateConversion" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn btn-sm btn-warning btn_updateProduct" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                     <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                   </td>
                                 </tr>
@@ -186,7 +191,7 @@ if (!$user->logged_in) {
                           </div>
                         </div>
                         <div class="modal fade in" id="modal_update" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -197,41 +202,48 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Name</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="Product Name" name="package_name" required id="package_name_upd">
+                                                <input type="text" class="form-control" placeholder="Product Name" name="name" required id="name_upd">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label">Priority</label>
+                                            <label class="col-md-3 control-label">Banner</label>
                                             <div class="col-md-9">
-                                                <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="package_prio" required id="package_prio_upd">
+                                                <img src="" id="img_banner_upd" class="img-thumbnail">
+                                                <input type="file" class="form-control input-file-upd" name="img_banner">
+                                                <span></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label">Image</label>
+                                            <label class="col-md-3 control-label">Header</label>
                                             <div class="col-md-9">
-                                                <img src="" id="package_image_upd" class="img-thumbnail">
-                                                <input type="file" class="form-control" name="package_image">
+                                                <img src="" id="img_header_upd" class="img-thumbnail">
+                                                <input type="file" class="form-control input-file-upd" name="img_header">
+                                                <span></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label">Rate</label>
+                                            <label class="col-md-3 control-label">Thumbnail</label>
                                             <div class="col-md-9">
-                                                <div class="input-group input-large">
-                                                    <input type="number" class="form-control" name="diamond_amount" placeholder="Diamond" id="diamond_amount_upd">
-                                                    <span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
-                                                    <input type="number" class="form-control" name="gold_amount" placeholder="Gold" id="gold_amount_upd">
-                                                </div>
+                                                <img src="" id="img_thumbnail_upd" class="img-thumbnail">
+                                                <input type="file" class="form-control input-file-upd" name="img_thumbnail">
+                                                <span></span>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Specification & Description</label>
+                                            <div class="col-md-9">
 
+                                                <textarea class="summernote" name="desc" rows="6" id="desc_upd"> </textarea>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"></label>
                                             <div class="col-md-9">
-                                              <button type="submit" class="btn blue">Update</button>
+                                              <button type="submit" class="btn blue btn_submit_upd" id="">Update</button>
                                               <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="func" value="update_conversion">
+                                        <input type="hidden" name="func" value="update_product">
                                         <input type="hidden" name="id" id="upd_id" value="">
                                       </form>
                                     </div>
@@ -255,6 +267,10 @@ if (!$user->logged_in) {
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+  $(".summernote").summernote({
+      height: 300
+  })
 
   var allowedType = [
     "image/jpeg",
@@ -289,10 +305,30 @@ $(document).ready(function(){
     });
   }
 
-  $('.btn_updateConversion').on('click',function(){
+  $(".input-file-upd").change(function () {
+    readURLmultiple_upd(this);
+  });
+
+  function readURLmultiple_upd(input){
+      var id = $('#upd_id').val();
+
+      $.each(input.files, function( index, value ){
+        if (input.files && input.files[index]){
+          if($.inArray(value.type, allowedType) == -1){
+            $(input).parent().addClass('has-error').find('span').addClass('text-danger').html('File type not allowed');
+            $('#btn_submit_upd_'+id).prop('disabled',true);
+          }else{
+            $(input).parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
+            $('#btn_submit_upd_'+id).prop('disabled',false);
+          }
+        }
+    });
+  }
+
+  $('.btn_updateProduct').on('click',function(){
     var id = $(this).attr('id');
 
-    var dataString = "id="+id+"&func=getConversionByID";
+    var dataString = "id="+id+"&func=getProductByID";
     $.ajax({
       type    : "POST",
       url     : "backend/process.php",
@@ -301,11 +337,13 @@ $(document).ready(function(){
       dataType: 'json',
       success : function(data)
       {
-        $('#package_name_upd').val(data.name);
-        $('#package_prio_upd').val(data.prio);
-        $('#diamond_amount_upd').val(data.diamond_amount);
-        $('#gold_amount_upd').val(data.gold_amount);
-        $('#package_image_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.icon);
+        $('#name_upd').val(data.name);
+        $('#desc_upd').summernote('code',data.desc);
+        $('#img_banner_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.img_banner);
+        $('#img_header_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.img_header);
+        $('#img_thumbnail_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.img_thumbnail);
+        $('.btn_submit_upd').attr('id','btn_submit_upd_'+data.id);
+
         $('#upd_id').val(data.id);
         $('#modal_update').modal('show');
       }
@@ -314,10 +352,13 @@ $(document).ready(function(){
 
   $('#modal_update').on('hide.bs.modal',function(){
     $('#package_name_upd').val('');
-    $('#package_image_upd').attr('src','');
+    $('#img_banner_upd').attr('src','');
+    $('#img_header_upd').attr('src','');
+    $('#img_thumbnail_upd').attr('src','');
     $('#package_prio_upd').val('');
     $('#diamond_amount_upd').val('');
     $('#gold_amount_upd').val('');
+    $('.btn_submit_upd').attr('id','');
     $('#upd_id').val('');
   });
 

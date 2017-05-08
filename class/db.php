@@ -193,6 +193,7 @@
 		  $this->error("Invalid array for table: <b>".$table."</b>.");
 		  return false;
 		  }
+
 		  $q = "INSERT INTO `" . $table . "` ";
           $v = '';
           $k = '';
@@ -206,7 +207,7 @@
               else
                   $v .= "'" . $this->escape($val) . "', ";
           endforeach;
-
+          
           $q .= "(" . rtrim($k, ', ') . ") VALUES (" . rtrim($v, ', ') . ");";
 
           if ($this->query($q)) {

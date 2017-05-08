@@ -15,6 +15,7 @@
         <link href="<?php echo BACK_PLUGIN; ?>simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo BACK_PLUGIN; ?>bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo BACK_PLUGIN; ?>bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo BACK_PLUGIN; ?>bootstrap-summernote/summernote.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="<?php echo BACK_CSS; ?>components.min.css" rel="stylesheet" id="style_components" type="text/css" />
@@ -37,6 +38,10 @@
         <script src="<?php echo BACK_PLUGIN; ?>jquery.blockui.min.js" type="text/javascript"></script>
         <script src="<?php echo BACK_PLUGIN; ?>bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="<?php echo BACK_PLUGIN; ?>bootstrap-summernote/summernote.min.js" type="text/javascript"></script>
+        <script src="<?php echo BACK_PAGES_SCRIPT; ?>components-editors.min.js" type="text/javascript"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="<?php echo BACK_SCRIPT; ?>app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->

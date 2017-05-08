@@ -65,6 +65,7 @@ define("FRONTCSS", FRONTASSETSURL . "assets/css/");
 define("FRONTJS", FRONTASSETSURL . "assets/js/");
 define("FRONTIMAGE", FRONTASSETSURL . "img/");
 define("FRONTICON", FRONTASSETSURL . "assets/icons/");
+
 define("BACKASSETSURL", "backend/");
 define("BACKCSS", BACKASSETSURL . "css/");
 define("BACKJS", BACKASSETSURL . "js/");
@@ -73,10 +74,12 @@ define("BACKICON", BACKASSETSURL . "icons/");
 define("BACK_INC", BACKASSETSURL . "include/");
 define("BACK_PLUGIN", BACKASSETSURL . "assets/global/plugins/");
 define("BACK_SCRIPT", BACKASSETSURL . "assets/global/scripts/");
+define("BACK_PAGES_SCRIPT", BACKASSETSURL . "assets/pages/scripts/");
 define("BACK_CSS", BACKASSETSURL . "assets/global/css/");
 define("BACK_LAYOUT", BACKASSETSURL . "assets/layouts/");
 define("BACK_IMG", BACKASSETSURL . "img/");
 define("BACK_UPLOADS", BACKASSETSURL . "uploads/");
+
 define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
 define("WEBNAME", " | Potboy Treasure box");
 define("UPLOADURL", SITEURL . "/uploads/");

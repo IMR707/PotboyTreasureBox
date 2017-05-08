@@ -20,6 +20,20 @@ if (!$user->logged_in) {
 
 <?php include BACK_INC.'header.php'; ?>
 
+<script type="text/javascript" src="<?php echo BACK_PAGES_SCRIPT; ?>interactions.min.js"></script>
+
+<style type="text/css">
+.li_sort{
+	list-style-type: none;
+	text-decoration: none;
+	color: #333333;
+	padding: 10px; /*2px 6px 2px 6px*/
+	border: 1px solid #ccc;
+	margin: 5px 35px 5px 0px;
+	cursor: move;
+}
+</style>
+
 <body class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo">
 
 <?php include BACK_INC.'htmlheader.php'; ?>
@@ -69,10 +83,15 @@ if (!$user->logged_in) {
                         </div>
                     </div>
                     <div class="portlet-body form">
-                      <div class="row">
-                        <div class="col-md-6">
+                      <div class="modal fade in" id="modal_add" tabindex="-1" role="basic" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                      <h4 class="modal-title">Add New Package</h4>
+                                  </div>
+                                  <div class="modal-body">
                           <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                            <h4>Add New Package</h4>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Name</label>
                                 <div class="col-md-9">
@@ -80,15 +99,10 @@ if (!$user->logged_in) {
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Priority</label>
-                                <div class="col-md-9">
-                                    <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="package_prio" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-md-3 control-label">Image</label>
                                 <div class="col-md-9">
-                                    <input type="file" class="form-control" name="package_image" required>
+                                    <input type="file" class="form-control input-file-add" name="package_image" required>
+                                    <span></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -105,19 +119,28 @@ if (!$user->logged_in) {
                             <div class="form-group">
                                 <label class="col-md-3 control-label"></label>
                                 <div class="col-md-9">
-                                  <button type="submit" class="btn blue">Create</button>
-                                  <button type="button" class="btn default">Cancel</button>
+                                  <button type="submit" class="btn blue btn_submit_add">Create</button>
+                                  <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                             <input type="hidden" name="func" value="create_conversion">
                           </form>
                         </div>
-                        <div class="clearfix"></div>
-                        <hr>
-                      </div>
+                    </div>
+                  </div>
+                </div>
                         <div class="row">
+                          <div class="col-md-6">
+                            <h4 class="pull-left">Conversion List</h4>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="btn-group pull-right">
+                              <a class="btn green btn-outline sbold btn_sort"> <i class="fa fa-sort"></i> Sort</a>
+                              <a class="btn green btn-outline sbold " data-toggle="modal" href="#modal_add"> <i class="fa fa-plus"></i> Package</a>
+                            </div>
+                          </div>
                           <div class="col-md-12">
-                            <h4>Package List</h4>
+
                             <?php
 
                             if(isset($_SESSION['noti'])){
@@ -135,7 +158,6 @@ if (!$user->logged_in) {
                             <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
-                                  <th class="text-center">Priority</th>
                                   <th class="text-center">Icon</th>
                                   <th class="text-center">Name</th>
                                   <th class="text-center">Diamond</th>
@@ -149,8 +171,7 @@ if (!$user->logged_in) {
                             foreach($rewards as $key => $row){
                             ?>
 
-                                <tr>
-                                  <td class="text-center"><?php echo $row->prio; ?></td>
+                                <tr>                                  
                                   <td class="text-center">
                                     <img src="<?php echo BACK_UPLOADS.$row->icon; ?>" class="img-thumbnail">
                                   </td>
@@ -198,7 +219,8 @@ if (!$user->logged_in) {
                                             <label class="col-md-3 control-label">Image</label>
                                             <div class="col-md-9">
                                                 <img src="" id="package_image_upd" class="img-thumbnail">
-                                                <input type="file" class="form-control" name="package_image">
+                                                <input type="file" class="form-control input-file-upd" name="package_image">
+                                                <span></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -215,7 +237,7 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"></label>
                                             <div class="col-md-9">
-                                              <button type="submit" class="btn blue">Update</button>
+                                              <button type="submit" class="btn blue btn_submit_upd">Update</button>
                                               <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                             </div>
                                         </div>
@@ -226,7 +248,32 @@ if (!$user->logged_in) {
                                 </div>
                             </div>
                         </div>
+                        <div id="modal_sort" class="modal fade">
+                          <div class="modal-dialog">
+                          <form class="form_validator" role="form" method="POST">
+                            <div class="modal-content">
+                              <div class="modal-header bg-teal-300">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Sort Package</h4>
+                              </div>
 
+                              <div class="modal-body">
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <ul id="sortable-item">
+
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" name="btn_submit_sort" id="btn_submit_sort" value="" class="btn btn-success">Submit</button>
+                              </div>
+                            </div>
+                          </form>
+                          </div>
+                        </div>
                     </div>
                 </div>
                 <!-- END SAMPLE FORM PORTLET-->
@@ -244,7 +291,84 @@ if (!$user->logged_in) {
 
 $(document).ready(function(){
 
+  $(function(){
+  	/*----------  Tukar UL kepada Sortable  ----------*/
+  	$( "#sortable-item" ).sortable();
 
+  	/*----------  Amik value  ----------*/
+  	$('.btn_sort').on('click',function(){
+  		//var v = $(this).attr('v');
+  		var items = [];
+  		$("#sortable-item").empty();
+
+        v = $.parseJSON('<?=json_encode($rewards)?>');
+        // console.log(v);
+
+      	$.each(v,function(key,value){
+      		items.push('<li class="li_sort" id="sortc_'+value.id+'">'+value.name+'</li>');
+      	});
+
+      	$('#sortable-item').append( items.join('') );
+
+  		$('#modal_sort').modal('show');
+  	});
+
+  	/*----------  submit value  ----------*/
+  	$('#btn_submit_sort').on('click',function(){
+  		var order = $('#sortable-item').sortable("serialize")+'&func=sort_conversion';
+        $.post("backend/process.php", order, function(data){
+          	$('#modal_sort').modal('hide');
+            location.reload();
+      	});
+  	});
+  });
+
+  var allowedType = [
+    "image/jpeg",
+    "image/jpg",
+    "image/pjpeg",
+    "image/x-png",
+    "image/png"
+  ];
+
+  $(".input-file-add").change(function () {
+    readURLmultiple(this);
+    if($(".input-file-add").parent().find('span').hasClass('text-danger')){
+      $('.btn_submit_add').prop('disabled',true);
+    }else{
+      $('.btn_submit_add').prop('disabled',false);
+    }
+  });
+
+  $(".input-file-upd").change(function () {
+    readURLmultiple_upd(this);
+  });
+
+  function readURLmultiple(input){
+      $.each(input.files, function( index, value ){
+        if (input.files && input.files[index]){
+          if($.inArray(value.type, allowedType) == -1){
+            $(input).parent().addClass('has-error').find('span').addClass('text-danger').html('File type not allowed');
+          }else{
+            $(input).parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
+          }
+        }
+    });
+  }
+
+  function readURLmultiple_upd(input){
+      $.each(input.files, function( index, value ){
+        if (input.files && input.files[index]){
+          if($.inArray(value.type, allowedType) == -1){
+            $(input).parent().addClass('has-error').find('span').addClass('text-danger').html('File type not allowed');
+            $('.btn_submit_upd').prop('disabled',true);
+          }else{
+            $(input).parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
+            $('.btn_submit_upd').prop('disabled',false);
+          }
+        }
+    });
+  }
 
   $('.btn_updateConversion').on('click',function(){
     var id = $(this).attr('id');
@@ -264,6 +388,7 @@ $(document).ready(function(){
         $('#gold_amount_upd').val(data.gold_amount);
         $('#package_image_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.icon);
         $('#upd_id').val(data.id);
+        $('.btn_submit_upd').prop('disabled',false);
         $('#modal_update').modal('show');
       }
     });
@@ -272,9 +397,12 @@ $(document).ready(function(){
   $('#modal_update').on('hide.bs.modal',function(){
     $('#package_name_upd').val('');
     $('#package_image_upd').attr('src','');
+    $('.input-file-upd').val('');
+    $('.input-file-upd').parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
     $('#package_prio_upd').val('');
     $('#diamond_amount_upd').val('');
     $('#gold_amount_upd').val('');
+    $('.btn_submit_upd').prop('disabled',false);
     $('#upd_id').val('');
   });
 

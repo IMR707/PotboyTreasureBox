@@ -20,6 +20,20 @@ if (!$user->logged_in) {
 
 <?php include BACK_INC.'header.php'; ?>
 
+<script type="text/javascript" src="<?php echo BACK_PAGES_SCRIPT; ?>interactions.min.js"></script>
+
+<style type="text/css">
+.li_sort{
+	list-style-type: none;
+	text-decoration: none;
+	color: #333333;
+	padding: 10px; /*2px 6px 2px 6px*/
+	border: 1px solid #ccc;
+	margin: 5px 35px 5px 0px;
+	cursor: move;
+}
+</style>
+
 <body class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo">
 
 <?php include BACK_INC.'htmlheader.php'; ?>
@@ -69,21 +83,20 @@ if (!$user->logged_in) {
                         </div>
                     </div>
                     <div class="portlet-body form">
-                      <div class="row">
-                        <div class="col-md-6">
+                      <div class="modal fade in" id="modal_add" tabindex="-1" role="basic" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                      <h4 class="modal-title">Add New Announcement</h4>
+                                  </div>
+                                  <div class="modal-body">
                           <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
                               <div class="form-body">
-                                <h4>Add New Announcement</h4>
                                   <div class="form-group">
                                       <label class="col-md-3 control-label">Title</label>
                                       <div class="col-md-9">
                                           <input type="text" class="form-control" placeholder="Title" name="title" required>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label class="col-md-3 control-label">Priority</label>
-                                      <div class="col-md-9">
-                                          <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="prio" required>
                                       </div>
                                   </div>
                                   <div class="form-group">
@@ -96,17 +109,28 @@ if (!$user->logged_in) {
                                       <label class="col-md-3 control-label"></label>
                                       <div class="col-md-9">
                                         <button type="submit" class="btn blue">Create</button>
-                                        <button type="button" class="btn default">Cancel</button>
+                                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                       </div>
                                   </div>
                               </div>
                               <input type="hidden" name="func" value="create_announcement">
                           </form>
                         </div>
-                      </div>
+                    </div>
+                  </div>
+                </div>
                         <div class="row">
+                          <div class="col-md-6">
+                            <h4 class="pull-left">Announcement List</h4>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="btn-group pull-right">
+                              <a class="btn green btn-outline sbold btn_sort"> <i class="fa fa-sort"></i> Sort</a>
+                              <a class="btn green btn-outline sbold " data-toggle="modal" href="#modal_add"> <i class="fa fa-plus"></i> Announcement</a>
+                            </div>
+                          </div>
                           <div class="col-md-12">
-                            <h4>Announcement List</h4>
+
                             <?php
 
                             if(isset($_SESSION['noti_slider'])){
@@ -121,7 +145,6 @@ if (!$user->logged_in) {
                             $sliders = $fz->getAnnouncement();
 
                             ?>
-
                             <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
@@ -177,12 +200,6 @@ if (!$user->logged_in) {
                                                       </div>
                                                   </div>
                                                   <div class="form-group">
-                                                      <label class="col-md-3 control-label">Priority</label>
-                                                      <div class="col-md-8">
-                                                          <input type="number" class="form-control" placeholder="Priority" min="1" name="prio" value="" id="upd_prio">
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-group">
                                                       <label class="col-md-3 control-label">Content</label>
                                                       <div class="col-md-8">
                                                           <input type="text" class="form-control" placeholder="Content" name="content" value="" id="upd_content">
@@ -217,6 +234,32 @@ if (!$user->logged_in) {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div id="modal_sort" class="modal fade">
+                            	<div class="modal-dialog">
+                            	<form class="form_validator" role="form" method="POST">
+                            		<div class="modal-content">
+                            			<div class="modal-header bg-teal-300">
+                            				<button type="button" class="close" data-dismiss="modal">&times;</button>
+                            				<h4 class="modal-title">Sort Announcement</h4>
+                            			</div>
+
+                            			<div class="modal-body">
+                            				<div class="row">
+                            					<div class="col-md-12">
+                        								<ul id="sortable-item">
+
+                        								</ul>
+                            					</div>
+                            				</div>
+                            			</div>
+                            			<div class="modal-footer">
+                            				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            				<button type="button" name="btn_submit_sort" id="btn_submit_sort" value="" class="btn btn-success">Submit</button>
+                            			</div>
+                            		</div>
+                            	</form>
+                            	</div>
                             </div>
 
                           </div>
@@ -259,6 +302,38 @@ $(document).ready(function(){
         $('#modal_update').modal('show');
       }
     });
+  });
+
+  $(function(){
+  	/*----------  Tukar UL kepada Sortable  ----------*/
+  	$( "#sortable-item" ).sortable();
+
+  	/*----------  Amik value  ----------*/
+  	$('.btn_sort').on('click',function(){
+  		//var v = $(this).attr('v');
+  		var items = [];
+  		$("#sortable-item").empty();
+
+        v = $.parseJSON('<?=json_encode($sliders)?>');
+        // console.log(v);
+
+      	$.each(v,function(key,value){
+      		items.push('<li class="li_sort" id="sortc_'+value.id+'">'+value.title+'</li>');
+      	});
+
+      	$('#sortable-item').append( items.join('') );
+
+  		$('#modal_sort').modal('show');
+  	});
+
+  	/*----------  submit value  ----------*/
+  	$('#btn_submit_sort').on('click',function(){
+  		var order = $('#sortable-item').sortable("serialize")+'&func=sort_announcement';
+        $.post("backend/process.php", order, function(data){
+          	$('#modal_sort').modal('hide');
+            location.reload();
+      	});
+  	});
   });
 
 });

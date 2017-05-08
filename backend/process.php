@@ -15,6 +15,10 @@ elseif($_POST['func'] == 'update_slideimage'){
   $fz->update_slide();
 }
 
+elseif($_POST['func'] == 'sort_homeslider'){
+  $fz->sort_homeslider();
+}
+
 //announcement
 
 elseif($_POST['func'] == 'create_announcement'){
@@ -27,6 +31,10 @@ elseif($_POST['func'] == 'update_announcement'){
 
 elseif($_POST['func'] == 'getAnnouncementByID'){
   $fz->getAnnouncementByID();
+}
+
+elseif($_POST['func'] == 'sort_announcement'){
+  $fz->sort_announcement();
 }
 
 //daily reward
@@ -71,13 +79,29 @@ elseif($_POST['func'] == 'getConversionByID'){
   $fz->getConversionByID();
 }
 
+elseif($_POST['func'] == 'sort_conversion'){
+  $fz->sort_conversion();
+}
+
 //Product
 
 elseif($_POST['func'] == 'create_product'){
   $fz->create_product();
 }
 
+elseif($_POST['func'] == 'update_product'){
+  $fz->update_product();
+}
 
+elseif($_POST['func'] == 'getProductByID'){
+  $fz->getProductByID();
+}
+
+//Sponsor
+
+elseif($_POST['func'] == 'create_sponsor'){
+  $fz->create_sponsor();
+}
 
 
 
