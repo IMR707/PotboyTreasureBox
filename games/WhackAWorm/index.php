@@ -8,6 +8,7 @@
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<script src="easel.js"></script>
 		<script src="Tween.js"></script>
+                <script src="createjs.min.js"></script>
 		<script src="WhackAWorm.js"></script>
                 <style>
                     .WhackAWorm{
