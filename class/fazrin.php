@@ -16,6 +16,8 @@ class Fazrin
     const tb_cr = 'aa_conversion';
     const tb_prod = 'aa_product';
     const tb_spon = 'aa_sponsor';
+    const tb_bid = 'aa_bidding';
+
     private static $db;
 
     public static $allowedType = array(
@@ -249,9 +251,9 @@ class Fazrin
 
       $check_day = $this->getDailyRewardByDay($day);
 
-      if($day == $check_day->day_num){
-        $_SESSION['noti_slider']['status'] = 'error';
-        $_SESSION['noti_slider']['msg'] = 'Package for <b>Day '.$day.'</b> already exist !';
+      if($check_day){
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Package for <b>Day '.$day.'</b> already exist !';
       }else{
         $spin_check = isset($_POST['spin_check'])? 1 : 0;
         $gold_check = isset($_POST['gold_check'])? 1 : 0;
@@ -277,13 +279,14 @@ class Fazrin
         );
         $res = self::$db->insert(self::tb_dr, $data);
         if(!$res){
-          $_SESSION['noti_slider']['status'] = 'error';
-          $_SESSION['noti_slider']['msg'] = 'Problem occured while inserting data.';
+          $_SESSION['noti']['status'] = 'error';
+          $_SESSION['noti']['msg'] = 'Problem occured while inserting data.';
         }else{
-          $_SESSION['noti_slider']['status'] = 'success';
-          $_SESSION['noti_slider']['msg'] = 'New daily reward package created.';
+          $_SESSION['noti']['status'] = 'success';
+          $_SESSION['noti']['msg'] = 'New daily reward package created.';
         }
       }
+
       rd('../admin-dailyreward.php');
       die;
     }
@@ -292,42 +295,37 @@ class Fazrin
     {
       $id = $_POST['id'];
       $day = $_POST['day'];
-      $check_day = $this->getDailyRewardByDay($day);
 
-      if($day == $check_day->day_num){
-        $_SESSION['noti_slider']['status'] = 'error';
-        $_SESSION['noti_slider']['msg'] = 'Package for <b>Day '.$day.'</b> already exist !';
-      }else{
-        $spin_check = isset($_POST['spin_check'])? 1 : 0;
-        $gold_check = isset($_POST['gold_check'])? 1 : 0;
-        $spin_amount = 0;
-        $gold_amount = 0;
+      $spin_check = isset($_POST['spin_check'])? 1 : 0;
+      $gold_check = isset($_POST['gold_check'])? 1 : 0;
+      $spin_amount = 0;
+      $gold_amount = 0;
 
-        if($spin_check){
-          $spin_amount = $_POST['spin_amount'];
-        }
-
-        if($gold_check){
-          $gold_amount = $_POST['gold_amount'];
-        }
-
-        $data = array(
-          'day_num' => $day,
-          'gold_check' => $gold_check,
-          'gold_amount' => $gold_amount,
-          'spin_check' => $spin_check,
-          'spin_amount' => $spin_amount,
-          'date_updated' => 'now()'
-        );
-        $res = self::$db->update(self::tb_dr, $data, "id='$id'");
-        if(!$res){
-          $_SESSION['noti_slider']['status'] = 'error';
-          $_SESSION['noti_slider']['msg'] = 'Problem occured while updating data.';
-        }else{
-          $_SESSION['noti_slider']['status'] = 'success';
-          $_SESSION['noti_slider']['msg'] = 'Daily reward package updated.';
-        }
+      if($spin_check){
+        $spin_amount = $_POST['spin_amount'];
       }
+
+      if($gold_check){
+        $gold_amount = $_POST['gold_amount'];
+      }
+
+      $data = array(
+        'day_num' => $day,
+        'gold_check' => $gold_check,
+        'gold_amount' => $gold_amount,
+        'spin_check' => $spin_check,
+        'spin_amount' => $spin_amount,
+        'date_updated' => 'now()'
+      );
+      $res = self::$db->update(self::tb_dr, $data, "id='$id'");
+      if(!$res){
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while updating data.';
+      }else{
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Daily reward package updated.';
+      }
+
       rd('../admin-dailyreward.php');
       die;
     }
@@ -351,7 +349,7 @@ class Fazrin
 
     public function getDailyRewardByDay($day)
     {
-      $sql = "SELECT * FROM ".self::tb_dr." where day_num='$day'";
+      $sql = "SELECT * FROM ".self::tb_dr." where day_num='$day' AND active = 1";
       $row = self::$db->first($sql);
 
       return $row;
@@ -362,7 +360,6 @@ class Fazrin
     public function create_wof()
     {
       $_SESSION['noti_wof'] = '';
-      $prio = $_POST['wof_prio'];
       $type = $_POST['wof_type'];
       $amount = $_POST['wof_amount'];
       $percent = $_POST['wof_percent'];
@@ -377,7 +374,7 @@ class Fazrin
 
         $data = array(
           'wof_type' => $type,
-          'wof_prio' => $prio,
+          'wof_prio' => 9999,
           'wof_amount' => $amount,
           'wof_percent' => $percent,
           'wof_icon' => $save_name,
@@ -406,7 +403,6 @@ class Fazrin
     public function update_wof()
     {
       $_SESSION['noti_wof'] = '';
-      $prio = $_POST['wof_prio'];
       $type = $_POST['wof_type'];
       $amount = $_POST['wof_amount'];
       $percent = $_POST['wof_percent'];
@@ -414,7 +410,6 @@ class Fazrin
 
       $data = array(
         'wof_type' => $type,
-        'wof_prio' => $prio,
         'wof_amount' => $amount,
         'wof_percent' => $percent,
         'date_updated' => 'now()'
@@ -470,6 +465,25 @@ class Fazrin
       $row = self::$db->first($sql);
 
       echo json_encode($row);
+    }
+
+    public function sort_wof()
+    {
+
+      $sortc = !empty($_POST['sortc']) ? $_POST['sortc'] : array() ;
+
+    	$countc = 1;
+    	foreach ($sortc as $id)
+    	{
+    		$data = array(
+    			"wof_prio" => $countc,
+    		);
+
+        $res = self::$db->update(self::tb_wof, $data,"id='$id'");
+
+    		$countc++;
+    	}
+
     }
 
     /********* CONVERSION RATE **********************************************/
@@ -607,8 +621,8 @@ class Fazrin
 
     public function create_product()
     {
-      $_SESSION['noti_add'] = '';
-      $_SESSION['noti_add']['msg'] = '<ul>';
+      $_SESSION['noti'] = '';
+      $_SESSION['noti']['msg'] = '<ul>';
 
       $fileTitle = array(
         'img_banner' => 'Image Banner',
@@ -620,19 +634,19 @@ class Fazrin
       foreach($_FILES as $key_file => $eachfile){
         if($key_file != 'files'){
           if($eachfile['error'] != 0){
-            $_SESSION['noti_add']['status'] = 'error';
-            $_SESSION['noti_add']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
+            $_SESSION['noti']['status'] = 'error';
+            $_SESSION['noti']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
             $checkfile = false;
           }
         }
       }
-      $_SESSION['noti_add']['msg'] .= '</ul>';
+      $_SESSION['noti']['msg'] .= '</ul>';
 
       if(!$checkfile){
         rd('../admin-product.php');
         die;
       }else{
-        $_SESSION['noti_add']['msg'] = '';
+        $_SESSION['noti']['msg'] = '';
         $name = sanitize($_POST['name']);
         $desc = sanitize($_POST['desc']);
 
@@ -652,11 +666,11 @@ class Fazrin
             if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
               $data[$key_file] = $save_name;
 
-              $_SESSION['noti_add']['status'] = 'success';
-              $_SESSION['noti_add']['msg'] = 'New product created.';
+              $_SESSION['noti']['status'] = 'success';
+              $_SESSION['noti']['msg'] = 'New product created.';
             }else{
-              $_SESSION['noti_add']['status'] = 'error';
-              $_SESSION['noti_add']['msg'] = 'Problem occured while uploading file.';
+              $_SESSION['noti']['status'] = 'error';
+              $_SESSION['noti']['msg'] = 'Problem occured while uploading file.';
             }
           }
         }
@@ -670,8 +684,8 @@ class Fazrin
     public function update_product()
     {
       $id = $_POST['id'];
-      $_SESSION['noti_upd'] = '';
-      $_SESSION['noti_upd']['msg'] = '<ul>';
+      $_SESSION['noti'] = '';
+      $_SESSION['noti']['msg'] = '<ul>';
 
       $fileTitle = array(
         'img_banner' => 'Image Banner',
@@ -683,31 +697,30 @@ class Fazrin
       foreach($_FILES as $key_file => $eachfile){
         if($key_file != 'files'){
           if($eachfile['error'] != 0 && $eachfile['name'] != ''){
-            $_SESSION['noti_upd']['status'] = 'error';
-            $_SESSION['noti_upd']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
+            $_SESSION['noti']['status'] = 'error';
+            $_SESSION['noti']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
             $checkfile = false;
           }
         }
       }
-      $_SESSION['noti_upd']['msg'] .= '</ul>';
+      $_SESSION['noti']['msg'] .= '</ul>';
 
       if(!$checkfile){
         rd('../admin-product.php');
         die;
       }else{
-        $_SESSION['noti_upd']['msg'] = '';
+        $_SESSION['noti']['msg'] = '';
         $name = sanitize($_POST['name']);
         $desc = sanitize($_POST['desc']);
 
         $data = array(
           'name' => $name,
           'desc' => $desc,
-          'date_created' => 'now()',
           'date_updated' => 'now()'
         );
 
-        $_SESSION['noti_upd']['status'] = 'success';
-        $_SESSION['noti_upd']['msg'] = 'Product updated.';
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Product updated.';
 
         foreach($_FILES as $key_file => $eachfile){
           if($key_file != 'files'){
@@ -719,11 +732,11 @@ class Fazrin
               if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
                 $data[$key_file] = $save_name;
 
-                $_SESSION['noti_upd']['status'] = 'success';
-                $_SESSION['noti_upd']['msg'] = 'Product updated.';
+                $_SESSION['noti']['status'] = 'success';
+                $_SESSION['noti']['msg'] = 'Product updated.';
               }else{
-                $_SESSION['noti_upd']['status'] = 'error';
-                $_SESSION['noti_upd']['msg'] = 'Problem occured while uploading file.';
+                $_SESSION['noti']['status'] = 'error';
+                $_SESSION['noti']['msg'] = 'Problem occured while uploading file.';
               }
             }
           }
@@ -755,12 +768,22 @@ class Fazrin
       echo json_encode($row);
     }
 
+    public function getProductByID2($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_prod." where id='$id'";
+      $row = self::$db->first($sql);
+
+      $row->desc = html_entity_decode($row->desc);
+
+      return $row;
+    }
+
     /********* SPONSOR **********************************************/
 
     public function create_sponsor()
     {
-      $_SESSION['noti_add'] = '';
-      $_SESSION['noti_add']['msg'] = '<ul>';
+      $_SESSION['noti'] = '';
+      $_SESSION['noti']['msg'] = '<ul>';
 
       $fileTitle = array(
         'img_logo' => 'Sponsor Logo'
@@ -770,19 +793,19 @@ class Fazrin
       foreach($_FILES as $key_file => $eachfile){
         if($key_file != 'files'){
           if($eachfile['error'] != 0){
-            $_SESSION['noti_add']['status'] = 'error';
-            $_SESSION['noti_add']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
+            $_SESSION['noti']['status'] = 'error';
+            $_SESSION['noti']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
             $checkfile = false;
           }
         }
       }
-      $_SESSION['noti_add']['msg'] .= '</ul>';
+      $_SESSION['noti']['msg'] .= '</ul>';
 
       if(!$checkfile){
         rd('../admin-sponsor.php');
         die;
       }else{
-        $_SESSION['noti_add']['msg'] = '';
+        $_SESSION['noti']['msg'] = '';
         $name = sanitize($_POST['name']);
         $desc = sanitize($_POST['desc']);
 
@@ -802,17 +825,83 @@ class Fazrin
             if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
               $data[$key_file] = $save_name;
 
-              $_SESSION['noti_add']['status'] = 'success';
-              $_SESSION['noti_add']['msg'] = 'New sponsor created.';
+              $_SESSION['noti']['status'] = 'success';
+              $_SESSION['noti']['msg'] = 'New sponsor created.';
             }else{
-              $_SESSION['noti_add']['status'] = 'error';
-              $_SESSION['noti_add']['msg'] = 'Problem occured while uploading file.';
+              $_SESSION['noti']['status'] = 'error';
+              $_SESSION['noti']['msg'] = 'Problem occured while uploading file.';
             }
           }
         }
 
         $res = self::$db->insert(self::tb_spon, $data);
       }
+      rd('../admin-sponsor.php');
+      die;
+    }
+
+    public function update_sponsor()
+    {
+      $id = $_POST['id'];
+      $_SESSION['noti'] = '';
+      $_SESSION['noti']['msg'] = '<ul>';
+
+      $fileTitle = array(
+        'img_logo' => 'Sponsor Logo'
+      );
+
+      $checkfile = true;
+      foreach($_FILES as $key_file => $eachfile){
+        if($key_file != 'files'){
+          if($eachfile['error'] != 0 && $eachfile['name'] != ''){
+            $_SESSION['noti']['status'] = 'error';
+            $_SESSION['noti']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
+            $checkfile = false;
+          }
+        }
+      }
+      $_SESSION['noti']['msg'] .= '</ul>';
+
+      if(!$checkfile){
+        rd('../admin-sponsor.php');
+        die;
+      }else{
+        $_SESSION['noti']['msg'] = '';
+        $name = sanitize($_POST['name']);
+        $desc = sanitize($_POST['desc']);
+
+        $data = array(
+          'name' => $name,
+          'desc' => $desc,
+          'date_updated' => 'now()'
+        );
+
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Sponsor updated.';
+
+        foreach($_FILES as $key_file => $eachfile){
+          if($key_file != 'files'){
+            if($eachfile['name'] != ''){
+              $img_tmp = $_FILES[$key_file]['tmp_name'];
+              $img_name = $_FILES[$key_file]['name'];
+              $save_name = 'sponsor-'.date("Ymdhis").uniqid().'.jpg';
+
+              if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
+                $data[$key_file] = $save_name;
+
+                $_SESSION['noti']['status'] = 'success';
+                $_SESSION['noti']['msg'] = 'Sponsor updated.';
+              }else{
+                $_SESSION['noti']['status'] = 'error';
+                $_SESSION['noti']['msg'] = 'Problem occured while uploading file.';
+              }
+            }
+          }
+        }
+
+        $res = self::$db->update(self::tb_spon, $data,"id='$id'");
+      }
+
       rd('../admin-sponsor.php');
       die;
     }
@@ -824,6 +913,98 @@ class Fazrin
 
       return $row;
     }
+
+    public function getSponsorByID()
+    {
+      $id = $_POST['id'];
+      $sql = "SELECT * FROM ".self::tb_spon." where id='$id'";
+      $row = self::$db->first($sql);
+
+      $row->desc = html_entity_decode($row->desc);
+
+      echo json_encode($row);
+    }
+
+    /********* BIDDING **********************************************/
+
+    public function create_bidding(){
+
+      $title = $_POST['title'];
+      $product_id = $_POST['product_id'];
+      $start_time_date = $_POST['start_time_date'];
+      $start_time_time = $_POST['start_time_time'];
+
+      $start_time = date('Y-d-m H:i:s',strtotime($start_time_date.' '.$start_time_time));
+
+      $bid_type = $_POST['bid_type'];
+      $min_bid = $_POST['min_bid'];
+      $sponsor_id = json_encode($_POST['sponsor_id']);
+      $bid_base = $_POST['bid_base'];
+
+      $data = array(
+        'title' => $title,
+        'product_id' => $product_id,
+        'start_time' => $start_time,
+        'bid_base' => $bid_base,
+        'bid_type' => $bid_type,
+        'min_bid' => $min_bid,
+        'sponsor' => $sponsor_id,
+        'date_created' => 'now()',
+        'date_updated' => 'now()'
+      );
+
+      if($bid_base == 1){
+        $end_time_date = $_POST['end_time_date'];
+        $end_time_time = $_POST['end_time_time'];
+
+        $end_time = date('Y-d-m H:i:s',strtotime($end_time_date.' '.$end_time_time));
+
+        $data['end_time'] = $end_time;
+
+      }elseif($bid_base == 2){
+        $max_participant = $_POST['max_participant'];
+
+        $data['max_participant'] = $max_participant;
+      }
+
+      $res = self::$db->insert(self::tb_bid, $data);
+      if(!$res){
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while inserting data.';
+      }else{
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'New bidding created.';
+      }
+      rd('../admin-bidding.php');
+
+    }
+
+    public function getBidding()
+    {
+      $sql = "SELECT * FROM ".self::tb_bid." WHERE active = 1";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

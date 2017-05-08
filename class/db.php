@@ -207,7 +207,7 @@
               else
                   $v .= "'" . $this->escape($val) . "', ";
           endforeach;
-          
+
           $q .= "(" . rtrim($k, ', ') . ") VALUES (" . rtrim($v, ', ') . ");";
 
           if ($this->query($q)) {
@@ -262,6 +262,16 @@
           return $this->query($q);
       }
 
+      public function soft_delete($table, $id)
+      {
+        $data = array(
+          'active' => 0
+        );
+
+        $res = self::$db->update($table, $data,"id='$id'");
+
+        return $res;
+      }
 	  /**
        * Database::insert_id()
        * Returns last inserted ID

@@ -65,6 +65,10 @@ elseif($_POST['func'] == 'getWofByID'){
   $fz->getWofByID();
 }
 
+elseif($_POST['func'] == 'sort_wof'){
+  $fz->sort_wof();
+}
+
 //conversion
 
 elseif($_POST['func'] == 'create_conversion'){
@@ -103,7 +107,19 @@ elseif($_POST['func'] == 'create_sponsor'){
   $fz->create_sponsor();
 }
 
+elseif($_POST['func'] == 'update_sponsor'){
+  $fz->update_sponsor();
+}
 
+elseif($_POST['func'] == 'getSponsorByID'){
+  $fz->getSponsorByID();
+}
+
+//Bidding
+
+elseif($_POST['func'] == 'create_bidding'){
+  $fz->create_bidding();
+}
 
 
 

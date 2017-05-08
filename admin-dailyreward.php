@@ -5,7 +5,7 @@
 define('_VALID_PHP', true);
 $pname = 'Daily Reward';
 $menu = 'ADMIN_DAILYREWARD';
-$submenu = '';
+$submenu = 'ADMIN_DAILYREWARD_PACKAGE';
 require_once 'init.php';
 use Carbon\Carbon;
 
@@ -69,10 +69,15 @@ if (!$user->logged_in) {
                         </div>
                     </div>
                     <div class="portlet-body form">
-                      <div class="row">
-                        <div class="col-md-6">
+                      <div class="modal fade in" id="modal_add" tabindex="-1" role="basic" aria-hidden="true">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                      <h4 class="modal-title">Add New Package</h4>
+                                  </div>
+                                  <div class="modal-body">
                           <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                            <h4>Add New Package</h4>
                               <div class="form-group">
                                   <label class="col-md-3 control-label">Day</label>
                                   <div class="col-md-9">
@@ -106,21 +111,28 @@ if (!$user->logged_in) {
                               <input type="hidden" name="func" value="create_dailyreward">
                           </form>
                         </div>
-                        <div class="clearfix"></div>
-                        <hr>
-                      </div>
+                    </div>
+                  </div>
+                </div>
                         <div class="row">
+                          <div class="col-md-6">
+                            <h4 class="pull-left">Package List</h4>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="btn-group pull-right">
+                              <a class="btn green btn-outline sbold " data-toggle="modal" href="#modal_add"> <i class="fa fa-plus"></i> Package</a>
+                            </div>
+                          </div>
                           <div class="col-md-12">
-                            <h4>Package List</h4>
                             <?php
 
-                            if(isset($_SESSION['noti_slider'])){
-                              if($_SESSION['noti_slider']['status'] == 'error'){
-                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_slider']['msg'].'</div>';
-                              }elseif($_SESSION['noti_slider']['status'] == 'success'){
-                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_slider']['msg'].'</div>';
+                            if(isset($_SESSION['noti'])){
+                              if($_SESSION['noti']['status'] == 'error'){
+                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
+                              }elseif($_SESSION['noti']['status'] == 'success'){
+                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
                               }
-                              unset($_SESSION['noti_slider']);
+                              unset($_SESSION['noti']);
                             }
 
                             $rewards = $fz->getDailyReward();
@@ -233,227 +245,7 @@ if (!$user->logged_in) {
                 <!-- END SAMPLE FORM PORTLET-->
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 ">
-                <!-- BEGIN SAMPLE FORM PORTLET-->
-                <div class="portlet light bordered">
-                    <div class="portlet-title">
-                        <div class="caption font-red-sunglo">
-                            <i class="icon-settings font-red-sunglo"></i>
-                            <span class="caption-subject bold uppercase">Wheel of Fortune</span>
-                        </div>
-                    </div>
-                    <div class="portlet-body form">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                            <h4>Add New Setting</h4>
-                              <div class="form-group">
-                                  <label class="col-md-3 control-label">Priority</label>
-                                  <div class="col-md-9">
-                                      <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="wof_prio" required>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label class="col-md-3 control-label">Type</label>
-                                  <div class="col-md-9">
-                                      <div class="mt-radio-list">
-                                          <label class="mt-radio mt-radio-outline">
-                                              <input type="radio" name="wof_type" id="wof_type22" value="1" checked> Gold
-                                              <span></span>
-                                          </label>
-                                          <label class="mt-radio mt-radio-outline">
-                                              <input type="radio" name="wof_type" id="wof_type23" value="2"> Diamond
-                                              <span></span>
-                                          </label>
-                                          <label class="mt-radio mt-radio-outline">
-                                              <input type="radio" name="wof_type" id="wof_type24" value="3"> Spin
-                                              <span></span>
-                                          </label>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label class="col-md-3 control-label">Icon</label>
-                                  <div class="col-md-9">
-                                      <input type="file" class="form-control" name="wof_icon" required>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label class="col-md-3 control-label">Amount</label>
-                                  <div class="col-md-9">
-                                      <input type="number" class="form-control" name="wof_amount" required>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label class="col-md-3 control-label">Percentage</label>
-                                  <div class="col-md-9">
-                                    <div class="input-group">
-                                      <input type="number" class="form-control" name="wof_percent" required>
-                                      <span class="input-group-addon">
-                                          <i class="fa fa-percent"></i>
-                                      </span>
-                                    </div>
-                                  </div>
-                              </div>
-                              <div class="form-group">
-                                  <label class="col-md-3 control-label"></label>
-                                  <div class="col-md-9">
-                                    <button type="submit" class="btn blue">Create</button>
-                                    <button type="button" class="btn default">Cancel</button>
-                                  </div>
-                              </div>
-                              <input type="hidden" name="func" value="create_wof">
-                          </form>
-                        </div>
-                        <div class="clearfix"></div>
-                        <hr>
-                      </div>
-                        <div class="row">
-                          <div class="col-md-12">
-                            <h4>Setting List</h4>
-                            <?php
 
-                            if(isset($_SESSION['noti_wof'])){
-                              if($_SESSION['noti_wof']['status'] == 'error'){
-                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_wof']['msg'].'</div>';
-                              }elseif($_SESSION['noti_wof']['status'] == 'success'){
-                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_wof']['msg'].'</div>';
-                              }
-                              unset($_SESSION['noti_wof']);
-                            }
-
-                            $wofs = $fz->getWof();
-                            ?>
-
-                            <table class="table table-bordered table-hover">
-                              <thead>
-                                <tr>
-                                  <th class="text-center">Priority</th>
-                                  <th class="text-center">Icon</th>
-                                  <th class="text-center">Type</th>
-                                  <th class="text-center">Amount</th>
-                                  <th class="text-center">Percentage</th>
-                                  <th class="text-center" width="15%">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-
-                            <?php
-                            foreach($wofs as $key => $row){
-                            ?>
-
-                                <tr>
-                                  <td class="text-center"><?php echo $row->wof_prio; ?></td>
-                                  <td class="text-center">
-                                    <img src="<?php echo BACK_UPLOADS.$row->wof_icon; ?>" class="img-thumbnail">
-                                  </td>
-                                  <td class="text-center">
-                                    <?php
-                                    if($row->wof_type == 1){
-                                      echo 'Gold';
-                                    }elseif($row->wof_type == 2){
-                                      echo 'Diamond';
-                                    }elseif($row->wof_type == 3){
-                                      echo 'Spin';
-                                    }
-                                    ?>
-                                  </td>
-                                  <td class="text-center"><?php echo $row->wof_amount; ?></td>
-                                  <td class="text-center"><?php echo $row->wof_percent.' %'; ?></td>
-                                  <td class="text-center">
-                                    <button class="btn btn-sm btn-warning btn_updateWof" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                  </td>
-                                </tr>
-
-                            <?php
-                            }
-
-                            ?>
-                              </tbody>
-                            </table>
-
-                          </div>
-                        </div>
-                        <div class="modal fade in" id="modal_update_wof" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Update Setting</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                      <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label">Priority</label>
-                                              <div class="col-md-9">
-                                                  <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="wof_prio" required id="wof_prio_upd">
-                                              </div>
-                                          </div>
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label">Type</label>
-                                              <div class="col-md-9">
-                                                  <div class="mt-radio-list">
-                                                      <label class="mt-radio mt-radio-outline">
-                                                          <input type="radio" class="wof_type_upd" name="wof_type" id="wof_type22" value="1" checked> Gold
-                                                          <span></span>
-                                                      </label>
-                                                      <label class="mt-radio mt-radio-outline">
-                                                          <input type="radio" class="wof_type_upd" name="wof_type" id="wof_type23" value="2"> Diamond
-                                                          <span></span>
-                                                      </label>
-                                                      <label class="mt-radio mt-radio-outline">
-                                                          <input type="radio" class="wof_type_upd" name="wof_type" id="wof_type24" value="3"> Spin
-                                                          <span></span>
-                                                      </label>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label">Icon</label>
-                                              <div class="col-md-9">
-                                                  <img src="" id="wof_icon_upd" class="img-thumbnail">
-                                                  <input type="file" class="form-control" name="wof_icon" required>
-                                              </div>
-                                          </div>
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label">Amount</label>
-                                              <div class="col-md-9">
-                                                  <input type="number" class="form-control" name="wof_amount" required id="wof_amount_upd">
-                                              </div>
-                                          </div>
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label">Percentage</label>
-                                              <div class="col-md-9">
-                                                <div class="input-group">
-                                                  <input type="number" class="form-control" name="wof_percent" required id="wof_percent_upd">
-                                                  <span class="input-group-addon">
-                                                      <i class="fa fa-percent"></i>
-                                                  </span>
-                                                </div>
-                                              </div>
-                                          </div>
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label"></label>
-                                              <div class="col-md-9">
-                                                <button type="submit" class="btn blue">Update</button>
-                                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                              </div>
-                                          </div>
-                                          <input type="hidden" name="func" value="update_wof">
-                                          <input type="hidden" name="id" id="upd_id_wof" value="">
-                                      </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- END SAMPLE FORM PORTLET-->
-            </div>
-        </div>
         <!-- END PAGE BASE CONTENT -->
     </div>
     <!-- END CONTENT BODY -->
@@ -563,7 +355,7 @@ $(document).ready(function(){
   $('#modal_update_wof').on('hide.bs.modal',function(){
     $('#wof_prio_upd').val('');
     $('#wof_amount_upd').val('');
-    $('#wof_percent_upd').val('');    
+    $('#wof_percent_upd').val('');
     $('#wof_icon_upd').attr('src','');
     $('#upd_id_wof').val('');
 

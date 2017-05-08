@@ -53,6 +53,10 @@ if (!$user->logged_in) {
                 <i class="fa fa-circle"></i>
             </li>
             <li>
+                <span>Bidding</span>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
                 <span class="active"><?php echo $pname; ?></span>
             </li>
         </ul>
@@ -78,19 +82,6 @@ if (!$user->logged_in) {
                                   </div>
                                   <div class="modal-body">
                           <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-
-                            <?php
-
-                            if(isset($_SESSION['noti_add']) && $_SESSION['noti_add'] != ''){
-                              if($_SESSION['noti_add']['status'] == 'error'){
-                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_add']['msg'].'</div>';
-                              }elseif($_SESSION['noti_add']['status'] == 'success'){
-                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_add']['msg'].'</div>';
-                              }
-                              unset($_SESSION['noti_add']);
-                            }
-
-                            ?>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Name</label>
                                 <div class="col-md-9">
@@ -143,13 +134,13 @@ if (!$user->logged_in) {
                             <a class="btn green btn-outline sbold pull-right" data-toggle="modal" href="#modal_add"> <i class="fa fa-plus"></i> Product</a>
                             <?php
 
-                            if(isset($_SESSION['noti_upd']) && $_SESSION['noti_upd'] != ''){
-                              if($_SESSION['noti_upd']['status'] == 'error'){
-                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_upd']['msg'].'</div>';
-                              }elseif($_SESSION['noti_upd']['status'] == 'success'){
-                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_upd']['msg'].'</div>';
+                            if(isset($_SESSION['noti']) && $_SESSION['noti'] != ''){
+                              if($_SESSION['noti']['status'] == 'error'){
+                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
+                              }elseif($_SESSION['noti']['status'] == 'success'){
+                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
                               }
-                              unset($_SESSION['noti_upd']);
+                              unset($_SESSION['noti']);
                             }
 
                             $rewards = $fz->getProduct();
