@@ -313,7 +313,7 @@ class Listing
         $row = self::$db->fetch_all($sql);
         $text="";
         foreach ($row as $key => $value) {
-            $text.=$value->content;
+            $text.=$value->content."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         }
         return $text;
     }
