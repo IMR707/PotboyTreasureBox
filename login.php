@@ -6,13 +6,13 @@ require_once 'init.php';
 if ($user->logged_in) {
     redirect_to(SITEURL.'/dashboard.php');
 }
+$refurl=isset($_SERVER['HTTP_REFERER'])? $_SERVER['HTTP_REFERER'] : '';
 if (isset($_POST['doLogin'])) {
-    //header('Refresh:0');
-    $result = isset($_POST['rememberme']) ? $log=$user->login($_POST['email'], $_POST['password'], $_POST['rememberme']) : $log=$user->login($_POST['email'], $_POST['password']);
+    $log=$user->login($_POST['email'], $_POST['password'],$refurl);
 if($log)
-    redirect_to(SITEURL . "/dashboard.php");
+    redirect_to(SITEURL . "/index.php");
     else {
-      redirect_to(SITEURL . "/index.php");
+      redirect_to(SITEURL . "/login.php");
     }
 }
 ?>
@@ -41,6 +41,7 @@ if($log)
                     <div class="uk-form-row">
                         <label for="login_password">Password</label>
                         <input class="md-input" type="password" id="login_password" name="password" />
+                        <input type="hidden" name="refurl" />
                     </div>
                     <div class="uk-margin-medium-top">
 
