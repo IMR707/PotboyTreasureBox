@@ -7,119 +7,104 @@ if ($user->logged_in) {
     redirect_to(SITEURL.'/dashboard.php');
 }
 $refurl=isset($_SERVER['HTTP_REFERER'])? $_SERVER['HTTP_REFERER'] : '';
+
+if($refurl){
+  $refurl=substr($refurl, strrpos($refurl, '/') + 1)=='login.php'? "":$refurl;
+}
 if (isset($_POST['doLogin'])) {
-    $log=$user->login($_POST['email'], $_POST['password'],$refurl);
+pre($_POST);
+}
+
+if (isset($_POST['doLogin'])) {
+    $log=$user->login($_POST['username'], $_POST['password'],$_POST['refurl']);
 if($log)
     redirect_to(SITEURL . "/index.php");
     else {
       redirect_to(SITEURL . "/login.php");
     }
 }
-?>
-<!doctype html>
-<!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<?php
-// include 'head.php';
-// include 'footer.php';
+include 'fehead.php';
 ?>
 
-<!-- altair admin login page -->
-<link rel="stylesheet" href="assets/css/login_page.min.css" />
-<body class="">
+  <div class="col-md-6 col-md-offset-3">
 
-    <div class="login_page_wrapper">
-        <div class="md-card" id="login_card">
-            <div class="md-card-content large-padding" id="login_form">
-                <div class="login_heading">
-                  <img src="<?php echo IMAGE;?>logo.png" alt="" />
-                  <form method="post" accept-charset="UTF-8" class="form-horizontal" autocomplete="off" id="login_form" name="login_form">
-                                  <div class="uk-form-row">
-                        <label for="login_email">Email</label>
-                        <input class="md-input" type="text" id="login_email" name="email" />
-                    </div>
-                    <div class="uk-form-row">
-                        <label for="login_password">Password</label>
-                        <input class="md-input" type="password" id="login_password" name="password" />
-                        <input type="hidden" name="refurl" />
-                    </div>
-                    <div class="uk-margin-medium-top">
+<div class="page-container">
 
+  <!-- Page content -->
+  <div class="page-content">
 
-                          <button class="md-btn md-btn-danger md-btn-block md-btn-large">Sign In</button>
-                    </div>
-                    <div class="uk-margin-top">
-                        <a href="#" id="login_help_show" class="uk-float-right">Need help?</a>
-                        <span class="icheck-inline">
-                            <input type="checkbox" name="rememberme" id="rememberme" data-md-icheck />
-                            <label for="rememberme" class="inline-label">Stay signed in</label>
-                        </span>
-                    </div>
-                      <input name="doLogin" type="hidden" value="1">
-                </form>
+    <!-- Main content -->
+    <div class="content-wrapper">
+
+      <!-- Advanced login -->
+
+        <div class="panel panel-body login-form">
+          <div class="text-center">
+            <div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
+            <h5 class="content-group">Login to your account <small class="display-block">Your credentials</small></h5>
+          </div>
+          <form method="POST" action="login.php">
+          <div class="form-group has-feedback has-feedback-left">
+            <input type="text" class="form-control" placeholder="Email"  name="email">
+            <div class="form-control-feedback">
+              <i class="icon-user text-muted"></i>
             </div>
+          </div>
 
-
-
-
-
-            <div class="md-card-content large-padding uk-position-relative" id="login_help" style="display: none">
-                <button type="button" class="uk-position-top-right uk-close uk-margin-right uk-margin-top back_to_login"></button>
-                <h2 class="heading_b uk-text-success">Can't log in?</h2>
-                <p>Here’s the info to get you back in to your account as quickly as possible.</p>
-                <p>First, try the easiest thing: if you remember your password but it isn’t working, make sure that Caps Lock is turned off, and that your email is spelled correctly, and then try again.</p>
-                <p>If your password still isn’t working, it’s time to <a href="#" id="password_reset_show">reset your password</a>.</p>
+          <div class="form-group has-feedback has-feedback-left">
+            <input type="password" class="form-control" placeholder="Password" name="password">
+            <div class="form-control-feedback">
+              <i class="icon-lock2 text-muted"></i>
             </div>
-            <div class="md-card-content large-padding" id="login_password_reset" style="display: none">
-                <button type="button" class="uk-position-top-right uk-close uk-margin-right uk-margin-top back_to_login"></button>
-                <h2 class="heading_a uk-margin-large-bottom">Reset password</h2>
-                <form>
-                    <div class="uk-form-row">
-                        <label for="login_email_reset">Your email address</label>
-                        <input class="md-input" type="text" id="login_email_reset" name="login_email_reset" />
-                    </div>
-                    <div class="uk-margin-medium-top">
-                        <a href="index.html" class="md-btn md-btn-danger md-btn-block">Reset password</a>
-                    </div>
-                </form>
+          </div>
+
+          <div class="form-group login-options">
+            <div class="row">
+              <div class="col-sm-6">
+                <label class="checkbox-inline">
+                  <input type="hidden" value="<?php echo $refurl;?>" name="refurl">
+                  <input name="doLogin" type="hidden" value="1">
+                  <input type="checkbox" class="styled" checked="checked" name="rememberme">
+                  Remember
+                </label>
+              </div>
+
+              <div class="col-sm-6 text-right">
+                <a href="<?php echo FORGOTURL;?>">Forgot password?</a>
+              </div>
             </div>
-            <div class="md-card-content large-padding" id="register_form" style="display: none">
-                <button type="button" class="uk-position-top-right uk-close uk-margin-right uk-margin-top back_to_login"></button>
-                <h2 class="heading_a uk-margin-medium-bottom">Create an account</h2>
-                <form>
-                    <div class="uk-form-row">
-                        <label for="register_email">Email</label>
-                        <input class="md-input" type="text" id="register_email" name="register_email" />
-                    </div>
-                    <div class="uk-form-row">
-                        <label for="register_password">Password</label>
-                        <input class="md-input" type="password" id="register_password" name="register_password" />
-                    </div>
-                    <div class="uk-form-row">
-                        <label for="register_password_repeat">Repeat Password</label>
-                        <input class="md-input" type="password" id="register_password_repeat" name="register_password_repeat" />
-                    </div>
-                    <div class="uk-form-row">
-                        <label for="register_email">E-mail</label>
-                        <input class="md-input" type="text" id="register_email" name="register_email" />
-                    </div>
-                    <div class="uk-margin-medium-top">
-                        <a href="dashboard.php" class="md-btn md-btn-danger md-btn-block md-btn-large">Sign Up</a>
-                    </div>
-                </form>
-            </div>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn bg-pink-400 btn-block">Login <i class="icon-arrow-right14 position-right"></i></button>
+          </div>
+            </form>
+
+          <div class="content-divider text-muted form-group"><span>or sign in with</span></div>
+          <ul class="list-inline form-group list-inline-condensed text-center">
+            <li><a href="#" class="btn border-indigo text-indigo btn-flat btn-icon btn-rounded"><i class="icon-facebook"></i></a></li>
+            <li><a href="#" class="btn border-pink-300 text-pink-300 btn-flat btn-icon btn-rounded"><i class="icon-dribbble3"></i></a></li>
+            <li><a href="#" class="btn border-slate-600 text-slate-600 btn-flat btn-icon btn-rounded"><i class="icon-github"></i></a></li>
+            <li><a href="#" class="btn border-info text-info btn-flat btn-icon btn-rounded"><i class="icon-twitter"></i></a></li>
+          </ul>
+
+          <div class="content-divider text-muted form-group"><span>Don't have an account?</span></div>
+          <a href="<?php echo SIGNUPURL;?>" class="btn btn-default btn-block content-group">Sign up</a>
+          <span class="help-block text-center no-margin">By continuing, you're confirming that you've read our <a href="#">Terms &amp; Conditions</a> and <a href="#">Cookie Policy</a></span>
         </div>
 
+
+      <!-- /advanced login -->
+
     </div>
+    <!-- /main content -->
 
-    <!-- common functions -->
-    <script src="assets/js/common.min.js"></script>
-    <!-- altair core functions -->
-    <script src="assets/js/altair_admin_common.min.js"></script>
+  </div>
+  <!-- /page content -->
 
-    <!-- altair login page functions -->
-    <script src="assets/js/pages/login.min.js"></script>
-
-
-</body>
-</html>
+</div>
+<!-- /page container -->
+</div>
+<?php
+ include 'fefoot.php';
+ ?>

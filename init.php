@@ -81,6 +81,8 @@ define("BACK_IMG", BACKASSETSURL . "img/");
 define("BACK_UPLOADS", BACKASSETSURL . "uploads/");
 
 define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
+define("FORGOTURL","http://potboy.com.my/customer/account/forgotpassword/");
+
 define("WEBNAME", " | Potboy Treasure box");
 define("UPLOADURL", SITEURL . "/uploads/");
 define("HOMEURL", "http://potboy.com.my/");
