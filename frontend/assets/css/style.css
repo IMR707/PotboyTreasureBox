@@ -1,0 +1,65 @@
+.center-block {
+  float: none !important
+}
+
+.daily-title{
+    font-size: 24px;
+    font-weight: bold;
+/*    padding: 5px;
+    padding-left: 30px !important;
+    padding-right: 30px !important;*/
+}
+
+.daily-gold-container{
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+
+.daily-gold-text{
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    color : #ffb807;
+    font-size : 30px;
+    padding-top : 8px;
+    font-weight: bold;
+}
+
+.daily-gold-plus{
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    color : #ffb807;
+    font-size : 80px;
+    padding-top : 15px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.daily-gold-claim{
+    color : #fff2f0;
+    font-size : 20px;
+    background-color: #4b00a7;
+    padding-left : 20%;
+    padding-right : 20%;
+}
+
+.gold-coin{
+    max-width : 50%;
+    margin: 0 auto !important;
+    /*height : 50%;*/
+}
+
+.claim-disabled{
+    opacity : 0.3;
+}
+
+.padding-top-sm{
+    padding-top: 10px;
+}
+.padding-top-md{
+    padding-top: 50px;
+}
+
+.padding-btm-sm{
+    padding-bottom: 10px;
+}
+.padding-btm-md{
+    padding-bottom: 20px;
+}

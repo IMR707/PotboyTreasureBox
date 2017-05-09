@@ -2524,3 +2524,7 @@
 .text-default:focus {
   color: #333333 !important;
 }
+
+.bg-yellow-gold{
+    background-color: #ffb900;
+}
