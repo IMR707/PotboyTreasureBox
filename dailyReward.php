@@ -136,7 +136,7 @@ if (isset($_GET['day'])) {
 
                  } else {
                      ?>
-              <button class="btn daily-gold-claim" name="button" onclick="alert('please login to claim')"><?php echo $nowtext; ?></button>
+              <button class="btn daily-gold-claim" name="button" onclick="alert('Please Login to Claim the Daily Reward')"><?php echo $nowtext; ?></button>
               <?php
 
                  }

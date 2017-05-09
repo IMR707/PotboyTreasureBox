@@ -12,10 +12,6 @@ $msg='';
 if (isset($_GET['cid'])) {
     $msg=$list->FEgetConversion($_GET['cid'], $user->uid);
 }
-
-// if (!$user->logged_in) {
-//     redirect_to(SITEURL.'/index.php');
-// }
 ?>
 <?php
  include 'fehead.php';
@@ -77,78 +73,10 @@ if (isset($_GET['cid'])) {
 
 
          </div>
-       <!--<div class="row">
-           <div class="col-md-4 col-sm-4 col-xs-4">
-               <div class="panel-heading daily-gold-container">
-                 <div class="text-center convert-title bg-yellow-gold-dark img-rounded-md">Pouch of <br>POTBOY Gold</div>
-                 <div class="text-center daily-gold-text">10000</div>
-                 <div class="text-center convert-img"><img class="img-responsive gold-pack" src="<?php echo FRONTIMAGE;?>bag-gold-coins.png"></div>
-                 <div class="text-center ">
-                     <div class="diamond-claim img-rounded-md" >
-                         <div class="row">
-                         Claim Now <br>with <br>
-                         <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                             <span class="text-lg">10</span>
-                         </div>
-                         <div class="col-xs-6 col-sm-6 col-md-6">
-                             <img src="<?php echo FRONTIMAGE;?>diamond.png" class="img-responsive diamond" >
-                         </div>
-                         </div>
-                     </div>
-                 </div>
-               </div>
-           </div>
-           <div class="col-md-4 col-sm-4 col-xs-4">
-             <div class="panel-heading daily-gold-container">
-                 <div class="text-center convert-title bg-yellow-gold-dark img-rounded-md">Bucket of <br>POTBOY Gold</div>
-                 <div class="text-center daily-gold-text">60000</div>
-                 <div class="text-center convert-img"><img class="img-responsive gold-pack"  src="<?php echo FRONTIMAGE;?>pot_of_gold.png"></div>
-                 <div class="text-center ">
-                     <div class="diamond-claim img-rounded-md" >
-                         <div class="row">
-                         Claim Now <br>with <br>
-                         <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                             <span class="text-lg">50</span>
-                         </div>
-                         <div class="col-xs-6 col-sm-6 col-md-6">
-                             <img src="<?php echo FRONTIMAGE;?>diamond.png" class="img-responsive diamond" >
-                         </div>
-                         </div>
-                     </div>
-                 </div>
-               </div>
-           </div>
-           <div class="col-md-4 col-sm-4 col-xs-4">
-             <div class="panel-heading daily-gold-container">
-                 <div class="text-center convert-title bg-yellow-gold-dark img-rounded-md">Wagon of <br>POTBOY Gold</div>
-                 <div class="text-center daily-gold-text">150000</div>
-                 <div class="text-center convert-img"><img class="img-responsive gold-pack" src="<?php echo FRONTIMAGE;?>wagon_gold.png"></div>
-                 <div class="text-center ">
-                     <div class="diamond-claim img-rounded-md" >
-                         <div class="row">
-                         Claim Now <br>with <br>
-                         <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                             <span class="text-lg">100</span>
-                         </div>
-                         <div class="col-xs-6 col-sm-6 col-md-6">
-                             <img src="<?php echo FRONTIMAGE;?>diamond.png" class="img-responsive diamond" >
-                         </div>
-                         </div>
-                     </div>
-                 </div>
-               </div>
-           </div>
-           <div class="clearfix">&nbsp;</div>
-           <div>&nbsp;</div>
 
-       </div> -->
-
-
-
-       <!-- /simple panel -->
 
        <!-- Simple panel -->
-       <div class="panel panel-flat">
+       <a href="#"><div class="panel panel-flat">
                <div class="panel-body bg-yellow-gold-dark">
                        <div class="go-shop-gold">
                            <div class="col-md-2 col-xs-2 col-sm-2 text-center"><i class="glyphicon glyphicon-menu-right"></i> </div>
@@ -156,6 +84,7 @@ if (isset($_GET['cid'])) {
                        </div>
                </div>
        </div>
+       </a>
        <!-- /simple panel -->
 
        <!-- <div class="row">
