@@ -6,7 +6,7 @@ if (!defined('_VALID_PHP')) {
     die('Direct access to this location is not allowed.');
 }
 use Httpful\Request;
-
+use Carbon\Carbon;
 class Listing
 {
   const tb_hs = 'aa_homeslider';
@@ -62,6 +62,75 @@ class Listing
     {
       $sql = 'SELECT * FROM '.self::tb_dr." where active = 1 order by day_num";
       $row = self::$db->fetch_all($sql);
+      return $row;
+    }
+
+
+    public function FEgetAllDailyReward2($id)
+    {
+      $dt = Carbon::now()->subDay();
+      $sql = 'SELECT *,0 as done,0 as date_check FROM '.self::tb_dr." where active = 1 order by day_num";
+      $row = self::$db->fetch_all($sql);
+      for ($i=0; $i <count($row) ; $i++) {
+        $dt=$dt->addDay();
+        $dz=explode(" ",$dt);
+        $day=$dz[0];
+        $row[$i]->date_check=$day;
+      }
+      if($row&&$id){
+        $loop=[];
+        $dt = Carbon::now()->addDay();
+        for ($i=0; $i <count($row) ; $i++) {
+          $dt=$dt->subDay();
+          $dz=explode(" ",$dt);
+          $day=$dz[0];
+          $loop[]=array('date'=>$day,'done'=>0);
+        }
+        foreach ($loop as $key => $value) {
+          $sql = 'SELECT * FROM '.self::tb_drtran." where active = 1 AND customer_id='".$id."' AND date(date_created)='".$value['date']."' ";
+          $row2 = self::$db->first($sql);
+          if($row2){
+            $loop[$key]['done']=1;
+          }
+        }
+        $temploop=$loop;
+        array_shift($temploop);
+        $countday=0;
+        foreach ($temploop as $key => $value) {
+          if($value['done']==1)
+          {
+            $countday++;
+          }else {
+            break;
+          }
+        }
+        $dt = Carbon::now()->addDay();
+        for ($i=$countday; $i >=0 ; $i--) {
+            $dt=$dt->subDay();
+            $dz=explode(" ",$dt);
+            $day=$dz[0];
+            $row[$i]->date_check=$day;
+        }
+        $dt = Carbon::now();
+        for ($i=$countday+1; $i <count($row) ; $i++) {
+          $dt=$dt->addDay();
+          $dz=explode(" ",$dt);
+          $day=$dz[0];
+          $row[$i]->date_check=$day;
+        }
+        for ($i=0; $i <$countday; $i++) {
+          $row[$i]->done=1;
+        }
+        $dt = Carbon::now();
+        $dz=explode(" ",$dt);
+        $day=$dz[0];
+        $sql3 = 'SELECT * FROM '.self::tb_drtran." where active = 1 AND customer_id='".$id."' AND date(date_created)='".$day."' ";
+        $row3 = self::$db->first($sql3);
+        if($row3){
+          $row[$i]->done=1;
+          $row[$i]->date_check=$day;
+        }
+      }
       return $row;
     }
 
