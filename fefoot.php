@@ -1,4 +1,4 @@
-<?php if (!MV) {
+</div><?php if (!MV) {
      ?>
  	<!-- Footer -->
   <br>

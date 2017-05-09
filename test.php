@@ -5,7 +5,10 @@ $menu = 'Dashboard';
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
-
-// $AllDailyReward=$list->FEgetAllDailyReward();
-$AllDailyReward=$list->FEgetAllDailyReward2($user->uid);
+$AllDailyReward=$list->FEgetAllDailyReward($user->uid);
+echo "AllDailyReward";
 pre($AllDailyReward);
+
+$AllConversion=$list->FEgetAllConversion($user->uid);
+echo "AllConversion";
+pre($AllConversion);

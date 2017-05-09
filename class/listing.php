@@ -7,22 +7,24 @@ if (!defined('_VALID_PHP')) {
 }
 use Httpful\Request;
 use Carbon\Carbon;
+
 class Listing
 {
-  const tb_hs = 'aa_homeslider';
-  const tb_an = 'aa_announcement';
-  const tb_rewardcus = 'lof_rewardpoints_customer';
-  const tb_rewardtrans = 'lof_rewardpoints_transaction';
-  const tb_rewardcredit = 'customer_credit';
-  const tb_dr = 'aa_dailyreward';
-  const tb_drtran = 'aa_dailyreward_transaction';
-  const tb_wof = 'aa_fortune';
-  const tb_cr = 'aa_conversion';
-  const tb_prod = 'aa_product';
-  const tb_spon = 'aa_sponsor';
-  const tb_bid = 'aa_bidding';
+    const tb_hs = 'aa_homeslider';
+    const tb_an = 'aa_announcement';
+    const tb_rewardcus = 'lof_rewardpoints_customer';
+    const tb_rewardSpintrans = 'lof_rewardpoints_spin_transaction';
+    const tb_rewardtrans = 'lof_rewardpoints_transaction';
+    const tb_rewardcredit = 'customer_credit';
+    const tb_dr = 'aa_dailyreward';
+    const tb_drtran = 'aa_dailyreward_transaction';
+    const tb_wof = 'aa_fortune';
+    const tb_cr = 'aa_conversion';
+    const tb_prod = 'aa_product';
+    const tb_spon = 'aa_sponsor';
+    const tb_bid = 'aa_bidding';
 
-  const lTable = 'leads';
+    const lTable = 'leads';
     const leTable = 'leadenquiry';
     const custleTable = 'custenquiry';
     const conTable = 'countries';
@@ -47,8 +49,8 @@ class Listing
     const memTypeTable = 'membership_type';
     const dTable = 'data';
     const clrTable = 'cusleadlink';
-      const siteTable = 'site_progress';
-      const homeTable = 'home_slider';
+    const siteTable = 'site_progress';
+    const homeTable = 'home_slider';
     const hdirTable = 'hdirect';
 
 
@@ -58,85 +60,192 @@ class Listing
         self::$db = Registry::get('Database');
     }
 
-    public function FEgetAllDailyReward()
+    public function FEgetAllConversion($id)
     {
-      $sql = 'SELECT * FROM '.self::tb_dr." where active = 1 order by day_num";
-      $row = self::$db->fetch_all($sql);
-      return $row;
+        $sql = 'SELECT *,1 as disable FROM '.self::tb_cr." where active = 1  AND diamond_amount != 0 order by diamond_amount,prio";
+        $row = self::$db->fetch_all($sql);
+        if ($id) {
+            $rewardata=$this->FEgetRewardData($id);
+            if ($rewardata->diamond!=0) {
+                foreach ($row as $key => $value) {
+                    $row[$key]->disable=0;
+                    if ($rewardata->diamond<$value->diamond_amount) {
+                        $row[$key]->disable=1;
+                    }
+                }
+            }
+        }
+        return $row;
     }
 
-
-    public function FEgetAllDailyReward2($id)
+    public function FEgetAllDailyReward($id)
     {
-      $dt = Carbon::now()->subDay();
-      $sql = 'SELECT *,0 as done,0 as date_check FROM '.self::tb_dr." where active = 1 order by day_num";
-      $row = self::$db->fetch_all($sql);
-      for ($i=0; $i <count($row) ; $i++) {
-        $dt=$dt->addDay();
-        $dz=explode(" ",$dt);
-        $day=$dz[0];
-        $row[$i]->date_check=$day;
-      }
-      if($row&&$id){
-        $loop=[];
-        $dt = Carbon::now()->addDay();
+        $dt = Carbon::now()->subDay();
+        $sql = 'SELECT *,0 as done,0 as date_check FROM '.self::tb_dr." where active = 1 order by day_num";
+        $row = self::$db->fetch_all($sql);
         for ($i=0; $i <count($row) ; $i++) {
-          $dt=$dt->subDay();
-          $dz=explode(" ",$dt);
-          $day=$dz[0];
-          $loop[]=array('date'=>$day,'done'=>0);
-        }
-        foreach ($loop as $key => $value) {
-          $sql = 'SELECT * FROM '.self::tb_drtran." where active = 1 AND customer_id='".$id."' AND date(date_created)='".$value['date']."' ";
-          $row2 = self::$db->first($sql);
-          if($row2){
-            $loop[$key]['done']=1;
-          }
-        }
-        $temploop=$loop;
-        array_shift($temploop);
-        $countday=0;
-        foreach ($temploop as $key => $value) {
-          if($value['done']==1)
-          {
-            $countday++;
-          }else {
-            break;
-          }
-        }
-        $dt = Carbon::now()->addDay();
-        for ($i=$countday; $i >=0 ; $i--) {
-            $dt=$dt->subDay();
-            $dz=explode(" ",$dt);
+            $dt=$dt->addDay();
+            $dz=explode(" ", $dt);
             $day=$dz[0];
             $row[$i]->date_check=$day;
         }
-        $dt = Carbon::now();
-        for ($i=$countday+1; $i <count($row) ; $i++) {
-          $dt=$dt->addDay();
-          $dz=explode(" ",$dt);
-          $day=$dz[0];
-          $row[$i]->date_check=$day;
+
+
+        if ($row&&$id) {
+          // $sql4 = 'SELECT * FROM '.self::tb_drtran." where active = 1 AND customer_id='".$id."' AND date(date_created)<'".$row[0]->date_check."' order by date_created desc";
+          // $row4 = self::$db->fetch_all($sql4);
+          // echo $totalrow=count($row);
+          // echo $currentrow=count($row4);
+          // pre($row4);
+          //need repair after present z4q
+            $loop=[];
+            $dt = Carbon::now()->addDay();
+            for ($i=0; $i <count($row) ; $i++) {
+                $dt=$dt->subDay();
+                $dz=explode(" ", $dt);
+                $day=$dz[0];
+                $loop[]=array('date'=>$day,'done'=>0);
+            }
+
+            foreach ($loop as $key => $value) {
+                $sql = 'SELECT * FROM '.self::tb_drtran." where active = 1 AND customer_id='".$id."' AND date(date_created)='".$value['date']."' ";
+                $row2 = self::$db->first($sql);
+                if ($row2) {
+                    $loop[$key]['done']=1;
+                }
+            }
+            $temploop=$loop;
+            array_shift($temploop);
+            $countday=0;
+            foreach ($temploop as $key => $value) {
+                if ($value['done']==1) {
+                    $countday++;
+                } else {
+                    break;
+                }
+            }
+            $dt = Carbon::now()->addDay();
+            for ($i=$countday; $i >=0 ; $i--) {
+                $dt=$dt->subDay();
+                $dz=explode(" ", $dt);
+                $day=$dz[0];
+                $row[$i]->date_check=$day;
+            }
+            $dt = Carbon::now();
+            for ($i=$countday+1; $i <count($row) ; $i++) {
+                $dt=$dt->addDay();
+                $dz=explode(" ", $dt);
+                $day=$dz[0];
+                $row[$i]->date_check=$day;
+            }
+            for ($i=0; $i <$countday; $i++) {
+                $row[$i]->done=1;
+            }
+            $dt = Carbon::now();
+            $dz=explode(" ", $dt);
+            $day=$dz[0];
+            $sql3 = 'SELECT * FROM '.self::tb_drtran." where active = 1 AND customer_id='".$id."' AND date(date_created)='".$day."' ";
+            $row3 = self::$db->first($sql3);
+            if ($row3) {
+                $row[$i]->done=1;
+                $row[$i]->date_check=$day;
+            }
         }
-        for ($i=0; $i <$countday; $i++) {
-          $row[$i]->done=1;
-        }
-        $dt = Carbon::now();
-        $dz=explode(" ",$dt);
-        $day=$dz[0];
-        $sql3 = 'SELECT * FROM '.self::tb_drtran." where active = 1 AND customer_id='".$id."' AND date(date_created)='".$day."' ";
-        $row3 = self::$db->first($sql3);
-        if($row3){
-          $row[$i]->done=1;
-          $row[$i]->date_check=$day;
-        }
-      }
-      return $row;
+
+
+        return $row;
     }
 
-    public function FEgetDailyReward($id)
+    public function FEgetDailyReward($id,$uid)
     {
-      echo $id;
+        $sql = 'SELECT * FROM '.self::tb_dr." where active = 1 AND day_num ='$id' ";
+        $row = self::$db->first($sql);
+        if($row){
+          $gold=$row->gold_check?$row->gold_amount:0;
+          $spin=$row->spin_check?$row->spin_amount:0;
+
+          if($gold){
+            $data = array(
+                    'customer_id' => $uid,
+                    'quote_id' => '',
+                    'amount' => 0,
+                    'amount_used' => 0,
+                    'amount_gold' => $gold,
+                    'amount_gold_used' =>0,
+                    'title' => 'PotBoy Daily Reward - Day '.$id,
+                    'desc' => $gold.' Golds',
+                    'code' => 'admin_add-aEEmIYncALynhaQQ',
+                    'action' => 'admin_add',
+                    'status' => 'complete',
+                    'params' => '',
+                    'is_expiration_email_sent' => 0,
+                    'email_message' => '',
+                    'apply_at' => '',
+                    'is_applied' => 1,
+                    'is_expired' => 0,
+                    'expires_at' => '',
+                    'updated_at' => 'now()',
+                    'created_at' => 'now()',
+                    'store_id' => '',
+                    'order_id' => '',
+                    'admin_user_id' => '1',
+                    );
+            self::$db->insert(self::tb_rewardtrans, $data);
+            $sql2 = 'SELECT * FROM '.self::tb_rewardcus." where customer_id ='$uid' ";
+            $row2 = self::$db->first($sql2);
+            $tgold=$gold+$row2->total_golds;
+            $data2 = array(
+                      'available_golds' => $tgold,
+                      'total_golds' => $tgold
+                      );
+            self::$db->update(self::tb_rewardcus, $data2, 'customer_id='.$uid);
+          }
+
+          if($spin){
+            $data = array(
+                    'customer_id' => $uid,
+                    'amount' => $spin,
+                    'title' => 'PotBoy Daily Reward - Day '.$id,
+                    'desc' => $spin.' Spin',
+                    'code' => 'admin_add-aEEmIYncALynhaQQ',
+                    'action' => 'admin_add',
+                    'status' => 'complete',
+                    'params' => '',
+                    'is_expiration_email_sent' => 0,
+                    'email_message' => '',
+                    'apply_at' => '',
+                    'is_applied' => 1,
+                    'is_expired' => 0,
+                    'expires_at' => '',
+                    'updated_at' => 'now()',
+                    'created_at' => 'now()',
+                    'store_id' => '',
+                    'order_id' => '',
+                    'admin_user_id' => '1',
+                    );
+            self::$db->insert(self::tb_rewardSpintrans, $data);
+            $sql2 = 'SELECT * FROM '.self::tb_rewardcus." where customer_id ='$uid' ";
+            $row2 = self::$db->first($sql2);
+            $tspin=$spin+$row2->total_spin;
+            $data2 = array(
+                      'total_spin' => $tspin,
+                      );
+            self::$db->update(self::tb_rewardcus, $data2, 'customer_id='.$uid);
+          }
+
+          $data = array(
+                  'customer_id' => $uid,
+                  'date_updated' => 'now()',
+                  'date_created' => 'now()',
+                  'active' => 1,
+                  );
+          self::$db->insert(self::tb_drtran, $data);
+        return "Successfully Claim";
+        }
+        else {
+        return "Please Retry Again Later";
+        }
+
     }
 
 
@@ -146,7 +255,7 @@ class Listing
         $row = self::$db->fetch_all($sql);
         $text="";
         foreach ($row as $key => $value) {
-          $text.=$value->content;
+            $text.=$value->content;
         }
         return $text;
     }
@@ -162,20 +271,19 @@ class Listing
     {
         $sql = 'SELECT available_points as diamond,available_golds as gold,total_spin as spin FROM '.self::tb_rewardcus." where customer_id ='$id'";
         $row = self::$db->first($sql);
-        if(!$row){
-          $row = new stdClass();
-          $row->diamond=0;
-          $row->gold=0;
-          $row->spin=0;
+        if (!$row) {
+            $row = new stdClass();
+            $row->diamond=0;
+            $row->gold=0;
+            $row->spin=0;
         }
         $sql2 = 'SELECT credit_balance as credit FROM '.self::tb_rewardcredit." where customer_id ='$id'";
         $row2 = self::$db->first($sql2);
-        if(!$row2){
-          $row->credit='0.00';
-        }
-        else {
-          $num=$row2->credit;
-          $row->credit=sprintf('%.2f',$num);
+        if (!$row2) {
+            $row->credit='0.00';
+        } else {
+            $num=$row2->credit;
+            $row->credit=sprintf('%.2f', $num);
         }
         $row->credit="RM ".$row->credit;
         return $row;
@@ -186,51 +294,51 @@ class Listing
 
 
 
-    public function EarliestDateLead(){
-      $sql = 'SELECT date(MIN(created)) as mindate FROM '.self::lTable." where created!='0000-00-00 00:00:00'";
-      $row = self::$db->first($sql);
-      if($row){
-      return $row->mindate;
-      }
+    public function EarliestDateLead()
+    {
+        $sql = 'SELECT date(MIN(created)) as mindate FROM '.self::lTable." where created!='0000-00-00 00:00:00'";
+        $row = self::$db->first($sql);
+        if ($row) {
+            return $row->mindate;
+        }
     }
 
 
 
 
-    public function CheckSiteByProjectfirst($project_id){
-
-      $sql = 'SELECT * FROM '.self::siteTable." where project_id='$project_id' AND active = 1 ORDER by sort DESC";
-      $row = self::$db->first($sql);
-      return $row;
+    public function CheckSiteByProjectfirst($project_id)
+    {
+        $sql = 'SELECT * FROM '.self::siteTable." where project_id='$project_id' AND active = 1 ORDER by sort DESC";
+        $row = self::$db->first($sql);
+        return $row;
     }
 
-    public function CheckSiteByProject($project_id){
-
-      $sql = 'SELECT * FROM '.self::siteTable." where project_id='$project_id' AND active = 1 ORDER by sort";
-      $row = self::$db->fetch_all($sql);
-      return $row;
+    public function CheckSiteByProject($project_id)
+    {
+        $sql = 'SELECT * FROM '.self::siteTable." where project_id='$project_id' AND active = 1 ORDER by sort";
+        $row = self::$db->fetch_all($sql);
+        return $row;
     }
 
-    public function CheckHomeSliderByProjectfirst($project_id){
-
-      $sql = 'SELECT * FROM '.self::homeTable." where project_id='$project_id' AND active = 1 ORDER by sort DESC";
-      $row = self::$db->first($sql);
-      return $row;
+    public function CheckHomeSliderByProjectfirst($project_id)
+    {
+        $sql = 'SELECT * FROM '.self::homeTable." where project_id='$project_id' AND active = 1 ORDER by sort DESC";
+        $row = self::$db->first($sql);
+        return $row;
     }
 
-    public function CheckHomeSliderByProject($project_id){
-
-      $sql = 'SELECT * FROM '.self::homeTable." where project_id='$project_id' AND active = 1 ORDER by sort";
-      $row = self::$db->fetch_all($sql);
-      return $row;
+    public function CheckHomeSliderByProject($project_id)
+    {
+        $sql = 'SELECT * FROM '.self::homeTable." where project_id='$project_id' AND active = 1 ORDER by sort";
+        $row = self::$db->fetch_all($sql);
+        return $row;
     }
 
 
 
-public function AddLogHistory($oldspid,$spid,$table,$data,$user)
-{
-
-  $data = array(
+    public function AddLogHistory($oldspid, $spid, $table, $data, $user)
+    {
+        $data = array(
                 'userid' => $oldspid,
                 'newuserid' => $spid,
                 'tablename' => $table,
@@ -239,9 +347,8 @@ public function AddLogHistory($oldspid,$spid,$table,$data,$user)
                 'created' => 'now()',
                 'updated' => 'now()',
                 );
-  self::$db->insert(self::hdirTable, $data);
-
-}
+        self::$db->insert(self::hdirTable, $data);
+    }
 
     public function CustgetLeads($id)
     {
@@ -257,23 +364,20 @@ public function AddLogHistory($oldspid,$spid,$table,$data,$user)
         return $row;
     }
 
-    public function UpdateLeadsUser($leid,$spid,$user)
+    public function UpdateLeadsUser($leid, $spid, $user)
     {
+        $pieces = explode(",", $leid);
 
-      $pieces = explode(",", $leid);
-
-      foreach ($pieces as $key => $value) {
-        $row = self::$db->first('SELECT * FROM '.self::leTable." WHERE true AND id='" . $value . "' order by created DESC");
-        $data = array(
+        foreach ($pieces as $key => $value) {
+            $row = self::$db->first('SELECT * FROM '.self::leTable." WHERE true AND id='" . $value . "' order by created DESC");
+            $data = array(
                       'oldspid' => $row->spid,
                       'spid' => $spid,
                       'updated' => 'now()',
                       );
-       self::$db->update(self::leTable, $data, 'id='.$value);
-
-      }
- $this->AddLogHistory($row->spid,$spid,'leads',$leid,$user);
-
+            self::$db->update(self::leTable, $data, 'id='.$value);
+        }
+        $this->AddLogHistory($row->spid, $spid, 'leads', $leid, $user);
     }
 
 
@@ -306,10 +410,9 @@ public function AddLogHistory($oldspid,$spid,$table,$data,$user)
     }
 
 
-    public function getMyLeadsClosingRatio($type,$id)
+    public function getMyLeadsClosingRatio($type, $id)
     {
-
-      switch ($type) {
+        switch ($type) {
                   case 'thismonth':
                       $startdate = date('Y').'-'.date('m').'-01 00:00:00';
                       $enddate = date('Y-m-t', strtotime($startdate));
@@ -333,33 +436,31 @@ public function AddLogHistory($oldspid,$spid,$table,$data,$user)
                   break;
                   }
 
-$sqla = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." where spid='$id' AND active='1' AND (created BETWEEN '$startdate' AND '$enddate') ORDER BY created DESC";
-  $rowa = self::$db->fetch_all($sqla);
-  $leadsid=array();
-  foreach ($rowa as $key => $value) {
-    $leadsid[]=$value->id;
-  }
-  if(!empty($leadsid))
-  {
-    $lid=array_unique($leadsid);
-    $clid=count($lid);
-    $sql1 = 'SELECT * FROM '.self::cloTable."  WHERE leid IN ( ".implode( ',' , $lid ).") AND active = 1 AND (created BETWEEN '$startdate' AND '$enddate')";
-    $rows1 = self::$db->fetch_all($sql1);
-    $totalclosed=count($rows1);
-    $a=($totalclosed/$clid)*100;
-    return array(
+        $sqla = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." where spid='$id' AND active='1' AND (created BETWEEN '$startdate' AND '$enddate') ORDER BY created DESC";
+        $rowa = self::$db->fetch_all($sqla);
+        $leadsid=array();
+        foreach ($rowa as $key => $value) {
+            $leadsid[]=$value->id;
+        }
+        if (!empty($leadsid)) {
+            $lid=array_unique($leadsid);
+            $clid=count($lid);
+            $sql1 = 'SELECT * FROM '.self::cloTable."  WHERE leid IN ( ".implode(',', $lid).") AND active = 1 AND (created BETWEEN '$startdate' AND '$enddate')";
+            $rows1 = self::$db->fetch_all($sql1);
+            $totalclosed=count($rows1);
+            $a=($totalclosed/$clid)*100;
+            return array(
       'close'=>count($rows1),
       'total'=>$clid,
-      'percent'=> number_format($a,2)."%"
+      'percent'=> number_format($a, 2)."%"
     );
-  }
-  else {
-    return array(
+        } else {
+            return array(
       'close'=>'0',
       'total'=>'0',
       'percent'=> '0 %'
     );
-  }
+        }
     }
 
 
@@ -373,7 +474,7 @@ $sqla = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." w
 
     public function getResponsebyID($type, $id)
     {
-      switch ($type) {
+        switch ($type) {
                   case 'thismonth':
                       $startdate = date('Y').'-'.date('m').'-01 00:00:00';
                       $enddate = date('Y-m-t', strtotime($startdate));
@@ -397,74 +498,36 @@ $sqla = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." w
                   break;
                   }
 
-                  $sql = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." where spid='$id' AND (created BETWEEN '$startdate' AND '$enddate')";
-                  $row = self::$db->fetch_all($sql);
-                  $total = 0;
-                  $totalsecond = 0;
-                  foreach ($row as $key => $value) {
-                    $total++;
-                  $timeFirst  = strtotime($value->created);
-                  $timeSecond = strtotime($value->responded);
-                  $differenceInSeconds = $timeSecond - $timeFirst;
-                  $totalsecond += $differenceInSeconds;
-                  }
-                  if($total)
-                  {
-                    return $this->secondsToTime($totalsecond/$total);
-                  }
-                  else {
-                    return '-';
-                  }
-
+        $sql = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." where spid='$id' AND (created BETWEEN '$startdate' AND '$enddate')";
+        $row = self::$db->fetch_all($sql);
+        $total = 0;
+        $totalsecond = 0;
+        foreach ($row as $key => $value) {
+            $total++;
+            $timeFirst  = strtotime($value->created);
+            $timeSecond = strtotime($value->responded);
+            $differenceInSeconds = $timeSecond - $timeFirst;
+            $totalsecond += $differenceInSeconds;
+        }
+        if ($total) {
+            return $this->secondsToTime($totalsecond/$total);
+        } else {
+            return '-';
+        }
     }
 
 
-    public function secondsToTime($seconds) {
-      $seconds = (int) $seconds;
-    $dtF = new DateTime('@0');
-    $dtT = new DateTime("@$seconds");
-    return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes');
-}
-
-public function getClosesalebyID($type, $id)
-{
-    switch ($type) {
-                case 'thismonth':
-                    $startdate = date('Y').'-'.date('m').'-01 00:00:00';
-                    $enddate = date('Y-m-t', strtotime($startdate));
-                    $enddate = $enddate.' 23:59:59';
-                break;
-                case 'bymonth':
-                    $pieces = explode('/', $_GET['bymonth']);
-                    $startdate = $pieces[1].'-'.$pieces[0].'-01 00:00:00';
-                    $enddate = date('Y-m-t', strtotime($startdate));
-                    $enddate = $enddate.' 23:59:59';
-                break;
-                case 'byyear':
-                    $startdate = $_GET['byyear'].'-01-01 00:00:00';
-                    $enddate = $_GET['byyear'].'-12-31 23:59:59';
-                break;
-
-                case 'bystart':
-                $pieces = explode('/', $_GET['bystart']);
-                $startdate = $pieces[2].'-'.$pieces[1].'-'.$pieces[0].' 00:00:00';
-                $pieces = explode('/', $_GET['byend']);
-                $enddate = $pieces[2].'-'.$pieces[1].'-'.$pieces[0].' 23:59:59';
-                break;
-                }
-    $sql = 'SELECT * FROM '.self::cloTable." where saleperson='$id' AND (created BETWEEN '$startdate' AND '$enddate')";
-    $row = self::$db->fetch_all($sql);
-    $total = 0;
-    foreach ($row as $key => $value) {
-        $total += $value->amount;
+    public function secondsToTime($seconds)
+    {
+        $seconds = (int) $seconds;
+        $dtF = new DateTime('@0');
+        $dtT = new DateTime("@$seconds");
+        return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes');
     }
-    return $total;
-}
 
-
-public function getLeadSourcebyID($type,$user)
-{
-    switch ($type) {
+    public function getClosesalebyID($type, $id)
+    {
+        switch ($type) {
                 case 'thismonth':
                     $startdate = date('Y').'-'.date('m').'-01 00:00:00';
                     $enddate = date('Y-m-t', strtotime($startdate));
@@ -488,38 +551,19 @@ public function getLeadSourcebyID($type,$user)
                 $enddate = $pieces[2].'-'.$pieces[1].'-'.$pieces[0].' 23:59:59';
                 break;
                 }
-                $w='';
-                if($user->isSale())
-                {
-                  $w="AND spid='$user->uid'";
-                }
-                $sql = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." where TRUE $w AND active='1' AND (created BETWEEN '$startdate' AND '$enddate')  ORDER BY created DESC";
-                $row = self::$db->fetch_all($sql);
-                $so=array();
-                foreach ($row as $key => $value) {
-                    $source=$this->getSource2($value->source);
-                    $so[]=$source->id;
-                }
-                $parent=$this->getSourceParent(0);
-                $se=array();
-                foreach ($parent as $key => $value) {
-                  $se[$value]=0;
-                }
-
-                if(!empty($so))
-                {
-                  $a=array_count_values($so);
-                  foreach ($a as $key => $value) {
-                    $se[$key]=$value;
-                  }
-                }
-                return $se;
-}
+        $sql = 'SELECT * FROM '.self::cloTable." where saleperson='$id' AND (created BETWEEN '$startdate' AND '$enddate')";
+        $row = self::$db->fetch_all($sql);
+        $total = 0;
+        foreach ($row as $key => $value) {
+            $total += $value->amount;
+        }
+        return $total;
+    }
 
 
-public function getLeadStatusbyID($type,$user)
-{
-    switch ($type) {
+    public function getLeadSourcebyID($type, $user)
+    {
+        switch ($type) {
                 case 'thismonth':
                     $startdate = date('Y').'-'.date('m').'-01 00:00:00';
                     $enddate = date('Y-m-t', strtotime($startdate));
@@ -543,33 +587,84 @@ public function getLeadStatusbyID($type,$user)
                 $enddate = $pieces[2].'-'.$pieces[1].'-'.$pieces[0].' 23:59:59';
                 break;
                 }
-                $w='';
-                if($user->isSale())
-                {
-                  $w="AND spid='$user->uid'";
-                }
-                $sql = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." where TRUE $w AND active='1' AND (created BETWEEN '$startdate' AND '$enddate')  ORDER BY created DESC";
-                $row = self::$db->fetch_all($sql);
-                $so=array();
-                foreach ($row as $key => $value) {
-                     $source=$this->getStatus2($value->status);
-                     $so[]=$source->id;
-                }
-                $parent=$this->getAllStatus();
+        $w='';
+        if ($user->isSale()) {
+            $w="AND spid='$user->uid'";
+        }
+        $sql = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." where TRUE $w AND active='1' AND (created BETWEEN '$startdate' AND '$enddate')  ORDER BY created DESC";
+        $row = self::$db->fetch_all($sql);
+        $so=array();
+        foreach ($row as $key => $value) {
+            $source=$this->getSource2($value->source);
+            $so[]=$source->id;
+        }
+        $parent=$this->getSourceParent(0);
+        $se=array();
+        foreach ($parent as $key => $value) {
+            $se[$value]=0;
+        }
 
-                $se=array();
-                foreach ($parent as $key => $value) {
-                  $se[$value->id]=0;
+        if (!empty($so)) {
+            $a=array_count_values($so);
+            foreach ($a as $key => $value) {
+                $se[$key]=$value;
+            }
+        }
+        return $se;
+    }
+
+
+    public function getLeadStatusbyID($type, $user)
+    {
+        switch ($type) {
+                case 'thismonth':
+                    $startdate = date('Y').'-'.date('m').'-01 00:00:00';
+                    $enddate = date('Y-m-t', strtotime($startdate));
+                    $enddate = $enddate.' 23:59:59';
+                break;
+                case 'bymonth':
+                    $pieces = explode('/', $_GET['bymonth']);
+                    $startdate = $pieces[1].'-'.$pieces[0].'-01 00:00:00';
+                    $enddate = date('Y-m-t', strtotime($startdate));
+                    $enddate = $enddate.' 23:59:59';
+                break;
+                case 'byyear':
+                    $startdate = $_GET['byyear'].'-01-01 00:00:00';
+                    $enddate = $_GET['byyear'].'-12-31 23:59:59';
+                break;
+
+                case 'bystart':
+                $pieces = explode('/', $_GET['bystart']);
+                $startdate = $pieces[2].'-'.$pieces[1].'-'.$pieces[0].' 00:00:00';
+                $pieces = explode('/', $_GET['byend']);
+                $enddate = $pieces[2].'-'.$pieces[1].'-'.$pieces[0].' 23:59:59';
+                break;
                 }
-                if(!empty($so))
-                {
-                  $a=array_count_values($so);
-                  foreach ($a as $key => $value) {
-                    $se[$key]=$value;
-                  }
-                }
-                return $se;
-}
+        $w='';
+        if ($user->isSale()) {
+            $w="AND spid='$user->uid'";
+        }
+        $sql = 'SELECT *,COALESCE(respond, NOW()) as responded FROM '.self::leTable." where TRUE $w AND active='1' AND (created BETWEEN '$startdate' AND '$enddate')  ORDER BY created DESC";
+        $row = self::$db->fetch_all($sql);
+        $so=array();
+        foreach ($row as $key => $value) {
+            $source=$this->getStatus2($value->status);
+            $so[]=$source->id;
+        }
+        $parent=$this->getAllStatus();
+
+        $se=array();
+        foreach ($parent as $key => $value) {
+            $se[$value->id]=0;
+        }
+        if (!empty($so)) {
+            $a=array_count_values($so);
+            foreach ($a as $key => $value) {
+                $se[$key]=$value;
+            }
+        }
+        return $se;
+    }
     public function getMyCloseSale($id)
     {
         $sql = 'SELECT * FROM '.self::cloTable." where leid='$id'";
@@ -590,17 +685,16 @@ public function getLeadStatusbyID($type,$user)
 
     public function ApproveMembership($pd)
     {
-
-      $uid = $pd['id'];
-      $data = array(
+        $uid = $pd['id'];
+        $data = array(
             'membership' =>$pd['m'],
             'updated'=>'NOW()'
             );
-      self::$db->update(self::cusTable, $data, 'id='.$uid);
-      $json['type'] = 'success';
-      $json['title'] = 'Success';
-      $json['message'] = 'Successfully Edit the Lead Enquiry.';
-      return json_encode($json);
+        self::$db->update(self::cusTable, $data, 'id='.$uid);
+        $json['type'] = 'success';
+        $json['title'] = 'Success';
+        $json['message'] = 'Successfully Edit the Lead Enquiry.';
+        return json_encode($json);
     }
 
 
@@ -682,33 +776,28 @@ public function getLeadStatusbyID($type,$user)
     }
     public function ClosesaleLeadsEnquiry($pd)
     {
-      $error= '';
+        $error= '';
         if (strlen($pd['project']) <= 0) {
             $error .= "Please enter The Close sale Project\n";
         }
         if (strlen($pd['saleperson']) <= 0) {
             $error .= "Please Select Sale Person\n";
         }
-        if($pd['amount1'] > 0 && $pd['nounit1']=='')
-        {
-          $error .= "Please Enter the Unit Number 1\n";
+        if ($pd['amount1'] > 0 && $pd['nounit1']=='') {
+            $error .= "Please Enter the Unit Number 1\n";
         }
-        if($pd['amount2'] > 0 && $pd['nounit2']=='')
-        {
-          $error .= "Please Enter the Unit Number 2\n";
+        if ($pd['amount2'] > 0 && $pd['nounit2']=='') {
+            $error .= "Please Enter the Unit Number 2\n";
         }
-        if($pd['amount3'] > 0 && $pd['nounit3']=='')
-        {
-          $error .= "Please Enter the Unit Number 3\n";
+        if ($pd['amount3'] > 0 && $pd['nounit3']=='') {
+            $error .= "Please Enter the Unit Number 3\n";
         }
 
-        if($pd['amount4'] > 0 && $pd['nounit4']=='')
-        {
-          $error .= "Please Enter the Unit Number 4\n";
+        if ($pd['amount4'] > 0 && $pd['nounit4']=='') {
+            $error .= "Please Enter the Unit Number 4\n";
         }
-        if($pd['amount5'] > 0 && $pd['nounit5']=='')
-        {
-          $error .= "Please Enter the Unit Number 5\n";
+        if ($pd['amount5'] > 0 && $pd['nounit5']=='') {
+            $error .= "Please Enter the Unit Number 5\n";
         }
         if (strlen($pd['amount1']) <= 0) {
             $error .= "Please Enter the Amount of Sale Unit 1\n";
@@ -794,8 +883,8 @@ public function getLeadStatusbyID($type,$user)
             $app = 0;
             if (strlen($pd['appoinment']) > 0) {
                 $appoinment = sanitize($pd['appoinment']);
-                $appoinment=str_replace('/','-',$appoinment);
-                $appoinment=date('Y-m-d H:i:s',strtotime($appoinment));
+                $appoinment=str_replace('/', '-', $appoinment);
+                $appoinment=date('Y-m-d H:i:s', strtotime($appoinment));
                 $app = 1;
             }
             $uid = $pd['leid'];
@@ -966,10 +1055,10 @@ public function getLeadStatusbyID($type,$user)
     }
     public function PushtoLeads2($a)
     {
-      $sql = 'SELECT * FROM '.self::lTable." WHERE true AND email='" . $a['email'] . "' OR contact_m='" . $a['contact_m'] . "' AND email!=NULL AND contact_m!=NULL";
-      $row = self::$db->first($sql);
-      if(!$row){
-        $data = array(
+        $sql = 'SELECT * FROM '.self::lTable." WHERE true AND email='" . $a['email'] . "' OR contact_m='" . $a['contact_m'] . "' AND email!=NULL AND contact_m!=NULL";
+        $row = self::$db->first($sql);
+        if (!$row) {
+            $data = array(
                 'name' => $a['name'],
                 'salutationtype' => $a['salutationtype'],
                 'email' => $a['email'],
@@ -988,29 +1077,28 @@ public function getLeadStatusbyID($type,$user)
                 );
                 //pre($data);
                 $leadsid=self::$db->insert(self::lTable, $data);
-      }
-      else {
-        $leadsid=$row->id;
-      }
+        } else {
+            $leadsid=$row->id;
+        }
 
 
 
-      echo $sql = 'SELECT * FROM '.self::prTable." WHERE true AND name='" . $a['interest'] . "' AND active='1'";
-      $row = self::$db->first($sql);
-      if($row)
-      $int=$row->id;
-      else {
+        echo $sql = 'SELECT * FROM '.self::prTable." WHERE true AND name='" . $a['interest'] . "' AND active='1'";
+        $row = self::$db->first($sql);
+        if ($row) {
+            $int=$row->id;
+        } else {
             $data = array(
         'idpresale' => '0',
         'name' => $a['interest'],
         'first' => '1',
         );
 
-      $int=self::$db->insert(self::prTable, $data);
-      }
+            $int=self::$db->insert(self::prTable, $data);
+        }
 
 
-switch ($a['spid']) {
+        switch ($a['spid']) {
   case '12':
     $oldid=26;
     break;
@@ -1051,8 +1139,8 @@ switch ($a['spid']) {
     break;
 }
 
-$spid=$oldid;
-      $data2 = array(
+        $spid=$oldid;
+        $data2 = array(
           'leadsid' => $leadsid,
           'enquiry' => $a['enquiry'],
           'spid' => $spid,
@@ -1065,88 +1153,82 @@ $spid=$oldid;
           'created' => $a['created'],
           'updated' => $a['created'],
           );
-          $int=self::$db->insert(self::leTable, $data2);
-
-
-
-
-
+        $int=self::$db->insert(self::leTable, $data2);
     }
 
-    public function importmyleads($r,$user){
-      foreach ($r as $key => $value) {
-        if($value[0]==''||$value[1]==''||$value[5]=='')
-        echo "";
-        else {
-          $name=$value[0];
-          $email=$value[1];
-          $gender=$value[2]=='M'?1:0;
-          $icpassport=$value[3];
-          $age=$value[4];
-          $contact_m=$value[5];
-          $contact_o=$value[6];
-          $contact_h=$value[7];
-          $contact_f=$value[8];
-          $address=$value[9];
-          $postcode=$value[10];
-          $city=$value[11];
-          $state=$value[12];
-          $country=$value[13];
-          $occupation=$value[14];
-          $piority=0;
-          $source=9;
-          $enquiry=$value[15];
-          $interest=$value[16];
-          $saleperson=$user;
-          $this->PushtoLeads($name,$email,$gender,$icpassport,$age,$contact_m,$contact_o,$contact_h,$contact_f,$address,$postcode,$city,$state,$country,$occupation,$piority,$source,$enquiry,$interest,$saleperson);
-        }
-      }
-}
-
-public function importmyteams($r){
-  foreach ($r as $key => $value) {
-    if($value[0]==''||$value[1]==''||$value[5]=='')
-    echo "";
-    else {
-      $name=$value[0];
-      $email=$value[1];
-      $gender=$value[2]=='M'?1:0;
-      $icpassport=$value[3];
-      $age=$value[4];
-      $contact_m=$value[5];
-      $contact_o=$value[6];
-      $contact_h=$value[7];
-      $contact_f=$value[8];
-      $address=$value[9];
-      $postcode=$value[10];
-      $city=$value[11];
-      $state=$value[12];
-      $country=$value[13];
-      $occupation=$value[14];
-      $piority=0;
-      $source=9;
-      $enquiry=$value[15];
-      $interest=$value[16];
-      $saleperson=0;
-      $this->PushtoLeads($name,$email,$gender,$icpassport,$age,$contact_m,$contact_o,$contact_h,$contact_f,$address,$postcode,$city,$state,$country,$occupation,$piority,$source,$enquiry,$interest,$saleperson);
-      }
-  }
-}
-    public function PushtoLeads($name,$email,$gender,$icpassport,$age,$contact_m,$contact_o,$contact_h,$contact_f,$address,$postcode,$city,$state,$country,$occupation,$piority,$source,$enquiry,$interest,$saleperson)
+    public function importmyleads($r, $user)
     {
+        foreach ($r as $key => $value) {
+            if ($value[0]==''||$value[1]==''||$value[5]=='') {
+                echo "";
+            } else {
+                $name=$value[0];
+                $email=$value[1];
+                $gender=$value[2]=='M'?1:0;
+                $icpassport=$value[3];
+                $age=$value[4];
+                $contact_m=$value[5];
+                $contact_o=$value[6];
+                $contact_h=$value[7];
+                $contact_f=$value[8];
+                $address=$value[9];
+                $postcode=$value[10];
+                $city=$value[11];
+                $state=$value[12];
+                $country=$value[13];
+                $occupation=$value[14];
+                $piority=0;
+                $source=9;
+                $enquiry=$value[15];
+                $interest=$value[16];
+                $saleperson=$user;
+                $this->PushtoLeads($name, $email, $gender, $icpassport, $age, $contact_m, $contact_o, $contact_h, $contact_f, $address, $postcode, $city, $state, $country, $occupation, $piority, $source, $enquiry, $interest, $saleperson);
+            }
+        }
+    }
 
-      $sql = 'SELECT * FROM '.self::lTable." WHERE true AND email='" . $email . "' OR contact_m='" . $contact_m . "'";
-      $row = self::$db->first($sql);
+    public function importmyteams($r)
+    {
+        foreach ($r as $key => $value) {
+            if ($value[0]==''||$value[1]==''||$value[5]=='') {
+                echo "";
+            } else {
+                $name=$value[0];
+                $email=$value[1];
+                $gender=$value[2]=='M'?1:0;
+                $icpassport=$value[3];
+                $age=$value[4];
+                $contact_m=$value[5];
+                $contact_o=$value[6];
+                $contact_h=$value[7];
+                $contact_f=$value[8];
+                $address=$value[9];
+                $postcode=$value[10];
+                $city=$value[11];
+                $state=$value[12];
+                $country=$value[13];
+                $occupation=$value[14];
+                $piority=0;
+                $source=9;
+                $enquiry=$value[15];
+                $interest=$value[16];
+                $saleperson=0;
+                $this->PushtoLeads($name, $email, $gender, $icpassport, $age, $contact_m, $contact_o, $contact_h, $contact_f, $address, $postcode, $city, $state, $country, $occupation, $piority, $source, $enquiry, $interest, $saleperson);
+            }
+        }
+    }
+    public function PushtoLeads($name, $email, $gender, $icpassport, $age, $contact_m, $contact_o, $contact_h, $contact_f, $address, $postcode, $city, $state, $country, $occupation, $piority, $source, $enquiry, $interest, $saleperson)
+    {
+        $sql = 'SELECT * FROM '.self::lTable." WHERE true AND email='" . $email . "' OR contact_m='" . $contact_m . "'";
+        $row = self::$db->first($sql);
 
-      if($row){
-        $leadsid=$row->id;
-        $sql = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid='" . $leadsid . "' order by created DESC";
-        $row2 = self::$db->first($sql);
-        $saleperson=$row2->spid;
-
-      }
-      else {
-                    $data = array(
+        if ($row) {
+            $leadsid=$row->id;
+            $sql = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid='" . $leadsid . "' order by created DESC";
+            $row2 = self::$db->first($sql);
+            $saleperson=$row2->spid;
+        } else {
+            $data = array(
                             'name' => $name,
                             'email' => $email,
                             'gender' => $gender,
@@ -1165,74 +1247,65 @@ public function importmyteams($r){
                             'hot' => $piority,
                             'updated' => 'now()',
                             );
-                            $leadsid=self::$db->insert(self::lTable, $data);
-      }
-      if($saleperson!=0)
-      {
-
-        if($saleperson=='36'){
-          $spid='36';
-          $position='1';
+            $leadsid=self::$db->insert(self::lTable, $data);
         }
-        else {
-          $a=Users::getUserbyID($saleperson);
-          $b=$this->getCurrentLead();
-          if(is_object($a))
-          {
-            $spid=$saleperson;
-            $position=1;
-          }
-          else {
-            $spid=$b[0];
-            $position=$b[1];
-          }
-          $manual=1;
+        if ($saleperson!=0) {
+            if ($saleperson=='36') {
+                $spid='36';
+                $position='1';
+            } else {
+                $a=Users::getUserbyID($saleperson);
+                $b=$this->getCurrentLead();
+                if (is_object($a)) {
+                    $spid=$saleperson;
+                    $position=1;
+                } else {
+                    $spid=$b[0];
+                    $position=$b[1];
+                }
+                $manual=1;
             # code...
+            }
+        } else {
+            $b=$this->getCurrentLead();
+            $spid =$b[0];
+            $position = $b[1];
         }
 
-        }
 
-
-      else {
-$b=$this->getCurrentLead();
-$spid =$b[0];
-$position = $b[1];
-      }
-
-
-      $sql = 'SELECT * FROM '.self::prTable." WHERE true AND name='" . $interest . "' AND active='1'";
-      $row = self::$db->first($sql);
-      if($row)
-      $int=$row->id;
-      else {
+        $sql = 'SELECT * FROM '.self::prTable." WHERE true AND name='" . $interest . "' AND active='1'";
+        $row = self::$db->first($sql);
+        if ($row) {
+            $int=$row->id;
+        } else {
             $data = array(
         'idpresale' => '0',
         'name' => $interest,
         'first' => '1',
         );
-      $int=self::$db->insert(self::prTable, $data);
-      }
+            $int=self::$db->insert(self::prTable, $data);
+        }
 
 
-      $saledata = Users::getUserbyID($spid);
-      $email=$saledata->email;
-      $name=$saledata->fullname;
-      $emailnoreply='noreply@titijaya.com.my';
-      $subject="Titijaya CRM : New Leads Assigned to you";
-         $content="<font face=\"arial\">Dear $name,<br><br> A new Leads is assigned to you. <br><br>Please <a href='http://crm.titijaya.com.my'>Click here to View</a><br><br><br>Regards,<br>Titijaya CRM</font>";
+        $saledata = Users::getUserbyID($spid);
+        $email=$saledata->email;
+        $name=$saledata->fullname;
+        $emailnoreply='noreply@titijaya.com.my';
+        $subject="Titijaya CRM : New Leads Assigned to you";
+        $content="<font face=\"arial\">Dear $name,<br><br> A new Leads is assigned to you. <br><br>Please <a href='http://crm.titijaya.com.my'>Click here to View</a><br><br><br>Regards,<br>Titijaya CRM</font>";
 
-          $headers = "From: $name<$emailnoreply>\r\n";
-          $headers .= "Reply-To: $emailnoreply\r\n";
-          $headers .= "MIME-Version: 1.0\r\n";
-          $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+        $headers = "From: $name<$emailnoreply>\r\n";
+        $headers .= "Reply-To: $emailnoreply\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-          if (mail($email, $subject, $content, $headers)) {
+        if (mail($email, $subject, $content, $headers)) {
             echo 'Your message has been sent.<br>';
-          } else {
+        } else {
             echo 'There was a problem sending the email.<br>';
-          }
+        }
 
-  $data = array(
+        $data = array(
       'leadsid' => $leadsid,
       'enquiry' => $enquiry,
       'spid' => $spid,
@@ -1243,122 +1316,111 @@ $position = $b[1];
       );
 
 
-          if (self::$db->insert(self::leTable, $data)) {
-          $json['type'] = 'success';
-          $json['title'] = 'Success';
-          $json['message'] = 'Successfully Edit the Project.';
+        if (self::$db->insert(self::leTable, $data)) {
+            $json['type'] = 'success';
+            $json['title'] = 'Success';
+            $json['message'] = 'Successfully Edit the Project.';
 
-          return ($json);
-          } else {
-          $a = array('type' => 'error', 'error' => 'Error Inserting Leads enquiry Data');
+            return ($json);
+        } else {
+            $a = array('type' => 'error', 'error' => 'Error Inserting Leads enquiry Data');
 
-          return ($a);
-          }
-
-
-
+            return ($a);
+        }
     }
 
 
-public function EditHomesliderprogress($pd)
-{
-$error = '';
-if (strlen($pd['title']) <= 0) {
-    $error .= "Please enter Home Slider Title\n";
-}
-if (strlen($pd['imglink']) <= 0) {
-    $error .= "Please Upload Home Slider Image\n";
-}
+    public function EditHomesliderprogress($pd)
+    {
+        $error = '';
+        if (strlen($pd['title']) <= 0) {
+            $error .= "Please enter Home Slider Title\n";
+        }
+        if (strlen($pd['imglink']) <= 0) {
+            $error .= "Please Upload Home Slider Image\n";
+        }
 
 
-if ($error == '') {
-    $title = sanitize($pd['title']);
-    $imglink = sanitize($pd['imglink']);
-    $data = array(
+        if ($error == '') {
+            $title = sanitize($pd['title']);
+            $imglink = sanitize($pd['imglink']);
+            $data = array(
 'title' => $title,
 'img_name' => $imglink,
 'updated' => 'now()',
 );
-    self::$db->update(self::homeTable, $data, 'id='.$pd['id']);
+            self::$db->update(self::homeTable, $data, 'id='.$pd['id']);
 
             $json['type'] = 'success';
             $json['title'] = 'Success';
             $json['message'] = 'Successfully Edit the Project.';
-           return json_encode($json);
-}
- else {
-    $a = array('type' => 'error', 'error' => $error);
-    return json_encode($a);
-}
+            return json_encode($json);
+        } else {
+            $a = array('type' => 'error', 'error' => $error);
+            return json_encode($a);
+        }
+    }
 
+    public function EditSiteprogress($pd)
+    {
+        $error = '';
+        if (strlen($pd['title']) <= 0) {
+            $error .= "Please enter Project Progress Title\n";
+        }
+        if (strlen($pd['imglink']) <= 0) {
+            $error .= "Please Upload Progress Image\n";
+        }
+        if (strlen($pd['date_upload']) <= 0) {
+            $error .= "Please enter Project Progress Date\n";
+        }
 
-}
-
-public function EditSiteprogress($pd)
-{
-$error = '';
-if (strlen($pd['title']) <= 0) {
-    $error .= "Please enter Project Progress Title\n";
-}
-if (strlen($pd['imglink']) <= 0) {
-    $error .= "Please Upload Progress Image\n";
-}
-if (strlen($pd['date_upload']) <= 0) {
-    $error .= "Please enter Project Progress Date\n";
-}
-
-if ($error == '') {
-    $title = sanitize($pd['title']);
-    $imglink = sanitize($pd['imglink']);
-    $date = sanitize($pd['date_upload']);
-    $date=str_replace('/','-',$date);
-    $date=date('Y-m-d H:i:s',strtotime($date));
-    $data = array(
+        if ($error == '') {
+            $title = sanitize($pd['title']);
+            $imglink = sanitize($pd['imglink']);
+            $date = sanitize($pd['date_upload']);
+            $date=str_replace('/', '-', $date);
+            $date=date('Y-m-d H:i:s', strtotime($date));
+            $data = array(
 'title' => $title,
 'img_name' => $imglink,
 'date_upload' => $date,
 'updated' => 'now()',
 );
-    self::$db->update(self::siteTable, $data, 'id='.$pd['id']);
+            self::$db->update(self::siteTable, $data, 'id='.$pd['id']);
 
             $json['type'] = 'success';
             $json['title'] = 'Success';
             $json['message'] = 'Successfully Edit the Project.';
-           return json_encode($json);
-}
- else {
-    $a = array('type' => 'error', 'error' => $error);
-    return json_encode($a);
-}
-
-
-}
-
-
-public function AddHomesliderprogress($pd)
-{
-
-    $error = '';
-    if (strlen($pd['title']) <= 0) {
-        $error .= "Please enter Project Progress Title\n";
-    }
-    if (strlen($pd['imglink']) <= 0) {
-        $error .= "Please Upload Progress Image\n";
+            return json_encode($json);
+        } else {
+            $a = array('type' => 'error', 'error' => $error);
+            return json_encode($a);
+        }
     }
 
 
-    if ($error == '') {
-        $title = sanitize($pd['title']);
-        $imglink = sanitize($pd['imglink']);
-        $project = sanitize($pd['project']);
-        $aa=$this->CheckHomeSliderByProjectfirst($project);
-        if($aa){
-          $sort=$aa->sort+1;
+    public function AddHomesliderprogress($pd)
+    {
+        $error = '';
+        if (strlen($pd['title']) <= 0) {
+            $error .= "Please enter Project Progress Title\n";
         }
-        else {
-          $sort=1;
+        if (strlen($pd['imglink']) <= 0) {
+            $error .= "Please Upload Progress Image\n";
         }
-        $data = array(
+
+
+        if ($error == '') {
+            $title = sanitize($pd['title']);
+            $imglink = sanitize($pd['imglink']);
+            $project = sanitize($pd['project']);
+            $aa=$this->CheckHomeSliderByProjectfirst($project);
+            if ($aa) {
+                $sort=$aa->sort+1;
+            } else {
+                $sort=1;
+            }
+            $data = array(
 'title' => $title,
 'img_name' => $imglink,
 'project_id' => $project,
@@ -1366,20 +1428,18 @@ public function AddHomesliderprogress($pd)
 'date_created' => 'now()',
 'updated' => 'now()',
 );
-        self::$db->insert(self::homeTable, $data);
+            self::$db->insert(self::homeTable, $data);
 
-                $json['type'] = 'success';
-                $json['title'] = 'Success';
-                $json['message'] = 'Successfully Edit the Project.';
+            $json['type'] = 'success';
+            $json['title'] = 'Success';
+            $json['message'] = 'Successfully Edit the Project.';
 
-               return json_encode($json);
-}
-     else {
-        $a = array('type' => 'error', 'error' => $error);
-        return json_encode($a);
+            return json_encode($json);
+        } else {
+            $a = array('type' => 'error', 'error' => $error);
+            return json_encode($a);
+        }
     }
-
-  }
 
     public function AddSiteprogress($pd)
     {
@@ -1399,14 +1459,13 @@ public function AddHomesliderprogress($pd)
             $imglink = sanitize($pd['imglink']);
             $project = sanitize($pd['project']);
             $date = sanitize($pd['date_upload']);
-            $date=str_replace('/','-',$date);
-            $date=date('Y-m-d H:i:s',strtotime($date));
+            $date=str_replace('/', '-', $date);
+            $date=date('Y-m-d H:i:s', strtotime($date));
             $aa=$this->CheckSiteByProjectfirst($project);
-            if($aa){
-              $sort=$aa->sort+1;
-            }
-            else {
-              $sort=1;
+            if ($aa) {
+                $sort=$aa->sort+1;
+            } else {
+                $sort=1;
             }
             $data = array(
 'title' => $title,
@@ -1419,19 +1478,16 @@ public function AddHomesliderprogress($pd)
 );
             self::$db->insert(self::siteTable, $data);
 
-                    $json['type'] = 'success';
-                    $json['title'] = 'Success';
-                    $json['message'] = 'Successfully Edit the Project.';
+            $json['type'] = 'success';
+            $json['title'] = 'Success';
+            $json['message'] = 'Successfully Edit the Project.';
 
-                   return json_encode($json);
-}
-         else {
+            return json_encode($json);
+        } else {
             $a = array('type' => 'error', 'error' => $error);
             return json_encode($a);
         }
-
-
-      }
+    }
 
 
 
@@ -1592,26 +1648,20 @@ public function AddHomesliderprogress($pd)
 'occupation' => $occupation,
 'updated' => 'now()',
 );
-  $uid = $pd['lid'];
+            $uid = $pd['lid'];
 
-$sql = 'SELECT * FROM '.self::clrTable." where lead_id='$uid' AND active =1";
-$row = self::$db->first($sql);
-if($row)
-{
-  if($row->cus_id!=$pd['link']&&$pd['link']!=0)
-  {
-    self::$db->update(self::clrTable, array('cus_id' => $pd['link'],'active' => '1'), 'id='.$row->id);
-  }
-  else if($pd['link']==0)
-  {
-    self::$db->update(self::clrTable, array('active' =>'0'), 'id='.$row->id);
-  }
-}
-else if($pd['link']!=0)
-{
-    $lid = self::$db->insert(self::clrTable, array('cus_id' => $pd['link'],'lead_id' =>$uid));
-  self::$db->update(self::clrTable, array('cus_id' => $pd['link']), 'id='.$row->id);
-}
+            $sql = 'SELECT * FROM '.self::clrTable." where lead_id='$uid' AND active =1";
+            $row = self::$db->first($sql);
+            if ($row) {
+                if ($row->cus_id!=$pd['link']&&$pd['link']!=0) {
+                    self::$db->update(self::clrTable, array('cus_id' => $pd['link'],'active' => '1'), 'id='.$row->id);
+                } elseif ($pd['link']==0) {
+                    self::$db->update(self::clrTable, array('active' =>'0'), 'id='.$row->id);
+                }
+            } elseif ($pd['link']!=0) {
+                $lid = self::$db->insert(self::clrTable, array('cus_id' => $pd['link'],'lead_id' =>$uid));
+                self::$db->update(self::clrTable, array('cus_id' => $pd['link']), 'id='.$row->id);
+            }
             self::$db->update(self::lTable, $data, 'id='.$uid);
             if (self::$db->affected()) {
                 $json['type'] = 'success';
@@ -1701,21 +1751,15 @@ else if($pd['link']!=0)
 
             $sql = 'SELECT * FROM '.self::clrTable." where cus_id='$uid' AND active =1";
             $row = self::$db->first($sql);
-            if($row)
-            {
-              if($row->cus_id!=$pd['link']&&$pd['link']!=0)
-              {
-                self::$db->update(self::clrTable, array('lead_id' => $pd['link'],'active' => '1'), 'id='.$row->id);
-              }
-              else if($pd['link']==0)
-              {
-                self::$db->update(self::clrTable, array('active' =>'0'), 'id='.$row->id);
-              }
-            }
-            else if($pd['link']!=0)
-            {
+            if ($row) {
+                if ($row->cus_id!=$pd['link']&&$pd['link']!=0) {
+                    self::$db->update(self::clrTable, array('lead_id' => $pd['link'],'active' => '1'), 'id='.$row->id);
+                } elseif ($pd['link']==0) {
+                    self::$db->update(self::clrTable, array('active' =>'0'), 'id='.$row->id);
+                }
+            } elseif ($pd['link']!=0) {
                 $lid = self::$db->insert(self::clrTable, array('lead_id' => $pd['link'],'cus_id' =>$uid));
-              self::$db->update(self::clrTable, array('lead_id' => $pd['link']), 'id='.$row->id);
+                self::$db->update(self::clrTable, array('lead_id' => $pd['link']), 'id='.$row->id);
             }
 
 
@@ -1751,38 +1795,28 @@ else if($pd['link']!=0)
     {
         $sql = 'SELECT * FROM '.self::clrTable." where lead_id='$id' AND active =1";
         $row = self::$db->first($sql);
-        if($row)
-        {
-          $cusid=$row->cus_id;
-          $sql = 'SELECT * FROM '.self::cusTable." where id='$cusid' AND active =1";
-          $row = self::$db->first($sql);
-          return ($row);
-
+        if ($row) {
+            $cusid=$row->cus_id;
+            $sql = 'SELECT * FROM '.self::cusTable." where id='$cusid' AND active =1";
+            $row = self::$db->first($sql);
+            return ($row);
+        } else {
+            return $row;
         }
-        else {
-        return $row;
-        }
-
-
     }
 
     public function getLeadsFromCus($id)
     {
         $sql = 'SELECT * FROM '.self::clrTable." where cus_id='$id' AND active =1";
         $row = self::$db->first($sql);
-        if($row)
-        {
-          $cusid=$row->lead_id;
-          $sql = 'SELECT * FROM '.self::lTable." where id='$cusid' AND active =1";
-          $row = self::$db->first($sql);
-          return ($row);
-
+        if ($row) {
+            $cusid=$row->lead_id;
+            $sql = 'SELECT * FROM '.self::lTable." where id='$cusid' AND active =1";
+            $row = self::$db->first($sql);
+            return ($row);
+        } else {
+            return $row;
         }
-        else {
-        return $row;
-        }
-
-
     }
 
 
@@ -1793,7 +1827,7 @@ else if($pd['link']!=0)
         $sql = 'SELECT id FROM '.self::leTable." WHERE true AND leadsid in (" . $leadsid . ") order by created DESC";
         $row = self::$db->fetch_all($sql);
         foreach ($row as $key => $value) {
-          $aid[]=$value->id;
+            $aid[]=$value->id;
         }
         return $aid;
     }
@@ -1811,82 +1845,75 @@ else if($pd['link']!=0)
         $sql = 'SELECT id FROM '.self::leTable." WHERE true AND spid in (" . $leadsid . ") order by created DESC";
         $row = self::$db->fetch_all($sql);
         foreach ($row as $key => $value) {
-          $aid[]=$value->id;
+            $aid[]=$value->id;
         }
         return $aid;
     }
 
 
 
-        public function getLeadsbyID($leadsid)
-        {
+    public function getLeadsbyID($leadsid)
+    {
+        $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id in (" . $leadsid . ") order by created DESC";
+        $row = self::$db->fetch_all($sql);
+        return $row;
+    }
 
-            $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id in (" . $leadsid . ") order by created DESC";
-            $row = self::$db->fetch_all($sql);
-            return $row;
-        }
 
+    public function getLeadsbyID2($leadsid)
+    {
+        $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id in (" . $leadsid . ") order by created DESC";
+        $row = self::$db->first($sql);
+        return $row;
+    }
 
-        public function getLeadsbyID2($leadsid)
-        {
+    public function getLeadsENbyLeadsIDNI($leadsid)
+    {
+        $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$leadsid."' order by created DESC";
+        $row = self::$db->first($sql);
+        $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid = '".$leadsid."' AND  status='20' order by created DESC";
+        $row2 = self::$db->first($sql2);
+        return array($row,$row2);
+    }
 
-            $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id in (" . $leadsid . ") order by created DESC";
-            $row = self::$db->first($sql);
-            return $row;
-        }
+    public function getLeadsENbyLeadsIDNA($leadsid)
+    {
+        $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$leadsid."' order by created DESC";
+        $row = self::$db->first($sql);
+        $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid = '".$leadsid."' AND  status='18' order by created DESC";
+        $row2 = self::$db->first($sql2);
+        return array($row,$row2);
+    }
 
-        public function getLeadsENbyLeadsIDNI($leadsid)
-        {
+    public function getLeadsENbyLeadsIDI($leadsid)
+    {
+        $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$leadsid."' order by created DESC";
+        $row = self::$db->first($sql);
+        $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid = '".$leadsid."' AND  status='19' order by created DESC";
+        $row2 = self::$db->first($sql2);
+        return array($row,$row2);
+    }
 
-            $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$leadsid."' order by created DESC";
-            $row = self::$db->first($sql);
-            $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid = '".$leadsid."' AND  status='20' order by created DESC";
-            $row2 = self::$db->first($sql2);
-            return array($row,$row2);
-        }
+    public function getLeadsENbyLeadsIDO($leadsid)
+    {
+        $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$leadsid."' order by created DESC";
+        $row = self::$db->first($sql);
+        $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid = '".$leadsid."' AND  status='21' order by created DESC";
+        $row2 = self::$db->first($sql2);
+        return array($row,$row2);
+    }
 
-        public function getLeadsENbyLeadsIDNA($leadsid)
-        {
+    public function getLeadsENbyLeadsIDCL($leadsid)
+    {
+        $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND id = '".$leadsid."' order by created DESC";
+        $row2 = self::$db->first($sql2);
+        $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$row2->leadsid."' order by created DESC";
+        $row = self::$db->first($sql);
+        $sql3 = 'SELECT * FROM '.self::cloTable." WHERE true AND leid = '".$leadsid."' order by created DESC";
+        $row3 = self::$db->fetch_all($sql3);
 
-            $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$leadsid."' order by created DESC";
-            $row = self::$db->first($sql);
-            $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid = '".$leadsid."' AND  status='18' order by created DESC";
-            $row2 = self::$db->first($sql2);
-            return array($row,$row2);
-        }
-
-        public function getLeadsENbyLeadsIDI($leadsid)
-        {
-
-            $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$leadsid."' order by created DESC";
-            $row = self::$db->first($sql);
-            $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid = '".$leadsid."' AND  status='19' order by created DESC";
-            $row2 = self::$db->first($sql2);
-            return array($row,$row2);
-        }
-
-        public function getLeadsENbyLeadsIDO($leadsid)
-        {
-
-            $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$leadsid."' order by created DESC";
-            $row = self::$db->first($sql);
-            $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid = '".$leadsid."' AND  status='21' order by created DESC";
-            $row2 = self::$db->first($sql2);
-            return array($row,$row2);
-        }
-
-        public function getLeadsENbyLeadsIDCL($leadsid)
-        {
-
-          $sql2 = 'SELECT * FROM '.self::leTable." WHERE true AND id = '".$leadsid."' order by created DESC";
-          $row2 = self::$db->first($sql2);
-          $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id = '".$row2->leadsid."' order by created DESC";
-          $row = self::$db->first($sql);
-          $sql3 = 'SELECT * FROM '.self::cloTable." WHERE true AND leid = '".$leadsid."' order by created DESC";
-          $row3 = self::$db->fetch_all($sql3);
-
-            return array($row,$row2,$row3);
-        }
+        return array($row,$row2,$row3);
+    }
 
     public function getLeadsbyIDUser($leadsid)
     {
@@ -1895,14 +1922,13 @@ else if($pd['link']!=0)
         $row = self::$db->fetch_all($sql);
         $a=array();
         foreach ($row as $key => $value) {
-          $a[]=$value->leadsid;
+            $a[]=$value->leadsid;
         }
-          $row2=array();
-        if($a)
-        {
-          $a=array_unique($a);
-          $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id in (" . (implode(",", $a)) . ") order by created DESC";
-          $row2 = self::$db->fetch_all($sql);
+        $row2=array();
+        if ($a) {
+            $a=array_unique($a);
+            $sql = 'SELECT * FROM '.self::lTable." WHERE true AND id in (" . (implode(",", $a)) . ") order by created DESC";
+            $row2 = self::$db->fetch_all($sql);
         }
 
         return $row2;
@@ -1925,12 +1951,10 @@ else if($pd['link']!=0)
                 $id = $row->id;
                 $presaleproject_id = $row->project_id;
                 $projectdata=$this->getProjectFromPresale($row->project_id);
-                if(empty($projectdata))
-                {
-                  $project_id=0;
-                }
-                else {
-                  $project_id = $projectdata->id;
+                if (empty($projectdata)) {
+                    $project_id=0;
+                } else {
+                    $project_id = $projectdata->id;
                 }
                 $unit_id = $row->unit_id;
                 $presaleuser_id = $row->user_id;
@@ -1962,12 +1986,10 @@ else if($pd['link']!=0)
                 $userdata=Users::presaleId($presaleuser_id);
 
                 //$userdata=Users::presaleId($presaleuser_id);
-                if(empty($userdata))
-                {
-                  $user_id='0';
-                }
-                else {
-                  $user_id=$userdata->id;
+                if (empty($userdata)) {
+                    $user_id='0';
+                } else {
+                    $user_id=$userdata->id;
                 }
                 $data = array(
                   'presale_id' => $id,
@@ -2047,13 +2069,12 @@ else if($pd['link']!=0)
                   'email' => $email_address,
                   'created' => 'now()',
                   );
-                  $p1=Listing::getCustomerbyIC($purchaser_nric_1);
-                  if(!empty($p1)){
+                $p1=Listing::getCustomerbyIC($purchaser_nric_1);
+                if (!empty($p1)) {
                     self::$db->update(self::cusTable, $data_c1, 'id='.$p1->id);
-                  }
-                  else {
+                } else {
                     self::$db->insert(self::cusTable, $data_c1);
-                  }
+                }
                 $data_cuspur1 = array(
                   'cus_ic' => $purchaser_nric_1,
                   'purchase_id' => $purchase_id,
@@ -2094,13 +2115,12 @@ else if($pd['link']!=0)
                       'email' => $email_address,
                       'created' => 'now()',
                       );
-                      $p2=Listing::getCustomerbyIC($purchaser_nric_2);
-                      if(!empty($p2)){
+                    $p2=Listing::getCustomerbyIC($purchaser_nric_2);
+                    if (!empty($p2)) {
                         self::$db->update(self::cusTable, $data_c2, 'id='.$p2->id);
-                      }
-                      else {
+                    } else {
                         self::$db->insert(self::cusTable, $data_c2);
-                      }
+                    }
                     $data_cuspur2 = array(
                       'cus_ic' => $purchaser_nric_2,
                       'purchase_id' => $purchase_id,
@@ -2142,13 +2162,12 @@ else if($pd['link']!=0)
                       'email' => $email_address,
                       'created' => 'now()',
                       );
-                      $p3=Listing::getCustomerbyIC($purchaser_nric_3);
-                      if(!empty($p3)){
+                    $p3=Listing::getCustomerbyIC($purchaser_nric_3);
+                    if (!empty($p3)) {
                         self::$db->update(self::cusTable, $data_c3, 'id='.$p3->id);
-                      }
-                      else {
+                    } else {
                         self::$db->insert(self::cusTable, $data_c3);
-                      }
+                    }
 
 
                     $data_cuspur3 = array(
@@ -2171,41 +2190,39 @@ else if($pd['link']!=0)
     }
     public function getCusValidPuchaseByIC($ic)
     {
-      $sql = 'SELECT * FROM '.self::cuspurTable." WHERE cus_ic = '$ic' ";
-      $cuspur = self::$db->fetch_all($sql);
-      $purchase_id = array();
-      foreach ($cuspur as $key => $row) {
-          $purchase_id[] = $row->purchase_id;
-      }
-      $out = array();
-      foreach ($purchase_id as $key => $row) {
-          $sql = 'SELECT * FROM '.self::purTable." WHERE id = '$row' AND active = 1 AND purchase_status='S' ";
-          $pur = self::$db->first($sql);
-          if (!empty($pur)) {
-              $out[] = $pur;
-          }
-      }
-      $p=0;
-      $s=0;
-      foreach ($out as $key => $value) {
-        if($value->purchase_status=='S')
-        {
-          $s+=1;
+        $sql = 'SELECT * FROM '.self::cuspurTable." WHERE cus_ic = '$ic' ";
+        $cuspur = self::$db->fetch_all($sql);
+        $purchase_id = array();
+        foreach ($cuspur as $key => $row) {
+            $purchase_id[] = $row->purchase_id;
         }
-        if($value->purchase_status=='P')
-        {
-          $p+=1;
+        $out = array();
+        foreach ($purchase_id as $key => $row) {
+            $sql = 'SELECT * FROM '.self::purTable." WHERE id = '$row' AND active = 1 AND purchase_status='S' ";
+            $pur = self::$db->first($sql);
+            if (!empty($pur)) {
+                $out[] = $pur;
+            }
         }
-      }
-      if($s>0||$p>0)
-      return 1;
-      else {
-        return 0;
-      }
+        $p=0;
+        $s=0;
+        foreach ($out as $key => $value) {
+            if ($value->purchase_status=='S') {
+                $s+=1;
+            }
+            if ($value->purchase_status=='P') {
+                $p+=1;
+            }
+        }
+        if ($s>0||$p>0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
-      public function getPuchaseByIC($ic)
-      {
+    public function getPuchaseByIC($ic)
+    {
         $sql = 'SELECT * FROM '.self::cuspurTable." WHERE cus_ic = '$ic' ";
         $cuspur = self::$db->fetch_all($sql);
         $purchase_id = array();
@@ -2584,9 +2601,9 @@ foreach ($frPS as $key => $value) {
 
     public function getCompleteFollowup($user, $limit = false)
     {
-      $limit=(int) ($limit/2);
-      $aa = '';
-      $bb = '';
+        $limit=(int) ($limit/2);
+        $aa = '';
+        $bb = '';
 
         if ($user->isSale()) {
             $aa = "AND le.spid = '$user->uid' ";
@@ -2616,8 +2633,8 @@ foreach ($frPS as $key => $value) {
         $a['cl']=array();
         $a['ccl']=0;
         foreach ($row2 as $key => $value) {
-          $a['cl'][]=$value->leid;
-          $a['ccl']+=1;
+            $a['cl'][]=$value->leid;
+            $a['ccl']+=1;
         }
         if (is_array($a)) {
             $b=array_unique($a['ni']);
@@ -2636,8 +2653,8 @@ foreach ($frPS as $key => $value) {
 
     public function getTodo($user, $limit = false)
     {
-      $aa = '';
-      $bb = '';
+        $aa = '';
+        $bb = '';
 
         if ($user->isSale()) {
             $aa = "AND le.spid = '$user->uid' ";
@@ -2659,28 +2676,24 @@ foreach ($frPS as $key => $value) {
         $row2 = self::$db->fetch_all($sql2);
         $cl=array();
         foreach ($row2 as $key => $value) {
-          $cl[]=$value->leid;
+            $cl[]=$value->leid;
         }
         $ina="";
-        if(!empty($cl))
-        {
-          $ina=" AND leadsid NOT IN ('".implode("','",$cl)."')";
+        if (!empty($cl)) {
+            $ina=" AND leadsid NOT IN ('".implode("','", $cl)."')";
         }
 
         foreach ($rowz as $key => $value) {
             $sql = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid='".$value->leadsid."' AND active='1' $ina  ORDER BY created DESC";
             $row = self::$db->first($sql);
-            if($row){
-
-            if ($row->status == 18) {
-                $a['na'][]=$value->leadsid;
-            }
-            else if ($row->status == 19) {
-                $a['i'][]=$value->leadsid;
-            }
-            else if ($row->status == 21) {
-                $a['o'][]=$value->leadsid;
-            }
+            if ($row) {
+                if ($row->status == 18) {
+                    $a['na'][]=$value->leadsid;
+                } elseif ($row->status == 19) {
+                    $a['i'][]=$value->leadsid;
+                } elseif ($row->status == 21) {
+                    $a['o'][]=$value->leadsid;
+                }
             }
         }
         if (is_array($a)) {
@@ -2709,28 +2722,28 @@ foreach ($frPS as $key => $value) {
         return $a;
     }
 
-public function getFollowup($user, $limit = false)
-{
-    $a = '';
-    if ($user->isSale()) {
-        $a = "AND le.spid = '$user->uid' ";
-    }
-    $sql = 'SELECT l.*,le.*,le.leadsid as leadsidz FROM '.self::lTable.' l join '.self::leTable." le on l.id=le.leadsid  WHERE true $a AND l.active=1 AND le.active=1 GROUP BY l.id order by l.id DESC";
-    $rowz = self::$db->fetch_all($sql);
-    $a = array();
-    foreach ($rowz as $key => $value) {
-        $sql = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid='".$value->leadsid."' AND active='1' ORDER BY created DESC";
-        $row = self::$db->first($sql);
-        if ($row->respond == null) {
-            $a[] = $value->leadsid;
+    public function getFollowup($user, $limit = false)
+    {
+        $a = '';
+        if ($user->isSale()) {
+            $a = "AND le.spid = '$user->uid' ";
         }
-    }
-    if ($a && $limit) {
-        $a = array_slice($a, 0, $limit);
-    }
+        $sql = 'SELECT l.*,le.*,le.leadsid as leadsidz FROM '.self::lTable.' l join '.self::leTable." le on l.id=le.leadsid  WHERE true $a AND l.active=1 AND le.active=1 GROUP BY l.id order by l.id DESC";
+        $rowz = self::$db->fetch_all($sql);
+        $a = array();
+        foreach ($rowz as $key => $value) {
+            $sql = 'SELECT * FROM '.self::leTable." WHERE true AND leadsid='".$value->leadsid."' AND active='1' ORDER BY created DESC";
+            $row = self::$db->first($sql);
+            if ($row->respond == null) {
+                $a[] = $value->leadsid;
+            }
+        }
+        if ($a && $limit) {
+            $a = array_slice($a, 0, $limit);
+        }
 
-    return $a;
-}
+        return $a;
+    }
 
     public function getLatestLeadsbyID($id)
     {
@@ -2837,11 +2850,10 @@ foreach ($row as $key) {
         $row = self::$db->fetch_all($sql);
         $a=array();
         foreach ($row as $key => $value) {
-          $aa=$this->getCusValidPuchaseByIC($value->icpassport);
-          if($aa==1)
-          {
-            $a[]=$value;
-          }
+            $aa=$this->getCusValidPuchaseByIC($value->icpassport);
+            if ($aa==1) {
+                $a[]=$value;
+            }
         }
 
         return $a;
@@ -2854,77 +2866,69 @@ foreach ($row as $key) {
         $arrayName = array();
         $arrayName[]=array('id' =>0 ,'min' =>0 ,'max' =>0,'member_type'=>'No Membership');
         foreach ($row as $key => $value) {
-          $arrayName[]=array('id' =>$value->id ,'min' =>$value->min_purchase ,'max' =>$value->max_purchase,'member_type'=>$value->member_type);
+            $arrayName[]=array('id' =>$value->id ,'min' =>$value->min_purchase ,'max' =>$value->max_purchase,'member_type'=>$value->member_type);
         }
         return $arrayName;
     }
     public function getAllCustomerMembership()
     {
-      $mem=$this->getAllMemberTypetoArr();
-      $a=$this->getAllCustomer();
-      $arrayName=array();
-      foreach ($a as $key => $value) {
-        $cusic=$value->icpassport;
-        $cusmmbr=$value->membership;
-        $aa=$this->getPuchaseByIC($cusic);
-        $totalpurchase=0;
-        $totalpurchasecount=0;
-        foreach ($aa as $key2 => $value2) {
-        $cal=$this->getDivCustomerbyPurchaseID($value2->id);
-            $totalpurchase+=($value2->selling_price/$cal);
-            $totalpurchasecount+=1;
+        $mem=$this->getAllMemberTypetoArr();
+        $a=$this->getAllCustomer();
+        $arrayName=array();
+        foreach ($a as $key => $value) {
+            $cusic=$value->icpassport;
+            $cusmmbr=$value->membership;
+            $aa=$this->getPuchaseByIC($cusic);
+            $totalpurchase=0;
+            $totalpurchasecount=0;
+            foreach ($aa as $key2 => $value2) {
+                $cal=$this->getDivCustomerbyPurchaseID($value2->id);
+                $totalpurchase+=($value2->selling_price/$cal);
+                $totalpurchasecount+=1;
+            }
+            $ac=0;
+            $acmax=0;
+            $cmax=count($mem)-1;
+            foreach ($mem as $key2 => $value2) {
+                if ($value2['id']==$cusmmbr) {
+                    $k=$key2;
+                }
+                if ($totalpurchase<=$value2['max']&&$totalpurchase>=$value2['min']) {
+                    $ac=$key2;
+                }
+                if ($totalpurchase>$mem[$cmax]['max']) {
+                    $acmax=1;
+                }
+            }
+            if ($acmax) {
+                $ac=$cmax;
+            }
+            if ($k<$ac) {
+                $kk=$mem[$k];
+                $kac=$mem[$ac];
+                $arrayName[] = array('id' =>$value->id,'name' =>$value->name ,'email' =>$value->email,'purchase' =>$totalpurchase ,'purchasecount' =>$totalpurchasecount ,'now'=>$kk['member_type'],'acc'=>$kac['member_type'],'acctrans'=>$kac['id']);
+            }
         }
-        $ac=0;
-        $acmax=0;
-        $cmax=count($mem)-1;
-        foreach ($mem as $key2 => $value2) {
-          if($value2['id']==$cusmmbr)
-          {
-            $k=$key2;
-          }
-          if($totalpurchase<=$value2['max']&&$totalpurchase>=$value2['min'])
-          {
-            $ac=$key2;
-          }
-          if($totalpurchase>$mem[$cmax]['max']) {
-            $acmax=1;
-          }
-        }
-        if($acmax)
-        {
-          $ac=$cmax;
-        }
-        if($k<$ac)
-        {
-          $kk=$mem[$k];
-          $kac=$mem[$ac];
-          $arrayName[] = array('id' =>$value->id,'name' =>$value->name ,'email' =>$value->email,'purchase' =>$totalpurchase ,'purchasecount' =>$totalpurchasecount ,'now'=>$kk['member_type'],'acc'=>$kac['member_type'],'acctrans'=>$kac['id']);
-        }
-      }
-      return ($arrayName);
-
+        return ($arrayName);
     }
     public function getDivCustomerbyPurchaseID($id)
     {
-      $sql = 'SELECT *, count(purchase_id) as cal FROM '.self::cuspurTable.' WHERE active=1 AND purchase_id="'.$id.'" GROUP BY purchase_id  ORDER by id ASC ';
-      $row = self::$db->first($sql);
-      if(!empty($row))
-      {
-        $cal=$row->cal;
-      }
-      else {
-        $cal=1;
-      }
-      return $cal;
+        $sql = 'SELECT *, count(purchase_id) as cal FROM '.self::cuspurTable.' WHERE active=1 AND purchase_id="'.$id.'" GROUP BY purchase_id  ORDER by id ASC ';
+        $row = self::$db->first($sql);
+        if (!empty($row)) {
+            $cal=$row->cal;
+        } else {
+            $cal=1;
+        }
+        return $cal;
     }
 
-    public function getAllLeadsLatest($user,$limit = false)
+    public function getAllLeadsLatest($user, $limit = false)
     {
-      $w='';
-      if($user->isSale())
-      {
-        $w=' AND le.spid ="'.$user->uid.'"';
-      }
+        $w='';
+        if ($user->isSale()) {
+            $w=' AND le.spid ="'.$user->uid.'"';
+        }
         $sql = 'SELECT l.id as id,l.name as leadsname,le.interest as interest ,l.contact_m as mobile,l.email as leadsemail,le.source as source,le.spid as spid , le.created as created'
         ."\n FROM ".self::lTable.' l RIGHT JOIN '.self::leTable." le ON l.id=le.leadsid WHERE TRUE AND l.active=1 AND le.created > NOW() - INTERVAL 1 WEEK $w group by le.leadsid ORDER BY le.created DESC";
         $row = self::$db->fetch_all($sql);
@@ -2934,8 +2938,8 @@ foreach ($row as $key) {
         $row2 = self::$db->fetch_all($sql2);
         $b=count($row2);
         if ($limit) {
-          array_splice($row,$limit);
-          array_splice($row2,$limit);
+            array_splice($row, $limit);
+            array_splice($row2, $limit);
         }
         return array($row,$row2,$a,$b);
     }
@@ -2971,53 +2975,49 @@ FROM '.self::cusTable." where SUBSTR(icpassport,3,4) >= date_format(now(),'%m%d'
 
     public function getAllCustomertoLeads($id)
     {
-      $sql = 'SELECT * FROM '.self::clrTable." where active=1 AND lead_id != '".$id."' ORDER BY id ASC";
-      $row = self::$db->fetch_all($sql);
-      $arrayc=array();
-      foreach ($row as $key => $value) {
-        $arrayc[]=$value->cus_id;
-      }
-      $aa="";
-      if(!empty($arrayc))
-      {
-        $aa.=" AND a.id  NOT IN (".implode(",", $arrayc).") ";
-      }
-      $sql = 'SELECT a.*,b.data as sal_data,a.icpassport as bday_date '
+        $sql = 'SELECT * FROM '.self::clrTable." where active=1 AND lead_id != '".$id."' ORDER BY id ASC";
+        $row = self::$db->fetch_all($sql);
+        $arrayc=array();
+        foreach ($row as $key => $value) {
+            $arrayc[]=$value->cus_id;
+        }
+        $aa="";
+        if (!empty($arrayc)) {
+            $aa.=" AND a.id  NOT IN (".implode(",", $arrayc).") ";
+        }
+        $sql = 'SELECT a.*,b.data as sal_data,a.icpassport as bday_date '
 ."\n FROM ".self::cusTable.' a LEFT JOIN '.self::dTable." b ON a.salutationtype = b.id WHERE TRUE  AND a.active='1' $aa ";
-      $row = self::$db->fetch_all($sql);
-      $array=array();
-      foreach ($row as $key => $value) {
-        $data=array('id'=>$value->id,'name'=>$value->sal_data." ".$value->name);
-        $array[]=$data;
-      }
-      return $array;
-
+        $row = self::$db->fetch_all($sql);
+        $array=array();
+        foreach ($row as $key => $value) {
+            $data=array('id'=>$value->id,'name'=>$value->sal_data." ".$value->name);
+            $array[]=$data;
+        }
+        return $array;
     }
 
 
     public function getAllLeadstoCustomer($id)
     {
-      $sql = 'SELECT * FROM '.self::clrTable." where active=1 AND cus_id != '".$id."' ORDER BY id ASC";
-      $row = self::$db->fetch_all($sql);
-      $arrayc=array();
-      foreach ($row as $key => $value) {
-        $arrayc[]=$value->lead_id;
-      }
-      $aa="";
-      if(!empty($arrayc))
-      {
-        $aa.=" AND a.id  NOT IN (".implode(",", $arrayc).") ";
-      }
-      $sql = 'SELECT a.*,b.data as sal_data '
+        $sql = 'SELECT * FROM '.self::clrTable." where active=1 AND cus_id != '".$id."' ORDER BY id ASC";
+        $row = self::$db->fetch_all($sql);
+        $arrayc=array();
+        foreach ($row as $key => $value) {
+            $arrayc[]=$value->lead_id;
+        }
+        $aa="";
+        if (!empty($arrayc)) {
+            $aa.=" AND a.id  NOT IN (".implode(",", $arrayc).") ";
+        }
+        $sql = 'SELECT a.*,b.data as sal_data '
 ."\n FROM ".self::lTable.' a LEFT JOIN '.self::dTable." b ON a.salutationtype = b.id WHERE TRUE  AND a.active='1' $aa ";
-      $row = self::$db->fetch_all($sql);
-      $array=array();
-      foreach ($row as $key => $value) {
-        $data=array('id'=>$value->id,'name'=>$value->sal_data." ".$value->name);
-        $array[]=$data;
-      }
-      return $array;
-
+        $row = self::$db->fetch_all($sql);
+        $array=array();
+        foreach ($row as $key => $value) {
+            $data=array('id'=>$value->id,'name'=>$value->sal_data." ".$value->name);
+            $array[]=$data;
+        }
+        return $array;
     }
 
     public function getAllCustomerSearch($name, $email, $contactnumber, $sorting)
@@ -3047,20 +3047,17 @@ FROM '.self::cusTable." where SUBSTR(icpassport,3,4) >= date_format(now(),'%m%d'
         $a = ObjtoArr($row);
         $ab=array();
         foreach ($a as $key => $value) {
-
-          $aa=$this->getCusValidPuchaseByIC($value['icpassport']);
-          if($aa==1)
-          {
-            $ab[]=$value;
-          }
+            $aa=$this->getCusValidPuchaseByIC($value['icpassport']);
+            if ($aa==1) {
+                $ab[]=$value;
+            }
         }
 
         return $ab;
     }
 
-    public function getAllLeadsSearch($name, $email, $contactnumber, $sorting, $admin, $uid, $min, $max,$resp, $start_date,$end_date,$apptype, $leadsource, $leadstatus, $location,$project, $saleperson)
+    public function getAllLeadsSearch($name, $email, $contactnumber, $sorting, $admin, $uid, $min, $max, $resp, $start_date, $end_date, $apptype, $leadsource, $leadstatus, $location, $project, $saleperson)
     {
-
         $a = '';
         $wh = '';
         if ($name != '') {
@@ -3075,17 +3072,15 @@ FROM '.self::cusTable." where SUBSTR(icpassport,3,4) >= date_format(now(),'%m%d'
             $a .= "AND contact_m LIKE '%$contactnumber%'";
         }
 
-        if($start_date){
-          $pieces = explode('/', $start_date);
-           $date = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-           $a .= "AND date(le.created) >= '$date' ";
-
+        if ($start_date) {
+            $pieces = explode('/', $start_date);
+            $date = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
+            $a .= "AND date(le.created) >= '$date' ";
         }
         if ($end_date) {
-          $pieces = explode('/', $end_date);
-           $date = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-           $a .= "AND date(le.created) <= '$date' ";
-
+            $pieces = explode('/', $end_date);
+            $date = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
+            $a .= "AND date(le.created) <= '$date' ";
         }
         if (!$admin) {
             $a .= "AND le.spid = '$uid' ";
@@ -3093,10 +3088,9 @@ FROM '.self::cusTable." where SUBSTR(icpassport,3,4) >= date_format(now(),'%m%d'
         }
 
         $s = '';
-        if($sorting=="created DESC" ||"created ASC"){
-          $s .= "ORDER BY le.$sorting";
-        }
-        else if ($sorting != '' && $sorting != '0') {
+        if ($sorting=="created DESC" ||"created ASC") {
+            $s .= "ORDER BY le.$sorting";
+        } elseif ($sorting != '' && $sorting != '0') {
             $s .= "ORDER BY l.$sorting";
         }
 
@@ -3113,11 +3107,11 @@ FROM '.self::cusTable." where SUBSTR(icpassport,3,4) >= date_format(now(),'%m%d'
             $row2 = self::$db->first($sql2);
             $a[$key]['readed'] =$this->getLeadResponse($value['leadsid']);
 
-            if($resp){
-              if($a[$key]['readed']!=$resp){
-                unset($a[$key]);
-                continue;
-              }
+            if ($resp) {
+                if ($a[$key]['readed']!=$resp) {
+                    unset($a[$key]);
+                    continue;
+                }
             }
             $a[$key]['readedid'] = $row2->id;
             $search = array('min' => $min, 'max' => $max, 'apptype' => $apptype, 'leadsource' => $leadsource, 'leadstatus' => $leadstatus, 'location' => $location, 'project' =>$project, 'saleperson' => $saleperson);
@@ -3135,20 +3129,20 @@ if (!empty($a)) {
     }
 }
 
-if ($project != '' || $project != null) {
-  if($a){
-    foreach ($a as $key => $value) {
-      $ac=$value['interest'];
-      $ac=str_replace("[","",$ac);
-      $ac=str_replace("]","",$ac);
-      $b=$this->ProjectisParent($ac);
-      $bid=$b->id;
-if (!in_array($bid, $project, true)) {
-  unset($a[$key]);
-}
+        if ($project != '' || $project != null) {
+            if ($a) {
+                foreach ($a as $key => $value) {
+                    $ac=$value['interest'];
+                    $ac=str_replace("[", "", $ac);
+                    $ac=str_replace("]", "", $ac);
+                    $b=$this->ProjectisParent($ac);
+                    $bid=$b->id;
+                    if (!in_array($bid, $project, true)) {
+                        unset($a[$key]);
+                    }
+                }
+            }
         }
-      }
-}
         $json = array_values($a);
 
         return $json;
@@ -3170,26 +3164,23 @@ if (!in_array($bid, $project, true)) {
     }
     public function getLeadResponse($id)
     {
-      $b = self::getAllLeadsEN($id);
-      $a=array();
-      foreach ($b as $key => $value) {
-      $value->respond!=NULL? $a[]=1:$a[]=0;
-      }
-
-      if($a){
-
-        $c=array_unique($a);
-        //pre($c);
-        if(count($c)==1)
-        {
-          return $c[0]==1? 1 : 0;
+        $b = self::getAllLeadsEN($id);
+        $a=array();
+        foreach ($b as $key => $value) {
+            $value->respond!=null? $a[]=1:$a[]=0;
         }
-        else
-        return '2';
-      }
-      else {
-        return '0';
-      }
+
+        if ($a) {
+            $c=array_unique($a);
+        //pre($c);
+        if (count($c)==1) {
+            return $c[0]==1? 1 : 0;
+        } else {
+            return '2';
+        }
+        } else {
+            return '0';
+        }
     }
 
 
@@ -3225,20 +3216,20 @@ if (!in_array($bid, $project, true)) {
     }
 
 
-        public function getAllLeadsEN($id)
-        {
-            $sql = 'SELECT * FROM '.self::leTable." where leadsid='".$id."' AND active=1 ORDER BY id ASC";
-            $row = self::$db->fetch_all($sql);
-            return $row;
-        }
+    public function getAllLeadsEN($id)
+    {
+        $sql = 'SELECT * FROM '.self::leTable." where leadsid='".$id."' AND active=1 ORDER BY id ASC";
+        $row = self::$db->fetch_all($sql);
+        return $row;
+    }
 
-        public function getLeadsEN($id)
-        {
-            $sql = 'SELECT * FROM '.self::leTable." where id='".$id."' ORDER BY id ASC";
-            $row = self::$db->fetch_all($sql);
+    public function getLeadsEN($id)
+    {
+        $sql = 'SELECT * FROM '.self::leTable." where id='".$id."' ORDER BY id ASC";
+        $row = self::$db->fetch_all($sql);
 
-            return $row;
-        }
+        return $row;
+    }
 
 
 
@@ -3313,56 +3304,52 @@ if ($leadsource != '' || $leadsource != null) {
     }
 }
 
-if ($loc != '' || $loc != null) {
-  $t=$this->getlocpro($loc);
-  if(is_array($t)&&!empty($t))
-  {
-    $where .= ' AND ( ';
-    foreach ($t as $key => $value) {
-$aaaa = '';
-        if ($key != 0) {
-            $aaaa = 'OR';
-        }
+        if ($loc != '' || $loc != null) {
+            $t=$this->getlocpro($loc);
+            if (is_array($t)&&!empty($t)) {
+                $where .= ' AND ( ';
+                foreach ($t as $key => $value) {
+                    $aaaa = '';
+                    if ($key != 0) {
+                        $aaaa = 'OR';
+                    }
         //$where .= ' '.$aaaa." `interest` LIKE '%".$value."%' ";
         $where .= ' '.$aaaa." (`interest` LIKE '%,".$value.",%' OR `interest` LIKE '%,".$value."%' OR `interest` LIKE '%".$value.",%'OR `interest` LIKE '%[".$value."]%')  ";
-    }
-    $where .= ' )';
-
-  }
-
-
-}
+                }
+                $where .= ' )';
+            }
+        }
 
 
-if ($leadstatus != '' || $leadstatus != null) {
-    $where .= ' AND ( ';
-    foreach ($leadstatus as $key => $value) {
-        //echo  $value." => ";
+        if ($leadstatus != '' || $leadstatus != null) {
+            $where .= ' AND ( ';
+            foreach ($leadstatus as $key => $value) {
+                //echo  $value." => ";
 $aaaa = '';
-        if ($key != 0) {
-            $aaaa = 'OR';
+                if ($key != 0) {
+                    $aaaa = 'OR';
+                }
+
+                $where .= ' '.$aaaa." `status`='".$value."' ";
+            }
+            $where .= ' )';
         }
 
-        $where .= ' '.$aaaa." `status`='".$value."' ";
-    }
-    $where .= ' )';
-}
+        if ($saleperson != '' || $saleperson != null) {
+            $where .= ' AND ( ';
+            foreach ($saleperson as $key => $value) {
+                $aaaa = '';
+                if ($key != 0) {
+                    $aaaa = 'OR';
+                }
 
-if ($saleperson != '' || $saleperson != null) {
-    $where .= ' AND ( ';
-    foreach ($saleperson as $key => $value) {
-        $aaaa = '';
-        if ($key != 0) {
-            $aaaa = 'OR';
+                $where .= ' '.$aaaa." `spid`='".$value."' ";
+            }
+            $where .= ' )';
         }
 
-        $where .= ' '.$aaaa." `spid`='".$value."' ";
-    }
-    $where .= ' )';
-}
-
-if ($project != '' || $project != null) {
-  //pre($project);
+        if ($project != '' || $project != null) {
+            //pre($project);
 //     $where .= ' AND ( ';
 //     foreach ($saleperson as $key => $value) {
 //         $aaaa = '';
@@ -3373,9 +3360,9 @@ if ($project != '' || $project != null) {
 //         $where .= ' '.$aaaa." `interest`='[".$value."]' ";
 //     }
 //     $where .= ' )';
-}
+        }
 
-      $sql = 'SELECT * FROM '.self::leTable." where leadsid='".$id."' ".$where.' ORDER BY id ASC';
+        $sql = 'SELECT * FROM '.self::leTable." where leadsid='".$id."' ".$where.' ORDER BY id ASC';
         $row = self::$db->fetch_all($sql);
 
 
@@ -3390,28 +3377,28 @@ if ($project != '' || $project != null) {
     }
     public function getlocpro($loc)
     {
-      $arrayName = array();
-      foreach ($loc as $key => $value) {
-        $sql = 'SELECT * FROM '.self::prTable."  where location='$value' AND active=1";
-        $row = self::$db->fetch_all($sql);
-        foreach ($row as $key2 => $value2) {
-        $arrayName[] = ($value2->id);
+        $arrayName = array();
+        foreach ($loc as $key => $value) {
+            $sql = 'SELECT * FROM '.self::prTable."  where location='$value' AND active=1";
+            $row = self::$db->fetch_all($sql);
+            foreach ($row as $key2 => $value2) {
+                $arrayName[] = ($value2->id);
+            }
         }
-      }
-      return $arrayName;
+        return $arrayName;
     }
 
     public function getprojectsearch($loc)
     {
-      $arrayName = array();
-      foreach ($loc as $key => $value) {
-        $sql = '  SELECT * FROM '.self::prTable."  where location='$value' AND active=1";
-        $row = self::$db->fetch_all($sql);
-        foreach ($row as $key2 => $value2) {
-        $arrayName[] = ($value2->id);
+        $arrayName = array();
+        foreach ($loc as $key => $value) {
+            $sql = '  SELECT * FROM '.self::prTable."  where location='$value' AND active=1";
+            $row = self::$db->fetch_all($sql);
+            foreach ($row as $key2 => $value2) {
+                $arrayName[] = ($value2->id);
+            }
         }
-      }
-      return $arrayName;
+        return $arrayName;
     }
 
 
@@ -4068,19 +4055,16 @@ public function getFAList()
     {
         $sql = 'SELECT * FROM '.self::prTable.' WHERE active=1 AND id="'.$id.'" ORDER BY sorting DESC';
         $row = self::$db->first($sql);
-        if($row->parent!=0)
-        {
-          $sql = 'SELECT * FROM '.self::prTable.' WHERE active=1 AND id="'.$row->id.'" ORDER BY sorting DESC';
-          $row2 = self::$db->first($sql);
-          if($row2->parent!=0)
-          {
-            $sql = 'SELECT * FROM '.self::prTable.' WHERE active=1 AND id="'.$row2->id.'" ORDER BY sorting DESC';
-            $row3 = self::$db->first($sql);
-            return $row3;
-          }
-          else {
-            return ($row2) ? $row2 : 0;
-          }
+        if ($row->parent!=0) {
+            $sql = 'SELECT * FROM '.self::prTable.' WHERE active=1 AND id="'.$row->id.'" ORDER BY sorting DESC';
+            $row2 = self::$db->first($sql);
+            if ($row2->parent!=0) {
+                $sql = 'SELECT * FROM '.self::prTable.' WHERE active=1 AND id="'.$row2->id.'" ORDER BY sorting DESC';
+                $row3 = self::$db->first($sql);
+                return $row3;
+            } else {
+                return ($row2) ? $row2 : 0;
+            }
         }
         return ($row) ? $row : 0;
     }
@@ -4091,10 +4075,9 @@ public function getFAList()
         $a=array();
 
         foreach ($row as $key => $value) {
-          echo "string $value->id";
-          $z=$this->ProjectisParent($value->id);
-        pre($z);
-
+            echo "string $value->id";
+            $z=$this->ProjectisParent($value->id);
+            pre($z);
         }
 
 
@@ -4524,12 +4507,13 @@ public function getFAList()
         }
     }
 
-    public function isNumber($number){
-      if(is_numeric($number)){
-        return 1;
-      }else{
-        return 0;
-      }
+    public function isNumber($number)
+    {
+        if (is_numeric($number)) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public function addNewMemberType()
@@ -4547,8 +4531,8 @@ public function getFAList()
             Filter::$msgs['max_purchase'] = 'Maximum Purchase : only numbers allowed';
         }
 
-        if($_POST['min_purchase'] > $_POST['max_purchase']){
-          Filter::$msgs['range'] = 'Minimum & Maximum : Invalid range';
+        if ($_POST['min_purchase'] > $_POST['max_purchase']) {
+            Filter::$msgs['range'] = 'Minimum & Maximum : Invalid range';
         }
 
         if (empty(Filter::$msgs)) {
@@ -4587,27 +4571,25 @@ public function getFAList()
 
     public function editMemberType()
     {
+        $id = $_POST['id'];
+        Filter::checkPost('member_type', 'Membership Type');
+        Filter::checkPost('member_code', 'Membership Code');
+        Filter::checkPost('min_purchase', 'Minimum Purchase');
+        Filter::checkPost('max_purchase', 'Maximum Purchase');
 
-      $id = $_POST['id'];
-      Filter::checkPost('member_type', 'Membership Type');
-      Filter::checkPost('member_code', 'Membership Code');
-      Filter::checkPost('min_purchase', 'Minimum Purchase');
-      Filter::checkPost('max_purchase', 'Maximum Purchase');
+        if (!$this->isNumber($_POST['min_purchase'])) {
+            Filter::$msgs['min_purchase'] = 'Minimum Purchase : only numbers allowed';
+        }
 
-      if (!$this->isNumber($_POST['min_purchase'])) {
-          Filter::$msgs['min_purchase'] = 'Minimum Purchase : only numbers allowed';
-      }
+        if (!$this->isNumber($_POST['max_purchase'])) {
+            Filter::$msgs['max_purchase'] = 'Maximum Purchase : only numbers allowed';
+        }
 
-      if (!$this->isNumber($_POST['max_purchase'])) {
-          Filter::$msgs['max_purchase'] = 'Maximum Purchase : only numbers allowed';
-      }
+        if ($_POST['min_purchase'] > $_POST['max_purchase']) {
+            Filter::$msgs['range'] = 'Minimum & Maximum : Invalid range';
+        }
 
-      if($_POST['min_purchase'] > $_POST['max_purchase']){
-        Filter::$msgs['range'] = 'Minimum & Maximum : Invalid range';
-      }
-
-      if (empty(Filter::$msgs)) {
-
+        if (empty(Filter::$msgs)) {
             $data = array(
                 'member_type' => (sanitize($_POST['member_type'])),
                 'member_code' => (sanitize($_POST['member_code'])),
@@ -4616,50 +4598,48 @@ public function getFAList()
                 'updated'=>'now()'
         );
 
-          self::$db->update(self::memTypeTable, $data, "id=" .$id);
+            self::$db->update(self::memTypeTable, $data, "id=" .$id);
 
 
-      if (self::$db->affected()) {
-        $json['type'] = 'OK';
-        $json['title'] = 'Success';
-        $json['message'] = 'the User have successfully registered.';
-        return json_encode($json);
-
-      } else {
-        $json['type'] = 'error';
-        $json['title'] = 'Error';
-        $json['message'] = 'There was an error during registration process. Please contact the administrator...';
-        return json_encode($json);
-      }
-    } else {
-      $json['type'] = 'ERROR';
-      $json['title'] = 'Please complete the following fields:';
-      $json['message'] = Filter::msgSingleStatus();
-      return json_encode($json);
+            if (self::$db->affected()) {
+                $json['type'] = 'OK';
+                $json['title'] = 'Success';
+                $json['message'] = 'the User have successfully registered.';
+                return json_encode($json);
+            } else {
+                $json['type'] = 'error';
+                $json['title'] = 'Error';
+                $json['message'] = 'There was an error during registration process. Please contact the administrator...';
+                return json_encode($json);
+            }
+        } else {
+            $json['type'] = 'ERROR';
+            $json['title'] = 'Please complete the following fields:';
+            $json['message'] = Filter::msgSingleStatus();
+            return json_encode($json);
+        }
     }
-  }
 
-  public function deleteMemberType($id)
-  {
-    //$res = self::$db->delete(self::uTable,'id='.$id);
+    public function deleteMemberType($id)
+    {
+        //$res = self::$db->delete(self::uTable,'id='.$id);
     $data = array(
         'active' => '0'
     );
-    $res = self::$db->update(self::memTypeTable, $data, "id='" .$id. "'");
+        $res = self::$db->update(self::memTypeTable, $data, "id='" .$id. "'");
 
 
-    $title="Deleted";
-    if($res) :
+        $title="Deleted";
+        if ($res) :
     $json['type'] = 'OK';
-    $json['title'] = 'OK';
-    $json['message'] =  "User have been ".$title;
-    else :
+        $json['title'] = 'OK';
+        $json['message'] =  "User have been ".$title; else :
     $json['type'] = 'ERROR';
-    $json['title'] = Core::$word->ALERT;
-    $json['message'] = Core::$word->SYSTEM_PROCCESS;
-    endif;
-    return json_encode($json);
-  }
+        $json['title'] = Core::$word->ALERT;
+        $json['message'] = Core::$word->SYSTEM_PROCCESS;
+        endif;
+        return json_encode($json);
+    }
 
     public function addNewCustomers()
     {
@@ -4723,23 +4703,20 @@ public function getFAList()
 
     public function addNewProjects()
     {
-      $data = array(
+        $data = array(
       'name' => $_POST['name'],
       'first' => '1',
       );
         $a=self::$db->insert(self::prTable, $data);
-        if($a)
-        {
-          $json['type'] = 'OK';
-          $json['title'] = 'Success';
-          $json['message'] = 'the Project have successfully registered.';
-          $json['id'] = $a;
-        }
-        else
-        {
-          $json['type'] = 'error';
-          $json['title'] = 'Error';
-          $json['message'] = 'There was an error during Project registration process. Please contact the administrator...';
+        if ($a) {
+            $json['type'] = 'OK';
+            $json['title'] = 'Success';
+            $json['message'] = 'the Project have successfully registered.';
+            $json['id'] = $a;
+        } else {
+            $json['type'] = 'error';
+            $json['title'] = 'Error';
+            $json['message'] = 'There was an error during Project registration process. Please contact the administrator...';
         }
         return json_encode($json);
     }
@@ -5088,67 +5065,67 @@ Dear Person in Charge,<br>Your payment for invoice(s) below are ready,<br><br>';
 
 
 
-        public function editprojecttoParent($pd)
-        {
-            $data = array(
+    public function editprojecttoParent($pd)
+    {
+        $data = array(
             'first' => '0',
             'updated' => 'now()',
             );
-              self::$db->update(self::prTable, $data, 'id='.$pd['pid']);
+        self::$db->update(self::prTable, $data, 'id='.$pd['pid']);
 
-              if (self::$db->affected()) {
-                  $json['type'] = 'success';
-                  $json['title'] = 'Success';
-                  $json['message'] = 'Successfully Edit the Project.';
+        if (self::$db->affected()) {
+            $json['type'] = 'success';
+            $json['title'] = 'Success';
+            $json['message'] = 'Successfully Edit the Project.';
 
-                  return json_encode($json);
-              } else {
-                  $a = array('error' => 'Error Updating Data');
+            return json_encode($json);
+        } else {
+            $a = array('error' => 'Error Updating Data');
 
-                  return json_encode($a);
-              }
+            return json_encode($a);
         }
-        public function editProject($pd)
-        {
-  $error = '';
-  if (strlen($pd['name']) <= 0) {
-      $error .= "Please enter Project name\n";
-  }
+    }
+    public function editProject($pd)
+    {
+        $error = '';
+        if (strlen($pd['name']) <= 0) {
+            $error .= "Please enter Project name\n";
+        }
 
-  if (strlen($pd['login']) <= 0) {
-      $error .= "Please enter Project Login\n";
-  }
+        if (strlen($pd['login']) <= 0) {
+            $error .= "Please enter Project Login\n";
+        }
 
-  if (strlen($pd['passcode']) <= 0) {
-      $error .= "Please enter Project Passcode\n";
-  }
+        if (strlen($pd['passcode']) <= 0) {
+            $error .= "Please enter Project Passcode\n";
+        }
 
-  if (strlen($pd['min']) <= 0) {
-      $error .= "Please enter minimum Price\n";
-  }
+        if (strlen($pd['min']) <= 0) {
+            $error .= "Please enter minimum Price\n";
+        }
 
-  if (strlen($pd['max']) <= 0) {
-      $error .= "Please enter maximum Price\n";
-  }
+        if (strlen($pd['max']) <= 0) {
+            $error .= "Please enter maximum Price\n";
+        }
 
-  if (strlen($pd['state']) <= 2) {
-      $error .= "Please enter Project Location State\n";
-  }
+        if (strlen($pd['state']) <= 2) {
+            $error .= "Please enter Project Location State\n";
+        }
 
-  if (strlen($pd['areaselected']) <= 2) {
-      $error .= "Please enter Project Location Area \n";
-  }
+        if (strlen($pd['areaselected']) <= 2) {
+            $error .= "Please enter Project Location Area \n";
+        }
 
-  if (strlen($pd['pt']) <= 0) {
-      $error .= "Please enter Project type\n";
-  }
+        if (strlen($pd['pt']) <= 0) {
+            $error .= "Please enter Project type\n";
+        }
 
-  if ($error == '') {
-      $tt = json_encode(explode(',', $pd['pt']));
-      $tt = preg_replace('(")', '', $tt);
-      $tt = preg_replace("(')", '', $tt);
+        if ($error == '') {
+            $tt = json_encode(explode(',', $pd['pt']));
+            $tt = preg_replace('(")', '', $tt);
+            $tt = preg_replace("(')", '', $tt);
 
-      $data = array(
+            $data = array(
 'id' => sanitize($pd['pid']),
 'name' => sanitize($pd['name']),
 'login' => sanitize($pd['login']),
@@ -5161,253 +5138,237 @@ Dear Person in Charge,<br>Your payment for invoice(s) below are ready,<br><br>';
 'type' => $tt,
 );
 
-      self::$db->update(self::prTable, $data, 'id='.$data['id']);
+            self::$db->update(self::prTable, $data, 'id='.$data['id']);
 
-      if (self::$db->affected()) {
-          $json['type'] = 'success';
-          $json['title'] = 'Success';
-          $json['message'] = 'Successfully Edit the Project.';
+            if (self::$db->affected()) {
+                $json['type'] = 'success';
+                $json['title'] = 'Success';
+                $json['message'] = 'Successfully Edit the Project.';
 
-          return json_encode($json);
-      } else {
-          $a = array('error' => 'Error Updating Data');
+                return json_encode($json);
+            } else {
+                $a = array('error' => 'Error Updating Data');
 
-          return json_encode($a);
-      }
-  } else {
-      $a = array('error' => $error);
+                return json_encode($a);
+            }
+        } else {
+            $a = array('error' => $error);
 
-      return json_encode($a);
-  }
-}
-
-
+            return json_encode($a);
+        }
+    }
 
 
-public function editSource($pd)
-{
-$error = '';
-if (strlen($pd['name']) <= 0) {
-$error .= "Please enter Project name\n";
-}
-if ($error == '') {
-$data = array(
+
+
+    public function editSource($pd)
+    {
+        $error = '';
+        if (strlen($pd['name']) <= 0) {
+            $error .= "Please enter Project name\n";
+        }
+        if ($error == '') {
+            $data = array(
 'id' => sanitize($pd['pid']),
 'name' => sanitize($pd['name']),
 );
-self::$db->update(self::sorTable, $data, 'id='.$data['id']);
-if (self::$db->affected()) {
-  $json['type'] = 'success';
-  $json['title'] = 'Success';
-  $json['message'] = 'Successfully Edit the Project.';
+            self::$db->update(self::sorTable, $data, 'id='.$data['id']);
+            if (self::$db->affected()) {
+                $json['type'] = 'success';
+                $json['title'] = 'Success';
+                $json['message'] = 'Successfully Edit the Project.';
 
-  return json_encode($json);
-} else {
-  $a = array('error' => 'Error Updating Data');
-  return json_encode($a);
-}
-} else {
-$a = array('error' => $error);
+                return json_encode($json);
+            } else {
+                $a = array('error' => 'Error Updating Data');
+                return json_encode($a);
+            }
+        } else {
+            $a = array('error' => $error);
 
-return json_encode($a);
-}
-}
-
-
-
-
-public function ExportCus($pd)
-{
-  if(isset($pd['status']))
-  {
-    $ws="";
-    $ws2="";
-    if(!empty($pd['status']))
-    {
-      $pieces = explode(",", $pd['status']);
-      foreach ($pieces as $key => $value) {
-        $pieces[$key]="'$value'";
-      }
-      $comma_separated = implode(",", $pieces);
-      $ws=" AND purchase_status IN (".$comma_separated.") ";
-    }
-      else {
-      $ws="";
-      }
-  }
-
-  if(isset($pd['project']))
-  {
-    $ws2="";
-    if(!empty($pd['project']))
-    {
-      $pieces = explode(",", $pd['project']);
-      $search_id = array();
-      foreach ($pieces as $key => $value) {
-        $search_id[] = $value;
-        $sql = "SELECT * FROM ".self::prTable." WHERE parent = '$value' AND active='1' ";
-        $row = self::$db->fetch_all($sql);
-        foreach($row as $key2 => $row2){
-          $search_id[] = $row2->id;
+            return json_encode($a);
         }
-      }
-      foreach ($search_id as $key => $value) {
-        $search_id[$key]="'$value'";
-      }
-      $comma_separated = implode(",", $search_id);
-      $ws2=" AND c.project_id IN (".$comma_separated.") ";
     }
-      else {
-      $ws2="";
-      }
-  }
-
-  $sql = 'SELECT a.*,b.*,c.* FROM '.self::cusTable." a left join ".self::cuspurTable." b on a.icpassport=b.cus_ic left join ".self::purTable." c on b.purchase_id=c.id WHERE true $ws $ws2 group by c.unit_id,c.purchase_status order by a.created desc";
-$row = self::$db->fetch_all($sql);
 
 
-$objPHPExcel = new \PHPExcel();
+
+
+    public function ExportCus($pd)
+    {
+        if (isset($pd['status'])) {
+            $ws="";
+            $ws2="";
+            if (!empty($pd['status'])) {
+                $pieces = explode(",", $pd['status']);
+                foreach ($pieces as $key => $value) {
+                    $pieces[$key]="'$value'";
+                }
+                $comma_separated = implode(",", $pieces);
+                $ws=" AND purchase_status IN (".$comma_separated.") ";
+            } else {
+                $ws="";
+            }
+        }
+
+        if (isset($pd['project'])) {
+            $ws2="";
+            if (!empty($pd['project'])) {
+                $pieces = explode(",", $pd['project']);
+                $search_id = array();
+                foreach ($pieces as $key => $value) {
+                    $search_id[] = $value;
+                    $sql = "SELECT * FROM ".self::prTable." WHERE parent = '$value' AND active='1' ";
+                    $row = self::$db->fetch_all($sql);
+                    foreach ($row as $key2 => $row2) {
+                        $search_id[] = $row2->id;
+                    }
+                }
+                foreach ($search_id as $key => $value) {
+                    $search_id[$key]="'$value'";
+                }
+                $comma_separated = implode(",", $search_id);
+                $ws2=" AND c.project_id IN (".$comma_separated.") ";
+            } else {
+                $ws2="";
+            }
+        }
+
+        $sql = 'SELECT a.*,b.*,c.* FROM '.self::cusTable." a left join ".self::cuspurTable." b on a.icpassport=b.cus_ic left join ".self::purTable." c on b.purchase_id=c.id WHERE true $ws $ws2 group by c.unit_id,c.purchase_status order by a.created desc";
+        $row = self::$db->fetch_all($sql);
+
+
+        $objPHPExcel = new \PHPExcel();
 // Set document properties
 $objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
-							 ->setLastModifiedBy("Maarten Balliauw")
-							 ->setTitle("Office 2007 XLSX Test Document")
-							 ->setSubject("Office 2007 XLSX Test Document")
-							 ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-							 ->setKeywords("office 2007 openxml php")
-							 ->setCategory("Test result file");
+                             ->setLastModifiedBy("Maarten Balliauw")
+                             ->setTitle("Office 2007 XLSX Test Document")
+                             ->setSubject("Office 2007 XLSX Test Document")
+                             ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                             ->setKeywords("office 2007 openxml php")
+                             ->setCategory("Test result file");
 // Add some data
 $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'Name')
             ->setCellValue('B1', 'Mobile Number')
             ->setCellValue('C1', 'Email Address');
-$a=2;
-foreach ($row as $key => $value) {
-  $aa=$value->contact_m;
-  $aa=str_replace("+","",$aa);
-  $aa=str_replace("-","",$aa);
-  $aa=str_replace(" ","",$aa);
-  if(substr($aa,0,1)==6)
-  {
-    $aa=substr($aa,1);
-  }
-  if(substr($aa,0,2)=='00')
-  {
-    $aa=substr($aa,1);
-  }
-  $aa="6".$aa;
+        $a=2;
+        foreach ($row as $key => $value) {
+            $aa=$value->contact_m;
+            $aa=str_replace("+", "", $aa);
+            $aa=str_replace("-", "", $aa);
+            $aa=str_replace(" ", "", $aa);
+            if (substr($aa, 0, 1)==6) {
+                $aa=substr($aa, 1);
+            }
+            if (substr($aa, 0, 2)=='00') {
+                $aa=substr($aa, 1);
+            }
+            $aa="6".$aa;
 
-  $objPHPExcel->setActiveSheetIndex(0)
+            $objPHPExcel->setActiveSheetIndex(0)
               ->setCellValue('A'.$a, ucwords(strtolower($value->name)))
               ->setCellValue('B'.$a, $aa)
               ->setCellValue('C'.$a, strtolower($value->email));
-              $a+=1;
-}
-$objPHPExcel->getActiveSheet()->setTitle('Customer CRM');
+            $a+=1;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle('Customer CRM');
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
 // Redirect output to a client’s web browser (Excel2007)
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="CRMEXPORT.xlsx"');
-header('Cache-Control: max-age=0');
+        header('Content-Disposition: attachment;filename="CRMEXPORT.xlsx"');
+        header('Cache-Control: max-age=0');
 // If you're serving to IE 9, then the following may be needed
 header('Cache-Control: max-age=1');
 // If you're serving to IE over SSL, then the following may be needed
-header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-header ('Pragma: public'); // HTTP/1.0
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+header('Pragma: public'); // HTTP/1.0
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-$objWriter->save('php://output');
-die;
-}
-
-public function repairPhone()
-{
-  $sql = 'SELECT * FROM '.self::lTable."";
-  $row = self::$db->fetch_all($sql);
-  foreach ($row as $key => $value) {
-    $ab=$value->name;
-    $ab=ucwords(strtolower($ab));
-    $aa=$value->contact_m;
-    $aa=str_replace("+","",$aa);
-    $aa=str_replace("-","",$aa);
-    $aa=str_replace(" ","",$aa);
-    if(substr($aa,0,1)==6)
-    {
-      $aa=substr($aa,1);
+        $objWriter->save('php://output');
+        die;
     }
-    if(substr($aa,0,2)=='00')
-    {
-      $aa=substr($aa,1);
-    }
-    $aa="6".$aa;
 
-      $data = array(
+    public function repairPhone()
+    {
+        $sql = 'SELECT * FROM '.self::lTable."";
+        $row = self::$db->fetch_all($sql);
+        foreach ($row as $key => $value) {
+            $ab=$value->name;
+            $ab=ucwords(strtolower($ab));
+            $aa=$value->contact_m;
+            $aa=str_replace("+", "", $aa);
+            $aa=str_replace("-", "", $aa);
+            $aa=str_replace(" ", "", $aa);
+            if (substr($aa, 0, 1)==6) {
+                $aa=substr($aa, 1);
+            }
+            if (substr($aa, 0, 2)=='00') {
+                $aa=substr($aa, 1);
+            }
+            $aa="6".$aa;
+
+            $data = array(
         'name'=>$ab,
 'contact_m' => $aa,
 );
      //pre($data);
       self::$db->update(self::lTable, $data, 'id='.$value->id);
-  }
-
-}
+        }
+    }
 
 
     public function editSubProject($pd)
     {
-
         $error = '';
         if (strlen($pd['pt']) <= 0) {
             $error .= "Please enter Project type\n";
         }
         if ($error == '') {
+            $project_id=sanitize($pd['pid']);
 
-          $project_id=sanitize($pd['pid']);
-
-          $existproject=$this->getProjectParentID($project_id);
-          $frompage = (explode(',', $pd['pt']));
-          $delete=array_diff($existproject,$frompage);
-          $insert=array_diff($frompage,$existproject);
-          $errorinsert=0;
-          if(!empty($insert)){
-            foreach ($insert as $key => $value) {
-              $data = array(
+            $existproject=$this->getProjectParentID($project_id);
+            $frompage = (explode(',', $pd['pt']));
+            $delete=array_diff($existproject, $frompage);
+            $insert=array_diff($frompage, $existproject);
+            $errorinsert=0;
+            if (!empty($insert)) {
+                foreach ($insert as $key => $value) {
+                    $data = array(
               'parent' => $project_id,
               'updated' => 'now()',
               );
-              self::$db->update(self::prTable, $data, 'id='.$value);
-              if (!self::$db->affected()) {
-                $errorinsert=1;
+                    self::$db->update(self::prTable, $data, 'id='.$value);
+                    if (!self::$db->affected()) {
+                        $errorinsert=1;
+                    }
                 }
-              }
             }
             $errordelete=0;
-            if(!empty($delete)){
-              foreach ($delete as $key => $value) {
-                $data = array(
+            if (!empty($delete)) {
+                foreach ($delete as $key => $value) {
+                    $data = array(
                 'parent' => '0',
                 'updated' => 'now()',
                 );
-                self::$db->update(self::prTable, $data, 'id='.$value);
-                if (!self::$db->affected()) {
-                  $errordelete=1;
-                  }
+                    self::$db->update(self::prTable, $data, 'id='.$value);
+                    if (!self::$db->affected()) {
+                        $errordelete=1;
+                    }
                 }
-              }
-              if($errorinsert!=1&&$errordelete!=1)
-              {
+            }
+            if ($errorinsert!=1&&$errordelete!=1) {
                 $json['type'] = 'success';
                 $json['title'] = 'Success';
                 $json['message'] = 'Successfully Edit the PR infomation.';
                 return json_encode($json);
-              }
-              else {
+            } else {
                 $a = array('type' => 'error', 'error' => 'Error Updating Data');
                 return json_encode($a);
-              }
-
             }
-}
+        }
+    }
 
 
 
@@ -5752,7 +5713,4 @@ break;
             }
         }
     }
-
-
-
 }

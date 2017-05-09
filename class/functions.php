@@ -688,6 +688,13 @@ function isActive($id)
     return $display;
     ;
 }
+
+function isActived($v1,$v2,$text)
+{
+  if($v1==$v2){
+    return $text;
+  }
+}
 function ca($page, $content)
 {
     if ($page == $content) {

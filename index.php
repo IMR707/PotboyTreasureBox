@@ -2,6 +2,7 @@
 define('_VALID_PHP', true);
 $pname = 'Dashboard';
 $menu = 'Dashboard';
+$pagemenu="DASH";
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
@@ -32,7 +33,7 @@ $homeSlider=$list->FEgetHomeSlider();
 
 
  	<!-- Page container -->
- 	<div class="page-container">
+
 
  		<!-- Page content -->
  		<div class="page-content">
@@ -86,8 +87,8 @@ $homeSlider=$list->FEgetHomeSlider();
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px!important;">
- 								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                <button type="button" class="btn btn-purple" name="button" style="display: block; width: 100%;">Next Daily <br> GOLD box in <br><b id="time">xx:xx:xx</b></button>
+ 								<a href="dailyReward.php"><img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a href="dailyReward.php"  class="btn btn-purple" name="button" style="display: block; width: 100%;">Next Daily <br> GOLD box in <br><b id="time">xx:xx:xx</b></a>
  							</div>
  						</div>
  						<!-- /horizotal form -->
@@ -133,10 +134,7 @@ $homeSlider=$list->FEgetHomeSlider();
  			<!-- /main content -->
 
  		</div>
- 		<!-- /page content -->
 
- 	</div>
- 	<!-- /page container -->
   <?php
    include 'fefoot.php';
    ?>
