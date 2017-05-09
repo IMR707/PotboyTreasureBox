@@ -927,14 +927,14 @@ class Fazrin
 
     /********* BIDDING **********************************************/
 
-    public function create_bidding(){
-
+    public function create_bidding(){      
       $title = $_POST['title'];
       $product_id = $_POST['product_id'];
       $start_time_date = $_POST['start_time_date'];
       $start_time_time = $_POST['start_time_time'];
 
-      $start_time = date('Y-d-m H:i:s',strtotime($start_time_date.' '.$start_time_time));
+      $date = DateTime::createFromFormat('d/m/Y h:i A', $start_time_date.' '.$start_time_time);
+      $start_time = $date->format('Y-m-d H:i:s');
 
       $bid_type = $_POST['bid_type'];
       $min_bid = $_POST['min_bid'];
@@ -957,7 +957,8 @@ class Fazrin
         $end_time_date = $_POST['end_time_date'];
         $end_time_time = $_POST['end_time_time'];
 
-        $end_time = date('Y-d-m H:i:s',strtotime($end_time_date.' '.$end_time_time));
+        $date2 = DateTime::createFromFormat('d/m/Y h:i A', $end_time_date.' '.$end_time_time);
+        $end_time = $date2->format('Y-m-d H:i:s');
 
         $data['end_time'] = $end_time;
 
@@ -985,6 +986,15 @@ class Fazrin
       $row = self::$db->fetch_all($sql);
 
       return $row;
+    }
+
+    public function getBiddingByID()
+    {
+      $id = $_POST['id'];
+      $sql = "SELECT * FROM ".self::tb_bid." where id='$id'";
+      $row = self::$db->first($sql);
+
+      echo json_encode($row);
     }
 
 

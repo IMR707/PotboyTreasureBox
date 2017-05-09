@@ -121,6 +121,10 @@ elseif($_POST['func'] == 'create_bidding'){
   $fz->create_bidding();
 }
 
+elseif($_POST['func'] == 'getBiddingByID'){
+  $fz->getBiddingByID();
+}
+
 
 
 
