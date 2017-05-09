@@ -57,16 +57,23 @@
 
        </span>
 
+<?php
+$crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
+$credit=$crdata->credit;
+$gold=$crdata->gold;
+$diamond=$crdata->diamond;
+ ?>
+
        <li class="dropdown dropdown-user">
-         <a><div class="left" data-toggle="tooltip" title="Potboy Credit - You can use credit to buy groceries. Buy your Potboy Credit at discounted rate today!"> <img src="http://potboy.com.my/pub/media/customercredit/point.png" style="width:15px"> <span id="credit_navlink">RM 0.00</span></div></a>
+         <a><div class="left" data-toggle="tooltip" title="Potboy Credit - You can use credit to buy groceries. Buy your Potboy Credit at discounted rate today!"> <img src="http://potboy.com.my/pub/media/customercredit/point.png" style="width:15px"> <span id="credit_navlink"><?php echo $credit;?></span></div></a>
        </li>
 
        <li class="dropdown dropdown-user">
-         <a><div class="left" data-toggle="tooltip" title="Potboy Gold - You can further slash prices with Potboy Gold, collect Potboy Gold today!"> <img src="http://potboy.com.my/pub/media/logo/stores/1/gold.png" style="width:16px"> <span id="gold_navlink">0</span></div></a>
+         <a><div class="left" data-toggle="tooltip" title="Potboy Gold - You can further slash prices with Potboy Gold, collect Potboy Gold today!"> <img src="http://potboy.com.my/pub/media/logo/stores/1/gold.png" style="width:16px"> <span id="gold_navlink"><?php echo $gold;?></span></div></a>
        </li>
 
        <li class="dropdown dropdown-user">
-         <a><div class="left" data-toggle="tooltip" title="Potboy Diamond - Earn Diamond with every RM50 purchase, you can convert Potboy Diamond to Potboy Gold!"><img src="http://potboy.com.my/pub/media/logo/stores/1/diamond.png" style="width:16px"> <span id="diamond_navlink">0</span></div></a>
+         <a><div class="left" data-toggle="tooltip" title="Potboy Diamond - Earn Diamond with every RM50 purchase, you can convert Potboy Diamond to Potboy Gold!"><img src="http://potboy.com.my/pub/media/logo/stores/1/diamond.png" style="width:16px"> <span id="diamond_navlink"><?php echo $diamond;?></span></div></a>
        </li>
 
 
@@ -79,7 +86,7 @@
 
            } else {
                ?>
-             <a class="dropdown-toggle" data-toggle="dropdown"><span>User</span><i class="caret"></i>
+             <a class="dropdown-toggle" data-toggle="dropdown"><span><?php echo ucwords($user->name);?></span><i class="caret"></i>
                <?php
 
            } ?>
@@ -93,7 +100,7 @@
            <li><a href="#"><span class="badge badge-warning pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li>
            <li class="divider"></li>
            <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li>
-           <li><a href="#"><i class="icon-switch2"></i> Logout</a></li>
+           <li><a href="logout.php"><i class="icon-switch2"></i> Logout</a></li>
 
          </ul>
        </li>

@@ -9,7 +9,20 @@ use Httpful\Request;
 
 class Listing
 {
-    const lTable = 'leads';
+  const tb_hs = 'aa_homeslider';
+  const tb_an = 'aa_announcement';
+  const tb_rewardcus = 'lof_rewardpoints_customer';
+  const tb_rewardtrans = 'lof_rewardpoints_transaction';
+  const tb_rewardcredit = 'customer_credit';
+
+  const tb_dr = 'aa_dailyreward';
+  const tb_wof = 'aa_fortune';
+  const tb_cr = 'aa_conversion';
+  const tb_prod = 'aa_product';
+  const tb_spon = 'aa_sponsor';
+  const tb_bid = 'aa_bidding';
+
+  const lTable = 'leads';
     const leTable = 'leadenquiry';
     const custleTable = 'custenquiry';
     const conTable = 'countries';
@@ -44,6 +57,52 @@ class Listing
     {
         self::$db = Registry::get('Database');
     }
+
+
+    public function FEgetAnnouncement()
+    {
+        $sql = 'SELECT * FROM '.self::tb_an." where publish = 1 AND active = 1 order by prio,date_updated";
+        $row = self::$db->fetch_all($sql);
+        $text="";
+        foreach ($row as $key => $value) {
+          $text.=$value->content;
+        }
+        return $text;
+    }
+
+    public function FEgetHomeSlider()
+    {
+        $sql = 'SELECT * FROM '.self::tb_hs." where publish = 1 AND active = 1 order by prio,date_updated";
+        $row = self::$db->fetch_all($sql);
+        return $row;
+    }
+
+    public function FEgetRewardData($id)
+    {
+        $sql = 'SELECT available_points as diamond,available_golds as gold FROM '.self::tb_rewardcus." where customer_id ='$id'";
+        $row = self::$db->first($sql);
+        if(!$row){
+          $row = new stdClass();
+          $row->diamond=0;
+          $row->gold=0;
+        }
+        $sql2 = 'SELECT credit_balance as credit FROM '.self::tb_rewardcredit." where customer_id ='$id'";
+        $row2 = self::$db->first($sql2);
+        if(!$row2){
+          $row->credit='0.00';
+        }
+        else {
+          $num=$row2->credit;
+          $row->credit=sprintf('%.2f',$num);
+        }
+        $row->credit="RM ".$row->credit;
+        return $row;
+    }
+
+
+
+
+
 
     public function EarliestDateLead(){
       $sql = 'SELECT date(MIN(created)) as mindate FROM '.self::lTable." where created!='0000-00-00 00:00:00'";

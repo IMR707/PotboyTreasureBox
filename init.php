@@ -82,6 +82,8 @@ define("BACK_UPLOADS", BACKASSETSURL . "uploads/");
 
 define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
 define("FORGOTURL","http://potboy.com.my/customer/account/forgotpassword/");
+define("TNCURL","http://potboy.com.my/terms-conditions");
+
 
 define("WEBNAME", " | Potboy Treasure box");
 define("UPLOADURL", SITEURL . "/uploads/");

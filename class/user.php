@@ -114,13 +114,16 @@ if (!defined("_VALID_PHP")) {
           }
       }
 
-      public function login($email, $pass, $rememberme=false)
+      public function login($email,$pass,$url)
       {
+
+
           if ($email == "" && $pass == "") {
               Filter::$msgs['email'] = "Please enter valid email and password.";
           } else {
-              $status = $this->checkStatus($email, $pass);
 
+//            pre($url);
+            echo $status = $this->checkStatus($email, $pass);
               switch ($status) {
                   case 0:
                       Filter::$msgs['email'] ="Login and/or password did not match to the database.";
@@ -146,9 +149,9 @@ if (!defined("_VALID_PHP")) {
               $this->name = $_SESSION['name'] = $row->firstname." ".$row->middlename." ".$row->lastname;
               $this->userlevel = $_SESSION['userlevel'] = 1;
               $this->cookie_id = $_SESSION['cookie_id'] = $this->generateRandID();
-              return true;
+              return 'success';
           } else {
-              Filter::msgStatus();
+              return Filter::msgStatus();
           }
       }
 
@@ -169,17 +172,19 @@ if (!defined("_VALID_PHP")) {
 
       public function checkStatus($email, $pass)
       {
+
           $email = sanitize($email);
           $email = self::$db->escape($email);
           $pass = sanitize($pass);
 
-          echo $sql = "SELECT * FROM " . self::uTable
+
+
+          $sql = "SELECT * FROM " . self::uTable
       . "\n WHERE email = '" . $email . "'";
           $result = self::$db->query($sql);
           if (self::$db->numrows($result) == 0) {
               return 0;
           }
-
           $row = self::$db->fetch($result);
           $error='';
           $userData = array("username" =>$email, "password" => $pass);

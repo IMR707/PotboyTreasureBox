@@ -3119,6 +3119,51 @@ fieldset[disabled] .btn-default.focus {
   background-color: #2196F3;
   border-color: #2196F3;
 }
+.btn-purple {
+  color: #ffffff;
+  background-color: #6F3996;
+  border-color: #6F3996;
+}
+
+.btn-purple:hover,
+.btn-purple:focus,
+.btn-purple:active,
+.btn-purple.active,
+.open .dropdown-toggle.btn-purple {
+  color: #ffffff;
+  background-color: #6F3996;
+  border-color: #6F3996;
+}
+
+.btn-purple:active,
+.btn-purple.active,
+.open .dropdown-toggle.btn-purple {
+  background-image: none;
+}
+
+.btn-purple.disabled,
+.btn-purple[disabled],
+fieldset[disabled] .btn-purple,
+.btn-purple.disabled:hover,
+.btn-purple[disabled]:hover,
+fieldset[disabled] .btn-purple:hover,
+.btn-purple.disabled:focus,
+.btn-purple[disabled]:focus,
+fieldset[disabled] .btn-purple:focus,
+.btn-purple.disabled:active,
+.btn-purple[disabled]:active,
+fieldset[disabled] .btn-purple:active,
+.btn-purple.disabled.active,
+.btn-purple[disabled].active,
+fieldset[disabled] .btn-purple.active {
+  background-color: #6F3996;
+  border-color: #6F3996;
+}
+
+.btn-purple .badge {
+  color: #6F3996;
+  background-color: #ffffff;
+}
 .btn-primary:focus,
 .btn-primary.focus {
   color: #fff;

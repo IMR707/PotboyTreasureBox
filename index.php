@@ -6,6 +6,9 @@ $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
 
+$announcement=$list->FEgetAnnouncement();
+$homeSlider=$list->FEgetHomeSlider();
+// pre($homeSlider);
 // if (!$user->logged_in) {
 //     redirect_to(SITEURL.'/index.php');
 // }
@@ -44,17 +47,10 @@ use Carbon\Carbon;
 
                     <div class="col-sm-12 col-md-12">
                       <div id="carousel-notification" class="bootstrap-carousel" data-indicators="true" data-controls="true">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                        <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
 
-
+                        <?php foreach ($homeSlider as $key => $value):?>
+                        <img src="backend/uploads/<?php echo $value->img_name?>" data-title="<?php echo $value->title?>" class="img-responsive">
+                        <?php endforeach; ?>
                       </div>
                     </div>
 
@@ -68,7 +64,14 @@ use Carbon\Carbon;
         <!-- Simple panel -->
  				<div class="panel panel-flat">
  					<div class="panel-body">
- 						<p class="content-group">Common problem of templates is that
+ 						<p class="content-group">
+              <div class="col-md-1">
+                Potboy Live Update
+              </div>
+              <div class="col-md-11">
+              <marquee><?php echo $announcement;?></marquee>
+              </div>
+
               </p>
  					</div>
  				</div>
@@ -83,6 +86,7 @@ use Carbon\Carbon;
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                <button type="button" class="btn btn-lg btn-purple" name="button" style="display: block; width: 100%;">Next Daily GOLD box in <br><b id="time">xx:xx:xx</b></button>
  							</div>
  						</div>
  						<!-- /horizotal form -->
@@ -92,6 +96,7 @@ use Carbon\Carbon;
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                <button type="button" class="btn btn-lg btn-purple" name="button" style="display: block; width: 100%;">Free Games in <br><b id="time">xx:xx:xx</b></button>
  							</div>
  						</div>
  						<!-- /horizotal form -->
@@ -104,6 +109,7 @@ use Carbon\Carbon;
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                <button type="button" class="btn btn-lg btn-purple" name="button" style="display: block; width: 100%;">Convert DIAMOND <br>to GOLD</button>
  							</div>
  						</div>
  						<!-- /horizotal form -->
@@ -113,6 +119,7 @@ use Carbon\Carbon;
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
+                <button type="button" class="btn btn-lg btn-purple" name="button" style="display: block; width: 100%;">Play it Now<br> <b id="time">1 Diamond</b></button>
  							</div>
  						</div>
  						<!-- /horizotal form -->
