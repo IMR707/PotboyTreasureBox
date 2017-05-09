@@ -78,6 +78,7 @@ class Listing
         return $row;
     }
 
+
     public function FEgetAllDailyReward($id)
     {
         $dt = Carbon::now()->subDay();
@@ -154,6 +155,63 @@ class Listing
 
 
         return $row;
+    }
+
+    public function FEgetConversion($id,$uid)
+    {
+      $sql = 'SELECT * FROM '.self::tb_cr." where active = 1 AND id ='$id' ";
+      $row = self::$db->first($sql);
+      if($row){
+        $diamond=$row->diamond_amount;
+        $diamond =  - $diamond;
+        $gold=$row->gold_amount;
+        $data = array(
+                'customer_id' => $uid,
+                'quote_id' => '',
+                'amount' => $diamond,
+                'amount_used' => $diamond,
+                'amount_gold' => $gold,
+                'amount_gold_used' =>0,
+                'title' => 'PotBoy Conversion - '.$row->name,
+                'desc' => abs($diamond)." diamonds to ".$gold.' Golds',
+                'code' => 'admin_add-aEEmIYncALynhaQQ',
+                'action' => 'admin_add',
+                'status' => 'complete',
+                'params' => '',
+                'is_expiration_email_sent' => 0,
+                'email_message' => '',
+                'apply_at' => '',
+                'is_applied' => 1,
+                'is_expired' => 0,
+                'expires_at' => '',
+                'updated_at' => 'now()',
+                'created_at' => 'now()',
+                'store_id' => '',
+                'order_id' => '',
+                'admin_user_id' => '1',
+                );
+        self::$db->insert(self::tb_rewardtrans, $data);
+        $sql2 = 'SELECT * FROM '.self::tb_rewardcus." where customer_id ='$uid' ";
+        $row2 = self::$db->first($sql2);
+        $tgold=$gold+$row2->total_golds;
+        $tdiamond=$diamond+$row2->total_points;
+        $data2 = array(
+
+
+                  'available_points' => $tdiamond,
+                  'total_points' => $tdiamond,
+                  'available_golds' => $tgold,
+                  'total_golds' => $tgold
+                  );
+        self::$db->update(self::tb_rewardcus, $data2, 'customer_id='.$uid);
+
+        return "Successfully Claim";
+        }
+        else {
+        return "Please Retry Again Later";
+        }
+
+
     }
 
     public function FEgetDailyReward($id,$uid)

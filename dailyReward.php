@@ -279,7 +279,7 @@ if (isset($_GET['day'])) {
     if ($msg) {
         ?>
       alert('<?php echo $msg; ?>');
-      location.href="dailyReward.php";
+      location.href="goldConversion.php";
    <?php
     }
     ?>
