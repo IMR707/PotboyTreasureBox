@@ -10,6 +10,13 @@
     padding-right: 30px !important;*/
 }
 
+.convert-title{
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .daily-gold-container{
     border: 1px solid rgba(0, 0, 0, .1);
 }
@@ -62,4 +69,8 @@
 }
 .padding-btm-md{
     padding-bottom: 20px;
+}
+
+.img-rounded-md{
+    border-radius : 12px;
 }
