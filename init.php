@@ -63,7 +63,7 @@ define("FRONTASSETSURL", "frontend/");
 define("FRONTREVO", FRONTASSETSURL . "revo-slider/");
 define("FRONTCSS", FRONTASSETSURL . "assets/css/");
 define("FRONTJS", FRONTASSETSURL . "assets/js/");
-define("FRONTIMAGE", FRONTASSETSURL . "img/");
+define("FRONTIMAGE","img/");
 define("FRONTICON", FRONTASSETSURL . "assets/icons/");
 
 define("BACKASSETSURL", "backend/");

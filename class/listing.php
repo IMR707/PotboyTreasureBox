@@ -14,8 +14,8 @@ class Listing
   const tb_rewardcus = 'lof_rewardpoints_customer';
   const tb_rewardtrans = 'lof_rewardpoints_transaction';
   const tb_rewardcredit = 'customer_credit';
-
   const tb_dr = 'aa_dailyreward';
+  const tb_drtran = 'aa_dailyreward_transaction';
   const tb_wof = 'aa_fortune';
   const tb_cr = 'aa_conversion';
   const tb_prod = 'aa_product';
@@ -58,6 +58,18 @@ class Listing
         self::$db = Registry::get('Database');
     }
 
+    public function FEgetAllDailyReward()
+    {
+      $sql = 'SELECT * FROM '.self::tb_dr." where active = 1 order by day_num";
+      $row = self::$db->fetch_all($sql);
+      return $row;
+    }
+
+    public function FEgetDailyReward($id)
+    {
+      echo $id;
+    }
+
 
     public function FEgetAnnouncement()
     {
@@ -79,12 +91,13 @@ class Listing
 
     public function FEgetRewardData($id)
     {
-        $sql = 'SELECT available_points as diamond,available_golds as gold FROM '.self::tb_rewardcus." where customer_id ='$id'";
+        $sql = 'SELECT available_points as diamond,available_golds as gold,total_spin as spin FROM '.self::tb_rewardcus." where customer_id ='$id'";
         $row = self::$db->first($sql);
         if(!$row){
           $row = new stdClass();
           $row->diamond=0;
           $row->gold=0;
+          $row->spin=0;
         }
         $sql2 = 'SELECT credit_balance as credit FROM '.self::tb_rewardcredit." where customer_id ='$id'";
         $row2 = self::$db->first($sql2);

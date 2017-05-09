@@ -49,7 +49,7 @@ $homeSlider=$list->FEgetHomeSlider();
                       <div id="carousel-notification" class="bootstrap-carousel" data-indicators="true" data-controls="true">
 
                         <?php foreach ($homeSlider as $key => $value):?>
-                        <img src="backend/uploads/<?php echo $value->img_name?>" data-title="<?php echo $value->title?>" class="img-responsive">
+                        <img src="backend/uploads/<?php echo $value->img_name?>" data-title="" class="img-responsive">
                         <?php endforeach; ?>
                       </div>
                     </div>
@@ -65,10 +65,11 @@ $homeSlider=$list->FEgetHomeSlider();
  				<div class="panel panel-flat">
  					<div class="panel-body">
  						<p class="content-group">
-              <div class="col-md-1">
-                Potboy Live Update
+              <div class="col-md-1 col-xs-4">
+
+                <img src="<?php echo FRONTIMAGE;?>liveupdate.png" class="img-responsive">
               </div>
-              <div class="col-md-11">
+              <div class="col-md-11 col-xs-8">
               <marquee><?php echo $announcement;?></marquee>
               </div>
 
@@ -86,7 +87,7 @@ $homeSlider=$list->FEgetHomeSlider();
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                <button type="button" class="btn btn-lg btn-purple" name="button" style="display: block; width: 100%;">Next Daily GOLD box in <br><b id="time">xx:xx:xx</b></button>
+                <button type="button" class="btn btn-purple" name="button" style="display: block; width: 100%;">Next Daily <br> GOLD box in <br><b id="time">xx:xx:xx</b></button>
  							</div>
  						</div>
  						<!-- /horizotal form -->
@@ -96,7 +97,7 @@ $homeSlider=$list->FEgetHomeSlider();
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                <button type="button" class="btn btn-lg btn-purple" name="button" style="display: block; width: 100%;">Free Games in <br><b id="time">xx:xx:xx</b></button>
+                <button type="button" class="btn btn-purple" name="button" style="display: block; width: 100%;">Free Games <br>in <br><b id="time">xx:xx:xx</b></button>
  							</div>
  						</div>
  						<!-- /horizotal form -->
@@ -109,7 +110,7 @@ $homeSlider=$list->FEgetHomeSlider();
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                <button type="button" class="btn btn-lg btn-purple" name="button" style="display: block; width: 100%;">Convert DIAMOND <br>to GOLD</button>
+                <button type="button" class="btn btn-purple" name="button" style="display: block; width: 100%;">Convert <br> DIAMOND to <br>GOLD</button>
  							</div>
  						</div>
  						<!-- /horizotal form -->
@@ -119,7 +120,7 @@ $homeSlider=$list->FEgetHomeSlider();
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px!important;">
  								<img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-                <button type="button" class="btn btn-lg btn-purple" name="button" style="display: block; width: 100%;">Play it Now<br> <b id="time">1 Diamond</b></button>
+                <button type="button" class="btn btn-purple" name="button" style="display: block; width: 100%;">Play it <br>Now<br> <b id="time">1 Diamond</b></button>
  							</div>
  						</div>
  						<!-- /horizotal form -->

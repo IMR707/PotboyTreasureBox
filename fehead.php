@@ -62,6 +62,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 $credit=$crdata->credit;
 $gold=$crdata->gold;
 $diamond=$crdata->diamond;
+$spin=$crdata->spin;
  ?>
 
        <li class="dropdown dropdown-user">
@@ -75,6 +76,12 @@ $diamond=$crdata->diamond;
        <li class="dropdown dropdown-user">
          <a><div class="left" data-toggle="tooltip" title="Potboy Diamond - Earn Diamond with every RM50 purchase, you can convert Potboy Diamond to Potboy Gold!"><img src="http://potboy.com.my/pub/media/logo/stores/1/diamond.png" style="width:16px"> <span id="diamond_navlink"><?php echo $diamond;?></span></div></a>
        </li>
+
+       <li class="dropdown dropdown-user">
+         <a><div class="left" data-toggle="tooltip" title="Potboy Spin - Earn Diamond , Gold or Spin again."><img src="img/spin.png" style="width:16px"> <span id="spin_navlink"><?php echo $spin;?></span></div></a>
+       </li>
+
+
 
 
          <li class="dropdown dropdown-user">
