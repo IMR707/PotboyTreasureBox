@@ -17,6 +17,8 @@ class Fazrin
     const tb_prod = 'aa_product';
     const tb_spon = 'aa_sponsor';
     const tb_bid = 'aa_bidding';
+    const tb_bidtrans = 'aa_bidding_transaction';
+
 
     private static $db;
 
@@ -1066,6 +1068,14 @@ class Fazrin
 
 
       echo json_encode($row);
+    }
+
+    public function getCurParticipant($bid_id)
+    {
+      $sql = "SELECT * FROM ".self::tb_bidtrans." WHERE bidding_id = '$bid_id' AND active = 1";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
     }
 
 

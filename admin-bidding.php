@@ -268,6 +268,7 @@ if (!$user->logged_in) {
                               $start = strtotime($start_date);
 
                               $bid_base = $row->bid_base;
+                              $max_participant = 0;
                               $percent = 0;
 
                               $disp_time = '';
@@ -292,6 +293,10 @@ if (!$user->logged_in) {
                               }elseif($bid_base == 2){
                                 $disp_time = $start_date;
                                 $end_date = '';
+                                $max_participant = $row->max_participant;
+                                $cur_participant = $fz->getCurParticipant($row->id);
+                                $total_cur_participant = count($cur_participant);
+                                $percent = floor(($total_cur_participant/$max_participant) * 100);                        
                               }
                             ?>
 
@@ -306,12 +311,16 @@ if (!$user->logged_in) {
                                     </div>
                                     <div class="col-md-4" id="status_<?php echo $row->id; ?>">
                                       <?php
-                                      if($current_time < $start){
-                                        echo '<span class="text-warning">Not started</span>';
-                                      }elseif($current_time >= $start && $current_time < $end){
-                                        echo '<span class="text-success">Ongoing</span>';
-                                      }elseif($current_time >= $end){
-                                        echo '<span class="text-danger">Ended</span>';
+                                      if($bid_base == 1){
+                                        if($current_time < $start){
+                                          echo '<span class="text-warning">Not started</span>';
+                                        }elseif($current_time >= $start && $current_time < $end){
+                                          echo '<span class="text-success">Ongoing</span>';
+                                        }elseif($current_time >= $end){
+                                          echo '<span class="text-danger">Ended</span>';
+                                        }
+                                      }elseif($bid_base == 2){
+                                        echo $total_cur_participant.'/'.$max_participant;
                                       }
 
                                       ?>
