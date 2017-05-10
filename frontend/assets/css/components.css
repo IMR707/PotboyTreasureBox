@@ -1119,8 +1119,8 @@ a.badge,
 * ---------------------------------------------------------------------------- */
 .page-container {
   position: relative;
-  padding: 20px 20px;
-  padding-bottom: 60px;
+  padding: 20px 0px;
+  padding-bottom: 60px;  
 }
 .navbar-bottom .page-container,
 .navbar-bottom-lg .page-container,
@@ -17741,7 +17741,7 @@ thead .htCollapseButton:after {
 *
 *  # Responsive extension
 *
-*  Optimise the table's layout for different screen sizes through the dynamic 
+*  Optimise the table's layout for different screen sizes through the dynamic
 *  insertion and removal of columns from the table
 *
 *  Version: 1.0
