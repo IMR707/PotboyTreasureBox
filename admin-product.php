@@ -89,6 +89,12 @@ if (!$user->logged_in) {
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-md-3 control-label">Price</label>
+                                <div class="col-md-9">
+                                    <input type="number" class="form-control" placeholder="0.00" name="price" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-md-3 control-label">Banner</label>
                                 <div class="col-md-9">
                                     <input type="file" class="form-control input-file" name="img_banner" required>
@@ -194,6 +200,12 @@ if (!$user->logged_in) {
                                             <label class="col-md-3 control-label">Name</label>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" placeholder="Product Name" name="name" required id="name_upd">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Price</label>
+                                            <div class="col-md-9">
+                                                <input type="number" class="form-control" placeholder="0.00" name="price" required id="price_upd">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -329,6 +341,7 @@ $(document).ready(function(){
       success : function(data)
       {
         $('#name_upd').val(data.name);
+        $('#price_upd').val(data.price);
         $('#desc_upd').summernote('code',data.desc);
         $('#img_banner_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.img_banner);
         $('#img_header_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.img_header);
@@ -342,13 +355,11 @@ $(document).ready(function(){
   });
 
   $('#modal_update').on('hide.bs.modal',function(){
-    $('#package_name_upd').val('');
+    $('#name_upd').val('');
+    $('#price_upd').val('');
     $('#img_banner_upd').attr('src','');
     $('#img_header_upd').attr('src','');
     $('#img_thumbnail_upd').attr('src','');
-    $('#package_prio_upd').val('');
-    $('#diamond_amount_upd').val('');
-    $('#gold_amount_upd').val('');
     $('.btn_submit_upd').attr('id','');
     $('#upd_id').val('');
   });

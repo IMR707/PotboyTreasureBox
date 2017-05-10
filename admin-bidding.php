@@ -279,37 +279,52 @@ if (!$user->logged_in) {
                                 $diff = $end - $start;
                                 $cdiff = $current_time - $start;
 
-
                                 if($current_time < $start){
                                   $disp_time = $start_date;
                                   $percent = 0;
-                                }elseif($current_time > $start && $current_time < $end){
+                                }elseif($current_time >= $start && $current_time < $end){
                                   $disp_time = $end_date;
                                   $percent = floor(( $cdiff / $diff ) * 100);
+                                }elseif($current_time >= $end){
+                                  $percent = 100;
                                 }
 
+                              }elseif($bid_base == 2){
+                                $disp_time = $start_date;
+                                $end_date = '';
                               }
-
-
                             ?>
 
                                 <tr>
                                   <td class="text-center"><?php echo $row->title.'<br>( '.$prod_detail->name.' )'; ?></td>
                                   <td class="text-left">
-                                    <div class="col-md-6">min bid - <?php echo $row->min_bid.' '.$currency; ?></div>
-                                    <div class="col-md-6">
-                                      <span class="countdown_time" id="disp_time_<?php echo $row->id; ?>" start-time="<?php echo $start_date; ?>" end-time="<?php echo $end_date; ?>" current-time="">
+                                    <div class="col-md-4">min bid - <?php echo $row->min_bid.' '.$currency; ?></div>
+                                    <div class="col-md-4">
+                                      <span class="countdown_time" id="disp_time_<?php echo $row->id; ?>" start-time="<?php echo $start_date; ?>" end-time="<?php echo $end_date; ?>">
                                         <?php echo $disp_time; ?>
                                       </span>
                                     </div>
-                                    <div class="col-md-11">
+                                    <div class="col-md-4" id="status_<?php echo $row->id; ?>">
+                                      <?php
+                                      if($current_time < $start){
+                                        echo '<span class="text-warning">Not started</span>';
+                                      }elseif($current_time >= $start && $current_time < $end){
+                                        echo '<span class="text-success">Ongoing</span>';
+                                      }elseif($current_time >= $end){
+                                        echo '<span class="text-danger">Ended</span>';
+                                      }
+
+                                      ?>
+                                      <span>
+                                    </div>
+                                    <div class="col-md-10">
                                       <div class="progress progress-striped active" style="margin-bottom:10px;">
                                           <div class="progress-bar progress-bar-info" role="progressbar" id="progressbar_<?php echo $row->id; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percent; ?>%">
                                               <span class="sr-only"> <?php echo $percent; ?>% Complete </span>
                                           </div>
                                       </div>
                                     </div>
-                                    <div class="col-md-1 text-left" id="disppercent_<?php echo $row->id; ?>">
+                                    <div class="col-md-2 text-left" id="disppercent_<?php echo $row->id; ?>">
                                       <?php echo $percent; ?>%
                                     </div>
                                   </td>
@@ -481,13 +496,18 @@ $(document).ready(function(){
       $(this).html(event.strftime('%-D days %H:%M:%S'));
     }).on('update.countdown', function() {
       var val = $('#disppercent_'+id).html().trim();
-
-
       var cdiff = new Date() - moment(start,"YYYY/MM/DD HH:mm:ss");
 
-      var percent = Math.floor(( cdiff / diff ) * 100);
-      $('#disppercent_'+id).html(percent+'%');
-      $('#progressbar_'+id).css('width',percent+'%');
+      if(cdiff > 0){
+        var percent = Math.floor(( cdiff / diff ) * 100);
+        $('#disppercent_'+id).html(percent+'%');
+        $('#progressbar_'+id).css('width',percent+'%');
+      }
+    }).on('finish.countdown', function() {
+      // $('#progressbar_'+id).css('width','100%');
+      // $('#disppercent_'+id).html('');
+      location.href = 'admin-bidding.php';
+      // status_
 
     });
   });
