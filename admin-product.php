@@ -192,7 +192,7 @@ if (!$user->logged_in) {
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Update Package</h4>
+                                        <h4 class="modal-title">Update Product</h4>
                                     </div>
                                     <div class="modal-body">
                                       <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">

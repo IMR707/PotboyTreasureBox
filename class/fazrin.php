@@ -977,7 +977,63 @@ class Fazrin
         $_SESSION['noti']['msg'] = 'New bidding created.';
       }
       rd('../admin-bidding.php');
+      exit;
 
+    }
+
+    public function update_bidding()
+    {
+      $id = $_POST['id'];
+      $title = $_POST['title'];
+      $product_id = $_POST['product_id'];
+      $start_time_date = $_POST['start_time_date'];
+      $start_time_time = $_POST['start_time_time'];
+
+      $date = DateTime::createFromFormat('d/m/Y h:i A', $start_time_date.' '.$start_time_time);
+      $start_time = $date->format('Y-m-d H:i:s');
+
+      $bid_type = $_POST['bid_type'];
+      $min_bid = $_POST['min_bid'];
+      $sponsor_id = json_encode($_POST['sponsor_id']);
+      $bid_base = $_POST['bid_base'];
+
+      $data = array(
+        'title' => $title,
+        'product_id' => $product_id,
+        'start_time' => $start_time,
+        'bid_base' => $bid_base,
+        'bid_type' => $bid_type,
+        'min_bid' => $min_bid,
+        'sponsor' => $sponsor_id,
+        'date_created' => 'now()',
+        'date_updated' => 'now()'
+      );
+
+      if($bid_base == 1){
+        $end_time_date = $_POST['end_time_date'];
+        $end_time_time = $_POST['end_time_time'];
+
+        $date2 = DateTime::createFromFormat('d/m/Y h:i A', $end_time_date.' '.$end_time_time);
+        $end_time = $date2->format('Y-m-d H:i:s');
+
+        $data['end_time'] = $end_time;
+
+      }elseif($bid_base == 2){
+        $max_participant = $_POST['max_participant'];
+
+        $data['max_participant'] = $max_participant;
+      }
+
+      $res = self::$db->update(self::tb_bid, $data,"id='$id'");
+      if(!$res){
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while updating data.';
+      }else{
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Bidding updated.';
+      }
+      rd('../admin-bidding.php');
+      exit;
     }
 
     public function getBidding()
