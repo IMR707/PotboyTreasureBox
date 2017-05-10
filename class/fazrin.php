@@ -927,7 +927,7 @@ class Fazrin
 
     /********* BIDDING **********************************************/
 
-    public function create_bidding(){      
+    public function create_bidding(){
       $title = $_POST['title'];
       $product_id = $_POST['product_id'];
       $start_time_date = $_POST['start_time_date'];
@@ -993,6 +993,21 @@ class Fazrin
       $id = $_POST['id'];
       $sql = "SELECT * FROM ".self::tb_bid." where id='$id'";
       $row = self::$db->first($sql);
+
+      $start_time = $row->start_time;
+      $start_time_date = date('d/m/Y',strtotime($start_time));
+      $start_time_time = date('h:i A',strtotime($start_time));
+
+      $row->start_time_date = $start_time_date;
+      $row->start_time_time = $start_time_time;
+
+      $end_time = $row->end_time;
+      $end_time_date = date('d/m/Y',strtotime($end_time));
+      $end_time_time = date('h:i A',strtotime($end_time));
+
+      $row->end_time_date = $end_time_date;
+      $row->end_time_time = $end_time_time;
+
 
       echo json_encode($row);
     }
