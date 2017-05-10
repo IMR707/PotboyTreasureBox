@@ -158,7 +158,7 @@ if (!$user->logged_in) {
                             <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
-                                  <th class="text-center">Icon</th>
+                                  <th class="text-center" style="width:25%">Icon</th>
                                   <th class="text-center">Name</th>
                                   <th class="text-center">Diamond</th>
                                   <th class="text-center">Gold</th>
@@ -171,7 +171,7 @@ if (!$user->logged_in) {
                             foreach($rewards as $key => $row){
                             ?>
 
-                                <tr>                                  
+                                <tr>
                                   <td class="text-center">
                                     <img src="<?php echo BACK_UPLOADS.$row->icon; ?>" class="img-thumbnail">
                                   </td>
@@ -208,13 +208,7 @@ if (!$user->logged_in) {
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" placeholder="Package Name" name="package_name" required id="package_name_upd">
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Priority</label>
-                                            <div class="col-md-9">
-                                                <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="package_prio" required id="package_prio_upd">
-                                            </div>
-                                        </div>
+                                        </div>                                        
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Image</label>
                                             <div class="col-md-9">
