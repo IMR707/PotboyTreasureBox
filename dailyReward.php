@@ -126,7 +126,7 @@ if (isset($_GET['day'])) {
              }
              if ($value->done==1) {
                  ?>
-            <button class="btn daily-gold-claim claim-disabled" name="button" >Done Claimed <?php echo $today; ?></button>
+            <button class="btn daily-gold-claim claim-disabled" name="button" >Claimed <?php echo $today; ?></button>
             <?php
 
              } elseif ($day==$value->date_check) {
