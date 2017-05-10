@@ -50,7 +50,12 @@
 
 .reward-area{
   height:90px;
-  vertical-align:middle;
+  display: table;
+}
+
+.each-reward{
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .gold-coin{

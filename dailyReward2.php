@@ -29,11 +29,11 @@ use Carbon\Carbon;
               <div class="container-fluid">
                 <div class="row text-center">
                   <div class="col-md-10 col-md-offset-1 reward-area">
-                    <div class="text-center">
+                    <div class="text-center each-reward">
                       <img class="gold-coin" src="<?php echo FRONTIMAGE;?>gold-coin-icon.png">
                       <div class="daily-gold-text">100</div>
                     </div>
-                    
+
                   </div>
                   <div class="col-md-12">
                     <div class="text-center "><span class="img-rounded daily-gold-claim">Claim Now</span></div>
