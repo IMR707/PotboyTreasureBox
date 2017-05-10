@@ -47,18 +47,8 @@ use Carbon\Carbon;
          <?php
           include 'announcement.php';
           ?>
-
-
-
-
-
-
-      
-
-
-
-
-        <div class="row">
+          <div class="panel panel-flat" style="margin-bottom:5px !important">
+            <div class="panel-body" style="padding:5px!important;">
           <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:2px !important;padding-right:2px !important;">
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
@@ -79,9 +69,9 @@ use Carbon\Carbon;
  						</div>
  						<!-- /horizotal form -->
  					</div>
- 				</div>
 
-        <div class="row">
+
+
           <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:2px !important;padding-right:2px !important;">
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
@@ -102,8 +92,9 @@ use Carbon\Carbon;
  						</div>
  						<!-- /horizotal form -->
  					</div>
- 				</div>
 
+      </div>
+      </div>
 
 
  			</div>
