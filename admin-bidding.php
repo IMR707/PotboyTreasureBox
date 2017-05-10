@@ -355,13 +355,13 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Title</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="Bid Title" name="title" required>
+                                                <input type="text" class="form-control" placeholder="Bid Title" name="title" required id="title_upd">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Product</label>
                                             <div class="col-md-9">
-                                              <select class="form-control select2" required name="product_id">
+                                              <select class="form-control select2" required name="product_id" id="product_id_upd">
                                                 <option value=""></option>
                                               <?php
                                                 $prod = $fz->getProduct();
@@ -377,42 +377,42 @@ if (!$user->logged_in) {
                                             <div class="col-md-5">
                                               <div class="input-icon">
                                                 <i class="fa fa-calendar-o"></i>
-                                                <input type="text" class="form-control date-picker" required name="start_time_date">
+                                                <input type="text" class="form-control date-picker" required name="start_time_date" id="start_time_date_upd">
                                               </div>
                                             </div>
                                             <div class="col-md-4">
                                               <div class="input-icon">
                                                 <i class="fa fa-clock-o"></i>
-                                                <input type="text" class="form-control timepicker timepicker-no-seconds" required name="start_time_time">
+                                                <input type="text" class="form-control timepicker timepicker-no-seconds" required name="start_time_time" id="start_time_time_upd">
                                               </div>
                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Bidding Base</label>
                                             <div class="col-md-9">
-                                              <select class="form-control select2" required id="base_add" name="bid_base">
+                                              <select class="form-control select2" required id="base_add_upd" name="bid_base">
                                                 <option value=""></option>
                                                 <option value="1">Time</option>
                                                 <option value="2">Participant</option>
                                               </select>
 
-                                              <span id="time_end" style="display:none">
+                                              <span id="time_end_upd" style="display:none">
                                                 <br>
                                                 End Time
                                                 <div class="input-icon">
                                                   <i class="fa fa-calendar-o"></i>
-                                                  <input type="text" style="width:50%" class="form-control date-picker" name="end_time_date">
+                                                  <input type="text" style="width:50%" class="form-control date-picker" name="end_time_date" id="end_time_date_upd">
                                                 </div>
                                                 <div class="input-icon">
                                                   <i class="fa fa-clock-o"></i>
-                                                  <input type="text" style="width:50%" class="form-control timepicker timepicker-no-seconds" name="end_time_time">
+                                                  <input type="text" style="width:50%" class="form-control timepicker timepicker-no-seconds" name="end_time_time" id="end_time_time_upd">
                                                 </div>
                                                 <br>
                                               </span>
-                                              <span id="participant_end" style="display:none">
+                                              <span id="participant_end_upd" style="display:none">
                                                 <br>
                                                 Max Participant
-                                                <input type="text" class="form-control" placeholder="Max Participant" name="max_participant">
+                                                <input type="text" class="form-control" placeholder="Max Participant" name="max_participant" id="max_participant_upd">
                                                 <br>
                                               </span>
                                             </div>
@@ -420,7 +420,7 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Bidding Type</label>
                                             <div class="col-md-9">
-                                              <select class="form-control select2" required name="bid_type">
+                                              <select class="form-control select2" required name="bid_type" id="bid_type_upd">
                                                 <option value=""></option>
                                                 <option value="1">Normal</option>
                                                 <option value="2">Premium</option>
@@ -430,14 +430,14 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Minimum Bid</label>
                                             <div class="col-md-9">
-                                              <input type="number" class="form-control" placeholder="Gold / Diamond" min="1" name="min_bid">
+                                              <input type="number" class="form-control" placeholder="Gold / Diamond" min="1" name="min_bid" id="min_bid_upd">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Sponsor</label>
                                             <div class="col-md-9">
                                               <div class="select2-bootstrap-append">
-                                                  <select id="multi-append" class="form-control select2" multiple name="sponsor_id[]">
+                                                  <select id="sponsor_id_upd" class="form-control select2" multiple name="sponsor_id[]">
                                                       <option></option>
                                                       <?php
                                                         $prod = $fz->getSponsor();
@@ -481,16 +481,73 @@ if (!$user->logged_in) {
 
 $(document).ready(function(){
 
+  $('.btn_updateBidding').on('click',function(){
+
+    $('#title_upd').val('');
+    $('#product_id_upd').select2('val','');
+    $('#sponsor_id_upd').val('').trigger('change');
+    $('#start_time_date_upd').val('');
+    $('#start_time_time_upd').val('');
+    $('#base_add_upd').select2('val','');
+    $('#end_time_date_upd').val('');
+    $('#end_time_time_upd').val('');
+    $('#max_participant_upd').val('');
+
+    $('#bid_type_upd').select2('val','');
+    $('#min_bid_upd').val('');
+
+    $('#upd_id').val('');
+
+    var id = $(this).attr('id');
+
+    var dataString = "id="+id+"&func=getBiddingByID";
+    $.ajax({
+      type    : "POST",
+      url     : "backend/process.php",
+      data    : dataString,
+      cache   : false,
+      dataType: 'json',
+      success : function(data)
+      {
+        var sp = JSON.parse(data.sponsor);
+        $('#title_upd').val(data.title);
+        $('#product_id_upd').select2('val',data.product_id);
+        $('#sponsor_id_upd').val(sp).trigger('change');
+        $('#start_time_date_upd').val(data.start_time_date);
+        $('#start_time_time_upd').val(data.start_time_time);
+        $('#base_add_upd').select2('val',data.bid_base);
+
+        if(data.bid_base == 1){
+          $('#end_time_date_upd').val(data.end_time_date);
+          $('#end_time_time_upd').val(data.end_time_time);
+
+        }else if(data.bid_base == 2){
+          $('#max_participant_upd').val(data.max_participant);
+        }
+
+        $('#bid_type_upd').select2('val',data.bid_type);
+        $('#min_bid_upd').val(data.min_bid);
+
+        $('#upd_id').val(data.id);
+        $('#modal_update').modal('show');
+      }
+    });
+  });
+
+  $('#modal_update').on('hide.bs.modal',function(){
+    // $('#title_upd').val('');
+    // $('#product_id_upd').select2('val','');
+    //
+    // $('#upd_id').val('');
+  });
+
+
   $('.countdown_time').each(function(index){
     var ids = $(this).attr('id');
     var id = ids.replace('disp_time_','');
-
     var start = $(this).attr('start-time');
     var end = $(this).attr('end-time');
-
     var diff = moment(end,"YYYY/MM/DD HH:mm:ss").diff(moment(start,"YYYY/MM/DD HH:mm:ss"));
-
-
     var time = $(this).html().trim();
     $('#'+$(this).attr('id')).countdown(time, function(event) {
       $(this).html(event.strftime('%-D days %H:%M:%S'));
@@ -504,17 +561,9 @@ $(document).ready(function(){
         $('#progressbar_'+id).css('width',percent+'%');
       }
     }).on('finish.countdown', function() {
-      // $('#progressbar_'+id).css('width','100%');
-      // $('#disppercent_'+id).html('');
       location.href = 'admin-bidding.php';
-      // status_
-
     });
   });
-
-
-
-
 
   function countdown(element, minutes, seconds) {
     // Fetch the display element
@@ -563,68 +612,17 @@ $(document).ready(function(){
     }
   });
 
-  var allowedType = [
-    "image/jpeg",
-    "image/jpg",
-    "image/pjpeg",
-    "image/x-png",
-    "image/png"
-  ];
-
-  $(".input-file").change(function () {
-    readURLmultiple(this);
-
-    if($(".input-file").parent().find('span').hasClass('text-danger')){
-      $('.btn_submit').prop('disabled',true);
-    }else{
-      $('.btn_submit').prop('disabled',false);
+  $('#base_add_upd').on('change',function(){
+    var sel = $(this).val();
+    if(sel == 1){
+      $('#time_end_upd').show();
+      $('#participant_end_upd').hide();
+    }else if(sel == 2){
+      $('#time_end_upd').hide();
+      $('#participant_end_upd').show();
     }
-
   });
 
-  function readURLmultiple(input){
-    $('#multiple_photo_preview').html('');
-
-      $.each(input.files, function( index, value ){
-        if (input.files && input.files[index]){
-          if($.inArray(value.type, allowedType) == -1){
-            $(input).parent().addClass('has-error').find('span').addClass('text-danger').html('File type not allowed');
-          }else{
-            $(input).parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
-          }
-        }
-    });
-  }
-
-  $('.btn_updateBidding').on('click',function(){
-    var id = $(this).attr('id');
-
-    var dataString = "id="+id+"&func=getBiddingByID";
-    $.ajax({
-      type    : "POST",
-      url     : "backend/process.php",
-      data    : dataString,
-      cache   : false,
-      dataType: 'json',
-      success : function(data)
-      {
-        $('#spon_name').val(data.name);
-        $('#spon_desc').summernote('code',data.desc);
-        $('#img_logo_view').attr('src','<?php echo BACK_UPLOADS; ?>'+data.img_logo);
-        $('#upd_id').val(data.id);
-        $('#modal_update').modal('show');
-      }
-    });
-  });
-
-  $('#modal_update').on('hide.bs.modal',function(){
-    $('#package_name_upd').val('');
-    $('#package_image_upd').attr('src','');
-    $('#package_prio_upd').val('');
-    $('#diamond_amount_upd').val('');
-    $('#gold_amount_upd').val('');
-    $('#upd_id').val('');
-  });
 
 
 });

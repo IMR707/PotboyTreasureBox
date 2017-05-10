@@ -292,8 +292,6 @@ if (isset($_GET['day'])) {
         location.href="dailyReward.php";
     }
 });
-      // bootbox.alert('<?php echo $msg; ?>');
-      // location.href="dailyReward.php";
    <?php
     }
     ?>

@@ -37,7 +37,7 @@ if (isset($_GET['cid'])) {
        <div class="row">
 
          <?php foreach ($AllConversion as $key => $value):?>
-           <div class="col-md-4 col-sm-4 col-xs-4">
+           <div class="col-md-4 col-sm-6 col-xs-12">
                <div class="panel-heading daily-gold-container">
                  <div class="text-center convert-title bg-yellow-gold-dark img-rounded-md"><?php echo $value->name;?></div>
                  <div class="text-center daily-gold-text"><?php echo $value->gold_amount;?></div>
@@ -86,28 +86,7 @@ if (isset($_GET['cid'])) {
                </div>
        </div>
        </a>
-       <!-- /simple panel -->
 
-       <!-- <div class="row">
-         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:2px !important;padding-right:2px !important;">
-
-           <div class="panel panel-flat" style="margin-bottom:5px !important">
-             <div class="panel-body" style="padding:5px!important;">
-               <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-             </div>
-           </div>
-
-         </div>
-         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:2px !important;padding-right:2px !important;">
-
-           <div class="panel panel-flat" style="margin-bottom:5px !important">
-             <div class="panel-body" style="padding:5px!important;">
-               <img src="http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/plainDoge-700x525.jpg" data-title="doge" data-content="Hey there!" class="img-responsive">
-             </div>
-           </div>
-
-         </div>
-       </div>-->
 
 
      </div>
