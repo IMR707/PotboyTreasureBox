@@ -2,6 +2,7 @@
 define('_VALID_PHP', true);
 $pname = 'Daily Reward';
 $menu = 'dailyGold';
+$pagemenu="DASH";
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
@@ -278,8 +279,21 @@ if (isset($_GET['day'])) {
    <?php
     if ($msg) {
         ?>
-      alert('<?php echo $msg; ?>');
-      location.href="goldConversion.php";
+        bootbox.confirm({
+    message: "<?php echo $msg; ?>",
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-success'
+        }
+    },
+    callback: function (result) {
+        console.log('This was logged in the callback: ' + result);
+        location.href="dailyReward.php";
+    }
+});
+      // bootbox.alert('<?php echo $msg; ?>');
+      // location.href="dailyReward.php";
    <?php
     }
     ?>

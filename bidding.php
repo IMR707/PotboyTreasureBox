@@ -1,13 +1,15 @@
 <?php
 define('_VALID_PHP', true);
-$pname = 'Dashboard';
-$menu = 'Dashboard';
-$pagemenu="DASH";
+$pname = 'Bidding';
+$menu = 'Bidding';
+$pagemenu="BID";
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
 
+// $announcement=$list->FEgetAnnouncement();
 
+// pre($homeSlider);
 // if (!$user->logged_in) {
 //     redirect_to(SITEURL.'/index.php');
 // }
@@ -47,13 +49,6 @@ use Carbon\Carbon;
          <?php
           include 'announcement.php';
           ?>
-
-
-
-
-
-
-      
 
 
 

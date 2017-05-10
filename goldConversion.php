@@ -3,6 +3,7 @@ define('_VALID_PHP', true);
 $pname = 'Gold Conversion';
 $menu = 'dailyGold';
 $submenu = '';
+$pagemenu="DASH";
 require_once 'init.php';
 use Carbon\Carbon;
 
@@ -124,8 +125,22 @@ if (isset($_GET['cid'])) {
    <?php
     if ($msg) {
         ?>
-      alert('<?php echo $msg; ?>');
-      location.href="goldConversion.php";
+        bootbox.confirm({
+    message: "<?php echo $msg; ?>",
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-success'
+        }
+    },
+    callback: function (result) {
+        console.log('This was logged in the callback: ' + result);
+        location.href="goldConversion.php";
+    }
+});
+
+      // bootbox.alert('<?php echo $msg; ?>');
+
    <?php
 
     }
