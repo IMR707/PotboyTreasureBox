@@ -42,8 +42,8 @@ if (isset($_GET['day'])) {
               $type=5;
             }
              ?>
-            <div class="col-md-4 col-sm-4 col-xs-4">
-              <div class="panel panel-flat">
+            <div class="col-md-4 col-sm-4 col-xs-4 ">
+              <div class="panel panel-flat <?php echo $today? 'today' : 'not-today';?>">
                 <div class="panel-heading" style="padding:10px 10px;">
                   <div class="text-center daily-title bg-yellow-gold img-rounded">Day <?php echo $value->day_num;?></div>
                 </div>
@@ -97,12 +97,12 @@ if (isset($_GET['day'])) {
                           case '3':
                           case '4':
                             ?>
-                            <span class="img-rounded daily-gold-claim pointer claim-disabled">Claimed</span>
+                            <span class="img-rounded daily-gold-claim claim-disabled">Claimed</span>
                             <?php
                             break;
                           case '5':
                             ?>
-                            <span class="img-rounded daily-gold-claim pointer claim-disabled">Claim Later</span>
+                            <span class="img-rounded daily-gold-claim claim-disabled">Claim Later</span>
                             <?php
                             break;
                         }?>

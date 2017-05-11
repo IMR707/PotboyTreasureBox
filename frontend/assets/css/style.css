@@ -1,3 +1,22 @@
+.pointer{
+  cursor:pointer;
+}
+
+@keyframes border-pulsate {
+    100%   { border-color: #4B00A7 }
+    50% { border-color: transparent }
+    0%   { border-color: #4B00A7 }
+}
+
+.today{
+  border:2px solid #4B00A7 !important;
+  animation: border-pulsate 1s infinite;
+}
+
+.not-today{
+  border:2px solid transparent !important;
+}
+
 .center-block {
   float: none !important
 }
