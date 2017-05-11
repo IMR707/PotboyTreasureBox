@@ -34,47 +34,64 @@ if (isset($_GET['cid'])) {
 
          </div>
        </div>-->
-       <div class="row">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
 
-         <?php foreach ($AllConversion as $key => $value):?>
-           <div class="col-md-4 col-sm-6 col-xs-12">
-               <div class="panel-heading daily-gold-container">
-                 <div class="text-center convert-title bg-yellow-gold-dark img-rounded-md"><?php echo $value->name;?></div>
-                 <div class="text-center daily-gold-text"><?php echo $value->gold_amount;?></div>
-                 <div class="text-center convert-img"><img class="img-responsive gold-pack" src="<?php echo BACK_UPLOADS.$value->icon;?>"></div>
-                 <div class="text-center ">
-                   <?php if (!$value->disable): ?>
-                     <a href="?cid=<?php echo $value->id;?>">
-                   <?php endif;
-                   $dis="";
-                   if($value->disable)
-                   {
-                     $dis="claim-disabled";
-                   }
-                    ?>
-                     <div class="diamond-claim img-rounded-md <?php echo $dis;?>" >
-                         <div class="row">
-                         Claim Now <br>with <br>
-                         <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                             <span class="text-lg"><?php echo $value->diamond_amount;?></span>
+        <?php foreach ($AllConversion as $key => $value):?>
+         <div class="col-md-4 col-sm-12 col-xs-12">
+           <div class="panel panel-flat" style="height:370px;">
+             <div class="panel-heading" style="padding:10px 10px;">
+               <div class="text-center daily-title bg-yellow-gold img-rounded convert-title-heading">
+                 <span class="convert-title"><?php echo $value->name;?></span>
+               </div>
+             </div>
+             <div class="container-fluid">
+               <div class="row text-center">
+                 <div class="col-md-10 col-md-offset-1 ">
+                   <div class="text-center convert-img">
+                     <img class="img-responsive gold-pack" src="<?php echo BACK_UPLOADS.$value->icon;?>">
+                   </div>
+                 </div>
+                 <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 convert-area">
+                   <div class="text-center each-reward">
+                     <img class="gold-coin" src="<?php echo FRONTIMAGE;?>gold-coin-icon.png">
+                     <div class="daily-gold-text">100</div>
+                   </div>
+                 </div>
+                 <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+                       <?php if (!$value->disable): ?>
+                         <a href="?cid=<?php echo $value->id;?>">
+                       <?php endif;
+                       $dis="";
+                       if($value->disable)
+                       {
+                         $dis="claim-disabled";
+                       }
+                        ?>
+                        <div class="col-md-12">
+                          <div class="text-center ">
+                            <span class="img-rounded daily-gold-claim">
+                              <img src="<?php echo FRONTIMAGE;?>diamond.png" style="width:40px;vertical-align:top" class="" >
+                              <span style="font-size:25px;fon-weight:bold"><?php echo $value->diamond_amount;?></span>
+                            </span>
                          </div>
-                         <div class="col-xs-6 col-sm-6 col-md-6">
-                             <img src="<?php echo FRONTIMAGE;?>diamond.png" class="img-responsive diamond" >
-                         </div>
-                         </div>
+                       <br>
                      </div>
                      <?php if (!$value->disable): ?>
                      </a>
                      <?php endif; ?>
                  </div>
                </div>
+             </div>
            </div>
+         </div>
          <?php endforeach; ?>
 
 
-
-         </div>
-
+       </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
 
        <!-- Simple panel -->
        <a href="#"><div class="panel panel-flat">
@@ -87,7 +104,8 @@ if (isset($_GET['cid'])) {
        </div>
        </a>
 
-
+     </div>
+     </div>
 
      </div>
      <!-- /main content -->
