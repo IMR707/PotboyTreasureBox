@@ -44,7 +44,7 @@ if (isset($_GET['cid'])) {
                  <div class="text-center convert-img"><img class="img-responsive gold-pack" src="<?php echo BACK_UPLOADS.$value->icon;?>"></div>
                  <div class="text-center ">
                    <?php if (!$value->disable): ?>
-<a href="?cid=<?php echo $value->id;?>">
+                     <a href="?cid=<?php echo $value->id;?>">
                    <?php endif;
                    $dis="";
                    if($value->disable)
@@ -64,7 +64,7 @@ if (isset($_GET['cid'])) {
                          </div>
                      </div>
                      <?php if (!$value->disable): ?>
-  </a>
+                     </a>
                      <?php endif; ?>
                  </div>
                </div>

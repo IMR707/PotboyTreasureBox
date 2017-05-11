@@ -33,10 +33,9 @@ use Carbon\Carbon;
                       <img class="gold-coin" src="<?php echo FRONTIMAGE;?>gold-coin-icon.png">
                       <div class="daily-gold-text">100</div>
                     </div>
-
                   </div>
                   <div class="col-md-12">
-                    <div class="text-center "><span class="img-rounded daily-gold-claim">Claim Now</span></div>
+                    <div class="text-center "><span class="img-rounded daily-gold-claim pointer">Claim Now</span></div>
                     <br>
                   </div>
                 </div>
@@ -217,7 +216,7 @@ use Carbon\Carbon;
 								</div>
 							</div>
 				    </div>
-          </div> 
+          </div>
 
 
 

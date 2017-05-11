@@ -5,6 +5,7 @@
 .daily-title{
     font-size: 24px;
     font-weight: bold;
+    padding: 5px 10px;
 /*    padding: 5px;
     padding-left: 30px !important;
     padding-right: 30px !important;*/
@@ -46,10 +47,17 @@
     background-color: #4b00a7;
     padding-left : 20%;
     padding-right : 20%;
+    padding-top:10px;
+    padding-bottom:10px;
 }
 
 .reward-area{
   height:90px;
+  display: table;
+}
+
+.convert-area{
+  height:50px;
   display: table;
 }
 
@@ -71,17 +79,25 @@
 
 .convert-img{
     /*width : 30%;*/
-    min-height : 256px !important;
-    max-height : 256px !important;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+    height : 130px !important;
+
+}
+
+.convert-title-heading{
+  height:82px !important;
+  display: table;
+  width:100%;
+}
+
+.convert-title{
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .gold-pack{
     /*bottom : 10px;*/
     margin: 0 auto !important;
-    max-width : 80% !important;
+    max-width : 100% !important;
 }
 
 .claim-disabled{
