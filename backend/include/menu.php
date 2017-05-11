@@ -82,6 +82,12 @@
                         <span class="selected"></span>
                     </a>
                 </li>
+                <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_BIDDING_CLAIM'); ?>">
+                    <a href="admin-instantclaim.php" class="nav-link ">
+                        <span class="title">Instant Claim List</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
             </ul>
         </li>
         <li class="nav-item <?php isBackMenu($menu,'ADMIN_FORM'); ?>">

@@ -259,9 +259,9 @@ if (!$user->logged_in) {
                               $prod_detail = $fz->getProductByID2($product_id);
                               $bid_type = $row->bid_type;
                               if($bid_type == 1){
-                                $currency = ' Gold';
+                                $currency = ' G';
                               }elseif($bid_type == 2){
-                                $currency = ' Diamond';
+                                $currency = ' D';
                               }
 
                               $start_date = $row->start_time;
@@ -296,7 +296,7 @@ if (!$user->logged_in) {
                                 $max_participant = $row->max_participant;
                                 $cur_participant = $fz->getCurParticipant($row->id);
                                 $total_cur_participant = count($cur_participant);
-                                $percent = floor(($total_cur_participant/$max_participant) * 100);                        
+                                $percent = floor(($total_cur_participant/$max_participant) * 100);
                               }
                             ?>
 

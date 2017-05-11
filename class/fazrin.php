@@ -18,6 +18,7 @@ class Fazrin
     const tb_spon = 'aa_sponsor';
     const tb_bid = 'aa_bidding';
     const tb_bidtrans = 'aa_bidding_transaction';
+    const tb_claim = 'aa_instantclaim';
 
 
     private static $db;
@@ -628,7 +629,6 @@ class Fazrin
 
       $fileTitle = array(
         'img_banner' => 'Image Banner',
-        'img_header' => 'Image Header',
         'img_thumbnail' => 'Image Thumbnail'
       );
 
@@ -691,7 +691,6 @@ class Fazrin
 
       $fileTitle = array(
         'img_banner' => 'Image Banner',
-        'img_header' => 'Image Header',
         'img_thumbnail' => 'Image Thumbnail'
       );
 
@@ -1078,11 +1077,99 @@ class Fazrin
       return $row;
     }
 
+    /********* CLAIM **********************************************/
+
+    public function create_claim()
+    {
+      $_SESSION['noti'] = '';
+      $_SESSION['noti']['msg'] = '<ul>';
+
+      $fileTitle = array(
+        'img_thumbnail' => 'Thumbnail Image'
+      );
+
+      $checkfile = true;
+      foreach($_FILES as $key_file => $eachfile){
+        if($key_file != 'files'){
+          if($eachfile['error'] != 0){
+            $_SESSION['noti']['status'] = 'error';
+            $_SESSION['noti']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
+            $checkfile = false;
+          }
+        }
+      }
+      $_SESSION['noti']['msg'] .= '</ul>';
+
+      if(!$checkfile){
+        rd('../admin-instantclaim.php');
+        die;
+      }else{
+        $_SESSION['noti']['msg'] = '';
+        $title = sanitize($_POST['title']);
+        $gold_amount = $_POST['gold_amount'];
+        $start_time_date = $_POST['start_time_date'];
+        $start_time_time = $_POST['start_time_time'];
+
+        $date = DateTime::createFromFormat('d/m/Y h:i A', $start_time_date.' '.$start_time_time);
+        $start_time = $date->format('Y-m-d H:i:s');
 
 
+        $data = array(
+          'title' => $title,
+          'gold_amount' => $gold_amount,
+          'start_time' => $start_time,
+          'publish' => 0,
+          'date_created' => 'now()',
+          'date_updated' => 'now()'
+        );
 
+        foreach($_FILES as $key_file => $eachfile){
+          if($key_file != 'files'){
+            $img_tmp = $_FILES[$key_file]['tmp_name'];
+            $img_name = $_FILES[$key_file]['name'];
+            $save_name = 'claim-'.date("Ymdhis").uniqid().'.jpg';
 
+            if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
+              $data[$key_file] = $save_name;
 
+              $_SESSION['noti']['status'] = 'success';
+              $_SESSION['noti']['msg'] = 'New voucher claim created.';
+            }else{
+              $_SESSION['noti']['status'] = 'error';
+              $_SESSION['noti']['msg'] = 'Problem occured while uploading file.';
+            }
+          }
+        }
+
+        $res = self::$db->insert(self::tb_claim, $data);
+      }
+      rd('../admin-instantclaim.php');
+      die;
+    }
+
+    public function getInstantClaim()
+    {
+      $sql = "SELECT * FROM ".self::tb_claim." WHERE active = 1";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
+    public function getClaimByID()
+    {
+      $id = $_POST['id'];
+      $sql = "SELECT * FROM ".self::tb_claim." where id='$id'";
+      $row = self::$db->first($sql);
+
+      $start_time = $row->start_time;
+      $start_time_date = date('d/m/Y',strtotime($start_time));
+      $start_time_time = date('h:i A',strtotime($start_time));
+
+      $row->start_time_date = $start_time_date;
+      $row->start_time_time = $start_time_time;
+
+      echo json_encode($row);
+    }
 
 
 

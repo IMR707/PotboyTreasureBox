@@ -102,13 +102,6 @@ if (!$user->logged_in) {
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Header</label>
-                                <div class="col-md-9">
-                                    <input type="file" class="form-control input-file" name="img_header" required>
-                                    <span></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-md-3 control-label">Thumbnail</label>
                                 <div class="col-md-9">
                                     <input type="file" class="form-control input-file" name="img_thumbnail" required>
@@ -135,9 +128,18 @@ if (!$user->logged_in) {
                   </div>
                 </div>
                         <div class="row">
-                          <div class="col-md-12">
+                          <div class="col-md-6">
                             <h4 class="pull-left">Product List</h4>
-                            <a class="btn green btn-outline sbold pull-right" data-toggle="modal" href="#modal_add"> <i class="fa fa-plus"></i> Product</a>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="btn-group pull-right">
+                              <a class="btn green btn-outline sbold pull-right" data-toggle="modal" href="#modal_add"> <i class="fa fa-plus"></i> Product</a>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12">
+
+
                             <?php
 
                             if(isset($_SESSION['noti']) && $_SESSION['noti'] != ''){
@@ -213,14 +215,6 @@ if (!$user->logged_in) {
                                             <div class="col-md-9">
                                                 <img src="" id="img_banner_upd" class="img-thumbnail">
                                                 <input type="file" class="form-control input-file-upd" name="img_banner">
-                                                <span></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Header</label>
-                                            <div class="col-md-9">
-                                                <img src="" id="img_header_upd" class="img-thumbnail">
-                                                <input type="file" class="form-control input-file-upd" name="img_header">
                                                 <span></span>
                                             </div>
                                         </div>
