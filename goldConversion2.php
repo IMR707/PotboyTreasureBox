@@ -39,7 +39,7 @@ if (isset($_GET['cid'])) {
 
         <?php foreach ($AllConversion as $key => $value):?>
          <div class="col-md-4 col-sm-12 col-xs-12">
-           <div class="panel panel-flat" style="height:340px;">
+           <div class="panel panel-flat" style="height:370px;">
              <div class="panel-heading" style="padding:10px 10px;">
                <div class="text-center daily-title bg-yellow-gold img-rounded convert-title-heading">
                  <span class="convert-title"><?php echo $value->name;?></span>
