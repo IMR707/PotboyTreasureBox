@@ -58,7 +58,7 @@ if (isset($_GET['cid'])) {
                      <div class="daily-gold-text">100</div>
                    </div>
                  </div>
-
+                 <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
                        <?php if (!$value->disable): ?>
                          <a href="?cid=<?php echo $value->id;?>">
                        <?php endif;
@@ -80,7 +80,7 @@ if (isset($_GET['cid'])) {
                      <?php if (!$value->disable): ?>
                      </a>
                      <?php endif; ?>
-
+                 </div>
                </div>
              </div>
            </div>
