@@ -153,6 +153,16 @@ class Listing
             }
         }
 
+        foreach ($row as $key => $value) {
+            if ($value->gold_check == 1 && $value->spin_check == 1) {
+                $row[$key]->type = 1;
+            } elseif ($value->gold_check == 1 && $value->spin_check == 0) {
+                $row[$key]->type = 2;
+            } else {
+                $row[$key]->type = 3;
+            }
+        }
+
 
         return $row;
     }
