@@ -8,7 +8,6 @@ require_once 'init.php';
 use Carbon\Carbon;
 
 $AllDailyReward = $list->FEgetAllDailyReward($user->uid);
-
 $msg = '';
 if (isset($_GET['day'])) {
     $msg = $list->FEgetDailyReward($_GET['day'], $user->uid);
@@ -22,172 +21,148 @@ if (isset($_GET['day'])) {
  include 'fehead.php';
  ?>
 
-
- <div class="page-container bg-white">
-
-   <!-- Page content -->
-   <div class="page-content">
-
-     <!-- Main content -->
-     <div class="content-wrapper">
-
-       <!-- Simple panel -->
- <!-- 				<div class="panel panel-flat">
-         <div class="panel-body">
+ 	<!-- Page container -->
+ 	<div class="page-container bg-white">
+ 		<!-- Page content -->
+ 		<div class="page-content">
+ 			<!-- Main content -->
+ 			<div class="content-wrapper">
+        <div class="col-md-12 col-sm-12 col-xs-12">
 
 
+          <?php foreach ($AllDailyReward as $key => $value):
+            $today=explode(' ',Carbon::now())[0]== $value->date_check? 1:0;
+            if($today){
+              $type=$value->done?3:1;
+              if($type==1&&!$user->uid)$type=2;
+            }elseif ($value->done) {
+              $type=4;
+            }
+            else {
+              $type=5;
+            }
+             ?>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <div class="panel panel-flat">
+                <div class="panel-heading" style="padding:10px 10px;">
+                  <div class="text-center daily-title bg-yellow-gold img-rounded">Day <?php echo $value->day_num;?></div>
+                </div>
+                <div class="container-fluid">
+                  <div class="row text-center">
+                    <div class="col-md-10 col-md-offset-1 reward-area">
 
-         </div>
-       </div>-->
-       <div class="row">
 
-         <?php
-         $clear = 0;
 
-         foreach ($AllDailyReward as $key => $value) {
-             if ($value->gold_check == 1 && $value->spin_check == 1) {
-                 $AllDailyReward[$key]->type = 1;
-             } elseif ($value->gold_check == 1 && $value->spin_check == 0) {
-                 $AllDailyReward[$key]->type = 2;
-             } else {
-                 $AllDailyReward[$key]->type = 3;
-             }
-         }
+                      <?php
+                      if($value->gold_check){
+                        ?>
+                        <div class="text-center">
+                          <img class="gold-coin" src="<?php echo FRONTIMAGE;?>gold-coin-icon.png">
+                          <div class="daily-gold-text">100</div>
+                        </div>
 
-         $clear = 0;
-         foreach ($AllDailyReward as $key => $value) {
-             ++$clear;
+                      <?php
+                      }
+                      if($value->spin_check){
+                        ?>
+                        <div class="text-center">
+                          <img class="gold-coin" src="<?php echo FRONTIMAGE;?>slot_machine.png" >
+                          <div class="daily-gold-text">100</div>
+                        </div>
 
-             if ($value->type == 2 || $value->type == 3) {
-                 ?>
+                      <?php
+                      } ?>
 
-          <div class="col-md-4 col-sm-12 col-xs-12">
-            <div class="clearfix">&nbsp;</div>
 
-            <?php
+                    </div>
+                    <div class="col-md-12">
+                      <div class="text-center ">
+                        <?php switch ($type) {
+                          // $type
+                          // 1 = today not done
+                          // 2 = today not done no login
+                          // 3 = today done
+                          // 4 = yesterday
+                          // 5 = forwardday
+                          case '1':
+                            ?>
+                            <span class="img-rounded daily-gold-claim pointer"onclick="dailyreward('<?php echo $value->day_num;?>');">Claim Now</span>
+                            <?php
+                            break;
+                          case '2':
+                            ?>
+                            <span class="img-rounded daily-gold-claim pointer" onclick="alert('Please Login to Claim the Daily Reward.');">Claim Now</span>
+                            <?php
+                            break;
+                          case '3':
+                          case '4':
+                            ?>
+                            <span class="img-rounded daily-gold-claim pointer claim-disabled">Claimed</span>
+                            <?php
+                            break;
+                          case '5':
+                            ?>
+                            <span class="img-rounded daily-gold-claim pointer claim-disabled">Claim Later</span>
+                            <?php
+                            break;
+                        }?>
 
-             } else {
-                 ?>
-           <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-2 col-sm-offset-2">
-             <?php
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+          </div>
 
-             } ?>
-         <div class="panel-heading daily-gold-container">
 
-           <div class="text-center daily-title bg-yellow-gold img-rounded">Day <?php echo $value->day_num; ?></div>
-           <?php
-              $amount1 = $value->gold_amount;
-              $amount2 = $value->spin_amount;
-              switch ($value->type) {
-               case '1':
-               ?>
-               <div class="col-md-4">
-                 <div class="text-center daily-gold-text">X <?php echo $amount1;?></div>
-                 <div class="text-center"><img class="img-responsive gold-coin"  src="<?php echo FRONTIMAGE;?>gold-coin-icon.png"></div>
-               </div>
-               <div class="col-md-4 daily-gold-plus">+</div>
-               <div class="col-md-4">
-                 <div class="text-center daily-gold-text">X <?php echo $amount2;?></div>
-                 <div class="text-center"><img class="img-responsive gold-coin"  src="<?php echo FRONTIMAGE;?>slot_machine.png"></div>
-               </div>
-               <?php
-               break;
 
-               case '2':
-                 ?>
+ 			</div>
+ 			<!-- /main content -->
 
-                   <div class="text-center daily-gold-text">X <?php echo $amount1;?></div>
-                   <div class="text-center"><img class="img-responsive gold-coin"  src="<?php echo FRONTIMAGE;?>gold-coin-icon.png"></div>
-                   <div class="text-center">&nbsp;</div>
+ 		</div>
+ 		<!-- /page content -->
+  </div>
 
-                 <?php
-                 break;
-
-                 case '3':
-                   ?>
-                     <div class="text-center daily-gold-text">X <?php echo $amount2;?></div>
-                     <div class="text-center"><img class="img-responsive gold-coin"  src="<?php echo FRONTIMAGE;?>slot_machine.png"></div>
-
-                   <?php
-                   break;
-           }
-             $urlarray = array('day' => $value->day_num);
-             $url = http_build_query($urlarray); ?>
-           <center>
-             <?php
-             $dt = Carbon::now();
-             $dz = explode(' ', $dt);
-             $day = $dz[0];
-             $nowtext = 'Claim Now';
-             $today = '';
-             if ($day == $value->date_check) {
-                 $nowtext = 'Claim Today';
-                 $today = 'Today';
-             }
-             if ($value->done == 1) {
-                 ?>
-            <button class="btn daily-gold-claim claim-disabled" name="button" >Claimed <?php echo $today; ?></button>
-            <?php
-
-             } elseif ($day == $value->date_check) {
-                 if ($user->uid) {
-                     ?>
-              <a href="?<?php echo $url; ?>" class="btn daily-gold-claim" name="button"><?php echo $nowtext; ?></a>
-              <?php
-
-                 } else {
-                     ?>
-              <button class="btn daily-gold-claim" name="button" onclick="alert('Please Login to Claim the Daily Reward')"><?php echo $nowtext; ?></button>
-              <?php
-
-                 }
-             } else {
-                 ?>
-            <a class="btn daily-gold-claim claim-disabled" name="button">Claim Later</a>
-            <?php
-
-             } ?>
-
-           </center>
-         </div>
-       </div>
-
-         <?php
-
-         }
-
+ 	<!-- /page container -->
+  <script type="text/javascript">
+    function dailyreward(day){
+      location.href="dailyReward.php?day="+day;
+    }
+    <?php
+     if ($msg) {
          ?>
-       </div>
-     </div>
-     <!-- /main content -->
+         bootbox.confirm({
+     message: "<?php echo $msg; ?>",
+     buttons: {
+         confirm: {
+             label: 'Yes',
+             className: 'btn-success'
+         }
+     },
+     callback: function (result) {
+         console.log('This was logged in the callback: ' + result);
+         location.href="dailyReward.php";
+     }
+ });
+    <?php
 
-   </div>
-   <!-- /page content -->
+     }
+     ?>
+  </script>
 
- </div>
-
+<?php if (!MV) {
+     ?>
+ 	<!-- Footer -->
+  <br>
+ 	<div class="footer text-muted">
+    <center>©Copyright <?php echo date('Y'); ?> by  <a href="<?php echo HOMEURL; ?>">PB Grocery Group Sdn. Bhd. (1209976-H)</a>. All Rights Reserved.</center>
+ 	</div>
+ 	<!-- /footer -->
   <?php
-   include 'fefoot.php';
-   ?>
-   <script type="text/javascript">
-   <?php
-    if ($msg) {
-        ?>
-        bootbox.confirm({
-    message: "<?php echo $msg; ?>",
-    buttons: {
-        confirm: {
-            label: 'Yes',
-            className: 'btn-success'
-        }
-    },
-    callback: function (result) {
-        console.log('This was logged in the callback: ' + result);
-        location.href="dailyReward.php";
-    }
-});
-   <?php
-
-    }
-    ?>
-   </script>
+ }?>
+  </div>
+ </body>
+ </html>
