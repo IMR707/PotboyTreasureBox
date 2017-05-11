@@ -99,7 +99,7 @@
 .gold-pack{
     /*bottom : 10px;*/
     margin: 0 auto !important;
-    max-width : 80% !important;
+    max-height : 130px !important;
 }
 
 .claim-disabled{
