@@ -90,7 +90,8 @@ if (isset($_GET['cid'])) {
 
        </div>
       </div>
-
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
 
        <!-- Simple panel -->
        <a href="#"><div class="panel panel-flat">
@@ -103,7 +104,8 @@ if (isset($_GET['cid'])) {
        </div>
        </a>
 
-
+     </div>
+     </div>
 
      </div>
      <!-- /main content -->
