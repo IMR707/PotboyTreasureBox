@@ -135,9 +135,21 @@ elseif($_POST['func'] == 'create_claim'){
   $fz->create_claim();
 }
 
+elseif($_POST['func'] == 'update_claim'){
+  $fz->update_claim();
+}
+
 elseif($_POST['func'] == 'getClaimByID'){
   $fz->getClaimByID();
 }
+
+//Voucher
+
+elseif($_POST['func'] == 'upload_voucher'){
+  $fz->upload_voucher();
+}
+
+
 
 
 

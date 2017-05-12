@@ -88,7 +88,7 @@ if (!$user->logged_in) {
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo">
                             <i class="icon-settings font-red-sunglo"></i>
-                            <span class="caption-subject bold uppercase">Voucher Claim Management </span>
+                            <span class="caption-subject bold uppercase">Instant Claim Management </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -101,7 +101,7 @@ if (!$user->logged_in) {
                               <div class="modal-content">
                                   <div class="modal-header">
                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                      <h4 class="modal-title">Add New Voucher Claim</h4>
+                                      <h4 class="modal-title">Add New Instant Claim</h4>
                                   </div>
                                   <div class="modal-body">
                                     <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
@@ -158,11 +158,11 @@ if (!$user->logged_in) {
 
                         <div class="row">
                           <div class="col-md-6">
-                            <h4 class="pull-left">Voucher List</h4>
+                            <h4 class="pull-left">Instant Claim List</h4>
                           </div>
                           <div class="col-md-6">
                             <div class="btn-group pull-right">
-                              <a class="btn green btn-outline sbold pull-right" data-toggle="modal" href="#modal_add"> <i class="fa fa-plus"></i> Voucher Claim</a>
+                              <a class="btn green btn-outline sbold pull-right" data-toggle="modal" href="#modal_add"> <i class="fa fa-plus"></i> Instant Claim</a>
                             </div>
                           </div>
                           <div class="col-md-12">
@@ -195,10 +195,11 @@ if (!$user->logged_in) {
                             <?php
 
                             foreach($rewards as $key => $row){
-
+                              $claim_id = $row->id;
                               $start_date = $row->start_time;
                               $start = strtotime($start_date);
 
+                              // $total_voucher = $fz->getTotalVoucher($claim_id);
                               $total_voucher = 1000;
                               $total_claimed = 330;
                               $percent = 0;
@@ -235,6 +236,7 @@ if (!$user->logged_in) {
                                     ?>
                                   </td>
                                   <td class="text-center">
+                                    <a href="admin-voucher.php?id=<?php echo $row->id; ?>"><button class="btn btn-sm btn-success"><i class="fa fa-ticket"></i></button></a>
                                     <button class="btn btn-sm btn-warning btn_updateClaim" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                     <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                   </td>
@@ -259,6 +261,16 @@ if (!$user->logged_in) {
                                     <div class="modal-body">
                                       <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
+                                            <label class="col-md-3 control-label">Publish</label>
+                                            <div class="col-md-9">
+                                              <select class="form-control select2" required name="publish" id="publish_upd">
+                                                <option value=""></option>
+                                                <option value="1">Yes</option>
+                                                <option value="0">No</option>
+                                              </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-md-3 control-label">Title</label>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" placeholder="Claim Title" name="title" required id="title_upd">
@@ -267,7 +279,7 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Thumbnail Image</label>
                                             <div class="col-md-9">
-                                              <img src="" id="img_thumbnail" class="img-thumbnail">
+                                              <img src="" id="img_thumbnail_upd" class="img-thumbnail">
                                               <input type="file" class="form-control input-file" name="img_thumbnail">
                                               <span></span>
                                             </div>
@@ -308,6 +320,38 @@ if (!$user->logged_in) {
                                 </div>
                             </div>
                         </div>
+
+                        <div class="modal fade in" id="modal_voucher" tabindex="-1" role="basic" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <h4 class="modal-title">Upload Voucher Code</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Excel File</label>
+                                            <div class="col-md-9">
+                                              <input type="file" class="form-control input-file-excel" name="excel_voucher" id="excel_voucher">
+                                              <span></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"></label>
+                                            <div class="col-md-9">
+                                              <button type="submit" class="btn blue btn_submit_upload">Upload</button>
+                                              <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="func" value="upload_voucher">
+                                        <input type="hidden" name="id" id="upload_id" value="">
+                                      </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- here -->
                 </div>
@@ -334,15 +378,39 @@ $(document).ready(function(){
     "image/png"
   ];
 
+  var allowedTypeExcel = [
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "text/csv"
+  ];
+
+  $(".input-file-excel").change(function () {
+    readURLmultiple_upload(this);
+  });
+
+  function readURLmultiple_upload(input){
+      var id = $('#upload_id').val();
+
+      $.each(input.files, function( index, value ){
+        if (input.files && input.files[index]){
+          if($.inArray(value.type, allowedTypeExcel) == -1){
+            $(input).parent().addClass('has-error').find('span').addClass('text-danger').html('File type not allowed');
+            $('.btn_submit_upload').prop('disabled',true);
+          }else{
+            $(input).parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
+            $('.btn_submit_upload').prop('disabled',false);
+          }
+        }
+    });
+  }
+
+
   $(".input-file").change(function () {
     readURLmultiple(this);
-
     if($(".input-file").parent().find('span').hasClass('text-danger')){
       $('.btn_submit').prop('disabled',true);
     }else{
       $('.btn_submit').prop('disabled',false);
     }
-
   });
 
   function readURLmultiple(input){
@@ -359,8 +427,19 @@ $(document).ready(function(){
     });
   }
 
-  $('.btn_updateClaim').on('click',function(){
+  $('.btn_uploadVoucher').on('click',function(){
+    $('#upload_id').val('');
+    $('.input-file-excel').val('');
+    $('.input-file-excel').parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
+    $('.btn_submit_upload').prop('disabled',false);
+    var upload_id = $(this).attr('id');
 
+    $('#upload_id').val(upload_id);
+    $('#modal_voucher').modal('show');
+  });
+
+  $('.btn_updateClaim').on('click',function(){
+    $('#publish_upd').select2('val','');
     $('#title_upd').val('');
     $('#start_time_date_upd').val('');
     $('#start_time_time_upd').val('');
@@ -379,7 +458,8 @@ $(document).ready(function(){
       success : function(data)
       {
         $('#title_upd').val(data.title);
-
+        $('#publish_upd').select2('val',data.publish);
+        $('#img_thumbnail_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.img_thumbnail);
         $('#start_time_date_upd').val(data.start_time_date);
         $('#start_time_time_upd').val(data.start_time_time);
         $('#gold_amount_upd').val(data.gold_amount);
@@ -390,12 +470,7 @@ $(document).ready(function(){
     });
   });
 
-
-
   $.fn.modal.Constructor.prototype.enforceFocus = function() {};
-
-
-
 
 
 });

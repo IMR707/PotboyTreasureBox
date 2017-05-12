@@ -20,6 +20,7 @@
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="<?php echo BACK_CSS; ?>components.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="<?php echo BACK_CSS; ?>plugins.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo BACK_CSS; ?>custom.css" rel="stylesheet" id="style_components" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <link href="<?php echo BACK_LAYOUT; ?>layout4/css/layout.min.css" rel="stylesheet" type="text/css" />

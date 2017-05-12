@@ -19,6 +19,7 @@ class Fazrin
     const tb_bid = 'aa_bidding';
     const tb_bidtrans = 'aa_bidding_transaction';
     const tb_claim = 'aa_instantclaim';
+    const tb_vouc = 'aa_voucher';
 
 
     private static $db;
@@ -34,6 +35,44 @@ class Fazrin
     public function __construct()
     {
         self::$db = Registry::get('Database');
+    }
+
+    function GetXlsScript($FileName)
+    {
+        $detecterror    = 0;
+        $location       = array();
+        $rowData        = array();
+        include '../vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php';
+
+        try
+        {
+            $inputFileType  = PHPExcel_IOFactory::identify($FileName);
+            $objReader      = PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel    = $objReader->load($FileName);
+        }
+        catch (Exception $e)
+        {
+            die('Error loading file "' . pathinfo($FileName, PATHINFO_BASENAME).'": ' . $e->getMessage());
+        }
+
+        $sheet          = $objPHPExcel->getSheet(0);
+        $highestRow     = $sheet->getHighestRow();
+        $highestColumn  = $sheet->getHighestDataColumn();//getHighestColumn();
+        $highestColumnIndex = $sheet->getHighestDataColumn();//$sheet->columnIndexFromString($highestColumm);
+
+        if($detecterror == 0)
+        {
+            for ($row = 1; $row <= $highestRow; $row++)
+            {
+                $oriData        = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+                $oriData_flat   = array_flatten($oriData);
+
+                //final array to be return
+                $rowData[]      = $oriData_flat;
+            }
+        }
+
+        return $rowData;
     }
 
     /********* HOME SLIDER **********************************************/
@@ -1113,7 +1152,6 @@ class Fazrin
         $date = DateTime::createFromFormat('d/m/Y h:i A', $start_time_date.' '.$start_time_time);
         $start_time = $date->format('Y-m-d H:i:s');
 
-
         $data = array(
           'title' => $title,
           'gold_amount' => $gold_amount,
@@ -1147,6 +1185,80 @@ class Fazrin
       die;
     }
 
+    public function update_claim()
+    {
+      $id = $_POST['id'];
+      $_SESSION['noti'] = '';
+      $_SESSION['noti']['msg'] = '<ul>';
+
+      $fileTitle = array(
+        'img_thumbnail' => 'Thumbnail Image'
+      );
+
+      $checkfile = true;
+      foreach($_FILES as $key_file => $eachfile){
+        if($key_file != 'files'){
+          if($eachfile['error'] != 0 && $eachfile['name'] != ''){
+            $_SESSION['noti']['status'] = 'error';
+            $_SESSION['noti']['msg'] .= '<li>File upload error - <b>'.$fileTitle[$key_file].'</b></li>';
+            $checkfile = false;
+          }
+        }
+      }
+      $_SESSION['noti']['msg'] .= '</ul>';
+
+      if(!$checkfile){
+        rd('../admin-instantclaim.php');
+        die;
+      }else{
+        $_SESSION['noti']['msg'] = '';
+        $title = sanitize($_POST['title']);
+        $gold_amount = $_POST['gold_amount'];
+        $start_time_date = $_POST['start_time_date'];
+        $start_time_time = $_POST['start_time_time'];
+        $publish = $_POST['publish'];
+
+        $date = DateTime::createFromFormat('d/m/Y h:i A', $start_time_date.' '.$start_time_time);
+        $start_time = $date->format('Y-m-d H:i:s');
+
+        $data = array(
+          'title' => $title,
+          'gold_amount' => $gold_amount,
+          'start_time' => $start_time,
+          'publish' => $publish,
+          'date_updated' => 'now()'
+        );
+
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Voucher claim updated.';
+
+        foreach($_FILES as $key_file => $eachfile){
+          if($key_file != 'files'){
+            if($eachfile['name'] != ''){
+              $img_tmp = $_FILES[$key_file]['tmp_name'];
+              $img_name = $_FILES[$key_file]['name'];
+              $save_name = 'claim-'.date("Ymdhis").uniqid().'.jpg';
+
+              if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
+                $data[$key_file] = $save_name;
+
+                $_SESSION['noti']['status'] = 'success';
+                $_SESSION['noti']['msg'] = 'Voucher claim updated.';
+              }else{
+                $_SESSION['noti']['status'] = 'error';
+                $_SESSION['noti']['msg'] = 'Problem occured while uploading file.';
+              }
+            }
+          }
+        }
+
+        $res = self::$db->update(self::tb_claim, $data,"id='$id'");
+      }
+
+      rd('../admin-instantclaim.php');
+      die;
+    }
+
     public function getInstantClaim()
     {
       $sql = "SELECT * FROM ".self::tb_claim." WHERE active = 1";
@@ -1169,6 +1281,86 @@ class Fazrin
       $row->start_time_time = $start_time_time;
 
       echo json_encode($row);
+    }
+
+    public function getClaimByID2($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_claim." where id='$id'";
+      $row = self::$db->first($sql);
+
+      $start_time = $row->start_time;
+      $start_time_date = date('d/m/Y',strtotime($start_time));
+      $start_time_time = date('h:i A',strtotime($start_time));
+
+      $row->start_time_date = $start_time_date;
+      $row->start_time_time = $start_time_time;
+
+      return $row;
+    }
+
+    /********* VOUCHER **********************************************/
+
+    public function checkVoucher($id,$code)
+    {
+      $sql = "SELECT * FROM ".self::tb_vouc." WHERE instantclaim_id = '$id' AND voucher_code = '$code' AND active = 1";
+      $row = self::$db->first($sql);
+
+      return $row ? 0 : 1;
+    }
+
+    public function upload_voucher()
+    {
+      $id = $_POST['id'];
+      $file_tmp = $_FILES['excel_voucher']['tmp_name'];
+      $file_name = $_FILES['excel_voucher']['name'];
+
+
+      $file_excel = $this->GetXlsScript($file_tmp);
+
+      $res = true;
+      foreach($file_excel as $key => $row){
+        $voucher_code = $row[0];
+        if($this->checkVoucher($id,$voucher_code)){
+
+          $data = array(
+            'instantclaim_id' => $id,
+            'voucher_code' => $voucher_code,
+            'date_created' => 'now()',
+            'date_updated' => 'now()'
+          );
+
+          $res = self::$db->insert(self::tb_vouc, $data);
+          if(!$res){
+            break;
+          }
+        }
+      }
+
+      if(!$res){
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while inserting data.';
+      }else{
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Voucher imported successfully.';
+      }
+      rd('../admin-voucher.php?id='.$id);
+      exit;
+    }
+
+    public function getVoucherByClaimID($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_vouc." WHERE instantclaim_id = '$id' AND active = 1 ORDER BY voucher_code";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
+    public function getTotalVoucher($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_vouc." WHERE instantclaim_id = '$id' AND active = 1";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
     }
 
 
