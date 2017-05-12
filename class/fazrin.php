@@ -1308,6 +1308,35 @@ class Fazrin
       return $row ? 0 : 1;
     }
 
+    public function update_voucher()
+    {
+      $id = $_POST['id'];
+      $claim_id = $_POST['claim_id'];
+      $voucher_code = sanitize($_POST['voucher_code']);
+
+      if($this->checkVoucher($id,$voucher_code)){
+        $data = array(
+          'voucher_code' => $voucher_code,
+          'date_updated' => 'now()'
+        );
+
+        $res = self::$db->update(self::tb_vouc, $data,"id='$id'");
+        if(!$res){
+          $_SESSION['noti']['status'] = 'error';
+          $_SESSION['noti']['msg'] = 'Problem occured while updating data.';
+        }else{
+          $_SESSION['noti']['status'] = 'success';
+          $_SESSION['noti']['msg'] = 'Voucher updated successfully.';
+        }
+      }else{
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Voucher code already exist !';
+      }
+
+      rd('../admin-voucher.php?id='.$claim_id);
+      exit;
+    }
+
     public function upload_voucher()
     {
       $id = $_POST['id'];
@@ -1358,12 +1387,29 @@ class Fazrin
     public function getTotalVoucher($id)
     {
       $sql = "SELECT * FROM ".self::tb_vouc." WHERE instantclaim_id = '$id' AND active = 1";
-      $row = self::$db->fetch_all($sql);
+      $row = self::$db->query($sql);
+      $num = self::$db->numrows($row);
 
-      return $row;
+      return $num;
     }
 
+    public function getTotalVoucherClaimed($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_vouc." WHERE instantclaim_id = '$id' AND cust_id <> 'NULL' AND active = 1";
+      $row = self::$db->query($sql);
+      $num = self::$db->numrows($row);
 
+      return $num;
+    }
+
+    public function getVoucherByID()
+    {
+      $id = $_POST['id'];
+      $sql = "SELECT * FROM ".self::tb_vouc." where id='$id'";
+      $row = self::$db->first($sql);
+
+      echo json_encode($row);
+    }
 
 
 

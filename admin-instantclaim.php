@@ -199,9 +199,8 @@ if (!$user->logged_in) {
                               $start_date = $row->start_time;
                               $start = strtotime($start_date);
 
-                              // $total_voucher = $fz->getTotalVoucher($claim_id);
-                              $total_voucher = 1000;
-                              $total_claimed = 330;
+                              $total_voucher = $fz->getTotalVoucher($claim_id);
+                              $total_claimed = $fz->getTotalVoucherClaimed($claim_id);;
                               $percent = 0;
 
                               $percent = floor(( $total_claimed / $total_voucher ) * 100);
@@ -213,7 +212,7 @@ if (!$user->logged_in) {
                                   <td class="text-center"><?php echo $row->title; ?></td>
                                   <td class="text-left">
                                     <div class="col-md-6">Gold needed - <?php echo $row->gold_amount; ?></div>
-                                    <div class="col-md-6">300/1000 claimed</div>
+                                    <div class="col-md-6"><?php echo $total_claimed.'/'.$total_voucher; ?> claimed</div>
 
                                     <div class="col-md-10">
                                       <div class="progress progress-striped active" style="margin-bottom:10px;">

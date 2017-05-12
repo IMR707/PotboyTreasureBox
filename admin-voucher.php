@@ -158,7 +158,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                     ?>
                                   </td>
                                   <td class="text-center">
-                                    <button class="btn btn-sm btn-warning btn_updateClaim" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn btn-sm btn-warning btn_updateVoucher" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                     <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                   </td>
                                 </tr>
@@ -204,6 +204,39 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                 </div>
                             </div>
                         </div>
+
+                        <div class="modal fade in" id="modal_voucher_upd" tabindex="-1" role="basic" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <h4 class="modal-title">Update Voucher Code</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Voucher Code</label>
+                                            <div class="col-md-9">
+                                              <input type="text" class="form-control" name="voucher_code" id="voucher_code_upd">
+                                              <span></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"></label>
+                                            <div class="col-md-9">
+                                              <button type="submit" class="btn blue btn_submit_upload">Update</button>
+                                              <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="claim_id" value="<?php echo $id; ?>">
+                                        <input type="hidden" name="func" value="update_voucher">
+                                        <input type="hidden" name="id" id="voucher_id" value="">
+                                      </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- here -->
                 </div>
@@ -222,39 +255,6 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
 
 $(document).ready(function(){
 
-  var allowedType = [
-    "image/jpeg",
-    "image/jpg",
-    "image/pjpeg",
-    "image/x-png",
-    "image/png"
-  ];
-
-  var allowedTypeExcel = [
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    "text/csv"
-  ];
-
-  $(".input-file-excel").change(function () {
-    readURLmultiple_upload(this);
-  });
-
-  function readURLmultiple_upload(input){
-      var id = $('#upload_id').val();
-
-      $.each(input.files, function( index, value ){
-        if (input.files && input.files[index]){
-          if($.inArray(value.type, allowedTypeExcel) == -1){
-            $(input).parent().addClass('has-error').find('span').addClass('text-danger').html('File type not allowed');
-            $('.btn_submit_upload').prop('disabled',true);
-          }else{
-            $(input).parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
-            $('.btn_submit_upload').prop('disabled',false);
-          }
-        }
-    });
-  }
-
   $('.btn_uploadVoucher').on('click',function(){
 
     $('.input-file-excel').val('');
@@ -264,7 +264,28 @@ $(document).ready(function(){
     $('#modal_voucher').modal('show');
   });
 
+  $('.btn_updateVoucher').on('click',function(){
+    $('#voucher_code_upd').val('');
+    $('#voucher_id').val('');
 
+    var id = $(this).attr('id');
+
+    var dataString = "id="+id+"&func=getVoucherByID";
+    $.ajax({
+      type    : "POST",
+      url     : "backend/process.php",
+      data    : dataString,
+      cache   : false,
+      dataType: 'json',
+      success : function(data)
+      {
+        $('#voucher_code_upd').val(data.voucher_code);
+
+        $('#voucher_id').val(data.id);
+        $('#modal_voucher_upd').modal('show');
+      }
+    });
+  });
 
   $.fn.modal.Constructor.prototype.enforceFocus = function() {};
 

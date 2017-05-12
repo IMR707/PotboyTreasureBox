@@ -145,8 +145,16 @@ elseif($_POST['func'] == 'getClaimByID'){
 
 //Voucher
 
+elseif($_POST['func'] == 'update_voucher'){
+  $fz->update_voucher();
+}
+
 elseif($_POST['func'] == 'upload_voucher'){
   $fz->upload_voucher();
+}
+
+elseif($_POST['func'] == 'getVoucherByID'){
+  $fz->getVoucherByID();
 }
 
 

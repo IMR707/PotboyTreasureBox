@@ -102,7 +102,7 @@ if (isset($_GET['day'])) {
                             break;
                           case '5':
                             ?>
-                            <span class="img-rounded daily-gold-claim claim-disabled">Claim Later</span>
+                            <span class=" daily-gold-claim claim-disabled" style="background-color:transparent"></span>
                             <?php
                             break;
                         }?>
