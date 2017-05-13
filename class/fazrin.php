@@ -665,6 +665,7 @@ class Fazrin
     {
       $_SESSION['noti'] = '';
       $_SESSION['noti']['msg'] = '<ul>';
+      $spon_id = $_POST['spon_id'];
 
       $fileTitle = array(
         'img_banner' => 'Image Banner',
@@ -685,7 +686,7 @@ class Fazrin
       $_SESSION['noti']['msg'] .= '</ul>';
 
       if(!$checkfile){
-        rd('../admin-productlist.php');
+        rd('../admin-productlist.php?id='.$spon_id);
         die;
       }else{
         $_SESSION['noti']['msg'] = '';
@@ -697,6 +698,7 @@ class Fazrin
           'name' => $name,
           'desc' => $desc,
           'price' => $price,
+          'spon_id' => $spon_id,
           'date_created' => 'now()',
           'date_updated' => 'now()'
         );
@@ -721,12 +723,13 @@ class Fazrin
 
         $res = self::$db->insert(self::tb_prod, $data);
       }
-      rd('../admin-productlist.php');
+      rd('../admin-productlist.php?id='.$spon_id);
       die;
     }
 
     public function update_product()
     {
+      $spon_id = $_POST['spon_id'];
       $id = $_POST['id'];
       $_SESSION['noti'] = '';
       $_SESSION['noti']['msg'] = '<ul>';
@@ -750,7 +753,7 @@ class Fazrin
       $_SESSION['noti']['msg'] .= '</ul>';
 
       if(!$checkfile){
-        rd('../admin-productlist.php');
+        rd('../admin-productlist.php?id='.$spon_id);
         die;
       }else{
         $_SESSION['noti']['msg'] = '';
@@ -791,13 +794,21 @@ class Fazrin
         $res = self::$db->update(self::tb_prod, $data,"id='$id'");
       }
 
-      rd('../admin-productlist.php');
+      rd('../admin-productlist.php?id='.$spon_id);
       die;
     }
 
     public function getProduct()
     {
       $sql = "SELECT * FROM ".self::tb_prod." WHERE active = 1";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
+    public function getProductBySponsorID($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_prod." WHERE spon_id = '$id' AND active = 1";
       $row = self::$db->fetch_all($sql);
 
       return $row;
@@ -969,6 +980,16 @@ class Fazrin
       $row->desc = html_entity_decode($row->desc);
 
       echo json_encode($row);
+    }
+
+    public function getSponsorByID2($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_spon." where id='$id'";
+      $row = self::$db->first($sql);
+
+      $row->desc = html_entity_decode($row->desc);
+
+      return $row;
     }
 
     /********* BIDDING **********************************************/

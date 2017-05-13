@@ -13,6 +13,12 @@ if (!$user->logged_in) {
     //redirect_to(SITEURL.'/index.php');
 }
 
+if(isset($_GET['id']) && $_GET['id'] != ''){
+  $id = $_GET['id'];
+  $spon_detail = $fz->getSponsorByID2($id);
+}else{
+  rd('admin-product.php');
+}
 
 /************** END BASIC CONFIG *********************/
 
@@ -53,6 +59,10 @@ if (!$user->logged_in) {
                 <i class="fa fa-circle"></i>
             </li>
             <li>
+                <a href="admin-product.php">Product Sponsor</a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
                 <span class="active"><?php echo $pname; ?></span>
             </li>
         </ul>
@@ -65,7 +75,7 @@ if (!$user->logged_in) {
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo">
                             <i class="icon-settings font-red-sunglo"></i>
-                            <span class="caption-subject bold uppercase">Product Management </span>
+                            <span class="caption-subject bold uppercase"><?php echo $spon_detail->name; ?> </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -126,6 +136,7 @@ if (!$user->logged_in) {
                                 </div>
                             </div>
                             <input type="hidden" name="func" value="create_product">
+                            <input type="hidden" name="spon_id" value="<?php echo $id; ?>">
                           </form>
                         </div>
                     </div>
@@ -155,7 +166,7 @@ if (!$user->logged_in) {
                               unset($_SESSION['noti']);
                             }
 
-                            $rewards = $fz->getProduct();
+                            $rewards = $fz->getProductBySponsorID($id);
                             ?>
 
                             <table class="table table-bordered table-hover">
@@ -254,6 +265,7 @@ if (!$user->logged_in) {
                                             </div>
                                         </div>
                                         <input type="hidden" name="func" value="update_product">
+                                        <input type="hidden" name="spon_id" value="<?php echo $id; ?>">
                                         <input type="hidden" name="id" id="upd_id" value="">
                                       </form>
                                     </div>

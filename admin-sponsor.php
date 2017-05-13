@@ -95,7 +95,7 @@ if (!$user->logged_in) {
                                       <div class="form-group">
                                           <label class="col-md-3 control-label">Description</label>
                                           <div class="col-md-9">
-                                              <textarea class="form-control summernote" name="desc" rows="6" required></textarea>
+                                              <textarea class="form-control summernote" name="desc" rows="6"></textarea>
                                           </div>
                                       </div>
                                       <div class="form-group">
@@ -153,7 +153,7 @@ if (!$user->logged_in) {
 
                                 <tr>
                                   <td class="text-center">
-                                    <img src="<?php echo BACK_UPLOADS.$row->img_logo; ?>" class="img-thumbnail">
+                                    <img src="<?php echo BACK_UPLOADS.$row->img_logo; ?>" class="img-thumbnail" style="max-width:35%">
                                   </td>
                                   <td class="text-left"><?php echo $row->name; ?></td>
 
@@ -190,7 +190,7 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Logo</label>
                                             <div class="col-md-9">
-                                                <img src="" id="img_logo_view" class="img-thumbnail">
+                                                <img src="" id="img_logo_view" class="img-thumbnail" style="max-width:35%">
                                                 <input type="file" class="form-control input-file" name="img_logo">
                                                 <span><span>
                                             </div>
@@ -198,7 +198,7 @@ if (!$user->logged_in) {
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Description</label>
                                             <div class="col-md-9">
-                                                <textarea class="form-control summernote" name="desc" rows="6" required id="spon_desc"></textarea>
+                                                <textarea class="form-control summernote" name="desc" rows="6" id="spon_desc"></textarea>
                                             </div>
                                         </div>
 
