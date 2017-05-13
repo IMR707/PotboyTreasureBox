@@ -1108,13 +1108,40 @@ class Fazrin
       echo json_encode($row);
     }
 
+    public function getBiddingByID2($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_bid." where id='$id'";
+      $row = self::$db->first($sql);
+
+      $start_time = $row->start_time;
+      $start_time_date = date('d/m/Y',strtotime($start_time));
+      $start_time_time = date('h:i A',strtotime($start_time));
+
+      $row->start_time_date = $start_time_date;
+      $row->start_time_time = $start_time_time;
+
+      $end_time = $row->end_time;
+      $end_time_date = date('d/m/Y',strtotime($end_time));
+      $end_time_time = date('h:i A',strtotime($end_time));
+
+      $row->end_time_date = $end_time_date;
+      $row->end_time_time = $end_time_time;
+
+
+      return $row;
+    }
+
+    /********* BIDDING TRANSACTION **********************************************/
+
     public function getCurParticipant($bid_id)
     {
-      $sql = "SELECT * FROM ".self::tb_bidtrans." WHERE bidding_id = '$bid_id' AND active = 1";
+      $sql = "SELECT * FROM ".self::tb_bidtrans." WHERE bidding_id = '$bid_id' AND active = 1 ORDER BY bid_amount DESC";
       $row = self::$db->fetch_all($sql);
 
       return $row;
     }
+
+
 
     /********* CLAIM **********************************************/
 

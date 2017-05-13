@@ -269,6 +269,7 @@ if (!$user->logged_in) {
 
                               $bid_base = $row->bid_base;
                               $max_participant = 0;
+                              $total_cur_participant = 0;
                               $percent = 0;
 
                               $disp_time = '';
@@ -289,6 +290,9 @@ if (!$user->logged_in) {
                                 }elseif($current_time >= $end){
                                   $percent = 100;
                                 }
+
+                                $cur_participant = $fz->getCurParticipant($row->id);
+                                $total_cur_participant = count($cur_participant);
 
                               }elseif($bid_base == 2){
                                 $disp_time = $start_date;
@@ -315,12 +319,12 @@ if (!$user->logged_in) {
                                         if($current_time < $start){
                                           echo '<span class="text-warning">Not started</span>';
                                         }elseif($current_time >= $start && $current_time < $end){
-                                          echo '<span class="text-success">Ongoing</span>';
+                                          echo '<span class="text-success">Ongoing <i class="fa fa-users"></i> '.$total_cur_participant.'</span>';
                                         }elseif($current_time >= $end){
                                           echo '<span class="text-danger">Ended</span>';
                                         }
                                       }elseif($bid_base == 2){
-                                        echo $total_cur_participant.'/'.$max_participant;
+                                        echo '<span class="text-success"><i class="fa fa-users"></i> '.$total_cur_participant.'/'.$max_participant.'</span>';;
                                       }
 
                                       ?>
@@ -338,6 +342,7 @@ if (!$user->logged_in) {
                                     </div>
                                   </td>
                                   <td class="text-center">
+                                    <a href="admin-bidder.php?id=<?php echo $row->id; ?>"><button class="btn btn-sm btn-success"><i class="fa fa-users"></i></button></a>
                                     <button class="btn btn-sm btn-warning btn_updateBidding" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                     <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                   </td>
