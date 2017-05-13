@@ -668,6 +668,7 @@ class Fazrin
 
       $fileTitle = array(
         'img_banner' => 'Image Banner',
+        'img_header' => 'Image Header',
         'img_thumbnail' => 'Image Thumbnail'
       );
 
@@ -684,16 +685,18 @@ class Fazrin
       $_SESSION['noti']['msg'] .= '</ul>';
 
       if(!$checkfile){
-        rd('../admin-product.php');
+        rd('../admin-productlist.php');
         die;
       }else{
         $_SESSION['noti']['msg'] = '';
         $name = sanitize($_POST['name']);
         $desc = sanitize($_POST['desc']);
+        $price = $_POST['price'];
 
         $data = array(
           'name' => $name,
           'desc' => $desc,
+          'price' => $price,
           'date_created' => 'now()',
           'date_updated' => 'now()'
         );
@@ -718,7 +721,7 @@ class Fazrin
 
         $res = self::$db->insert(self::tb_prod, $data);
       }
-      rd('../admin-product.php');
+      rd('../admin-productlist.php');
       die;
     }
 
@@ -730,6 +733,7 @@ class Fazrin
 
       $fileTitle = array(
         'img_banner' => 'Image Banner',
+        'img_header' => 'Image Header',
         'img_thumbnail' => 'Image Thumbnail'
       );
 
@@ -746,16 +750,18 @@ class Fazrin
       $_SESSION['noti']['msg'] .= '</ul>';
 
       if(!$checkfile){
-        rd('../admin-product.php');
+        rd('../admin-productlist.php');
         die;
       }else{
         $_SESSION['noti']['msg'] = '';
         $name = sanitize($_POST['name']);
         $desc = sanitize($_POST['desc']);
+        $price = $_POST['price'];
 
         $data = array(
           'name' => $name,
           'desc' => $desc,
+          'price' => $price,
           'date_updated' => 'now()'
         );
 
@@ -785,7 +791,7 @@ class Fazrin
         $res = self::$db->update(self::tb_prod, $data,"id='$id'");
       }
 
-      rd('../admin-product.php');
+      rd('../admin-productlist.php');
       die;
     }
 

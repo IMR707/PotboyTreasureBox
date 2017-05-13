@@ -4,8 +4,8 @@
 
 define('_VALID_PHP', true);
 $pname = 'Sponsor Management';
-$menu = 'ADMIN_BIDDING';
-$submenu = 'ADMIN_BIDDING_SPONSOR';
+$menu = 'ADMIN_SPONSOR';
+$submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
 
@@ -50,10 +50,6 @@ if (!$user->logged_in) {
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <a href="admin-dashboard.php">Dashboard</a>
-                <i class="fa fa-circle"></i>
-            </li>
-            <li>
-                <span>Bidding</span>
                 <i class="fa fa-circle"></i>
             </li>
             <li>

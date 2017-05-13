@@ -4,8 +4,8 @@
 
 define('_VALID_PHP', true);
 $pname = 'Product Management';
-$menu = 'ADMIN_BIDDING';
-$submenu = 'ADMIN_BIDDING_PRODUCT';
+$menu = 'ADMIN_PRODUCT';
+$submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
 
@@ -53,10 +53,6 @@ if (!$user->logged_in) {
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                <span>Bidding</span>
-                <i class="fa fa-circle"></i>
-            </li>
-            <li>
                 <span class="active"><?php echo $pname; ?></span>
             </li>
         </ul>
@@ -94,17 +90,25 @@ if (!$user->logged_in) {
                                     <input type="number" class="form-control" placeholder="0.00" name="price" required>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Banner</label>
-                                <div class="col-md-9">
-                                    <input type="file" class="form-control input-file" name="img_banner" required>
-                                    <span></span>
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Thumbnail</label>
                                 <div class="col-md-9">
                                     <input type="file" class="form-control input-file" name="img_thumbnail" required>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Header</label>
+                                <div class="col-md-9">
+                                    <input type="file" class="form-control input-file" name="img_header" required>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Banner</label>
+                                <div class="col-md-9">
+                                    <input type="file" class="form-control input-file" name="img_banner" required>
                                     <span></span>
                                 </div>
                             </div>
@@ -211,14 +215,6 @@ if (!$user->logged_in) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label">Banner</label>
-                                            <div class="col-md-9">
-                                                <img src="" id="img_banner_upd" class="img-thumbnail">
-                                                <input type="file" class="form-control input-file-upd" name="img_banner">
-                                                <span></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="col-md-3 control-label">Thumbnail</label>
                                             <div class="col-md-9">
                                                 <img src="" id="img_thumbnail_upd" class="img-thumbnail">
@@ -226,6 +222,23 @@ if (!$user->logged_in) {
                                                 <span></span>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Header</label>
+                                            <div class="col-md-9">
+                                                <img src="" id="img_header_upd" class="img-thumbnail">
+                                                <input type="file" class="form-control input-file-upd" name="img_header">
+                                                <span></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Banner</label>
+                                            <div class="col-md-9">
+                                                <img src="" id="img_banner_upd" class="img-thumbnail">
+                                                <input type="file" class="form-control input-file-upd" name="img_banner">
+                                                <span></span>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Specification & Description</label>
                                             <div class="col-md-9">
