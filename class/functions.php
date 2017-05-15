@@ -174,6 +174,12 @@ function isSubMenu($submenu, $compare)
     }
 }
 
+function isBackMulti($menu, $compare){
+  if ($menu==$compare) {
+      echo 'open';
+  }
+}
+
 function isBackMenu($menu, $compare)
 {
     if ($menu==$compare) {

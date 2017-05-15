@@ -33,7 +33,7 @@
               <i class="icon-settings"></i>
               <span class="title">Daily Reward</span>
               <span class="selected"></span>
-              <span class="arrow open"></span>
+              <span class="arrow <?php echo isBackMulti($menu,'ADMIN_DAILYREWARD'); ?>"></span>
           </a>
             <ul class="sub-menu">
                 <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_DAILYREWARD_PACKAGE'); ?>">
@@ -74,7 +74,7 @@
                 <i class="icon-settings"></i>
                 <span class="title">Bidding</span>
                 <span class="selected"></span>
-                <span class="arrow open"></span>
+                <span class="arrow <?php echo isBackMulti($menu,'ADMIN_BIDDING'); ?>"></span>
             </a>
             <ul class="sub-menu">
 
@@ -92,6 +92,29 @@
                 </li>
             </ul>
         </li>
+        <li class="nav-item <?php isBackMenu($menu,'ADMIN_WISHLIST'); ?>">
+            <a href="javascript:;" class="nav-link nav-toggle">
+                <i class="icon-settings"></i>
+                <span class="title">Wish List Voting</span>
+                <span class="selected"></span>
+                <span class="arrow <?php echo isBackMulti($menu,'ADMIN_WISHLIST'); ?>"></span>
+            </a>
+            <ul class="sub-menu">
+
+                <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_WISHLIST_MONTH'); ?>">
+                    <a href="admin-month.php" class="nav-link ">
+                        <span class="title">Month Setting</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+                <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_WISHLIST_WINNER'); ?>">
+                    <a href="admin-instantclaim.php" class="nav-link ">
+                        <span class="title">Winners</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
 
 
@@ -101,7 +124,7 @@
                 <i class="icon-settings"></i>
                 <span class="title">Form Stuff</span>
                 <span class="selected"></span>
-                <span class="arrow open"></span>
+                <span class="arrow <?php echo isBackMulti($menu,'ADMIN_FORM'); ?>"></span>
             </a>
             <ul class="sub-menu">
                 <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_BS_FORM'); ?>">

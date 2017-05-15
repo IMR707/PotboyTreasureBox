@@ -101,6 +101,20 @@ elseif($_POST['func'] == 'getProductByID'){
   $fz->getProductByID();
 }
 
+elseif($_POST['func'] == 'getProductBySponsorID'){
+  $id = $_POST['id'];
+  $out = $fz->getProductBySponsorID($id);
+  $output = array();
+  foreach($out as $key => $row)
+  {
+    $output[] = array(
+      "id" => $row->id,
+      "text" => $row->name,
+    );
+  }
+  echo json_encode($output);
+}
+
 //Sponsor
 
 elseif($_POST['func'] == 'create_sponsor'){
@@ -156,6 +170,17 @@ elseif($_POST['func'] == 'upload_voucher'){
 elseif($_POST['func'] == 'getVoucherByID'){
   $fz->getVoucherByID();
 }
+
+// Wish List
+
+elseif($_POST['func'] == 'create_wishlist'){
+  $fz->create_wishlist();
+}
+
+elseif($_POST['func'] == 'getProductByWishID'){
+  $fz->getProductByWishID();
+}
+
 
 
 

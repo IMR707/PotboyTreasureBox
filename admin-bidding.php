@@ -130,7 +130,7 @@ if (!$user->logged_in) {
                                           <div class="col-md-5">
                                             <div class="input-icon">
                                               <i class="fa fa-calendar-o"></i>
-                                              <input type="text" class="form-control date-picker" required name="start_time_date" data-date-format="dd/mm/yyyy">
+                                              <input type="text" class="form-control date-picker" required name="start_time_date" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
                                             </div>
                                           </div>
                                           <div class="col-md-4">
@@ -154,7 +154,7 @@ if (!$user->logged_in) {
                                               End Time
                                               <div class="input-icon">
                                                 <i class="fa fa-calendar-o"></i>
-                                                <input type="text" style="width:50%" class="form-control date-picker" name="end_time_date" data-date-format="dd/mm/yyyy">
+                                                <input type="text" style="width:50%" class="form-control date-picker" name="end_time_date" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
                                               </div>
                                               <div class="input-icon">
                                                 <i class="fa fa-clock-o"></i>
@@ -391,7 +391,7 @@ if (!$user->logged_in) {
                                             <div class="col-md-5">
                                               <div class="input-icon">
                                                 <i class="fa fa-calendar-o"></i>
-                                                <input type="text" class="form-control date-picker" required name="start_time_date" id="start_time_date_upd">
+                                                <input type="text" class="form-control date-picker" required name="start_time_date" id="start_time_date_upd" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
                                               </div>
                                             </div>
                                             <div class="col-md-4">
@@ -415,7 +415,7 @@ if (!$user->logged_in) {
                                                 End Time
                                                 <div class="input-icon">
                                                   <i class="fa fa-calendar-o"></i>
-                                                  <input type="text" style="width:50%" class="form-control date-picker" name="end_time_date" id="end_time_date_upd">
+                                                  <input type="text" style="width:50%" class="form-control date-picker" name="end_time_date" id="end_time_date_upd" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
                                                 </div>
                                                 <div class="input-icon">
                                                   <i class="fa fa-clock-o"></i>

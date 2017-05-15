@@ -20,6 +20,8 @@ class Fazrin
     const tb_bidtrans = 'aa_bidding_transaction';
     const tb_claim = 'aa_instantclaim';
     const tb_vouc = 'aa_voucher';
+    const tb_wish = 'aa_wishlist';
+    const tb_wishProd = 'aa_wishlistProduct';
 
 
     private static $db;
@@ -1465,9 +1467,173 @@ class Fazrin
       echo json_encode($row);
     }
 
+    /********* WISHLIST **********************************************/
 
+    public function create_wishlist()
+    {
+      $title = $_POST['title'];
+      $time_month = $_POST['time_month'];
+      $spon_id = $_POST['spon_id'];
+      $wish_id = $_POST['wish_id'];
+      $time_month = date('Y-m-d H:i:s',strtotime($time_month));
 
+      if($wish_id == ''){
+        $data = array(
+          'spon_id' => $spon_id,
+          'time_month' => $time_month,
+          'title' => $title,
+          'date_created' => 'now()',
+          'date_updated' => 'now()'
+        );
 
+        $wish_id = self::$db->insert(self::tb_wish, $data);
+
+        if($wish_id){
+          $product_id = $_POST['product_id'];
+
+          foreach($product_id as $key => $value){
+            $data = array(
+              'wish_id' => $wish_id,
+              'product_id' => $value
+            );
+
+            $res = self::$db->insert(self::tb_wishProd, $data);
+            if(!$res){
+              $_SESSION['noti']['status'] = 'error';
+              $_SESSION['noti']['msg'] = 'Problem occured while inserting data.';
+            }else{
+              $_SESSION['noti']['status'] = 'success';
+              $_SESSION['noti']['msg'] = 'New wish list created successfully.';
+            }
+          }
+        }
+        rd('../admin-month.php?s='.$spon_id);
+        exit;
+      }else{
+        $data = array(
+          'time_month' => $time_month,
+          'title' => $title,
+          'date_updated' => 'now()'
+        );
+
+        $res = self::$db->update(self::tb_wish, $data,"id='$wish_id'");
+
+        if($res){
+          // pre($_POST);
+          $product_id = empty($_POST['product_id']) ? array() : $_POST['product_id'];
+
+          $cur_prod_id = $this->getProductIDbyWishID($wish_id);
+
+          // pre($cur_prod_id);
+
+          if(count($product_id) > 0){
+            //part utk update/insert data product id
+            foreach($product_id as $key => $value){
+              $check = $this->checkProdIdExistWish($wish_id,$value);
+
+              if($check){
+                $data = array(
+                  'active' => 1
+                );
+
+                $res = self::$db->update(self::tb_wishProd, $data,"id='$check'");
+              }else{
+                $data = array(
+                  'wish_id' => $wish_id,
+                  'product_id' => $value
+                );
+
+                $res = self::$db->insert(self::tb_wishProd, $data);
+              }
+            }
+
+            // part utk delete dr db
+            $prod_id = 0;
+            foreach($cur_prod_id as $key => $row){
+              $prod_id = $row->product_id;
+
+              if(in_array($prod_id,$product_id)){
+                //edit
+              }else{
+                $data = array(
+                  'active' => 0
+                );
+
+                $res = self::$db->update(self::tb_wishProd, $data,"id='$row->id'");
+              }
+
+            }
+          }else{
+            $data = array(
+              'active' => 0
+            );
+
+            $res = self::$db->update(self::tb_wishProd, $data,"wish_id='$wish_id'");
+          }
+
+        }
+        
+        rd('../admin-month.php?s='.$spon_id);
+        exit;
+
+      }
+    }
+
+    public function checkProdIdExistWish($wish_id,$prod_id)
+    {
+      $sql = "SELECT id FROM ".self::tb_wishProd." WHERE wish_id = '$wish_id' AND product_id = '$prod_id'";
+      $row = self::$db->first($sql);
+
+      return $row ? $row->id : 0;
+    }
+
+    public function getProductIDbyWishID($wish_id)
+    {
+      $sql = "SELECT id,product_id,active FROM ".self::tb_wishProd." WHERE wish_id = '$wish_id'";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
+    public function getWishListBySponID($spon_id)
+    {
+      $sql = "SELECT * FROM ".self::tb_wish." WHERE spon_id = '$spon_id' AND active = 1 ORDER BY time_month";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
+    public function getProductByWishID()
+    {
+      $id = $_POST['id'];
+      $sql = "SELECT * FROM ".self::tb_wish." WHERE id='$id' ";
+      $row = self::$db->first($sql);
+
+      $row->time_month = date('M Y',strtotime($row->time_month));
+
+      $sql2 = "SELECT a.*,b.name FROM ".self::tb_wishProd." a, ".self::tb_prod." b  WHERE a.product_id = b.id AND a.wish_id='$id' AND a.active = 1";
+      $row2 = self::$db->fetch_all($sql2);
+
+      $output = array();
+      foreach($row2 as $key => $value){
+        $output[] = $value->product_id;
+      }
+      $row->product = $output;
+
+      $idspon = $_POST['idspon'];
+      $out = $this->getProductBySponsorID($idspon);
+      $output = array();
+      foreach($out as $key => $rows)
+      {
+        $output[] = array(
+          "id" => $rows->id,
+          "text" => $rows->name,
+        );
+      }
+      $row->productlist = $output;
+      echo json_encode($row);
+
+    }
 
 
 
