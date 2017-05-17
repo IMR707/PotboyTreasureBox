@@ -120,11 +120,12 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                             <?php
 
                             foreach($bidders as $key => $row){
-
+                              $cust_id = $row->customer_id;
+                              $cust_detail = $fz->getUserByID($cust_id);
                             ?>
 
                                 <tr>
-                                  <td class="text-center"><?php echo $row->customer_id; ?></td>
+                                  <td class="text-center"><?php echo $cust_detail->firstname.' '.$cust_detail->lastname; ?></td>
                                   <td class="text-center"><?php echo $row->bid_amount; ?></td>
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateVoucher" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>

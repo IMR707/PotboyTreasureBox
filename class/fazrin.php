@@ -22,6 +22,8 @@ class Fazrin
     const tb_vouc = 'aa_voucher';
     const tb_wish = 'aa_wishlist';
     const tb_wishProd = 'aa_wishlistProduct';
+    const tb_wishVote = 'aa_wishlistVote';
+    const tb_user = 'customer_entity';
 
 
     private static $db;
@@ -816,18 +818,7 @@ class Fazrin
       return $row;
     }
 
-    public function getProductByID()
-    {
-      $id = $_POST['id'];
-      $sql = "SELECT * FROM ".self::tb_prod." where id='$id'";
-      $row = self::$db->first($sql);
-
-      $row->desc = html_entity_decode($row->desc);
-
-      echo json_encode($row);
-    }
-
-    public function getProductByID2($id)
+    public function getProductByID($id)
     {
       $sql = "SELECT * FROM ".self::tb_prod." where id='$id'";
       $row = self::$db->first($sql);
@@ -1572,11 +1563,19 @@ class Fazrin
           }
 
         }
-        
+
         rd('../admin-month.php?s='.$spon_id);
         exit;
 
       }
+    }
+
+    public function getWishByID($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_wish." WHERE id='$id'";
+      $row = self::$db->first($sql);
+
+      return $row;
     }
 
     public function checkProdIdExistWish($wish_id,$prod_id)
@@ -1589,7 +1588,7 @@ class Fazrin
 
     public function getProductIDbyWishID($wish_id)
     {
-      $sql = "SELECT id,product_id,active FROM ".self::tb_wishProd." WHERE wish_id = '$wish_id'";
+      $sql = "SELECT * FROM ".self::tb_wishProd." WHERE wish_id = '$wish_id'";
       $row = self::$db->fetch_all($sql);
 
       return $row;
@@ -1635,7 +1634,25 @@ class Fazrin
 
     }
 
+    /********* VOTE **********************************************/
 
+    public function getVoteCount($wp_id)
+    {
+      $sql = "SELECT count(*) as count FROM ".self::tb_wishVote." WHERE wp_id = '$wp_id'";
+      $row = self::$db->first($sql);
+
+      return $row->count;
+    }
+
+    /********* USER **********************************************/
+
+    public function getUserByID($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_user." WHERE entity_id = '$id'";
+      $row = self::$db->first($sql);
+
+      return $row;
+    }
 
 
 

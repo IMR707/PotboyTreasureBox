@@ -248,6 +248,7 @@ if(!$found && $s_id != 0){
                                     <tr>
                                       <th class="text-center" width="20%">Month</th>
                                       <th class="text-left">Title</th>
+                                      <th class="text-left">Product</th>
                                       <th class="text-center" width="15%">Action</th>
                                     </tr>
                                   </thead>
@@ -264,8 +265,21 @@ if(!$found && $s_id != 0){
                                     <tr>
                                       <td class="text-center"><?php echo $month; ?></td>
                                       <td class="text-left"><?php echo $row2->title; ?></td>
+                                      <td class="text-left">
+                                        <ul>
+                                        <?php
 
+                                        $products = $fz->getProductAndVote($row2->id);
+                                        foreach($products as $key => $row){
+                                            $prod_detail = $fz->getProductByID($row->product_id);
+                                            echo '<li>'.$prod_detail->name.'</li>';
+                                        }
+
+                                        ?>
+                                        </ul>
+                                      </td>
                                       <td class="text-center">
+                                        <a href="admin-vote.php?s=<?php echo $row->id; ?>&w=<?php echo $row2->id; ?>"><button class="btn btn-sm btn-success"><i class="fa fa-check"></i></button></a>
                                         <button class="btn btn-sm btn-warning btn_WishListUpd" ids="<?php echo $row2->id; ?>" idspon="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                         <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                       </td>

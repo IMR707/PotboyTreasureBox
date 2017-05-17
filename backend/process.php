@@ -98,7 +98,9 @@ elseif($_POST['func'] == 'update_product'){
 }
 
 elseif($_POST['func'] == 'getProductByID'){
-  $fz->getProductByID();
+  $id = $_POST['id'];
+  $row = $fz->getProductByID($id);
+  echo json_encode($row);
 }
 
 elseif($_POST['func'] == 'getProductBySponsorID'){

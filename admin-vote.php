@@ -3,9 +3,9 @@
 /************** BASIC CONFIG *************************/
 
 define('_VALID_PHP', true);
-$pname = 'Voucher Management';
-$menu = 'ADMIN_BIDDING';
-$submenu = 'ADMIN_BIDDING_CLAIM';
+$pname = 'Vote List';
+$menu = 'ADMIN_WISHLIST';
+$submenu = 'ADMIN_WISHLIST_MONTH';
 require_once 'init.php';
 use Carbon\Carbon;
 
@@ -13,11 +13,18 @@ if (!$user->logged_in) {
     //redirect_to(SITEURL.'/index.php');
 }
 
-if(isset($_GET['id']) && $_GET['id'] != ''){
-  $id = $_GET['id'];
-  $claim_detail = $fz->getClaimByID2($id);
+if(isset($_GET['s']) && $_GET['s'] != ''){
+  $sponsor_id = $_GET['s'];  
 }else{
-  rd('admin-instantclaim.php');
+  rd('admin-month.php');
+}
+
+if(isset($_GET['w']) && $_GET['w'] != ''){
+  $wish_id = $_GET['w'];
+  $wp_detail = $fz->getProductIDbyWishID($wish_id);
+  $wish_detail = $fz->getWishByID($wish_id);
+}else{
+  rd('admin-month.php');
 }
 
 
@@ -60,11 +67,11 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                <span>Bidding</span>
+                <span>Wish List Voting</span>
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                <a href="admin-instantclaim.php">Instant Claim List</a>
+                <a href="admin-month.php?s=<?php echo $sponsor_id; ?>">Month Setting</a>
                 <i class="fa fa-circle"></i>
             </li>
             <li>
@@ -80,7 +87,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo">
                             <i class="icon-settings font-red-sunglo"></i>
-                            <span class="caption-subject bold uppercase"><?php echo $claim_detail->title; ?> </span>
+                            <span class="caption-subject bold uppercase">Vote List For <?php echo $wish_detail->title; ?> </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -88,12 +95,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
 
                         <div class="row">
                           <div class="col-md-6">
-                            <h4 class="pull-left">Voucher List</h4>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="btn-group pull-right">
-                              <a class="btn green btn-outline sbold pull-right" data-toggle="modal" href="#modal_voucher"> <i class="fa fa-plus"></i> Voucher Claim</a>
-                            </div>
+                            <h4 class="pull-left">Vote List</h4>
                           </div>
                           <div class="col-md-12">
 
@@ -108,14 +110,14 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                               unset($_SESSION['noti']);
                             }
 
-                            $vouchers = $fz->getVoucherByClaimID($id);
+                            $products = $fz->getProductIDbyWishID($wish_detail->id);
                             ?>
 
                             <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
-                                  <th class="text-center" width="25%">Voucher Code</th>
-                                  <th class="text-center">Status</th>
+                                  <th class="text-center" width="25%">Product</th>
+                                  <th class="text-center">Vote Count</th>
                                   <th class="text-center" width="15%">Action</th>
                                 </tr>
                               </thead>
@@ -123,24 +125,15 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
 
                             <?php
 
-                            foreach($vouchers as $key => $row){
+                            foreach($products as $key => $row){
 
+                              $vote_count = $fz->getVoteCount($row->id);
+                              $prod_detail = $fz->getProductByID($row->product_id);
                             ?>
 
                                 <tr>
-                                  <td class="text-center"><?php echo $row->voucher_code; ?></td>
-                                  <td class="text-center">
-                                    <?php
-                                    if($row->cust_id){
-                                      $cust_id = $row->cust_id;
-                                      $cust_detail = $fz->getUserByID($cust_id);
-
-                                      echo '<label class="label label-success">Claimed</label> by '.$cust_detail->firstname.' '.$cust_detail->lastname;
-                                    }else{
-                                      echo '<label class="label label-danger">Available</label>';
-                                    }
-                                    ?>
-                                  </td>
+                                  <td class="text-center"><?php echo $prod_detail->name; ?></td>
+                                  <td class="text-center"><?php echo $vote_count; ?></td>
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateVoucher" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                     <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>

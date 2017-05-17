@@ -256,7 +256,7 @@ if (!$user->logged_in) {
                             foreach($rewards as $key => $row){
                               $product_id = $row->product_id;
 
-                              $prod_detail = $fz->getProductByID2($product_id);
+                              $prod_detail = $fz->getProductByID($product_id);
                               $bid_type = $row->bid_type;
                               if($bid_type == 1){
                                 $currency = ' G';
