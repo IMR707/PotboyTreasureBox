@@ -18,19 +18,19 @@
         </li>
         <li class="nav-item start <?php isBackMenu($menu,'ADMIN_HOMESLIDER'); ?>">
             <a href="admin-homeslider.php" class="nav-link nav-toggle">
-                <i class="icon-home"></i>
-                <span class="title">Home Slider</span>
+                <i class="icon-picture"></i>
+                <span class="title">Image Slider</span>
             </a>
         </li>
         <li class="nav-item start <?php isBackMenu($menu,'ADMIN_ANNOUNCEMENT'); ?>">
             <a href="admin-announcement.php" class="nav-link nav-toggle">
-                <i class="icon-home"></i>
+                <i class="icon-volume-2"></i>
                 <span class="title">Announcement</span>
             </a>
         </li>
         <li class="nav-item start <?php isBackMenu($menu,'ADMIN_DAILYREWARD'); ?>">
           <a href="javascript:;" class="nav-link nav-toggle">
-              <i class="icon-settings"></i>
+              <i class="icon-diamond"></i>
               <span class="title">Daily Reward</span>
               <span class="selected"></span>
               <span class="arrow <?php echo isBackMulti($menu,'ADMIN_DAILYREWARD'); ?>"></span>
@@ -52,26 +52,26 @@
         </li>
         <li class="nav-item start <?php isBackMenu($menu,'ADMIN_CONVERSION'); ?>">
             <a href="admin-conversion.php" class="nav-link nav-toggle">
-                <i class="icon-home"></i>
+                <i class="icon-shuffle"></i>
                 <span class="title">Conversion</span>
             </a>
         </li>
         <li class="nav-item <?php isBackMenu($menu,'ADMIN_SPONSOR'); ?>">
             <a href="admin-sponsor.php" class="nav-link ">
-                <i class="icon-home"></i>
+                <i class="icon-user-following"></i>
                 <span class="title">Sponsor</span>
             </a>
         </li>
         <li class="nav-item <?php isBackMenu($menu,'ADMIN_PRODUCT'); ?>">
             <a href="admin-product.php" class="nav-link ">
-                <i class="icon-home"></i>
+                <i class="icon-basket"></i>
                 <span class="title">Product</span>
             </a>
         </li>
 
         <li class="nav-item <?php isBackMenu($menu,'ADMIN_BIDDING'); ?>">
             <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-settings"></i>
+                <i class="icon-trophy"></i>
                 <span class="title">Bidding</span>
                 <span class="selected"></span>
                 <span class="arrow <?php echo isBackMulti($menu,'ADMIN_BIDDING'); ?>"></span>
@@ -92,31 +92,20 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item <?php isBackMenu($menu,'ADMIN_WISHLIST'); ?>">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-settings"></i>
-                <span class="title">Wish List Voting</span>
-                <span class="selected"></span>
-                <span class="arrow <?php echo isBackMulti($menu,'ADMIN_WISHLIST'); ?>"></span>
-            </a>
-            <ul class="sub-menu">
 
-                <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_WISHLIST_MONTH'); ?>">
-                    <a href="admin-month.php" class="nav-link ">
-                        <span class="title">Month Setting</span>
-                        <span class="selected"></span>
-                    </a>
-                </li>
-                <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_WISHLIST_WINNER'); ?>">
-                    <a href="admin-instantclaim.php" class="nav-link ">
-                        <span class="title">Winners</span>
-                        <span class="selected"></span>
-                    </a>
-                </li>
-            </ul>
+        <li class="nav-item <?php isBackMenu($menu,'ADMIN_WISHLIST'); ?>">
+            <a href="admin-month.php" class="nav-link ">
+                <i class="icon-like"></i>
+                <span class="title">Wish List Voting</span>
+            </a>
         </li>
 
-
+        <li class="nav-item <?php isBackMenu($menu,'ADMIN_USERLIST'); ?>">
+            <a href="admin-userlist.php" class="nav-link ">
+                <i class="icon-users"></i>
+                <span class="title">User List</span>
+            </a>
+        </li>
 
 
         <li class="nav-item <?php isBackMenu($menu,'ADMIN_FORM'); ?>">

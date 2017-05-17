@@ -3,7 +3,7 @@
 /************** BASIC CONFIG *************************/
 
 define('_VALID_PHP', true);
-$pname = 'Homeslider';
+$pname = 'Image slider';
 $menu = 'ADMIN_HOMESLIDER';
 $submenu = '';
 require_once 'init.php';
@@ -79,7 +79,7 @@ if (!$user->logged_in) {
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo">
                             <i class="icon-settings font-red-sunglo"></i>
-                            <span class="caption-subject bold uppercase"> Home Slider</span>
+                            <span class="caption-subject bold uppercase"> Image Slider</span>
                         </div>
                     </div>
                     <div class="portlet-body form">

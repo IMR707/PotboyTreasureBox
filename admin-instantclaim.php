@@ -120,6 +120,19 @@ if (!$user->logged_in) {
                                           </div>
                                       </div>
                                       <div class="form-group">
+                                          <label class="col-md-3 control-label">Header Image</label>
+                                          <div class="col-md-9">
+                                              <input type="file" class="form-control input-file" name="img_header" required>
+                                              <span></span>
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label class="col-md-3 control-label">Price</label>
+                                          <div class="col-md-9">
+                                              <input type="number" class="form-control" placeholder="0.00" name="price" required>
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
                                           <label class="col-md-3 control-label">Start Time</label>
                                           <div class="col-md-5">
                                             <div class="input-icon">
@@ -284,6 +297,20 @@ if (!$user->logged_in) {
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label class="col-md-3 control-label">Header Image</label>
+                                            <div class="col-md-9">
+                                                <img src="" id="img_header_upd" class="img-thumbnail">
+                                                <input type="file" class="form-control input-file-upd" name="img_header">
+                                                <span></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Price</label>
+                                            <div class="col-md-9">
+                                                <input type="number" class="form-control" placeholder="0.00" name="price" required id="price_upd">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-md-3 control-label">Start Time</label>
                                             <div class="col-md-5">
                                               <div class="input-icon">
@@ -440,6 +467,9 @@ $(document).ready(function(){
   $('.btn_updateClaim').on('click',function(){
     $('#publish_upd').select2('val','');
     $('#title_upd').val('');
+    $('#price_upd').val('');
+    $('#img_thumbnail_upd').attr('src','');
+    $('#img_header_upd').attr('src','');
     $('#start_time_date_upd').val('');
     $('#start_time_time_upd').val('');
     $('#gold_amount_upd').val('');
@@ -459,6 +489,8 @@ $(document).ready(function(){
         $('#title_upd').val(data.title);
         $('#publish_upd').select2('val',data.publish);
         $('#img_thumbnail_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.img_thumbnail);
+        $('#img_header_upd').attr('src','<?php echo BACK_UPLOADS; ?>'+data.img_header);
+        $('#price_upd').val(data.price);
         $('#start_time_date_upd').val(data.start_time_date);
         $('#start_time_time_upd').val(data.start_time_time);
         $('#gold_amount_upd').val(data.gold_amount);

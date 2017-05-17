@@ -14,15 +14,21 @@ if (!$user->logged_in) {
 }
 
 if(isset($_GET['s']) && $_GET['s'] != ''){
-  $sponsor_id = $_GET['s'];  
+  $sponsor_id = $_GET['s'];
 }else{
   rd('admin-month.php');
 }
 
 if(isset($_GET['w']) && $_GET['w'] != ''){
   $wish_id = $_GET['w'];
-  $wp_detail = $fz->getProductIDbyWishID($wish_id);
   $wish_detail = $fz->getWishByID($wish_id);
+}else{
+  rd('admin-month.php');
+}
+
+if(isset($_GET['wp']) && $_GET['wp'] != ''){
+  $wp_id= $_GET['wp'];
+  $votes = $fz->getVoteByWpID($wp_id);
 }else{
   rd('admin-month.php');
 }
@@ -110,14 +116,16 @@ if(isset($_GET['w']) && $_GET['w'] != ''){
                               unset($_SESSION['noti']);
                             }
 
-                            $products = $fz->getProductIDbyWishID($wish_detail->id);
+                            // pre($votes);
+
                             ?>
 
                             <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
-                                  <th class="text-center" width="25%">Product</th>
-                                  <th class="text-center">Vote Count</th>
+                                  <th class="text-center">Name</th>
+                                  <th class="text-center">Email</th>
+
                                   <th class="text-center" width="15%">Action</th>
                                 </tr>
                               </thead>
@@ -125,15 +133,14 @@ if(isset($_GET['w']) && $_GET['w'] != ''){
 
                             <?php
 
-                            foreach($products as $key => $row){
+                            foreach($votes as $key => $row){
 
-                              $vote_count = $fz->getVoteCount($row->id);
-                              $prod_detail = $fz->getProductByID($row->product_id);
                             ?>
 
                                 <tr>
-                                  <td class="text-center"><?php echo $prod_detail->name; ?></td>
-                                  <td class="text-center"><?php echo $vote_count; ?></td>
+                                  <td class="text-center"><?php echo $row->firstname.' '.$row->lastname; ?></td>
+                                  <td class="text-center"><?php echo $row->email; ?></td>
+
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateVoucher" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                     <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>

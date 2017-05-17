@@ -24,6 +24,7 @@ class Fazrin
     const tb_wishProd = 'aa_wishlistProduct';
     const tb_wishVote = 'aa_wishlistVote';
     const tb_user = 'customer_entity';
+    const tb_userAdd = 'customer_address_entity';
 
 
     private static $db;
@@ -1171,7 +1172,8 @@ class Fazrin
       $_SESSION['noti']['msg'] = '<ul>';
 
       $fileTitle = array(
-        'img_thumbnail' => 'Thumbnail Image'
+        'img_thumbnail' => 'Thumbnail Image',
+        'img_header' => 'Header Image'
       );
 
       $checkfile = true;
@@ -1193,6 +1195,7 @@ class Fazrin
         $_SESSION['noti']['msg'] = '';
         $title = sanitize($_POST['title']);
         $gold_amount = $_POST['gold_amount'];
+        $price = $_POST['price'];
         $start_time_date = $_POST['start_time_date'];
         $start_time_time = $_POST['start_time_time'];
 
@@ -1202,6 +1205,7 @@ class Fazrin
         $data = array(
           'title' => $title,
           'gold_amount' => $gold_amount,
+          'price' => $price,
           'start_time' => $start_time,
           'publish' => 0,
           'date_created' => 'now()',
@@ -1239,7 +1243,8 @@ class Fazrin
       $_SESSION['noti']['msg'] = '<ul>';
 
       $fileTitle = array(
-        'img_thumbnail' => 'Thumbnail Image'
+        'img_thumbnail' => 'Thumbnail Image',
+        'img_header' => 'Header Image'
       );
 
       $checkfile = true;
@@ -1261,6 +1266,7 @@ class Fazrin
         $_SESSION['noti']['msg'] = '';
         $title = sanitize($_POST['title']);
         $gold_amount = $_POST['gold_amount'];
+        $price = $_POST['price'];
         $start_time_date = $_POST['start_time_date'];
         $start_time_time = $_POST['start_time_time'];
         $publish = $_POST['publish'];
@@ -1271,6 +1277,7 @@ class Fazrin
         $data = array(
           'title' => $title,
           'gold_amount' => $gold_amount,
+          'price' => $price,
           'start_time' => $start_time,
           'publish' => $publish,
           'date_updated' => 'now()'
@@ -1594,6 +1601,14 @@ class Fazrin
       return $row;
     }
 
+    public function getProductAndVote($wish_id)
+    {
+      $sql = "SELECT a.*,(SELECT COUNT(*) FROM ".self::tb_wishVote." b WHERE a.id = b.wp_id ) as vote FROM ".self::tb_wishProd." a WHERE wish_id = '$wish_id' ORDER BY vote DESC";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
     public function getWishListBySponID($spon_id)
     {
       $sql = "SELECT * FROM ".self::tb_wish." WHERE spon_id = '$spon_id' AND active = 1 ORDER BY time_month";
@@ -1642,6 +1657,14 @@ class Fazrin
       $row = self::$db->first($sql);
 
       return $row->count;
+    }
+
+    public function getVoteByWpID($wp_id)
+    {
+      $sql = "SELECT a.*,b.* FROM ".self::tb_wishVote." a, ".self::tb_user." b WHERE a.user_id = b.entity_id AND wp_id = '$wp_id'";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
     }
 
     /********* USER **********************************************/

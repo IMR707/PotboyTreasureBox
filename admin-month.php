@@ -5,7 +5,7 @@
 define('_VALID_PHP', true);
 $pname = 'Month Setting';
 $menu = 'ADMIN_WISHLIST';
-$submenu = 'ADMIN_WISHLIST_MONTH';
+$submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
 
@@ -199,6 +199,7 @@ if(!$found && $s_id != 0){
 
                             $active = '';
                             foreach($sponsors as $key => $row){
+
                               if($first){
                                 $active = 'active';
                               }else{
@@ -270,16 +271,17 @@ if(!$found && $s_id != 0){
                                         <?php
 
                                         $products = $fz->getProductAndVote($row2->id);
-                                        foreach($products as $key => $row){
-                                            $prod_detail = $fz->getProductByID($row->product_id);
-                                            echo '<li>'.$prod_detail->name.'</li>';
+
+                                        foreach($products as $key3 => $row3){
+                                            $prod_detail = $fz->getProductByID($row3->product_id);
+                                            echo '<li><a href="admin-vote.php?s='.$row->id.'&w='.$row2->id.'&wp='.$row3->id.'">'.$prod_detail->name.' ( <i class="fa fa-thumbs-o-up text-success"></i> : '.$row3->vote.' )</a></li>';
                                         }
 
                                         ?>
                                         </ul>
                                       </td>
                                       <td class="text-center">
-                                        <a href="admin-vote.php?s=<?php echo $row->id; ?>&w=<?php echo $row2->id; ?>"><button class="btn btn-sm btn-success"><i class="fa fa-check"></i></button></a>
+
                                         <button class="btn btn-sm btn-warning btn_WishListUpd" ids="<?php echo $row2->id; ?>" idspon="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                         <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                       </td>
