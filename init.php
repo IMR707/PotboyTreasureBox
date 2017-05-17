@@ -75,6 +75,7 @@ define("BACK_INC", BACKASSETSURL . "include/");
 define("BACK_PLUGIN", BACKASSETSURL . "assets/global/plugins/");
 define("BACK_SCRIPT", BACKASSETSURL . "assets/global/scripts/");
 define("BACK_PAGES_SCRIPT", BACKASSETSURL . "assets/pages/scripts/");
+define("BACK_PAGES_CSS", BACKASSETSURL . "assets/pages/css/");
 define("BACK_CSS", BACKASSETSURL . "assets/global/css/");
 define("BACK_LAYOUT", BACKASSETSURL . "assets/layouts/");
 define("BACK_IMG", BACKASSETSURL . "img/");

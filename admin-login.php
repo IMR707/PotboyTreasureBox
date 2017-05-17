@@ -1,7 +1,10 @@
 <?php
+
+/************** BASIC CONFIG *************************/
+
 define('_VALID_PHP', true);
-$pname = 'Login';
 require_once 'init.php';
+$pname = 'Admin Login';
 
 if ($user->logged_in) {
     redirect_to(SITEURL.'/admin-dashboard.php');
@@ -9,116 +12,82 @@ if ($user->logged_in) {
 if (isset($_POST['doLogin'])) {
     //header('Refresh:0');
     $result = isset($_POST['rememberme']) ? $log=$user->login($_POST['email'], $_POST['password'], $_POST['rememberme']) : $log=$user->login($_POST['email'], $_POST['password']);
-if($log)
-    redirect_to(SITEURL . "/dashboard.php");
+
+    if($log)
+      redirect_to(SITEURL . "/dashboard.php");
     else {
       redirect_to(SITEURL . "/index.php");
     }
 }
+
+/************** END BASIC CONFIG *********************/
+
 ?>
-<!doctype html>
-<!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<?php
-// include 'head.php';
-// include 'footer.php';
-?>
+<html lang="en">
+  <?php include BACK_INC.'header.php'; ?>
 
-<!-- altair admin login page -->
-<link rel="stylesheet" href="assets/css/login_page.min.css" />
-<body class="">
+  <script src="<?php echo BACK_PLUGIN; ?>jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+  <script src="<?php echo BACK_PLUGIN; ?>jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+  <script src="<?php echo BACK_PLUGIN; ?>select2/js/select2.full.min.js" type="text/javascript"></script>
 
-    <div class="login_page_wrapper">
-        <div class="md-card" id="login_card">
-            <div class="md-card-content large-padding" id="login_form">
-                <div class="login_heading">
-                  <img src="<?php echo IMAGE;?>logo.png" alt="" />
-                  <form method="post" accept-charset="UTF-8" class="form-horizontal" autocomplete="off" id="login_form" name="login_form">
-                                  <div class="uk-form-row">
-                        <label for="login_email">Email</label>
-                        <input class="md-input" type="text" id="login_email" name="email" />
-                    </div>
-                    <div class="uk-form-row">
-                        <label for="login_password">Password</label>
-                        <input class="md-input" type="password" id="login_password" name="password" />
-                    </div>
-                    <div class="uk-margin-medium-top">
-
-
-                          <button class="md-btn md-btn-danger md-btn-block md-btn-large">Sign In</button>
-                    </div>
-                    <div class="uk-margin-top">
-                        <a href="#" id="login_help_show" class="uk-float-right">Need help?</a>
-                        <span class="icheck-inline">
-                            <input type="checkbox" name="rememberme" id="rememberme" data-md-icheck />
-                            <label for="rememberme" class="inline-label">Stay signed in</label>
-                        </span>
-                    </div>
-                      <input name="doLogin" type="hidden" value="1">
-                </form>
-            </div>
+  <link href="<?php echo BACK_PAGES_CSS; ?>login.min.css" rel="stylesheet" type="text/css" />
+  <script src="<?php echo BACK_PAGES_SCRIPT; ?>login.min.js" type="text/javascript"></script>
 
 
 
-
-
-            <div class="md-card-content large-padding uk-position-relative" id="login_help" style="display: none">
-                <button type="button" class="uk-position-top-right uk-close uk-margin-right uk-margin-top back_to_login"></button>
-                <h2 class="heading_b uk-text-success">Can't log in?</h2>
-                <p>Here’s the info to get you back in to your account as quickly as possible.</p>
-                <p>First, try the easiest thing: if you remember your password but it isn’t working, make sure that Caps Lock is turned off, and that your email is spelled correctly, and then try again.</p>
-                <p>If your password still isn’t working, it’s time to <a href="#" id="password_reset_show">reset your password</a>.</p>
-            </div>
-            <div class="md-card-content large-padding" id="login_password_reset" style="display: none">
-                <button type="button" class="uk-position-top-right uk-close uk-margin-right uk-margin-top back_to_login"></button>
-                <h2 class="heading_a uk-margin-large-bottom">Reset password</h2>
-                <form>
-                    <div class="uk-form-row">
-                        <label for="login_email_reset">Your email address</label>
-                        <input class="md-input" type="text" id="login_email_reset" name="login_email_reset" />
-                    </div>
-                    <div class="uk-margin-medium-top">
-                        <a href="index.html" class="md-btn md-btn-danger md-btn-block">Reset password</a>
-                    </div>
-                </form>
-            </div>
-            <div class="md-card-content large-padding" id="register_form" style="display: none">
-                <button type="button" class="uk-position-top-right uk-close uk-margin-right uk-margin-top back_to_login"></button>
-                <h2 class="heading_a uk-margin-medium-bottom">Create an account</h2>
-                <form>
-                    <div class="uk-form-row">
-                        <label for="register_email">Email</label>
-                        <input class="md-input" type="text" id="register_email" name="register_email" />
-                    </div>
-                    <div class="uk-form-row">
-                        <label for="register_password">Password</label>
-                        <input class="md-input" type="password" id="register_password" name="register_password" />
-                    </div>
-                    <div class="uk-form-row">
-                        <label for="register_password_repeat">Repeat Password</label>
-                        <input class="md-input" type="password" id="register_password_repeat" name="register_password_repeat" />
-                    </div>
-                    <div class="uk-form-row">
-                        <label for="register_email">E-mail</label>
-                        <input class="md-input" type="text" id="register_email" name="register_email" />
-                    </div>
-                    <div class="uk-margin-medium-top">
-                        <a href="dashboard.php" class="md-btn md-btn-danger md-btn-block md-btn-large">Sign Up</a>
-                    </div>
-                </form>
-            </div>
+    <body class=" login">
+        <!-- BEGIN LOGO -->
+        <div class="logo">
+            <a href="index.html">
+              <img src="backend/img/logo.png" alt="logo" class="logo-default" width="52">
+            </a>
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN LOGIN -->
+        <div class="content">
+            <!-- BEGIN LOGIN FORM -->
+            <form method="post" action="" accept-charset="UTF-8" class="form-horizontal login-form" autocomplete="off" id="login_form" name="login_form">
+                <h3 class="form-title font-green">Sign In</h3>
+                <div class="alert alert-danger display-hide">
+                    <button class="close" data-close="alert"></button>
+                    <span> Enter any username and password. </span>
+                </div>
+                <div class="form-group">
+                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                    <label class="control-label visible-ie8 visible-ie9">Email</label>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" /> </div>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">Password</label>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" /> </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn green uppercase">Login</button>
+                    <label class="rememberme check mt-checkbox mt-checkbox-outline">
+                        <input type="checkbox" name="remember" value="1" />Remember
+                        <span></span>
+                    </label>
+                    <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
+                </div>
+                <input name="doLogin" type="hidden" value="1">
+            </form>
+            <!-- END LOGIN FORM -->
+            <!-- BEGIN FORGOT PASSWORD FORM -->
+            <form class="forget-form" action="index.html" method="post">
+                <h3 class="font-green">Forget Password ?</h3>
+                <p> Enter your e-mail address below to reset your password. </p>
+                <div class="form-group">
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" /> </div>
+                <div class="form-actions">
+                    <button type="button" id="back-btn" class="btn green btn-outline">Back</button>
+                    <button type="submit" class="btn btn-success uppercase pull-right">Submit</button>
+                </div>
+            </form>
+            <!-- END FORGOT PASSWORD FORM -->
+        </div>
+        <div class="copyright">
+          2017 © PotboyTreasureBox by
+       <a href="http://clooneit.com" title="We are your Web, System and IT Solutions company ! " target="_blank">ClooneIT</a>
         </div>
 
-    </div>
+    </body>
 
-    <!-- common functions -->
-    <script src="assets/js/common.min.js"></script>
-    <!-- altair core functions -->
-    <script src="assets/js/altair_admin_common.min.js"></script>
-
-    <!-- altair login page functions -->
-    <script src="assets/js/pages/login.min.js"></script>
-
-
-</body>
 </html>
