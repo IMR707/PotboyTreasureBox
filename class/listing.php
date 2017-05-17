@@ -23,6 +23,7 @@ class Listing
     const tb_prod = 'aa_product';
     const tb_spon = 'aa_sponsor';
     const tb_bid = 'aa_bidding';
+    const tb_bidtrans = 'aa_bidding_transaction';
 
     const lTable = 'leads';
     const leTable = 'leadenquiry';
@@ -60,6 +61,54 @@ class Listing
         self::$db = Registry::get('Database');
     }
 
+    public function FEgetBidding($type)
+    {
+        // 1 = top
+      // 2 = end soon
+      // 3 = new
+      // 4 = proce down
+      // 5 = price up
+
+      $where="";
+      $order="";
+
+        switch ($type) {
+        case '1':
+        $where.="";
+        $order.=" Order by participant desc";
+        break;
+        case '2':
+        $where.="";
+        $order.=" Order by percent desc";
+        break;
+        case '3':
+        $where.="";
+        $order.=" Order by b.start_time desc";
+
+        break;
+        case '4':
+        $where.="";
+        $order.=" Order by pr.price desc";
+        break;
+        case '5':
+        $where.="";
+        $order.=" Order by pr.price asc";
+        break;
+      }
+        $sql=  'SELECT b.*,pr.*, (case
+      when (b.bid_base = 1 and b.end_time >= NOW()) THEN 1
+      when (b.bid_base = 2 and b.max_participant > (select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id )) THEN 1
+ ELSE 0 END) as state,
+ (case
+ when (b.bid_base = 1) THEN FLOOR((TIMESTAMPDIFF(MINUTE,b.start_time,NOW())/TIMESTAMPDIFF(MINUTE,b.start_time,b.end_time))*100)
+ when (b.bid_base = 2) THEN ((select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id )/b.max_participant)*100
+END) as percent,
+ (select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id ) as participant FROM '.self::tb_bid." b join ".self::tb_prod." pr on b.product_id=pr.id  $where  having state=1 $order";
+        $row = self::$db->fetch_all($sql);
+      
+      return $row;
+    }
+
     public function FEgetAllConversion($id)
     {
         $sql = 'SELECT *,1 as disable FROM '.self::tb_cr." where active = 1  AND diamond_amount != 0 order by diamond_amount,prio";
@@ -93,7 +142,7 @@ class Listing
 
 
         if ($row&&$id) {
-          // $sql4 = 'SELECT * FROM '.self::tb_drtran." where active = 1 AND customer_id='".$id."' AND date(date_created)<'".$row[0]->date_check."' order by date_created desc";
+            // $sql4 = 'SELECT * FROM '.self::tb_drtran." where active = 1 AND customer_id='".$id."' AND date(date_created)<'".$row[0]->date_check."' order by date_created desc";
           // $row4 = self::$db->fetch_all($sql4);
           // echo $totalrow=count($row);
           // echo $currentrow=count($row4);
@@ -167,15 +216,15 @@ class Listing
         return $row;
     }
 
-    public function FEgetConversion($id,$uid)
+    public function FEgetConversion($id, $uid)
     {
-      $sql = 'SELECT * FROM '.self::tb_cr." where active = 1 AND id ='$id' ";
-      $row = self::$db->first($sql);
-      if($row){
-        $diamond=$row->diamond_amount;
-        $diamond =  - $diamond;
-        $gold=$row->gold_amount;
-        $data = array(
+        $sql = 'SELECT * FROM '.self::tb_cr." where active = 1 AND id ='$id' ";
+        $row = self::$db->first($sql);
+        if ($row) {
+            $diamond=$row->diamond_amount;
+            $diamond =  - $diamond;
+            $gold=$row->gold_amount;
+            $data = array(
                 'customer_id' => $uid,
                 'quote_id' => '',
                 'amount' => $diamond,
@@ -200,12 +249,12 @@ class Listing
                 'order_id' => '',
                 'admin_user_id' => '1',
                 );
-        self::$db->insert(self::tb_rewardtrans, $data);
-        $sql2 = 'SELECT * FROM '.self::tb_rewardcus." where customer_id ='$uid' ";
-        $row2 = self::$db->first($sql2);
-        $tgold=$gold+$row2->total_golds;
-        $tdiamond=$diamond+$row2->total_points;
-        $data2 = array(
+            self::$db->insert(self::tb_rewardtrans, $data);
+            $sql2 = 'SELECT * FROM '.self::tb_rewardcus." where customer_id ='$uid' ";
+            $row2 = self::$db->first($sql2);
+            $tgold=$gold+$row2->total_golds;
+            $tdiamond=$diamond+$row2->total_points;
+            $data2 = array(
 
 
                   'available_points' => $tdiamond,
@@ -213,27 +262,24 @@ class Listing
                   'available_golds' => $tgold,
                   'total_golds' => $tgold
                   );
-        self::$db->update(self::tb_rewardcus, $data2, 'customer_id='.$uid);
+            self::$db->update(self::tb_rewardcus, $data2, 'customer_id='.$uid);
 
-        return "Successfully Claim";
+            return "Successfully Claim";
+        } else {
+            return "Please Retry Again Later";
         }
-        else {
-        return "Please Retry Again Later";
-        }
-
-
     }
 
-    public function FEgetDailyReward($id,$uid)
+    public function FEgetDailyReward($id, $uid)
     {
         $sql = 'SELECT * FROM '.self::tb_dr." where active = 1 AND day_num ='$id' ";
         $row = self::$db->first($sql);
-        if($row){
-          $gold=$row->gold_check?$row->gold_amount:0;
-          $spin=$row->spin_check?$row->spin_amount:0;
+        if ($row) {
+            $gold=$row->gold_check?$row->gold_amount:0;
+            $spin=$row->spin_check?$row->spin_amount:0;
 
-          if($gold){
-            $data = array(
+            if ($gold) {
+                $data = array(
                     'customer_id' => $uid,
                     'quote_id' => '',
                     'amount' => 0,
@@ -258,19 +304,19 @@ class Listing
                     'order_id' => '',
                     'admin_user_id' => '1',
                     );
-            self::$db->insert(self::tb_rewardtrans, $data);
-            $sql2 = 'SELECT * FROM '.self::tb_rewardcus." where customer_id ='$uid' ";
-            $row2 = self::$db->first($sql2);
-            $tgold=$gold+$row2->total_golds;
-            $data2 = array(
+                self::$db->insert(self::tb_rewardtrans, $data);
+                $sql2 = 'SELECT * FROM '.self::tb_rewardcus." where customer_id ='$uid' ";
+                $row2 = self::$db->first($sql2);
+                $tgold=$gold+$row2->total_golds;
+                $data2 = array(
                       'available_golds' => $tgold,
                       'total_golds' => $tgold
                       );
-            self::$db->update(self::tb_rewardcus, $data2, 'customer_id='.$uid);
-          }
+                self::$db->update(self::tb_rewardcus, $data2, 'customer_id='.$uid);
+            }
 
-          if($spin){
-            $data = array(
+            if ($spin) {
+                $data = array(
                     'customer_id' => $uid,
                     'amount' => $spin,
                     'title' => 'PotBoy Daily Reward - Day '.$id,
@@ -291,29 +337,27 @@ class Listing
                     'order_id' => '',
                     'admin_user_id' => '1',
                     );
-            self::$db->insert(self::tb_rewardSpintrans, $data);
-            $sql2 = 'SELECT * FROM '.self::tb_rewardcus." where customer_id ='$uid' ";
-            $row2 = self::$db->first($sql2);
-            $tspin=$spin+$row2->total_spin;
-            $data2 = array(
+                self::$db->insert(self::tb_rewardSpintrans, $data);
+                $sql2 = 'SELECT * FROM '.self::tb_rewardcus." where customer_id ='$uid' ";
+                $row2 = self::$db->first($sql2);
+                $tspin=$spin+$row2->total_spin;
+                $data2 = array(
                       'total_spin' => $tspin,
                       );
-            self::$db->update(self::tb_rewardcus, $data2, 'customer_id='.$uid);
-          }
+                self::$db->update(self::tb_rewardcus, $data2, 'customer_id='.$uid);
+            }
 
-          $data = array(
+            $data = array(
                   'customer_id' => $uid,
                   'date_updated' => 'now()',
                   'date_created' => 'now()',
                   'active' => 1,
                   );
-          self::$db->insert(self::tb_drtran, $data);
-        return "Successfully Claim";
+            self::$db->insert(self::tb_drtran, $data);
+            return "Successfully Claim";
+        } else {
+            return "Please Retry Again Later";
         }
-        else {
-        return "Please Retry Again Later";
-        }
-
     }
 
 

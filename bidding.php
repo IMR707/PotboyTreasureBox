@@ -6,8 +6,11 @@ $pagemenu="BID";
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
-
-// $announcement=$list->FEgetAnnouncement();
+$topbid=$list->FEgetBidding('1');
+$endsoonbid=$list->FEgetBidding('2');
+$newbid=$list->FEgetBidding('3');
+$pdbid=$list->FEgetBidding('4');
+$pubid=$list->FEgetBidding('5');
 
 // pre($homeSlider);
 // if (!$user->logged_in) {
@@ -56,8 +59,9 @@ use Carbon\Carbon;
 
 
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-                  <img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
+                  <a href="instantclaim.php"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
                   <h2>Instant Claim</h2>
+                  </a>
               </div>
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
                   <img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="">
@@ -96,145 +100,65 @@ use Carbon\Carbon;
 									<div class="tab-content">
 										<div class="tab-pane active" id="solid-rounded-justified-tab1">
 
+                      <?php foreach ($topbid as $key => $value):
+                        pre($value);
+                        ?>
+
+                        <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+                      				<div class="panel panel-flat timeline-content">
+            										<div class="panel-body">
+                                  <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+            											<a href="#" class="display-block content-group">
+            											  <img src="<?php echo UPLOADURL;?>cover.jpg" class="img-responsive" alt="">
+            											</a>
+                                    <h6 class="content-group text-left"><?php echo styleword($value->name);?>-min 5,00 Gold</h6>
+                                    <div class="progress">
+                      								<div class="progress-bar bg-purple" style="width: 92.8%">
+                      									<span><i id="" class="icon-spinner4 spinner position-left"></i>92.8% Complete</span>
+                      								</div>
+                      							</div>
+                                  </div>
+
+                                    <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+                                      <br>
+                                      <div class="clearfix"></div>
+
+              												<span class="pull-left">
+                                        <ul class="list-inline list-inline-condensed heading-text">
+                													<li><a href="#" class="text-default">Need 900</a></li>
+                													<li><a href="#" class="text-default">Bids 800</a></li>
+                												</ul>
+              												</span>
+
+                                      <span class="pull-right">
+                                        <a href="#" class="btn bg-purple">Join Now</a>
+                                      </span>
+              											</div>
+
+            										</div>
+
+            										<div class="panel-footer panel-footer-transparent">
+
+            										</div>
+            									</div>
+
+
+                        </div>
+
+                      <?php endforeach; ?>
+
+                      <!-- =$list->FEgetBidding('1');
+                      $endsoonbid=$list->FEgetBidding('2');
+                      $newbid=$list->FEgetBidding('3');
+                      $pdbid=$list->FEgetBidding('4');
+                      $pubid=$list->FEgetBidding('5'); -->
 
 
 
-                      <div class="col-sm-6 col-md-6 col-xs-6 text-center">
-                    				<div class="panel panel-flat timeline-content">
-          										<div class="panel-body">
-          											<a href="#" class="display-block content-group">
-          												<img src="<?php echo UPLOADURL;?>cover.jpg" class="img-responsive" alt="">
-          											</a>
-
-          											<h6 class="content-group text-left">
-          												Fitbit Surge (Small)-min 5,00 Gold</h6>
-
-                                  <div class="progress">
-                    								<div class="progress-bar bg-purple" style="width: 92.8%">
-                    									<span><i id="" class="icon-spinner4 spinner position-left"></i>92.8% Complete</span>
-                    								</div>
-                    							</div>
-          										</div>
-
-          										<div class="panel-footer panel-footer-transparent">
-          											<div class="heading-elements">
-          												<ul class="list-inline list-inline-condensed heading-text">
-          													<li><a href="#" class="text-default">Need 900</a></li>
-
-          												</ul>
-
-          												<span class="heading-btn pull-right">
-          													<a href="#" class="btn bg-purple">Join Now</a>
-          												</span>
-          											</div>
-          										</div>
-          									</div>
 
 
-                      </div>
 
 
-                      <div class="col-sm-6 col-md-6 col-xs-6 text-center">
-                    				<div class="panel panel-flat timeline-content">
-          										<div class="panel-body">
-          											<a href="#" class="display-block content-group">
-          												<img src="<?php echo UPLOADURL;?>cover.jpg" class="img-responsive" alt="">
-          											</a>
-
-          											<h6 class="content-group text-left">
-          												Fitbit Surge (Small)-min 5,00 Gold</h6>
-
-                                  <div class="progress">
-                    								<div class="progress-bar bg-purple" style="width: 85%">
-                    									<span><i id="" class="icon-spinner4 spinner position-left"></i>85% Complete</span>
-                    								</div>
-                    							</div>
-          										</div>
-
-          										<div class="panel-footer panel-footer-transparent">
-          											<div class="heading-elements">
-          												<ul class="list-inline list-inline-condensed heading-text">
-          													<li><a href="#" class="text-default">Need 900</a></li>
-          													<li><a href="#" class="text-default">Bids 800</a></li>
-          												</ul>
-
-          												<span class="heading-btn pull-right">
-          													<a href="#" class="btn bg-purple">Claim Now</a>
-          												</span>
-          											</div>
-          										</div>
-          									</div>
-
-
-                      </div>
-
-                      <div class="col-sm-6 col-md-6 col-xs-6 text-center">
-                    				<div class="panel panel-flat timeline-content">
-          										<div class="panel-body">
-          											<a href="#" class="display-block content-group">
-          												<img src="<?php echo UPLOADURL;?>cover.jpg" class="img-responsive" alt="">
-          											</a>
-
-          											<h6 class="content-group text-left">
-          												Fitbit Surge (Small)-min 5,00 Gold</h6>
-
-                                  <div class="progress">
-                    								<div class="progress-bar bg-purple" style="width: 85%">
-                    									<span><i id="" class="icon-spinner4 spinner position-left"></i>85% Complete</span>
-                    								</div>
-                    							</div>
-          										</div>
-
-          										<div class="panel-footer panel-footer-transparent">
-          											<div class="heading-elements">
-          												<ul class="list-inline list-inline-condensed heading-text">
-          													<li><a href="#" class="text-default">Need 900</a></li>
-          													<li><a href="#" class="text-default">Bids 800</a></li>
-          												</ul>
-
-          												<span class="heading-btn pull-right">
-          													<a href="#" class="btn bg-purple">Claim Now</a>
-          												</span>
-          											</div>
-          										</div>
-          									</div>
-
-
-                      </div>
-
-                      <div class="col-sm-6 col-md-6 col-xs-6 text-center">
-                    				<div class="panel panel-flat timeline-content">
-          										<div class="panel-body">
-          											<a href="#" class="display-block content-group">
-          												<img src="<?php echo UPLOADURL;?>cover.jpg" class="img-responsive" alt="">
-          											</a>
-
-          											<h6 class="content-group text-left">
-          												Fitbit Surge (Small)-min 5,00 Gold</h6>
-
-                                  <div class="progress">
-                    								<div class="progress-bar bg-purple" style="width: 85%">
-                    									<span><i id="" class="icon-spinner4 spinner position-left"></i>85% Complete</span>
-                    								</div>
-                    							</div>
-          										</div>
-
-          										<div class="panel-footer panel-footer-transparent">
-          											<div class="heading-elements">
-          												<ul class="list-inline list-inline-condensed heading-text">
-          													<li><a href="#" class="text-default">Need 900</a></li>
-          													<li><a href="#" class="text-default">Bids 800</a></li>
-          												</ul>
-
-          												<span class="heading-btn pull-right">
-          													<a href="#" class="btn bg-purple">Claim Now</a>
-          												</span>
-          											</div>
-          										</div>
-          									</div>
-
-
-                      </div>
 
 
 
