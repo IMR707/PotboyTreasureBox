@@ -9,6 +9,55 @@ if (!defined("_VALID_PHP")) {
     die('Direct access to this location is not allowed.');
 }
 
+
+function sortparticipantuptodown($item1,$item2) {
+  if ($item1->participant == $item2->participant) return 0;
+  return $item1->participant > $item2->participant ? -1 : 1;
+}
+
+function sortparticipantdowntoup($item1,$item2) {
+  if ($item1->participant == $item2->participant) return 0;
+  return $item1->participant < $item2->participant ? -1 : 1;
+}
+
+function sortpercentuptodown($item1,$item2) {
+  if ($item1->percent == $item2->percent) return 0;
+  return $item1->percent > $item2->percent ? -1 : 1;
+}
+
+function sortpercentdowntoup($item1,$item2) {
+  if ($item1->percent == $item2->percent) return 0;
+  return $item1->percent < $item2->percent ? -1 : 1;
+}
+
+
+function sortnewuptodown($item1,$item2) {
+  if ($item1->start_time == $item2->start_time) return 0;
+  return $item1->start_time > $item2->start_time ? -1 : 1;
+}
+
+function sortnewdowntoup($item1,$item2) {
+  if ($item1->start_time == $item2->start_time) return 0;
+  return $item1->start_time < $item2->start_time ? -1 : 1;
+}
+
+function sortpriceuptodown($item1,$item2) {
+  if ($item1->price == $item2->price) return 0;
+  return $item1->price > $item2->price ? -1 : 1;
+}
+
+function sortpricedowntoup($item1,$item2) {
+  if ($item1->price == $item2->price) return 0;
+  return $item1->price < $item2->price ? -1 : 1;
+}
+
+function altest($value) {
+?>ruzz
+<?php echo $value;?>
+<?php
+}
+
+
 function jp($res)
 {
     $jsonPretty = new Camspiers\JsonPretty\JsonPretty;

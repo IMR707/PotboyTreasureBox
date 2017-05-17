@@ -25,6 +25,9 @@ class Listing
     const tb_bid = 'aa_bidding';
     const tb_bidtrans = 'aa_bidding_transaction';
 
+    const tb_claim = 'aa_instantclaim';
+    const tb_vouc = 'aa_voucher';
+
     const lTable = 'leads';
     const leTable = 'leadenquiry';
     const custleTable = 'custenquiry';
@@ -63,38 +66,6 @@ class Listing
 
     public function FEgetBidding($type)
     {
-        // 1 = top
-      // 2 = end soon
-      // 3 = new
-      // 4 = proce down
-      // 5 = price up
-
-      $where="";
-      $order="";
-
-        switch ($type) {
-        case '1':
-        $where.="";
-        $order.=" Order by participant desc";
-        break;
-        case '2':
-        $where.="";
-        $order.=" Order by percent desc";
-        break;
-        case '3':
-        $where.="";
-        $order.=" Order by b.start_time desc";
-
-        break;
-        case '4':
-        $where.="";
-        $order.=" Order by pr.price desc";
-        break;
-        case '5':
-        $where.="";
-        $order.=" Order by pr.price asc";
-        break;
-      }
         $sql=  'SELECT b.*,b.id as bidid,pr.*, (case
       when (b.bid_base = 1 and b.end_time >= NOW()) THEN 1
       when (b.bid_base = 2 and b.max_participant > (select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id )) THEN 1
@@ -103,11 +74,178 @@ class Listing
  when (b.bid_base = 1) THEN FLOOR((TIMESTAMPDIFF(MINUTE,b.start_time,NOW())/TIMESTAMPDIFF(MINUTE,b.start_time,b.end_time))*100)
  when (b.bid_base = 2) THEN ((select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id )/b.max_participant)*100
 END) as percent,
- (select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id ) as participant FROM '.self::tb_bid." b join ".self::tb_prod." pr on b.product_id=pr.id  $where  having state=1 $order";
+ (select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id ) as participant FROM '.self::tb_bid." b join ".self::tb_prod." pr on b.product_id=pr.id having state=1";
         $row = self::$db->fetch_all($sql);
-
-      return $row;
+        $row2=$this->FEgetAllClaim();
+        $row3=array_merge($row,$row2);
+        // 1 = top
+      // 2 = end soon
+      // 3 = new
+      // 4 = proce down
+      // 5 = price up
+        switch ($type) {
+        case '1':
+        usort($row3, "sortparticipantuptodown");
+        break;
+        case '2':
+        usort($row3, "sortpercentuptodown");
+        break;
+        case '3':
+        usort($row3, "sortnewuptodown");
+        break;
+        case '4':
+        usort($row3, "sortpriceuptodown");
+        break;
+        case '5':
+        usort($row3, "sortpricedowntoup");
+        break;
+      }
+      return $row3;
     }
+
+    public function FEgetBiddingUI($value){
+      if($value->bid_base==1)pre($value);
+      ?>
+
+      <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+            <div class="panel panel-flat timeline-content">
+              <div class="panel-body">
+                <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+                <a href="#" class="display-block content-group">
+                  <img src="<?php echo BACK_UPLOADS;?><?php echo $value->img_header;?>" class="img-responsive" alt="">
+                </a>
+                  <h6 class="content-group text-left"><?php echo styleword($value->name);?>-<?php if($value->bid_base!=3){ echo " min ";} echo $value->min_bid; echo ($value->bid_type==1)?" Gold":" Diamond";?></h6>
+                  <div class="progress">
+                    <div class="progress-bar bg-purple" id='textval<?php echo $value->bidid;?>' style="width: <?php echo stylewordpercent($value->percent);?>">
+                      <?php if($value->percent>10){
+                        ?>
+                        <?php echo "<span id='text".$value->bidid."'>".stylewordpercent($value->percent)."</span>";?>
+                        <?php
+                      }?>
+                    </div>
+                    <?php if($value->percent<10){
+                      ?>
+                      <?php echo "<span id='text".$value->bidid."'>".stylewordpercent($value->percent)."</span>";?>
+                      <?php
+                    }?>
+                  </div>
+                </div>
+
+                  <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+                    <br>
+                    <div class="clearfix"></div>
+
+                    <span class="pull-left">
+
+
+                        <?php
+
+
+
+                        switch ($value->bid_base) {
+                          case '1':
+
+                          // $dt=$value->end_time->diffForHumans(\Carbon\Carbon::now());
+                          // pre($dt);
+                            ?>
+                            <ul class="list-inline list-inline-condensed heading-text pull-left">
+                            <li>Close in</li>
+                            </ul>
+                            <br>
+                            <ul class="list-inline list-inline-condensed heading-text pull-left">
+                            <li><b><?php echo $value->max_participant;?></b></li>
+                            </ul>
+                            <br>
+                            <?php
+                            break;
+
+                            case '2':
+                            ?>
+                            <ul class="list-inline list-inline-condensed heading-text pull-left">
+                            <li>Need <b><?php echo $value->max_participant;?></b> Participant</li>
+                            </ul>
+                            <br>
+                            <ul class="list-inline list-inline-condensed heading-text pull-left">
+                            <li>Current Participant <b><?php echo $value->participant;?></b> <br></li>
+                            </ul>
+                            <?php
+                              break;
+                              case '3':
+                              ?>
+                              <ul class="list-inline list-inline-condensed heading-text pull-left">
+                              <li>Available Voucher <b><?php echo $value->max_participant;?></b></li>
+                              </ul>
+                              <br>
+                              <ul class="list-inline list-inline-condensed heading-text pull-left">
+                              <li>Claimed Voucher <b><?php echo $value->participant;?></b> <br></li>
+                              </ul>
+                              <?php
+                                break;
+
+                        }?>
+
+
+
+
+
+                    </span>
+
+                    <span class="pull-right">
+                      <?php switch ($value->bid_base) {
+                        case '3':
+                          ?>
+                          <a href="claimpage.php?bid=<?php echo $value->bidid;?>" class="btn bg-purple">Claim Now</a>
+                          <?php
+                          break;
+
+                        default:
+                        ?>
+                        <a href="bidpage.php?bid=<?php echo $value->bidid;?>" class="btn bg-purple">Join Now</a>
+
+                        <?php
+                          break;
+                      }?>
+
+                    </span>
+                  </div>
+
+              </div>
+
+              <div class="panel-footer panel-footer-transparent">
+
+              </div>
+            </div>
+
+
+      </div>
+
+      <?php
+      }
+
+    public function FEgetAllClaim()
+    {
+      $sql = 'SELECT *,img_thumbnail as img_header,
+      3 as bid_base,
+      1 as bid_type,
+      id as bidid,
+      title as name,
+      gold_amount as min_bid,
+      (select count(*) FROM '.self::tb_vouc.' vc where vc.instantclaim_id=cl.id AND cust_id IS NOT NULL) as participant,
+      (select count(*) FROM '.self::tb_vouc.' vc where vc.instantclaim_id=cl.id ) as max_participant,
+      ((select count(*) FROM '.self::tb_vouc.' vc where vc.instantclaim_id=cl.id AND cust_id IS NOT NULL)/(select count(*) FROM '.self::tb_vouc.' vc where vc.instantclaim_id=cl.id ))*100 as percent
+       FROM '.self::tb_claim." cl where active = 1 AND publish = 1 order by percent desc";
+      $row = self::$db->fetch_all($sql);
+      return $row;
+
+
+
+    }
+
+
+
+
+    // const tb_claim = 'aa_instantclaim';
+    // const tb_vouc = 'aa_voucher';
 
     public function FEgetAllConversion($id)
     {
