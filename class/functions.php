@@ -206,6 +206,14 @@ function styleword($var)
     return $var;
 }
 
+function stylewordpercent($var)
+{
+
+    $var=strtolower(floor($var));
+    $var=ucwords($var);
+    return $var."%";
+}
+
 function styleword2($var)
 {
     $var=strtolower($var);

@@ -8,6 +8,7 @@ if (!defined("_VALID_PHP")) {
   class Users
   {
       const uTable = "customer_entity";
+      const aTable = "customer_address_entity";
       public $logged_in = null;
       public $uid = 0;
       public $name;
@@ -22,7 +23,9 @@ if (!defined("_VALID_PHP")) {
       public $rememberMe;
       public $userlevel;
       public $userlevelText;
-
+      public $accverify=0;
+      public $userAddress=0;
+      public $useraccess=0;
       public $last;
       private $lastlogin = "NOW()";
       private static $db;
@@ -62,11 +65,26 @@ if (!defined("_VALID_PHP")) {
               $this->name = $_SESSION['name'] = $row->firstname." ".$row->middlename." ".$row->lastname;
               $this->userlevel = $_SESSION['userlevel'] = 1;
               $this->cookie_id = $_SESSION['cookie_id'];
+              $this->accverify = $_SESSION['accverify'] = $row->accverify;
+              $this->userAddress = $_SESSION['userAddress'] =(!$row->default_shipping)?0:$row->default_shipping;
+              if($this->accverify){
+                $this->useraccess=2;
+                if(!$this->userAddress){
+                  $this->useraccess=1;
+                }
+              }
+              // useraccess
+              // 0 no acc verify
+              // 1 no default address
+              // 2 verify and have default address
               return 1;
           } else {
               return 0;
           }
       }
+
+
+
       private function getUserInfo($email)
       {
           $email = sanitize($email);

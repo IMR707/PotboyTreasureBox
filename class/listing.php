@@ -95,7 +95,7 @@ class Listing
         $order.=" Order by pr.price asc";
         break;
       }
-        $sql=  'SELECT b.*,pr.*, (case
+        $sql=  'SELECT b.*,b.id as bidid,pr.*, (case
       when (b.bid_base = 1 and b.end_time >= NOW()) THEN 1
       when (b.bid_base = 2 and b.max_participant > (select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id )) THEN 1
  ELSE 0 END) as state,
@@ -105,7 +105,7 @@ class Listing
 END) as percent,
  (select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id ) as participant FROM '.self::tb_bid." b join ".self::tb_prod." pr on b.product_id=pr.id  $where  having state=1 $order";
         $row = self::$db->fetch_all($sql);
-      
+
       return $row;
     }
 

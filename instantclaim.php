@@ -54,22 +54,22 @@ use Carbon\Carbon;
         <div class="panel panel-flat timeline-content">
           <div class="panel-body">
 
-            <div class="col-sm-4 col-md-4 col-xs-12 text-center">
+            <div class="col-sm-3 col-md-3 col-xs-12 text-center">
 
               <a href="#" class="display-block content-group">
-                <div class="ribbon-wrapper-green"><div class="ribbon-green">HOT</div></div>
-                <img src="<?php echo UPLOADURL;?>cover.jpg" class="img-responsive" alt="">
+                <!-- <div class="ribbon-wrapper-green"><div class="ribbon-green">HOT</div></div> -->
+                <img src="<?php echo BACK_UPLOADS;?>thumbnail.png" class="img-responsive" alt="">
               </a>
 
             </div>
 
 
-            <div class="col-sm-5 col-md-5 col-xs-12 text-center">
+            <div class="col-sm-6 col-md-6 col-xs-12 text-center">
 
               <h6 class="content-group text-left">Fitbit Surge (Small)-min 5,00 Gold</h6>
               <div class="progress">
                 <div class="progress-bar bg-purple" style="width: 92.8%">
-                  <span><i id="" class="icon-spinner4 spinner position-left"></i>92.8%</span>
+                  <span>92.8%</span>
                 </div>
               </div>
 
