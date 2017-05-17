@@ -133,13 +133,13 @@ if (!$user->logged_in) {
 
                             <?php
 
-                            if(isset($_SESSION['noti_slider'])){
-                              if($_SESSION['noti_slider']['status'] == 'error'){
-                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_slider']['msg'].'</div>';
-                              }elseif($_SESSION['noti_slider']['status'] == 'success'){
-                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_slider']['msg'].'</div>';
+                            if(isset($_SESSION['noti'])){
+                              if($_SESSION['noti']['status'] == 'error'){
+                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
+                              }elseif($_SESSION['noti']['status'] == 'success'){
+                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
                               }
-                              unset($_SESSION['noti_slider']);
+                              unset($_SESSION['noti']);
                             }
 
                             $sliders = $fz->getAnnouncement();
@@ -174,7 +174,7 @@ if (!$user->logged_in) {
                                   </td>
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateAnnouncement" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-danger btn_delete" id="<?php echo $row->id; ?>"><i class="fa fa-trash"></i></button>
                                   </td>
                                 </tr>
                               <?php
@@ -281,6 +281,12 @@ if (!$user->logged_in) {
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+	$('.btn_delete').on('click',function(){
+		var id = $(this).attr('id');
+		deleteItem(id,'aa_announcement');
+	});
+
 
   $('.btn_updateAnnouncement').on('click',function(){
     var id = $(this).attr('id');

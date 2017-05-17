@@ -181,7 +181,7 @@ if (!$user->logged_in) {
 
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateConversion" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-danger btn_delete" id="<?php echo $row->id; ?>"><i class="fa fa-trash"></i></button>
                                   </td>
                                 </tr>
 
@@ -208,7 +208,7 @@ if (!$user->logged_in) {
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" placeholder="Package Name" name="package_name" required id="package_name_upd">
                                             </div>
-                                        </div>                                        
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-md-3 control-label">Image</label>
                                             <div class="col-md-9">
@@ -284,6 +284,11 @@ if (!$user->logged_in) {
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+	$('.btn_delete').on('click',function(){
+		var id = $(this).attr('id');
+		deleteItem(id,'aa_conversion');
+	});
 
   $(function(){
   	/*----------  Tukar UL kepada Sortable  ----------*/

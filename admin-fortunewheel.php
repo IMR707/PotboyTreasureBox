@@ -166,13 +166,13 @@ if (!$user->logged_in) {
                           <div class="col-md-12">
                             <?php
 
-                            if(isset($_SESSION['noti_wof'])){
-                              if($_SESSION['noti_wof']['status'] == 'error'){
-                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_wof']['msg'].'</div>';
-                              }elseif($_SESSION['noti_wof']['status'] == 'success'){
-                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti_wof']['msg'].'</div>';
+                            if(isset($_SESSION['noti'])){
+                              if($_SESSION['noti']['status'] == 'error'){
+                                echo '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
+                              }elseif($_SESSION['noti']['status'] == 'success'){
+                                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert"><span>×</span></button>'.$_SESSION['noti']['msg'].'</div>';
                               }
-                              unset($_SESSION['noti_wof']);
+                              unset($_SESSION['noti']);
                             }
 
                             $wofs = $fz->getWof();
@@ -215,7 +215,7 @@ if (!$user->logged_in) {
                                   <td class="text-center"><?php echo $row->wof_percent.' %'; ?></td>
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateWof" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-danger btn_delete" id="<?php echo $row->id; ?>"><i class="fa fa-trash"></i></button>
                                   </td>
                                 </tr>
 
@@ -342,6 +342,11 @@ if (!$user->logged_in) {
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+	$('.btn_delete').on('click',function(){
+		var id = $(this).attr('id');
+		deleteItem(id,'aa_fortune');
+	});
 
   $(function(){
   	/*----------  Tukar UL kepada Sortable  ----------*/

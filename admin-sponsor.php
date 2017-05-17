@@ -159,7 +159,7 @@ if (!$user->logged_in) {
 
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateSponsor" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-danger btn_delete" id="<?php echo $row->id; ?>"><i class="fa fa-trash"></i></button>
                                   </td>
                                 </tr>
 
@@ -233,6 +233,11 @@ if (!$user->logged_in) {
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+  $('.btn_delete').on('click',function(){
+		var id = $(this).attr('id');
+		deleteItem(id,'aa_sponsor');
+	});
 
   $(".summernote").summernote({
       height: 300

@@ -42,9 +42,10 @@
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <script src="<?php echo BACK_PLUGIN; ?>bootstrap-summernote/summernote.min.js" type="text/javascript"></script>
         <script src="<?php echo BACK_PAGES_SCRIPT; ?>components-editors.min.js" type="text/javascript"></script>
+        <script src="<?php echo BACK_PLUGIN; ?>bootbox/bootbox.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
-        <script src="<?php echo BACK_SCRIPT; ?>app.min.js" type="text/javascript"></script>
+        <script src="<?php echo BACK_SCRIPT; ?>app.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="<?php echo BACK_LAYOUT; ?>layout4/scripts/layout.min.js" type="text/javascript"></script>

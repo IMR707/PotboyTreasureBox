@@ -283,7 +283,7 @@ if(!$found && $s_id != 0){
                                       <td class="text-center">
 
                                         <button class="btn btn-sm btn-warning btn_WishListUpd" ids="<?php echo $row2->id; ?>" idspon="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
-                                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-danger btn_delete" id="<?php echo $row2->id; ?>"><i class="fa fa-trash"></i></button>
                                       </td>
                                     </tr>
                                   <?php
@@ -318,6 +318,12 @@ if(!$found && $s_id != 0){
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+  $('.btn_delete').on('click',function(){
+		var id = $(this).attr('id');
+		deleteItem(id,'aa_wishlist');
+	});
+
   var date=new Date();
   var year=date.getFullYear();
   var month=date.getMonth();

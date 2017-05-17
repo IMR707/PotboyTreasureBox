@@ -183,8 +183,14 @@ elseif($_POST['func'] == 'getProductByWishID'){
   $fz->getProductByWishID();
 }
 
+// Delete Item
 
-
+elseif($_POST['func'] == 'deleteItem'){
+  $id = $_POST['id'];
+  $table = $_POST['table'];
+  $fz->deleteItem($id,$table);
+  echo '';
+}
 
 
 

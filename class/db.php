@@ -268,7 +268,7 @@
           'active' => 0
         );
 
-        $res = self::$db->update($table, $data,"id='$id'");
+        $res = $this->update($table, $data,"id='$id'");
 
         return $res;
       }

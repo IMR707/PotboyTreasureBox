@@ -217,11 +217,11 @@ class Fazrin
       );
       $res = self::$db->insert(self::tb_an, $data);
       if(!$res){
-        $_SESSION['noti_slider']['status'] = 'error';
-        $_SESSION['noti_slider']['msg'] = 'Problem occured while inserting data.';
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while inserting data.';
       }else{
-        $_SESSION['noti_slider']['status'] = 'success';
-        $_SESSION['noti_slider']['msg'] = 'New announcement created.';
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'New announcement created.';
       }
       rd('../admin-announcement.php');
       die;
@@ -243,11 +243,11 @@ class Fazrin
       );
       $res = self::$db->update(self::tb_an, $data,"id='$id'");
       if(!$res){
-        $_SESSION['noti_slider']['status'] = 'error';
-        $_SESSION['noti_slider']['msg'] = 'Problem occured while updating data.';
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while updating data.';
       }else{
-        $_SESSION['noti_slider']['status'] = 'success';
-        $_SESSION['noti_slider']['msg'] = 'Data announcement updated.';
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Data announcement updated.';
       }
       rd('../admin-announcement.php');
       die;
@@ -406,14 +406,14 @@ class Fazrin
 
     public function create_wof()
     {
-      $_SESSION['noti_wof'] = '';
+      $_SESSION['noti'] = '';
       $type = $_POST['wof_type'];
       $amount = $_POST['wof_amount'];
       $percent = $_POST['wof_percent'];
 
       if($_FILES['wof_icon']['error'] != 0){
-        $_SESSION['noti_wof']['status'] = 'error';
-        $_SESSION['noti_wof']['msg'] = 'Problem with the uploaded file.';
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem with the uploaded file.';
       }else{
         $img_tmp = $_FILES['wof_icon']['tmp_name'];
         $img_name = $_FILES['wof_icon']['name'];
@@ -430,15 +430,15 @@ class Fazrin
         );
         $res = self::$db->insert(self::tb_wof, $data);
         if(!$res){
-          $_SESSION['noti_wof']['status'] = 'error';
-          $_SESSION['noti_wof']['msg'] = 'Problem occured while inserting data.';
+          $_SESSION['noti']['status'] = 'error';
+          $_SESSION['noti']['msg'] = 'Problem occured while inserting data.';
         }else{
           if(move_uploaded_file($img_tmp, 'uploads/'.$save_name)){
-            $_SESSION['noti_wof']['status'] = 'success';
-            $_SESSION['noti_wof']['msg'] = 'New daily reward package created.';
+            $_SESSION['noti']['status'] = 'success';
+            $_SESSION['noti']['msg'] = 'New daily reward package created.';
           }else{
-            $_SESSION['noti_wof']['status'] = 'error';
-            $_SESSION['noti_wof']['msg'] = 'Problem occured while uploading file.';
+            $_SESSION['noti']['status'] = 'error';
+            $_SESSION['noti']['msg'] = 'Problem occured while uploading file.';
           }
         }
       }
@@ -449,7 +449,7 @@ class Fazrin
 
     public function update_wof()
     {
-      $_SESSION['noti_wof'] = '';
+      $_SESSION['noti'] = '';
       $type = $_POST['wof_type'];
       $amount = $_POST['wof_amount'];
       $percent = $_POST['wof_percent'];
@@ -463,11 +463,11 @@ class Fazrin
       );
       $res = self::$db->update(self::tb_wof, $data,"id='$id'");
       if(!$res){
-        $_SESSION['noti_wof']['status'] = 'error';
-        $_SESSION['noti_wof']['msg'] = 'Problem occured while updating data.';
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while updating data.';
       }else{
-        $_SESSION['noti_wof']['status'] = 'success';
-        $_SESSION['noti_wof']['msg'] = 'Daily reward package updated.';
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Daily reward package updated.';
 
         if(isset($_FILES)){
           if($_FILES['wof_icon']['error'] == 0){
@@ -483,11 +483,11 @@ class Fazrin
               );
               $res = self::$db->update(self::tb_wof, $data,"id='$id'");
 
-              $_SESSION['noti_wof']['status'] = 'success';
-              $_SESSION['noti_wof']['msg'] = 'Daily reward package updated.';
+              $_SESSION['noti']['status'] = 'success';
+              $_SESSION['noti']['msg'] = 'Daily reward package updated.';
             }else{
-              $_SESSION['noti_wof']['status'] = 'error';
-              $_SESSION['noti_wof']['msg'] = 'Problem occured while uploading file.';
+              $_SESSION['noti']['status'] = 'error';
+              $_SESSION['noti']['msg'] = 'Problem occured while uploading file.';
             }
           }
         }
@@ -1677,6 +1677,20 @@ class Fazrin
       return $row;
     }
 
+    /********* DELETE ITEM **********************************************/
+
+    public function deleteItem($id,$table)
+    {
+      $res = self::$db->soft_delete($table, $id);
+
+      if(!$res){
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while deleting data.';
+      }else{
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Data deleted successfully.';
+      }
+    }
 
 
 
