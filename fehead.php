@@ -14,6 +14,7 @@
  <link href="<?php echo FRONTCSS;?>components.css" rel="stylesheet" type="text/css">
  <link href="<?php echo FRONTCSS;?>colors.css" rel="stylesheet" type="text/css">
  <link href="<?php echo FRONTCSS;?>style.css" rel="stylesheet" type="text/css">
+ <link rel="shortcut icon" href="<?php echo BACK_IMG; ?>favicon.png" />
  <!-- /global stylesheets -->
 
  <!-- Core JS files -->
