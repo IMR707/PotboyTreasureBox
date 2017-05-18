@@ -18,6 +18,7 @@
 		"kriswallsmith/buzz": "^0.15.0",
 		 "camspiers/json-pretty": "1.0.*",
 		 "nategood/httpful": "*",
-		 "sunra/php-simple-html-dom-parser": "1.5.1"
+		 "sunra/php-simple-html-dom-parser": "1.5.1",
+		"facebook/graph-sdk": "^5.5"
 	}
 }
