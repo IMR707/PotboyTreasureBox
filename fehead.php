@@ -22,6 +22,8 @@
  <script type="text/javascript" src="<?php echo FRONTJS;?>plugins/ui/nicescroll.min.js"></script>
  <script type="text/javascript" src="<?php echo FRONTJS;?>plugins/ui/drilldown.js"></script>
  <script type="text/javascript" src="<?php echo FRONTJS;?>bootbox.min.js"></script>
+ <script src="<?php echo BACK_PLUGIN; ?>moment.min.js" type="text/javascript"></script>
+ <script type="text/javascript" src="<?php echo BACK_PAGES_SCRIPT; ?>jquery.countdown.js"></script>
 
  <!-- /core JS files -->
 

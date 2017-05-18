@@ -78,33 +78,71 @@ END) as percent,
         $row = self::$db->fetch_all($sql);
         $row2=$this->FEgetAllClaim();
         $row3=array_merge($row,$row2);
-        // 1 = top
-      // 2 = end soon
-      // 3 = new
-      // 4 = proce down
-      // 5 = price up
         switch ($type) {
         case '1':
-        usort($row3, "sortparticipantuptodown");
+        usort($row3, "sortparticipantuptodown");   // 1 = top
         break;
         case '2':
-        usort($row3, "sortpercentuptodown");
+        usort($row3, "sortpercentuptodown"); // 2 = end soon
         break;
         case '3':
-        usort($row3, "sortnewuptodown");
+        usort($row3, "sortnewuptodown");      // 3 = new
         break;
         case '4':
-        usort($row3, "sortpriceuptodown");
+        usort($row3, "sortpriceuptodown"); // 4 = proce down
         break;
         case '5':
-        usort($row3, "sortpricedowntoup");
+        usort($row3, "sortpricedowntoup");// 5 = price up
         break;
       }
       return $row3;
     }
 
     public function FEgetBiddingUI($value){
-      if($value->bid_base==1)pre($value);
+      //if($value->bid_base==1)pre($value);
+      $start_date = $value->start_time;
+      $start = strtotime($start_date);
+
+      $bid_base = $value->bid_base;
+      $max_participant = 0;
+      $total_cur_participant = 0;
+      $percent = 0;
+      $stat='';
+
+      $disp_time = '';
+      $current_time=time();
+
+      if($bid_base == 1){
+        $end_date = $value->end_time;
+        $end = strtotime($end_date);
+
+        $diff = $end - $start;
+        $cdiff = $current_time - $start;
+        //
+        if($current_time < $start){
+          $stat='Start in';
+          $disp_time = $start_date;
+          $percent = 0;
+        }
+        elseif($current_time >= $start && $current_time < $end){
+          $stat='Ending in';
+          $disp_time = $end_date;
+          $percent = floor(( $cdiff / $diff ) * 100);
+        }elseif($current_time >= $end){
+          $percent = 100;
+        }
+        $total_cur_participant =  $value->participant;
+
+      }elseif($bid_base == 2){
+        $disp_time = $start_date;
+        $end_date = '';
+        $max_participant = $value->max_participant;
+        $total_cur_participant =  $value->participant;
+        $percent = floor(($total_cur_participant/$max_participant) * 100);
+      }
+
+
+//$percent=10;
       ?>
 
       <div class="col-sm-6 col-md-6 col-xs-12 text-center">
@@ -112,20 +150,20 @@ END) as percent,
               <div class="panel-body">
                 <div class="col-sm-12 col-md-12 col-xs-12 text-center">
                 <a href="#" class="display-block content-group">
-                  <img src="<?php echo BACK_UPLOADS;?><?php echo $value->img_header;?>" class="img-responsive" alt="">
+                  <img src="<?php echo BACK_UPLOADS;?><?php echo $value->img_header;?>" class="img-responsive" alt="" style="height:80px">
                 </a>
                   <h6 class="content-group text-left"><?php echo styleword($value->name);?>-<?php if($value->bid_base!=3){ echo " min ";} echo $value->min_bid; echo ($value->bid_type==1)?" Gold":" Diamond";?></h6>
                   <div class="progress">
-                    <div class="progress-bar bg-purple" id='textval<?php echo $value->bidid;?>' style="width: <?php echo stylewordpercent($value->percent);?>">
-                      <?php if($value->percent>10){
+                    <div class="progress-bar bg-purple" id='textval<?php echo $value->bidid;?>' style="width: <?php echo stylewordpercent($percent);?>">
+                      <?php if($percent>=15){
                         ?>
-                        <?php echo "<span id='text".$value->bidid."'>".stylewordpercent($value->percent)."</span>";?>
+                        <?php echo "<span id='text".$value->bidid."'>".stylewordpercent($percent)."</span>";?>
                         <?php
                       }?>
                     </div>
-                    <?php if($value->percent<10){
+                    <?php if($percent<15){
                       ?>
-                      <?php echo "<span id='text".$value->bidid."'>".stylewordpercent($value->percent)."</span>";?>
+                      <?php echo "<span id='text".$value->bidid."'>".stylewordpercent($percent)."</span>";?>
                       <?php
                     }?>
                   </div>
@@ -150,10 +188,15 @@ END) as percent,
                             ?>
                             <ul class="list-inline list-inline-condensed heading-text pull-left">
                             <li>Close in</li>
+
+
                             </ul>
                             <br>
                             <ul class="list-inline list-inline-condensed heading-text pull-left">
-                            <li><b><?php echo $value->max_participant;?></b></li>
+                            <li><b><span class="countdown_time" id="disp_time_<?php echo $value->id; ?>" start-time="<?php echo $start_date; ?>" end-time="<?php echo $end_date; ?>">
+                              <?php echo $end_date; ?>
+                            </span>
+                            </b></li>
                             </ul>
                             <br>
                             <?php
@@ -183,10 +226,6 @@ END) as percent,
                                 break;
 
                         }?>
-
-
-
-
 
                     </span>
 
