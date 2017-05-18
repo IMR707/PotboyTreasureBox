@@ -7,7 +7,7 @@ require_once 'init.php';
 $pname = 'Admin Login';
 
 if ($user->logged_in) {
-    redirect_to(SITEURL.'/admin-dashboard.php');
+    //redirect_to(SITEURL.'/admin-dashboard.php');
 }
 if (isset($_POST['doLogin'])) {
     //header('Refresh:0');
