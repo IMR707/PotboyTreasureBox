@@ -57,6 +57,10 @@ $dir = (Registry::get("Core")->site_dir) ? '' . Registry::get("Core")->site_dir 
 $url = preg_replace("#/+#", "/", $_SERVER['HTTP_HOST'] . $dir);
 $site_url = $protocol . "://" . $url;
 define("SITEURL", $site_url);
+define("FB_APPID", '1819562131638393');
+define("FB_APPSECRET",'e810a7d4ba4c172796e3bfad664c2fce');
+
+
 define("ADMINURL", $site_url . "/admin");
 define("UPLOADS", BASEPATH . "uploads/");
 define("FRONTASSETSURL", "frontend/");
@@ -81,6 +85,7 @@ define("BACK_LAYOUT", BACKASSETSURL . "assets/layouts/");
 define("BACK_IMG", BACKASSETSURL . "img/");
 define("BACK_UPLOADS", BACKASSETSURL . "uploads/");
 
+
 define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
 define("FORGOTURL","http://potboy.com.my/customer/account/forgotpassword/");
 define("TNCURL","http://potboy.com.my/terms-conditions");
@@ -101,3 +106,10 @@ if (isset($_GET['mobileview'])) {
   }
 }
 define("MV",isset($_SESSION['mobileview']) ? 1:0);
+if(isset($fb)){
+  $fb = new Facebook\Facebook([
+    'app_id' => FB_APPID,
+    'app_secret' => FB_APPSECRET,
+    'default_graph_version' => 'v2.2',
+    ]);
+}

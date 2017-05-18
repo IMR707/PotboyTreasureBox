@@ -111,6 +111,13 @@ $AllDailyReward = [];
               </div>
             </div>
           <?php endforeach; ?>
+
+
+          <br>ACCOUNT INFORMATION
+          <br>Address Book
+          <br>Potboy Rewards
+          <br>Recent Potboy Diamonds Transactions
+          <br>Recent Potboy Golds Transactions
           </div>
 
 
@@ -121,45 +128,9 @@ $AllDailyReward = [];
  		</div>
     <div class="clearfix"></div>
  		<!-- /page content -->
-  </div>
-
- 	<!-- /page container -->
-  <script type="text/javascript">
-    function dailyreward(day){
-      location.href="dailyReward.php?day="+day;
-    }
     <?php
-     if ($msg) {
-         ?>
-         bootbox.confirm({
-     message: "<?php echo $msg; ?>",
-     buttons: {
-         confirm: {
-             label: 'Yes',
-             className: 'btn-success'
-         }
-     },
-     callback: function (result) {
-         console.log('This was logged in the callback: ' + result);
-         location.href="dailyReward.php";
-     }
- });
-    <?php
-
-     }
+     include 'fefoot.php';
      ?>
-  </script>
-
-<?php if (!MV) {
-     ?>
- 	<!-- Footer -->
-  <br>
- 	<div class="footer text-muted">
-    <center>©Copyright <?php echo date('Y'); ?> by  <a href="<?php echo HOMEURL; ?>">PB Grocery Group Sdn. Bhd. (1209976-H)</a>. All Rights Reserved.</center>
- 	</div>
- 	<!-- /footer -->
-  <?php
- }?>
   </div>
  </body>
  </html>

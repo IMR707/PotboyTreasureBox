@@ -1,4 +1,20 @@
 <?php
+
+$fb = new Facebook\Facebook([
+  'app_id' => '1819562131638393', // Replace {app-id} with your app id
+  'app_secret' => '{app-secret}',
+  'default_graph_version' => 'v2.2',
+  ]);
+
+$helper = $fb->getRedirectLoginHelper();
+
+$permissions = ['email']; // Optional permissions
+$loginUrl = $helper->getLoginUrl('https://potboy.com.my/Potboy/fb-callback.php', $permissions);
+
+echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
+
+
+
 $refurl="";
 if(isset($_SERVER['HTTP_REFERER'])){
   $refurl=substr(isset($_SERVER['HTTP_REFERER']), strrpos($_SERVER['HTTP_REFERER'], '/') + 1)=='login.php'? "":$_SERVER['HTTP_REFERER'];
