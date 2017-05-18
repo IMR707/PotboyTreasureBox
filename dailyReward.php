@@ -42,7 +42,7 @@ if (isset($_GET['day'])) {
               $type=5;
             }
              ?>
-            <div class="col-md-4 col-sm-4 col-xs-4 ">
+            <div class="col-md-4 col-sm-4 col-xs-12 ">
               <div class="panel panel-flat <?php echo $today? 'today' : 'not-today';?>">
                 <div class="panel-heading" style="padding:10px 10px;">
                   <div class="text-center daily-title bg-yellow-gold img-rounded">Day <?php echo $value->day_num;?></div>
