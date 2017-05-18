@@ -2,7 +2,7 @@
 	"description": "Potboy Treasure box",
 	"name": "cloonegit/PotboyTreasureBox",
 	"type": "project",
-	"homepage": "http://potboy.com.my/treasure",
+	"homepage": "https://potboy.com.my/treasure",
 	"license": "MIT",
 	"require": {
 		"phpoffice/phpexcel": "dev-master",

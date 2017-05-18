@@ -208,7 +208,7 @@ if (!defined("_VALID_PHP")) {
           $row = self::$db->fetch($result);
           $error='';
           $userData = array("username" =>$email, "password" => $pass);
-          $ch = curl_init("http://potboy.com.my/index.php/rest/V1/integration/customer/token");
+          $ch = curl_init("https://potboy.com.my/index.php/rest/V1/integration/customer/token");
           curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
           curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($userData));
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

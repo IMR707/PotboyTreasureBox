@@ -86,15 +86,15 @@ define("BACK_IMG", BACKASSETSURL . "img/");
 define("BACK_UPLOADS", BACKASSETSURL . "uploads/");
 
 
-define("SIGNUPURL","http://potboy.com.my/customer/account/create/");
-define("FORGOTURL","http://potboy.com.my/customer/account/forgotpassword/");
-define("TNCURL","http://potboy.com.my/terms-conditions");
+define("SIGNUPURL","https://potboy.com.my/customer/account/create/");
+define("FORGOTURL","https://potboy.com.my/customer/account/forgotpassword/");
+define("TNCURL","https://potboy.com.my/terms-conditions");
 
 
 define("WEBNAME", " | Potboy Treasure box");
 define("UPLOADURL", SITEURL . "/uploads/");
-define("HOMEURL", "http://potboy.com.my/");
-define("HOMETBURL", "http://potboy.com.my/treasurebox");
+define("HOMEURL", "https://potboy.com.my/");
+define("HOMETBURL", "https://potboy.com.my/treasurebox");
 if (isset($_GET['mobileview'])) {
     switch ($_GET['mobileview']) {
     case '0':
