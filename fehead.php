@@ -55,9 +55,7 @@ if($log=='success')
  <script type="text/javascript" src="<?php echo BACK_PAGES_SCRIPT; ?>jquery.countdown.js"></script>
  <?php //pre($user);
 
-$ua=$user->getUserAddress(($user->logged_in) ? '188':0);
-//$ua=$user->getUserMobile(($user->logged_in) ? $user->uid:0);
-pre($ua);
+// $ua=$user->getUserAddress(($user->logged_in) ? '188':0);
  ?>
  <script type="text/javascript">
 
@@ -463,119 +461,59 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 
            <div class="text-center">
 
-             <h5 class="content-group">Complete your Details <small class="display-block">Address and Mobile Number</small></h5>
+             <h5 class="content-group">Please Select and Verify <small class="display-block">Your Mobile Number</small></h5>
            </div>
            <?php if($errormsg){?>
            <span class="help-block text-danger"><?php echo $errormsg;?></span>
            <?php }?>
 
            <?php
-           $ud=$user->getUserbyID(($user->logged_in) ? $user->uid:0);
+           $um=$user->getUserMobile(($user->logged_in) ? $user->uid:0);
+
+
            $fn=$ud?$ud->firstname:"";
            $ln=$ud?$ud->lastname:"";
            ?>
 
 
-          <div class="col-sm-6 col-md-6 col-xs-12 text-center">
 
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="First Name" value="<?php echo $fn;?>" required name="firstname">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Last Name" value="<?php echo $ln;?>" required name="lastname">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
+           <div class="row">
+           <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
+             <div class="form-group has-feedback has-feedback-left">
+               <select class="form-control" required name="region">
+                 <?php foreach ($um as $key => $value):  ?>
+                   <option value="<?php echo $value['id'];?>" <?php echo $value['default']?"selected":"";?>><?php echo $key;?></option>
+                 <?php endforeach; ?>
+               </select>
+             </div>
+           </div>
+           </div>
 
 
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Phone number" required name="telephone">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
 
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Fax number"  name="fax">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
+           <div class="row">
+           <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 
+               <input type="text"  class="form-control" placeholder="TAC Code" name="" value="" required>
 
-          </div>
+           </div>
 
-          <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+           </div>
+           <div class="row">
+           <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 ">
+             <br>
+             <button type="button" name="button" class="btn btn-warning">Send TAC</button>
+             <span class="text-success">
+               SUCCESSFUL !
+             </span>
 
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Address line 1" required name="address1">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
+           </div>
+           </div>
 
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Address line 2"  name="address2">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="City" required name="city">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-
-            <div class="form-group has-feedback has-feedback-left">
-              <select class="form-control" required name="region">
-                <option class="form-control" value="">-State/Province-</option>
-                <option value="Selangor">Selangor</option>
-                <option value="Kuala Lumpur">Kuala Lumpur</option>
-                <option value="Sarawak">Sarawak</option>
-                <option value="Sabah">Sabah</option>
-                <option value="Pahang">Pahang</option>
-                <option value="Perak">Perak</option>
-                <option value="Johor">Johor</option>
-                <option value="Kelantan">Kelantan</option>
-                <option value="Terengganu">Terengganu</option>
-                <option value="Kedah">Kedah</option>
-                <option value="Negeri Sembilan">Negeri Sembilan</option>
-                <option value="Melaka">Melaka</option>
-                <option value="Pulau Pinang">Pulau Pinang</option>
-                <option value="Perlis">Perlis</option>
-                <option value="Labuan">Labuan</option>
-                <option value="Putrajaya">Putrajaya</option>
-              </select>
-              <input type="hidden" value="0"  name="region_id">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Zip/Postal Code" required name="postcode">
-              <input type="hidden" value="MY"  name="country_id">
-
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-          </div>
-
-           <input type="hidden" value="<?php echo $refurl;?>" name="refurl" />
-           <input type="hidden" value="1" name="doAddress" />
            <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+             <br>
            <div class="form-group">
-             <button type="submit" class="btn bg-purple btn-block">Submit</button>
+             <button type="button" class="btn bg-purple btn-block" data-dismiss="modal">Submit</button>
              <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cancel</button>
            </div>
            </div>

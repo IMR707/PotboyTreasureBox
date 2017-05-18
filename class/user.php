@@ -137,12 +137,14 @@ if (!defined("_VALID_PHP")) {
         $sql = "SELECT default_shipping as ids FROM " . self::uTable . " WHERE  entity_id ='" . $id . "'";
         $row = self::$db->first($sql);
         $lala="";
+        $lili="";
         if($row){
           $lala=", (case
         when (a.entity_id = ".$row->ids.") THEN 1
    ELSE 0 END) as deek";
+   $lili="  ORDER BY deek desc ";
         }
-        $sql2 = "SELECT entity_id as id,telephone as phone $lala FROM " . self::aTable . " a WHERE  parent_id ='" . $id . "' ORDER BY deek desc";
+        $sql2 = "SELECT entity_id as id,telephone as phone $lala FROM " . self::aTable . " a WHERE parent_id ='" . $id . "' $lili ";
         $row2 = self::$db->fetch_all($sql2);
         if(!$row2){
         return [];
@@ -168,11 +170,7 @@ if (!defined("_VALID_PHP")) {
           $listnum[$value->phone]=array('id' => $value->id,'default'=>'0');
         }
 
-
-
-        pre($listnum);
-
-        pre($row2);
+        return $listnum;
 
 
       }
