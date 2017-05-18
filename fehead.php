@@ -1,33 +1,31 @@
 <?php
-
-$fb = new Facebook\Facebook([
-  'app_id' => '1819562131638393', // Replace {app-id} with your app id
-  'app_secret' => '{app-secret}',
-  'default_graph_version' => 'v2.2',
-  ]);
-
-$helper = $fb->getRedirectLoginHelper();
-
-$permissions = ['email']; // Optional permissions
-$loginUrl = $helper->getLoginUrl('https://potboy.com.my/treasurebox/fb-callback.php', $permissions);
-
-//echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
-
-
-
 $refurl="";
 if(isset($_SERVER['HTTP_REFERER'])){
   $refurl=substr(isset($_SERVER['HTTP_REFERER']), strrpos($_SERVER['HTTP_REFERER'], '/') + 1)=='login.php'? "":$_SERVER['HTTP_REFERER'];
 }
 $errormsg='';
+
 if (isset($_POST['dosLogins'])) {
     $log=$user->login($_POST['email'], $_POST['password'],$_POST['refurl']);
 if($log=='success')
-    redirect_to(SITEURL . "/index.php");
+    redirect_to($_SERVER['HTTP_REFERER']);
     else {
       $errormsg=$log;
     }
 }
+
+if (isset($_POST['doAddress'])) {
+    $log=$user->addAddress();
+    // $user->uid
+// if($log=='success')
+//     redirect_to($_SERVER['HTTP_REFERER']);
+//     else {
+//       $errormsg=$log;
+//     }
+}
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,38 +57,33 @@ if($log=='success')
  <?php //pre($user);?>
  <script type="text/javascript">
 
-   function gotolink(url){
-     location.href=url;
-     return;
-     var accstatus=<?php echo $user->accstatus;?>;
-     var userAddress=<?php echo $user->userAddress;?>;
-     switch (accstatus) {
+   function verifylink(url){
+     /*
+     useraccess
+     0 = Guest
+     1 = no default address
+     2 = no verify
+     3 = ok
+     */
+     switch (<?php echo $user->useraccess;?>) {
        case 0:
        alert('Please Login First');
        $("#modal-login").modal();
        break;
-      case 1:
-      if(!userAddress){
-        alert('Please Update Shipping address and Mobile Number');
-        location.href='useraddress.php';
-      }
-      alert(useraccess);
-      $("#modal-login").modal();
-      break;
-      case 2:
-      alert(useraccess);
-      $("#modal-login").modal();
-      break;
-      case 3:
-      alert(useraccess);
-      location.href=url;
-      break;
-       default:
+       case 1:
+           //alert('Please Update Shipping address and Mobile Number');
+       //location.href='useraddress.php';
+       $("#modal-address").modal();
+       break;
+       case 2:
+           alert('Please verify Your Mobile Number');
+       location.href='verifyMobile.php';
+       break;
+       case 3:
+       location.href=url;
+       break;
      }
-     <?php
-//pre($user);
-     ?>
-   }
+}
  </script>
 
  <!-- /core JS files -->
@@ -228,10 +221,9 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
      <div class="modal-content login-form">
 
 
-       <!-- Form -->
        <div class="modal-body">
          <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-         <form method="POST" action="login.php">
+         <form method="POST" action="">
 
            <div class="text-center">
 
@@ -291,13 +283,150 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 
            </form>
        </div>
-       <!-- /form -->
 
      </div>
    </div>
  </div>
  <!-- /login form -->
 
+ <div id="modal-address" class="modal fade">
+   <div class="modal-dialog">
+     <div class="modal-content login-form">
+
+
+       <div class="modal-body">
+         <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+         <form method="POST" action="" role="form">
+
+           <div class="text-center">
+
+             <h5 class="content-group">Complete your Details <small class="display-block">Address and Mobile Number</small></h5>
+           </div>
+           <?php if($errormsg){?>
+           <span class="help-block text-danger"><?php echo $errormsg;?></span>
+           <?php }?>
+
+           <?php
+           $ud=$user->getUserbyID(($user->logged_in) ? $user->uid:0);
+           $fn=$ud?$ud->firstname:"";
+           $ln=$ud?$ud->lastname:"";
+           ?>
+
+
+          <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+
+            <div class="form-group has-feedback has-feedback-left">
+              <input type="text" class="form-control" placeholder="First Name" value="<?php echo $fn;?>" required name="firstname">
+              <div class="form-control-feedback">
+                <i class="icon-user text-muted"></i>
+              </div>
+            </div>
+
+            <div class="form-group has-feedback has-feedback-left">
+              <input type="text" class="form-control" placeholder="Last Name" value="<?php echo $ln;?>" required name="lastname">
+              <div class="form-control-feedback">
+                <i class="icon-user text-muted"></i>
+              </div>
+            </div>
+
+
+            <div class="form-group has-feedback has-feedback-left">
+              <input type="text" class="form-control" placeholder="Phone number" required name="telephone">
+              <div class="form-control-feedback">
+                <i class="icon-user text-muted"></i>
+              </div>
+            </div>
+
+            <div class="form-group has-feedback has-feedback-left">
+              <input type="text" class="form-control" placeholder="Fax number"  name="fax">
+              <div class="form-control-feedback">
+                <i class="icon-user text-muted"></i>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+
+            <div class="form-group has-feedback has-feedback-left">
+              <input type="text" class="form-control" placeholder="Address line 1" required name="address1">
+              <div class="form-control-feedback">
+                <i class="icon-user text-muted"></i>
+              </div>
+            </div>
+
+            <div class="form-group has-feedback has-feedback-left">
+              <input type="text" class="form-control" placeholder="Address line 2"  name="address2">
+              <div class="form-control-feedback">
+                <i class="icon-user text-muted"></i>
+              </div>
+            </div>
+
+            <div class="form-group has-feedback has-feedback-left">
+              <input type="text" class="form-control" placeholder="City" required name="city">
+              <div class="form-control-feedback">
+                <i class="icon-user text-muted"></i>
+              </div>
+            </div>
+
+
+            <div class="form-group has-feedback has-feedback-left">
+              <select class="form-control" required name="region">
+                <option class="form-control" value="">-State/Province-</option>
+                <option value="Selangor">Selangor</option>
+                <option value="Kuala Lumpur">Kuala Lumpur</option>
+                <option value="Sarawak">Sarawak</option>
+                <option value="Sabah">Sabah</option>
+                <option value="Pahang">Pahang</option>
+                <option value="Perak">Perak</option>
+                <option value="Johor">Johor</option>
+                <option value="Kelantan">Kelantan</option>
+                <option value="Terengganu">Terengganu</option>
+                <option value="Kedah">Kedah</option>
+                <option value="Negeri Sembilan">Negeri Sembilan</option>
+                <option value="Melaka">Melaka</option>
+                <option value="Pulau Pinang">Pulau Pinang</option>
+                <option value="Perlis">Perlis</option>
+                <option value="Labuan">Labuan</option>
+                <option value="Putrajaya">Putrajaya</option>
+              </select>
+              <input type="hidden" value="0"  name="region_id">
+              <div class="form-control-feedback">
+                <i class="icon-user text-muted"></i>
+              </div>
+            </div>
+
+            <div class="form-group has-feedback has-feedback-left">
+              <input type="text" class="form-control" placeholder="Zip/Postal Code" required name="postcode">
+              <input type="hidden" value="MY"  name="country_id">
+
+              <div class="form-control-feedback">
+                <i class="icon-user text-muted"></i>
+              </div>
+            </div>
+
+          </div>
+
+           <input type="hidden" value="<?php echo $refurl;?>" name="refurl" />
+           <input type="hidden" value="1" name="doAddress" />
+           <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+           <div class="form-group">
+             <button type="submit" class="btn bg-purple btn-block">Submit</button>
+             <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cancel</button>
+           </div>
+           </div>
+
+
+
+
+           </form>
+           <div class="clearfix"></div>
+       </div>
+
+     </div>
+   </div>
+ </div>
  <!-- /second navbar -->
 <?php
 

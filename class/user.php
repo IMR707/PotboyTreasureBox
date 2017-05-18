@@ -24,7 +24,6 @@ if (!defined("_VALID_PHP")) {
       public $userlevel;
       public $userlevelText;
       public $accverify=0;
-      public $accstatus=0;
       public $userAddress=0;
       public $useraccess=0;
       public $last;
@@ -68,24 +67,68 @@ if (!defined("_VALID_PHP")) {
               $this->cookie_id = $_SESSION['cookie_id'];
               $this->accverify = $_SESSION['accverify'] = $row->accverify;
               $this->userAddress = $_SESSION['userAddress'] =(!$row->default_shipping)?0:$row->default_shipping;
-              if($this->accverify){
-                $this->useraccess=2;
-                if(!$this->userAddress){
-                  $this->useraccess=1;
-                }
+              if(!$this->userAddress){
+                $this->useraccess=1;
               }
-              $this->accstatus=$this->useraccess+1;
-              // useraccess
-              // 0 no acc verify
-              // 1 no default address
-              // 2 verify and have default address
+              elseif($this->accverify){
+                $this->useraccess=3;
+              }
+              else {
+                $this->useraccess=2;
+              }
+              /*
+              useraccess
+              0 = Guest
+              1 = no default address
+              2 = no verify
+              3 = ok
+              */
               return 1;
           } else {
               return 0;
           }
       }
-
-
+      public function addAddress()
+      {
+        $address1=self::$db->escape(sanitize($_POST['address1']));
+        $address2=self::$db->escape(sanitize($_POST['address2']));
+            $data = array(
+                  'parent_id' => $this->uid,
+                  'city' => self::$db->escape(sanitize($_POST['city'])),
+                  'country_id' => self::$db->escape(sanitize($_POST['country_id'])),
+                  'fax' => self::$db->escape(sanitize($_POST['fax'])),
+                  'firstname' =>  self::$db->escape(sanitize($_POST['firstname'])),
+                  'lastname' =>  self::$db->escape(sanitize($_POST['lastname'])),
+                  'postcode' =>  self::$db->escape(sanitize($_POST['postcode'])),
+                  'region' =>  self::$db->escape(sanitize($_POST['region'])),
+                  'region_id' =>  self::$db->escape(sanitize($_POST['region_id'])),
+                  'street' =>  $address2?$address1.PHP_EOL.$address2:$address1,
+                  'telephone' =>  self::$db->escape(sanitize($_POST['telephone'])),
+                  'increment_id'=>NULL,
+                  'created_at' => 'now()',
+                  'updated_at' => 'now()',
+                  'is_active' => 1,
+                  );
+            $data2 = array(
+                'default_shipping' => self::$db->insert(self::aTable, $data)
+            );
+            $res = self::$db->update(self::uTable, $data2, "entity_id='" .$this->uid. "'");
+            return ($res)? "success" : "error";
+      }
+      public function getUserAddress($id)
+      {
+        $sql = "SELECT default_shipping as ids FROM " . self::uTable . " WHERE  entity_id ='" . $id . "'";
+        $row = self::$db->first($sql);
+        $lala="";
+        if($row){
+          $lala=", (case
+        when (a.entity_id = ".$row->ids.") THEN 1
+   ELSE 0 END) as deek";
+        }
+        $sql2 = "SELECT * $lala FROM " . self::aTable . " a WHERE  parent_id ='" . $id . "'";
+        $row2 = self::$db->fetch_all($sql2);
+        return $row2;
+      }
 
       private function getUserInfo($email)
       {
@@ -143,7 +186,9 @@ if (!defined("_VALID_PHP")) {
           } else {
 
 //            pre($url);
-            echo $status = $this->checkStatus($email, $pass);
+
+            $status = $this->checkStatus($email, $pass);
+
               switch ($status) {
                   case 0:
                       Filter::$msgs['email'] ="Login and/or password did not match to the database.";
@@ -208,7 +253,7 @@ if (!defined("_VALID_PHP")) {
           $row = self::$db->fetch($result);
           $error='';
           $userData = array("username" =>$email, "password" => $pass);
-          $ch = curl_init("https://potboy.com.my/index.php/rest/V1/integration/customer/token");
+          $ch = curl_init("http://potboy.com.my/index.php/rest/V1/integration/customer/token");
           curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
           curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($userData));
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -299,7 +344,7 @@ if (!defined("_VALID_PHP")) {
 
       public function getUserbyID($id)
       {
-          $sql = "SELECT * FROM " . self::uTable . " WHERE id = '" . $id."'";
+          $sql = "SELECT * FROM " . self::uTable . " WHERE entity_id = '" . $id."'";
           $row = self::$db->first($sql);
           if (!$id) {
               return false;

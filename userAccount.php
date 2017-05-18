@@ -9,9 +9,9 @@ use Carbon\Carbon;
 
 $AllDailyReward = [];
 
-// if (!$user->logged_in) {
-//     redirect_to(SITEURL.'/index.php');
-// }
+if (!$user->logged_in) {
+    redirect_to(SITEURL.'/index.php');
+}
 ?>
 <?php
  include 'fehead.php';
@@ -111,6 +111,42 @@ $AllDailyReward = [];
               </div>
             </div>
           <?php endforeach; ?>
+          <?php
+
+
+          switch ($user->accstatus) {
+            case '0':
+              ?>
+              <div class="alert alert-info alert-styled-left alert-arrow-left alert-component">
+              <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+              <h6 class="alert-heading text-semibold">Not Logged in</h6>
+              <a href="">Click here to Login to your Account</a>
+              </div>
+              <?php
+              break;
+
+            default:
+              # code...
+              break;
+          }
+          if(!$user->accverify||!$user->userAddress){
+            ?>
+            <div class="alert alert-info alert-styled-left alert-arrow-left alert-component">
+            <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+            <h6 class="alert-heading text-semibold">Your Mobile Number is not Verified.</h6>
+
+            <a href="">Click here to Verify your Account;</a>
+            </div>
+            <?php
+          }
+            ?>
+
+
+
+
+
+
+
 
 
           <br>ACCOUNT INFORMATION

@@ -6,6 +6,9 @@
 <?php
   if ($user->logged_in)
       $user->logout();
+      if(isset($_SERVER['HTTP_REFERER'])){
+        redirect_to($_SERVER['HTTP_REFERER']);
+      }
+      redirect_to('index.php');
 
-  redirect_to("index.php");
 ?>
