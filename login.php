@@ -43,7 +43,7 @@ include 'fehead.php';
         <form method="POST" action="login.php">
           <div class="panel panel-body login-form">
           <div class="text-center">
-        
+
             <h5 class="content-group">Login to your account <small class="display-block">Your credentials</small></h5>
           </div>
           <?php if($errormsg){?>
@@ -84,7 +84,8 @@ include 'fehead.php';
           <input type="hidden" value="1" name="dosLogins" />
 
           <div class="form-group">
-            <button type="submit" class="btn bg-pink-400 btn-block" name="log">Login <i class="icon-arrow-right14 position-right"></i></button>
+            <button type="submit" class="btn bg-purple btn-block">Login <i class="icon-arrow-right14 position-right"></i></button>
+            <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cancel</button>
           </div>
 
 
