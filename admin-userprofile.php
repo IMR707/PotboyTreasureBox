@@ -63,11 +63,15 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                     <!-- BEGIN PAGE BREADCRUMB -->
                     <ul class="page-breadcrumb breadcrumb">
                         <li>
-                            <a href="index.html">Home</a>
+                            <a href="admin-dashboard.php">Dashboard</a>
                             <i class="fa fa-circle"></i>
                         </li>
                         <li>
-                            <span class="active">User</span>
+                          <a href="admin-userlist.php">User</a>
+                          <i class="fa fa-circle"></i>
+                        </li>
+                        <li>
+                            <span class="active"><?php echo $pname; ?></span>
                         </li>
                     </ul>
                     <!-- END PAGE BREADCRUMB -->
@@ -269,57 +273,56 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                   </table>
                                                 </div>
                                                 <div id="tab_2-2" class="tab-pane">
+                                                  <?php
+
+                                                  // pre($user_address);
+
+                                                  foreach($user_address as $key => $row){
+
+                                                  ?>
+
                                                   <div class="col-md-6">
-                                                    <?php
-
-                                                    pre($user_address);
-
-                                                    ?>
                                                       <!-- BEGIN Portlet PORTLET-->
-                                                      <div class="portlet box green">
+                                                      <div class="portlet box <?php echo $row->deek ? 'green' : 'grey-salsa' ?>">
                                                           <div class="portlet-title">
                                                               <div class="caption">
-                                                                  <i class="fa fa-map-marker"></i>Default Shipping Address </div>
+                                                                  <i class="fa fa-map-marker"></i><?php echo $row->deek ? 'Default Shipping' : 'Additional' ?> Address </div>
                                                           </div>
-                                                          <div class="portlet-body">
-                                                              <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><div class="scroller" style="height: 200px; overflow: hidden; width: auto;" data-initialized="1">
-                                                                  <p> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula,
-                                                                      eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
-                                                                      consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
-                                                                  <p> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula,
-                                                                      eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
-                                                                      consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
-                                                                  <p> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula,
-                                                                      eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
-                                                                      consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
-                                                              </div><div class="slimScrollBar" style="background: rgb(187, 187, 187); width: 7px; position: absolute; top: 112px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 38.8727px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                                                          <div class="portlet-body" style="height:160px;">
+
+                                                                  <p>
+                                                                    <?php
+
+                                                                    $street_arr = explode("\n",$row->street);
+
+
+                                                                    if($row->firstname != '' || $row->lastname != ''){
+                                                                      echo $row->firstname != '' ? $row->firstname.' ' : '';
+                                                                      echo $row->lastname != '' ? $row->lastname.' ' : '';
+                                                                      echo '<br>';
+                                                                    }
+
+                                                                    echo isset($street_arr[0]) ? $street_arr[0].'<br>' : '';
+                                                                    echo isset($street_arr[1]) ? $street_arr[1].'<br>' : '';
+
+                                                                    echo $row->city != '' ? $row->city.', ' : '';
+                                                                    echo $row->region != '' ? $row->region.', ' : '';
+                                                                    echo $row->postcode != '' ? $row->postcode.'<br>' : '';
+
+
+                                                                    echo $row->telephone != '' ? 'T : '.$row->telephone : '';
+
+                                                                    ?>
+                                                                  </p>
+
                                                           </div>
                                                       </div>
                                                       <!-- END Portlet PORTLET-->
                                                   </div>
-                                                  <div class="col-md-6">
-                                                      <!-- BEGIN Portlet PORTLET-->
-                                                      <div class="portlet box grey-salsa">
-                                                          <div class="portlet-title">
-                                                              <div class="caption">
-                                                                  <i class="fa fa-address-book-o"></i>Portlet </div>
-                                                          </div>
-                                                          <div class="portlet-body">
-                                                              <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><div class="scroller" style="height: 200px; overflow: hidden; width: auto;" data-initialized="1">
-                                                                  <p> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula,
-                                                                      eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
-                                                                      consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
-                                                                  <p> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula,
-                                                                      eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
-                                                                      consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
-                                                                  <p> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula,
-                                                                      eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
-                                                                      consectetur purus sit amet fermentum. est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
-                                                              </div><div class="slimScrollBar" style="background: rgb(187, 187, 187); width: 7px; position: absolute; top: 112px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 38.8727px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
-                                                          </div>
-                                                      </div>
-                                                      <!-- END Portlet PORTLET-->
-                                                  </div>
+                                                  <?php
+                                                  }
+                                                  ?>
+
                                                 </div>
                                             </div>
                                         </div>
