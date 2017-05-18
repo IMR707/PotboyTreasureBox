@@ -26,6 +26,10 @@
         <link href="<?php echo BACK_LAYOUT; ?>layout4/css/layout.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo BACK_LAYOUT; ?>layout4/css/themes/light.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="<?php echo BACK_LAYOUT; ?>layout4/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+        <link href="<?php echo BACK_PLUGIN; ?>datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo BACK_PLUGIN; ?>datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="<?php echo BACK_IMG; ?>favicon.png" />
 
@@ -43,6 +47,11 @@
         <script src="<?php echo BACK_PLUGIN; ?>bootstrap-summernote/summernote.min.js" type="text/javascript"></script>
         <script src="<?php echo BACK_PAGES_SCRIPT; ?>components-editors.min.js" type="text/javascript"></script>
         <script src="<?php echo BACK_PLUGIN; ?>bootbox/bootbox.min.js" type="text/javascript"></script>
+
+        <script src="<?php echo BACK_SCRIPT; ?>datatable.js" type="text/javascript"></script>
+        <script src="<?php echo BACK_PLUGIN; ?>datatables/datatables.min.js" type="text/javascript"></script>
+        <script src="<?php echo BACK_PLUGIN; ?>datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+        <script src="<?php echo BACK_PAGES_SCRIPT; ?>table-datatables-buttons.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="<?php echo BACK_SCRIPT; ?>app.js" type="text/javascript"></script>

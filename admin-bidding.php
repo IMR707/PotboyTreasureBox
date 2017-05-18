@@ -112,16 +112,26 @@ if (!$user->logged_in) {
                                           </div>
                                       </div>
                                       <div class="form-group">
+                                          <label class="col-md-3 control-label">Sponsor</label>
+                                          <div class="col-md-9">
+                                            <div class="select2-bootstrap-append">
+                                                <select id="multi-append" class="form-control select2 sponsor_select" multiple name="sponsor_id[]">
+                                                    <option></option>
+                                                    <?php
+                                                      $prod = $fz->getSponsor();
+                                                      foreach($prod as $key => $row){
+                                                        echo '<option value="'.$row->id.'">'.$row->name.'</option>';
+                                                      }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
                                           <label class="col-md-3 control-label">Product</label>
                                           <div class="col-md-9">
-                                            <select class="form-control select2" required name="product_id">
-                                              <option value=""></option>
-                                            <?php
-                                              $prod = $fz->getProduct();
-                                              foreach($prod as $key => $row){
-                                                echo '<option value="'.$row->id.'">'.$row->name.'</option>';
-                                              }
-                                            ?>
+                                            <select class="form-control select2" required name="product_id" id="product_id_add">
+
                                             </select>
                                           </div>
                                       </div>
@@ -186,22 +196,7 @@ if (!$user->logged_in) {
                                             <input type="number" class="form-control" placeholder="Gold / Diamond" min="1" name="min_bid">
                                           </div>
                                       </div>
-                                      <div class="form-group">
-                                          <label class="col-md-3 control-label">Sponsor</label>
-                                          <div class="col-md-9">
-                                            <div class="select2-bootstrap-append">
-                                                <select id="multi-append" class="form-control select2" multiple name="sponsor_id[]">
-                                                    <option></option>
-                                                    <?php
-                                                      $prod = $fz->getSponsor();
-                                                      foreach($prod as $key => $row){
-                                                        echo '<option value="'.$row->id.'">'.$row->name.'</option>';
-                                                      }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                          </div>
-                                      </div>
+
                                       <div class="form-group">
                                           <label class="col-md-3 control-label"></label>
                                           <div class="col-md-9">
@@ -373,16 +368,26 @@ if (!$user->logged_in) {
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label class="col-md-3 control-label">Sponsor</label>
+                                            <div class="col-md-9">
+                                              <div class="select2-bootstrap-append">
+                                                  <select id="sponsor_id_upd" class="form-control select2 sponsor_select_upd" multiple name="sponsor_id[]">
+                                                      <option></option>
+                                                      <?php
+                                                        $prod = $fz->getSponsor();
+                                                        foreach($prod as $key => $row){
+                                                          echo '<option value="'.$row->id.'">'.$row->name.'</option>';
+                                                        }
+                                                      ?>
+                                                  </select>
+                                              </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-md-3 control-label">Product</label>
                                             <div class="col-md-9">
                                               <select class="form-control select2" required name="product_id" id="product_id_upd">
-                                                <option value=""></option>
-                                              <?php
-                                                $prod = $fz->getProduct();
-                                                foreach($prod as $key => $row){
-                                                  echo '<option value="'.$row->id.'">'.$row->name.'</option>';
-                                                }
-                                              ?>
+
                                               </select>
                                             </div>
                                         </div>
@@ -447,22 +452,7 @@ if (!$user->logged_in) {
                                               <input type="number" class="form-control" placeholder="Gold / Diamond" min="1" name="min_bid" id="min_bid_upd">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Sponsor</label>
-                                            <div class="col-md-9">
-                                              <div class="select2-bootstrap-append">
-                                                  <select id="sponsor_id_upd" class="form-control select2" multiple name="sponsor_id[]">
-                                                      <option></option>
-                                                      <?php
-                                                        $prod = $fz->getSponsor();
-                                                        foreach($prod as $key => $row){
-                                                          echo '<option value="'.$row->id.'">'.$row->name.'</option>';
-                                                        }
-                                                      ?>
-                                                  </select>
-                                              </div>
-                                            </div>
-                                        </div>
+
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"></label>
                                             <div class="col-md-9">
@@ -494,6 +484,50 @@ if (!$user->logged_in) {
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+  $('.sponsor_select').on('change',function(){
+    $('#product_id_add').html('');
+    var idr = $(this).val();
+
+    var dataString = "idr="+idr+"&func=getSponsorProduct";
+    $.ajax({
+      type    : "POST",
+      url     : "backend/process.php",
+      data    : dataString,
+      cache   : false,
+      dataType: 'json',
+      success : function(data)
+      {
+        console.log(data);
+        $('#product_id_add').select2({
+          data: data,
+          width: null
+        });
+      }
+    });
+  });
+
+  $('.sponsor_select_upd').on('change',function(){
+    $('#product_id_upd').html('');
+    var idr = $(this).val();
+
+    var dataString = "idr="+idr+"&func=getSponsorProduct";
+    $.ajax({
+      type    : "POST",
+      url     : "backend/process.php",
+      data    : dataString,
+      cache   : false,
+      dataType: 'json',
+      success : function(data)
+      {
+        console.log(data);
+        $('#product_id_upd').select2({
+          data: data,
+          width: null
+        });
+      }
+    });
+  });
 
   $('.btn_delete').on('click',function(){
 		var id = $(this).attr('id');

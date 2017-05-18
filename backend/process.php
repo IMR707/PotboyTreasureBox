@@ -131,6 +131,10 @@ elseif($_POST['func'] == 'getSponsorByID'){
   $fz->getSponsorByID();
 }
 
+elseif($_POST['func'] == 'getSponsorProduct'){
+  $fz->getSponsorProduct();
+}
+
 //Bidding
 
 elseif($_POST['func'] == 'create_bidding'){

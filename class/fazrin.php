@@ -25,6 +25,9 @@ class Fazrin
     const tb_wishVote = 'aa_wishlistVote';
     const tb_user = 'customer_entity';
     const tb_userAdd = 'customer_address_entity';
+    const tb_reward = 'lof_rewardpoints_customer';
+    const tb_credit = 'customer_credit';
+    const tb_rewardTrans = 'lof_rewardpoints_transaction';
 
 
     private static $db;
@@ -986,6 +989,27 @@ class Fazrin
       return $row;
     }
 
+    public function getSponsorProduct()
+    {
+      $idr = $_POST['idr'];
+      $id_arr = explode(",",$idr);
+      $out = array();
+      foreach($id_arr as $id){
+        $res = $this->getProductBySponsorID($id);
+        $out = array_merge($out,$res);
+      }
+      $output = array();
+      foreach($out as $key => $rows)
+      {
+        $output[] = array(
+          "id" => $rows->id,
+          "text" => $rows->name,
+        );
+      }
+
+      echo json_encode($output);
+    }
+
     /********* BIDDING **********************************************/
 
     public function create_bidding(){
@@ -1669,10 +1693,34 @@ class Fazrin
 
     /********* USER **********************************************/
 
+    public function getUsers()
+    {
+      $sql = "SELECT * FROM ".self::tb_user." WHERE is_active = 1";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
     public function getUserByID($id)
     {
       $sql = "SELECT * FROM ".self::tb_user." WHERE entity_id = '$id'";
       $row = self::$db->first($sql);
+
+      return $row;
+    }
+
+    public function getUserDiamondTrans($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_rewardTrans." WHERE amount <> 0 AND customer_id = '$id'";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
+    public function getUserGoldTrans($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_rewardTrans." WHERE amount_gold <> 0 AND customer_id = '$id'";
+      $row = self::$db->fetch_all($sql);
 
       return $row;
     }

@@ -382,6 +382,7 @@ $(document).ready(function(){
       success : function(data)
       {
         $('#product_id').select2({
+          placeholder: 'Select an option',
           data: data.productlist,
           width: null
         });
