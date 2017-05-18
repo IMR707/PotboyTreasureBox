@@ -8,9 +8,7 @@ require_once 'init.php';
 use Carbon\Carbon;
 
 
-pre($user->getUserAddress('307'));
-
-// pre($user);
+//pre($user);
 // die;
 
 // if (!$user->logged_in) {

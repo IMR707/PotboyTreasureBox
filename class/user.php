@@ -117,6 +117,23 @@ if (!defined("_VALID_PHP")) {
       }
       public function getUserAddress($id)
       {
+        $sql = "SELECT default_shipping as ids FROM " . self::uTable . " WHERE  entity_id ='" . $id . "' AND default_shipping IS NOT NULL";
+        $row = self::$db->first($sql);
+        $lala="";
+        $lili="";
+        if($row){
+          $lala=", (case
+        when (a.entity_id = ".$row->ids.") THEN 1
+   ELSE 0 END) as deek";
+   $lili="  ORDER BY deek desc ";
+        }
+        $sql2 = "SELECT * $lala FROM " . self::aTable . " a WHERE  parent_id ='" . $id . "' $lili ";
+        $row2 = self::$db->fetch_all($sql2);
+        return $row2;
+      }
+
+      public function getUserMobile($id)
+      {
         $sql = "SELECT default_shipping as ids FROM " . self::uTable . " WHERE  entity_id ='" . $id . "'";
         $row = self::$db->first($sql);
         $lala="";
@@ -125,9 +142,39 @@ if (!defined("_VALID_PHP")) {
         when (a.entity_id = ".$row->ids.") THEN 1
    ELSE 0 END) as deek";
         }
-        $sql2 = "SELECT * $lala FROM " . self::aTable . " a WHERE  parent_id ='" . $id . "' ORDER BY deek desc";
+        $sql2 = "SELECT entity_id as id,telephone as phone $lala FROM " . self::aTable . " a WHERE  parent_id ='" . $id . "' ORDER BY deek desc";
         $row2 = self::$db->fetch_all($sql2);
-        return $row2;
+        if(!$row2){
+        return [];
+        }
+        $default=[];
+        $listnum=[];
+        foreach ($row2 as $key => $value) {
+          if($value->deek==1){
+            $default=$value;
+            unset($row2[$key]);
+          }
+        }
+        if($default){
+          foreach ($row2 as $key => $value) {
+            if($value->phone==$default->phone){
+              unset($row2[$key]);
+            }
+          }
+          $listnum[$default->phone]=array('id' => $default->id,'default'=>'1');
+        }
+
+        foreach ($row2 as $key => $value) {
+          $listnum[$value->phone]=array('id' => $value->id,'default'=>'0');
+        }
+
+
+
+        pre($listnum);
+
+        pre($row2);
+
+
       }
 
       private function getUserInfo($email)
