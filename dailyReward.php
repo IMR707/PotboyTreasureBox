@@ -42,14 +42,14 @@ if (isset($_GET['day'])) {
               $type=5;
             }
              ?>
-            <div class="col-md-4 col-sm-4 col-xs-12 ">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 ">
               <div class="panel panel-flat <?php echo $today? 'today' : 'not-today';?>">
                 <div class="panel-heading" style="padding:10px 10px;">
                   <div class="text-center daily-title bg-yellow-gold img-rounded">Day <?php echo $value->day_num;?></div>
                 </div>
                 <div class="container-fluid">
                   <div class="row text-center">
-                    <div class="col-md-10 col-md-offset-1 reward-area">
+                    <div class="col-md-10 col-md-offset-1 col-xs-12 reward-area">
 
 
 
@@ -123,6 +123,7 @@ if (isset($_GET['day'])) {
  			<!-- /main content -->
 
  		</div>
+    <div class="clearfix"></div>
  		<!-- /page content -->
   </div>
 
