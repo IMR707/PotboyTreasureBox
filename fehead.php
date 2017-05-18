@@ -499,12 +499,12 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
            </div>
 
            </div>
-           <div class="row">
+           <div class="row text-center">
            <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 ">
              <br>
-             <button type="button" name="button" class="btn btn-warning">Send TAC</button>
-             <span class="text-success">
-               SUCCESSFUL !
+             <button type="button" name="button" class="btn btn-warning" id="tacfield">Send TAC</button><br><br>
+             <span class="text-success" id="tacstatus" >
+               Successfully Send TAC to +60122244417
              </span>
 
            </div>

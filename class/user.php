@@ -134,8 +134,9 @@ if (!defined("_VALID_PHP")) {
 
       public function getUserMobile($id)
       {
-        $sql = "SELECT default_shipping as ids FROM " . self::uTable . " WHERE  entity_id ='" . $id . "'";
+        $sql = "SELECT default_shipping as ids FROM " . self::uTable . " WHERE  entity_id ='" . $id . "' AND default_shipping IS NOT NULL";
         $row = self::$db->first($sql);
+
         $lala="";
         $lili="";
         if($row){
