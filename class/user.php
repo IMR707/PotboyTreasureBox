@@ -24,6 +24,7 @@ if (!defined("_VALID_PHP")) {
       public $userlevel;
       public $userlevelText;
       public $accverify=0;
+      public $accstatus=0;
       public $userAddress=0;
       public $useraccess=0;
       public $last;
@@ -73,6 +74,7 @@ if (!defined("_VALID_PHP")) {
                   $this->useraccess=1;
                 }
               }
+              $this->accstatus=$this->useraccess+1;
               // useraccess
               // 0 no acc verify
               // 1 no default address

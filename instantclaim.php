@@ -6,8 +6,6 @@ $pagemenu="BID";
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
-
-altest('1');
 $allclaim=$list->FEgetAllClaim();
 
 // pre($homeSlider);

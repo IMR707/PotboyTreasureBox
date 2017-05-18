@@ -40,23 +40,36 @@ if($log=='success')
  <script type="text/javascript" src="<?php echo FRONTJS;?>bootbox.min.js"></script>
  <script src="<?php echo BACK_PLUGIN; ?>moment.min.js" type="text/javascript"></script>
  <script type="text/javascript" src="<?php echo BACK_PAGES_SCRIPT; ?>jquery.countdown.js"></script>
+ <?php //pre($user);?>
  <script type="text/javascript">
 
-   function a(url){
-     var useraccess=<?php echo $user->useraccess;?>;
-
-     switch (useraccess) {
+   function gotolink(url){
+     location.href=url;
+     return;
+     var accstatus=<?php echo $user->accstatus;?>;
+     var userAddress=<?php echo $user->userAddress;?>;
+     switch (accstatus) {
        case 0:
-       alert('0');
+       alert('Please Login First');
+       $("#modal-login").modal();
        break;
       case 1:
-      alert('0');
+      if(!userAddress){
+        alert('Please Update Shipping address and Mobile Number');
+        location.href='useraddress.php';
+      }
+      alert(useraccess);
+      $("#modal-login").modal();
       break;
       case 2:
-      alert('0');
+      alert(useraccess);
+      $("#modal-login").modal();
+      break;
+      case 3:
+      alert(useraccess);
+      location.href=url;
       break;
        default:
-
      }
      <?php
 //pre($user);
@@ -180,16 +193,15 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
              <a data-toggle="modal" href="#modal-login"><i class="icon-display4 position-left"></i> Login</a>
              </li>
              <?php
-
        } else {
            ?>
-         <li><a href="index.php"><i class="icon-display4 position-left"></i> My Account</a></li>
+         <li class="<?php echo isActived('UACC', $pagemenu, 'active')?>"><a href="userAccount.php"><i class="icon-display4 position-left"></i> My Account</a></li>
            <?php
 
        } ?>
 
 
-         
+
 
 
      </ul>
@@ -255,9 +267,6 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
            <div class="content-divider text-muted form-group"><span>or sign in with</span></div>
            <ul class="list-inline form-group list-inline-condensed text-center">
              <li><a href="#" class="btn border-indigo text-indigo btn-flat btn-icon btn-rounded"><i class="icon-facebook"></i></a></li>
-             <li><a href="#" class="btn border-pink-300 text-pink-300 btn-flat btn-icon btn-rounded"><i class="icon-dribbble3"></i></a></li>
-             <li><a href="#" class="btn border-slate-600 text-slate-600 btn-flat btn-icon btn-rounded"><i class="icon-github"></i></a></li>
-             <li><a href="#" class="btn border-info text-info btn-flat btn-icon btn-rounded"><i class="icon-twitter"></i></a></li>
            </ul>
 
            <div class="content-divider text-muted form-group"><span>Don't have an account?</span></div>

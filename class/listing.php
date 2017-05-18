@@ -233,7 +233,7 @@ END) as percent,
                       <?php switch ($value->bid_base) {
                         case '3':
                           ?>
-                          <a href="claimpage.php?bid=<?php echo $value->bidid;?>" class="btn bg-purple">Claim Now</a>
+                          <a onclick="gotolink('claimpage.php?bid=<?php echo $value->bidid;?>')" class="btn bg-purple">Claim Now</a>
                           <?php
                           break;
 
