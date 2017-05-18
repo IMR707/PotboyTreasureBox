@@ -125,7 +125,7 @@ if (!defined("_VALID_PHP")) {
         when (a.entity_id = ".$row->ids.") THEN 1
    ELSE 0 END) as deek";
         }
-        $sql2 = "SELECT * $lala FROM " . self::aTable . " a WHERE  parent_id ='" . $id . "'";
+        $sql2 = "SELECT * $lala FROM " . self::aTable . " a WHERE  parent_id ='" . $id . "' ORDER BY deek desc";
         $row2 = self::$db->fetch_all($sql2);
         return $row2;
       }
