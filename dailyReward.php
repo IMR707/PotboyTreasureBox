@@ -52,7 +52,7 @@ if (isset($_GET['day'])) {
                     <div class="col-md-10 col-md-offset-1 col-xs-12 reward-area">
 
 
-
+                      <div class="each-reward">
                       <?php
                       if($value->gold_check){
                         ?>
@@ -73,7 +73,7 @@ if (isset($_GET['day'])) {
                       <?php
                       } ?>
 
-
+                      </div>
                     </div>
                     <div class="col-md-12">
                       <div class="text-center ">
