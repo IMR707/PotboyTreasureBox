@@ -6,30 +6,28 @@ switch ($_GET['type']) {
   case 'tac':
   $telid=$_GET['tel'];
   $cid=$_GET['cid'];
-  $a=$user->generateUserMobileSMS($cid,$telid);
-echo "stringx";
-    break;
+  echo jp($user->generateUserMobileSMS($cid,$telid));
+  break;
 
-    case 'retac':
-    $telid=$_GET['tel'];
-    $cid=$_GET['cid'];
+  case 'retac':
+  $telid=$_GET['tel'];
+  $cid=$_GET['cid'];
+  echo $user->RegenerateUserMobileSMS($cid,$telid);
+  break;
 
-  //echo "stringx";
-      break;
-
-
-      case 'repairnum':
-      $user->repairNum();
-      echo "string";
-
-    //echo "stringx";
-        break;
+  case 'sendtac':
+  $code=$_GET['code'];
+  $cid=$_GET['cid'];
+  echo jp($user->CheckUserMobileSMS($code,$cid));
+  break;
 
 
-
-
+  case 'repairnum':
+  $user->repairNum();
+  echo "done repair num";
+  break;
 
   default:
-    # code...
+    echo "Please Select Type";
     break;
 }

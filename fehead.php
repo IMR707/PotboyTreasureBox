@@ -87,6 +87,47 @@ if($log=='success')
 
 //   retacfield
 $(document).ready(function(){
+  $('#tacsubmit').on('click',function () {
+    var code=$('#codetac').val();
+    if(code){
+      ///////
+      $.ajax({
+        type    : "GET",
+        url     : "API/mobile.php",
+        data    : "type=sendtac&code="+code+"&cid="+<?php echo ($user->logged_in) ? $user->uid:0;?>,
+        cache   : false,
+        dataType: 'json',
+        success : function(data)
+        {
+          var msg=data.msg;
+          switch (msg) {
+            case 'success':
+            var ss="Successfully Verify the TAC";
+            alert(ss);
+            location.reload();
+              break;
+            //
+            //   case 'exist':
+            //     alert(msg);
+            //     break;
+            //
+                case 'error':
+            //     var tel=data.tel;
+                  alert("Wrong TAC Code");
+                  break;
+            // default:
+
+         }
+        }
+      });
+      ///////
+    }
+    else {
+      alert('TAC Code is Required');
+    }
+
+
+      });
   $('#tacfield').on('click',function () {
     var tel=$('#telephone').val();
     $.ajax({
@@ -97,12 +138,25 @@ $(document).ready(function(){
       dataType: 'json',
       success : function(data)
       {
-        // $('#upd_id').val(data.id);
-        // $('#upd_title').val(data.title);
-        // $('#upd_prio').val(data.prio);
-        // $('#upd_content').val(data.content);
-        // $('input[name=publish][class=upd_publish][value='+data.publish+']').prop('checked', 'checked');
-        // $('#modal_update').modal('show');
+        var msg=data.msg;
+        switch (msg) {
+          case 'success':
+          var ss="Successfully Send TAC to "+data.tel;
+          var tel=$('#tacstatus').html(ss);
+            // alert(msg);
+            break;
+
+            case 'exist':
+              alert(msg);
+              break;
+
+              case 'error':
+              var tel=data.tel;
+                alert(msg);
+                break;
+          default:
+
+        }
       }
     });
   });
@@ -518,7 +572,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
            <div class="row">
            <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 
-               <input type="text"  class="form-control" placeholder="TAC Code" name="" value="" required>
+               <input type="text"  class="form-control" placeholder="TAC Code" name="" id="codetac" required>
 
            </div>
 
@@ -545,7 +599,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
            <div class="col-sm-12 col-md-12 col-xs-12 text-center">
              <br>
            <div class="form-group">
-             <button type="button" class="btn bg-purple btn-block" data-dismiss="modal">Submit</button>
+             <button type="button" class="btn bg-purple btn-block" id="tacsubmit">Submit</button>
              <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cancel</button>
            </div>
            </div>

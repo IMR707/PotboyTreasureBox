@@ -138,8 +138,7 @@ if (!defined("_VALID_PHP")) {
 
       public function getUserMobileSMS($id)
       {
-
-        $sql = "SELECT *,DATE_ADD(s.date_created, INTERVAL 30 MINUTE) as expired FROM " . self::smsTable . " s  join ".self::aTable." a on s.address_id=a.entity_id WHERE  customer_id ='" . $id . "' HAVING NOW() < expired";
+        $sql = "SELECT *,DATE_ADD(s.date_created, INTERVAL 30 MINUTE) as expired FROM " . self::smsTable . " s  join ".self::aTable." a on s.address_id=a.entity_id WHERE  customer_id ='" . $id . "' HAVING NOW() < expired order by s.date_created desc";
         $row = self::$db->first($sql);
         return $row;
       }
@@ -155,12 +154,33 @@ if (!defined("_VALID_PHP")) {
                   $res = self::$db->update(self::aTable, $data, "entity_id='" .$value->entity_id. "'");
         }
       }
-
-
-
-
-      public function generateUserMobileSMS($cid,$aid)
+      public function CheckUserMobileSMS($code,$cid)
       {
+        $sql = "SELECT * FROM " . self::smsTable . " a WHERE  customer_id ='" . $cid . "' AND code ='" . $code . "' ";
+        $row = self::$db->first($sql);
+        if($row){
+          $data = array(
+              'accverify' => 1
+          );
+          $data2 = array(
+              'process' => 1
+          );
+                    $res = self::$db->update(self::uTable, $data, "entity_id='" .$cid. "'");
+                    $res = self::$db->update(self::smsTable, $data2, "code='" .$code. "'");
+          return array('msg'=>'success');
+        }
+        else {
+          return array('msg'=>'error');
+        }
+      }
+
+        public function generateUserMobileSMS($cid,$aid)
+        {
+        $sqlx = "SELECT *,DATE_ADD(s.date_created, INTERVAL 30 MINUTE) as expired FROM " . self::smsTable . " s  join ".self::aTable." a on s.address_id=a.entity_id WHERE  customer_id ='" . $cid . "' HAVING NOW() < expired";
+        $rowx = self::$db->first($sqlx);
+        if($rowx){
+          return array('msg'=>'exist');
+        }
         $tac=rand(pow(10,4), pow(10,5)-1);
         $sql = "SELECT * FROM " . self::aTable . " a WHERE  entity_id ='" . $aid . "' ";
         $row = self::$db->first($sql);
@@ -175,7 +195,13 @@ if (!defined("_VALID_PHP")) {
       'date_created' => "NOW()",
       'date_updated' => "NOW()",
 );
-self::$db->insert(self::smsTable, $data);
+        $a=self::$db->insert(self::smsTable, $data);
+        if($a){
+          return array('msg'=>'success','tel'=>$telnum);
+        }
+        else {
+          return array('msg'=>'error','tel'=>$telnum);
+        }
 
         // $sql = "SELECT *,DATE_ADD(s.date_created, INTERVAL 30 MINUTE) as expired FROM " . self::smsTable . " s  join ".self::aTable." a on s.address_id=a.entity_id WHERE  customer_id ='" . $id . "' HAVING NOW() < expired";
         // $row = self::$db->first($sql);
