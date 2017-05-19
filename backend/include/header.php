@@ -52,6 +52,7 @@
         <script src="<?php echo BACK_PLUGIN; ?>datatables/datatables.min.js" type="text/javascript"></script>
         <script src="<?php echo BACK_PLUGIN; ?>datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
         <script src="<?php echo BACK_PAGES_SCRIPT; ?>table-datatables-buttons.min.js" type="text/javascript"></script>
+        <script src="<?php echo BACK_PAGES_SCRIPT; ?>table-datatables-managed.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="<?php echo BACK_SCRIPT; ?>app.js" type="text/javascript"></script>

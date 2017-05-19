@@ -133,6 +133,7 @@ if(isset($_GET['wp']) && $_GET['wp'] != ''){
 
                             <?php
 
+
                             foreach($votes as $key => $row){
 
                             ?>
@@ -142,8 +143,7 @@ if(isset($_GET['wp']) && $_GET['wp'] != ''){
                                   <td class="text-center"><?php echo $row->email; ?></td>
 
                                   <td class="text-center">
-                                    <button class="btn btn-sm btn-warning btn_updateVoucher" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                    <a href="admin-userprofile.php?id=<?php echo $row->user_id; ?>" target="_blank"><button class="btn btn-sm btn-success"><i class="fa fa-search"></i></button></a>
                                   </td>
                                 </tr>
 
@@ -155,71 +155,6 @@ if(isset($_GET['wp']) && $_GET['wp'] != ''){
                             </table>
 
                           </div>
-                        </div>
-
-                        <div class="modal fade in" id="modal_voucher" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Upload Voucher Code</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                      <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Excel File</label>
-                                            <div class="col-md-9">
-                                              <input type="file" class="form-control input-file-excel" name="excel_voucher" id="excel_voucher">
-                                              <span></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label"></label>
-                                            <div class="col-md-9">
-                                              <button type="submit" class="btn blue btn_submit_upload">Upload</button>
-                                              <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" name="func" value="upload_voucher">
-                                        <input type="hidden" name="id" id="claim_id" value="<?php echo $id; ?>">
-                                      </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade in" id="modal_voucher_upd" tabindex="-1" role="basic" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Update Voucher Code</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                      <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Voucher Code</label>
-                                            <div class="col-md-9">
-                                              <input type="text" class="form-control" name="voucher_code" id="voucher_code_upd">
-                                              <span></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label"></label>
-                                            <div class="col-md-9">
-                                              <button type="submit" class="btn blue btn_submit_upload">Update</button>
-                                              <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" name="claim_id" value="<?php echo $id; ?>">
-                                        <input type="hidden" name="func" value="update_voucher">
-                                        <input type="hidden" name="id" id="voucher_id" value="">
-                                      </form>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <!-- here -->
@@ -238,40 +173,6 @@ if(isset($_GET['wp']) && $_GET['wp'] != ''){
 <script type="text/javascript">
 
 $(document).ready(function(){
-
-  $('.btn_uploadVoucher').on('click',function(){
-
-    $('.input-file-excel').val('');
-    $('.input-file-excel').parent().removeClass('has-error').find('span').removeClass('text-danger').html('');
-    $('.btn_submit_upload').prop('disabled',false);
-
-    $('#modal_voucher').modal('show');
-  });
-
-  $('.btn_updateVoucher').on('click',function(){
-    $('#voucher_code_upd').val('');
-    $('#voucher_id').val('');
-
-    var id = $(this).attr('id');
-
-    var dataString = "id="+id+"&func=getVoucherByID";
-    $.ajax({
-      type    : "POST",
-      url     : "backend/process.php",
-      data    : dataString,
-      cache   : false,
-      dataType: 'json',
-      success : function(data)
-      {
-        $('#voucher_code_upd').val(data.voucher_code);
-
-        $('#voucher_id').val(data.id);
-        $('#modal_voucher_upd').modal('show');
-      }
-    });
-  });
-
-  $.fn.modal.Constructor.prototype.enforceFocus = function() {};
 
 
 });
