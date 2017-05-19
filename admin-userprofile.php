@@ -189,7 +189,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                     <!--tab-pane-->
                                                     <div class="tab-pane" id="tab_1_22">
                                                       <div class="portlet-body">
-                                                          <table class="table table-striped table-bordered table-advance table-hover datatable">
+                                                          <table class="table table-striped table-bordered table-advance table-hover">
                                                               <thead>
                                                                   <tr>
                                                                       <th width="15%">
@@ -337,14 +337,10 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
-            <!-- END CONTENT -->            
+            <!-- END CONTENT -->
         </div>
         <!-- END CONTAINER -->
 <script type="text/javascript">
-
-$(document).ready(function(){
-    $('.datatable').DataTable();
-});
 
 </script>
 <?php include BACK_INC.'htmlfooter.php'; ?>
