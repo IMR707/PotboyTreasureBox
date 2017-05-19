@@ -149,7 +149,7 @@ END) as percent,
 //$percent=10;
       ?>
 
-      <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+      <div class="col-sm-6 col-md-6 col-xs-6 text-center">
             <div class="panel panel-flat timeline-content">
               <div class="panel-body">
                 <div class="col-sm-12 col-md-12 col-xs-12 text-center">
