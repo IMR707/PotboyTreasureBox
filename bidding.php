@@ -83,9 +83,9 @@ $pubid=$list->FEgetBidding('5');
           </div>
 
           	<div class="panel panel-flat">
-							<div class="panel-body">
+							<div class="panel-body" style="padding:0px;">
 								<div class="tabbable">
-									<ul class="nav nav-tabs nav-tabs-solid nav-tabs-component nav-justified">
+									<ul class="nav nav-tabs nav-tabs-solid nav-tabs-component nav-justified" style="margin-bottom:10px;">
 										<li class="active"><a href="#solid-rounded-justified-tab1" data-toggle="tab">Top</a></li>
 										<li><a href="#solid-rounded-justified-tab2" data-toggle="tab">Progress</a></li>
                     <li><a href="#solid-rounded-justified-tab3" data-toggle="tab">New</a></li>
