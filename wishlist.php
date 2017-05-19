@@ -2,7 +2,7 @@
 define('_VALID_PHP', true);
 $pname = 'Bidding';
 $menu = 'Bidding';
-$pagemenu="BID";
+$pagemenu="WISHLIST";
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;

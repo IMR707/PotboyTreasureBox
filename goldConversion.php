@@ -53,7 +53,7 @@ if (isset($_GET['cid'])) {
                   <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 convert-area">
                     <div class="text-center each-reward">
                       <img class="gold-coin" src="<?php echo FRONTIMAGE;?>gold-coin-icon.png">
-                      <div class="daily-gold-text">100</div>
+                      <div class="daily-gold-text"><?php echo $value->gold_amount;?></div>
                     </div>
                   </div>
                   <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
@@ -88,7 +88,7 @@ if (isset($_GET['cid'])) {
          </div>
 
        </div>
-      
+
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
 
