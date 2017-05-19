@@ -60,23 +60,23 @@ $pubid=$list->FEgetBidding('5');
 
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
                   <a href="instantclaim.php" class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
-                  <h2>Instant Claim</h2>
+                  <br><b>Instant Claim</b>
                   </a>
               </div>
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
                   <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="">
-                  <h2 >Coming Up Soon</h2>
+                  <br><b>Coming Up Soon</b>
                   </a>
               </div>
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
                   <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
-                  <h2 >Winner Sharing</h2>
+                  <br><b>Winner Sharing</b>
                   </a>
               </div>
 
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
                   <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="">
-                  <h2 >Rules T&C</h2>
+                  <br><b>Rules T&C</b>
                   </a>
               </div>
             </div>
@@ -102,7 +102,7 @@ $pubid=$list->FEgetBidding('5');
 										<div class="tab-pane active" id="solid-rounded-justified-tab1">
                       <?php if(!$topbid){
                         ?>
-                        <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+                        <div class="col-sm-6 col-md-6 col-xs-6 text-center">
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
@@ -124,7 +124,7 @@ $pubid=$list->FEgetBidding('5');
 										<div class="tab-pane" id="solid-rounded-justified-tab2">
                       <?php if(!$endsoonbid){
                         ?>
-                        <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+                        <div class="col-sm-6 col-md-6 col-xs-6 text-center">
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
@@ -149,7 +149,7 @@ $pubid=$list->FEgetBidding('5');
 										<div class="tab-pane" id="solid-rounded-justified-tab3">
                       <?php if(!$newbid){
                         ?>
-                        <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+                        <div class="col-sm-6 col-md-6 col-xs-6 text-center">
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
@@ -168,7 +168,7 @@ $pubid=$list->FEgetBidding('5');
                     <div class="tab-pane" id="solid-rounded-justified-tab4">
                       <?php if(!$pdbid){
                         ?>
-                        <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+                        <div class="col-sm-6 col-md-6 col-xs-6 text-center">
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
@@ -186,7 +186,7 @@ $pubid=$list->FEgetBidding('5');
                     <div class="tab-pane" id="solid-rounded-justified-tab5">
                       <?php if(!$pubid){
                         ?>
-                        <div class="col-sm-6 col-md-6 col-xs-12 text-center">
+                        <div class="col-sm-6 col-md-6 col-xs-6 text-center">
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
