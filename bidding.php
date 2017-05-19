@@ -58,23 +58,23 @@ $pubid=$list->FEgetBidding('5');
             <div class="panel-body">
 
 
-              <div class="col-sm-3 col-md-3 col-xs-6 text-center">
+              <div class="col-sm-3 col-md-3 col-xs-3 text-center">
                   <a href="instantclaim.php" class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
                   <h2>Instant Claim</h2>
                   </a>
               </div>
-              <div class="col-sm-3 col-md-3 col-xs-6 text-center">
+              <div class="col-sm-3 col-md-3 col-xs-3 text-center">
                   <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="">
                   <h2 >Coming Up Soon</h2>
                   </a>
               </div>
-              <div class="col-sm-3 col-md-3 col-xs-6 text-center">
+              <div class="col-sm-3 col-md-3 col-xs-3 text-center">
                   <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
                   <h2 >Winner Sharing</h2>
                   </a>
               </div>
 
-              <div class="col-sm-3 col-md-3 col-xs-6 text-center">
+              <div class="col-sm-3 col-md-3 col-xs-3 text-center">
                   <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="">
                   <h2 >Rules T&C</h2>
                   </a>
