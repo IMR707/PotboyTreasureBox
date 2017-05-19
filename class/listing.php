@@ -66,7 +66,8 @@ class Listing
 
     public function FEgetBidding($type)
     {
-        $sql=  'SELECT b.*,b.id as bidid,pr.*, (case
+      $type2=$type."00";
+        $sql=  'SELECT '.$type2.' as typesort,b.*,b.id as bidid,pr.*, (case
       when (b.bid_base = 1 and b.end_time >= NOW()) THEN 1
       when (b.bid_base = 2 and b.max_participant > (select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id )) THEN 1
  ELSE 0 END) as state,
@@ -76,7 +77,7 @@ class Listing
 END) as percent,
  (select count(*) FROM '.self::tb_bidtrans.' bt where bt.bidding_id=b.id ) as participant FROM '.self::tb_bid." b join ".self::tb_prod." pr on b.product_id=pr.id having state=1";
         $row = self::$db->fetch_all($sql);
-        $row2=$this->FEgetAllClaim();
+        $row2=$this->FEgetAllClaim($type);
         $row3=array_merge($row,$row2);
         switch ($type) {
         case '1':
@@ -94,6 +95,9 @@ END) as percent,
         case '5':
         usort($row3, "sortpricedowntoup");// 5 = price up
         break;
+      }
+      foreach ($row3 as $key => $value) {
+        $row3[$key]->btid=$value->bidid."_".$value->typesort;
       }
       return $row3;
     }
@@ -154,16 +158,16 @@ END) as percent,
                 </a>
                   <h6 class="content-group text-left"><?php echo styleword($value->name);?>-<?php if($value->bid_base!=3){ echo " min ";} echo $value->min_bid; echo ($value->bid_type==1)?" Gold":" Diamond";?></h6>
                   <div class="progress">
-                    <div class="progress-bar bg-purple" id='textval<?php echo $value->bidid;?>' style="width: <?php echo stylewordpercent($percent);?>">
+                    <div class="progress-bar bg-purple" id='textval<?php echo $value->btid;?>' style="width: <?php echo stylewordpercent($percent);?>">
                       <?php if($percent>=15){
                         ?>
-                        <?php echo "<span id='text".$value->bidid."'>".stylewordpercent($percent)."</span>";?>
+                        <?php echo "<span id='text".$value->btid."'>".stylewordpercent($percent)."</span>";?>
                         <?php
                       }?>
                     </div>
                     <?php if($percent<15){
                       ?>
-                      <?php echo "<span id='text".$value->bidid."'>".stylewordpercent($percent)."</span>";?>
+                      <?php echo "<span id='text".$value->btid."'>".stylewordpercent($percent)."</span>";?>
                       <?php
                     }?>
                   </div>
@@ -193,7 +197,7 @@ END) as percent,
                             </ul>
                             <br>
                             <ul class="list-inline list-inline-condensed heading-text pull-left">
-                            <li><b><span class="countdown_time" id="disp_time_<?php echo $value->id; ?>" start-time="<?php echo $start_date; ?>" end-time="<?php echo $end_date; ?>">
+                            <li><b><span class="countdown_time" id="disp_time_<?php echo $value->btid; ?>" start-time="<?php echo $start_date; ?>" end-time="<?php echo $end_date; ?>">
                               <?php echo $end_date; ?>
                             </span>
                             </b></li>
@@ -261,9 +265,13 @@ END) as percent,
       <?php
       }
 
-    public function FEgetAllClaim()
+    public function FEgetAllClaim($type=false)
     {
-      $sql = 'SELECT *,img_thumbnail as img_header,
+      if(!$type){
+        $type=0;
+      }
+      $type=$type."11";
+      $sql = 'SELECT *,'.$type.' as typesort,img_thumbnail as img_header,
       3 as bid_base,
       1 as bid_type,
       id as bidid,

@@ -8,6 +8,8 @@ require_once 'init.php';
 use Carbon\Carbon;
 $topbid=$list->FEgetBidding('1');
 $endsoonbid=$list->FEgetBidding('2');
+// pre($endsoonbid);
+// die;
 $newbid=$list->FEgetBidding('3');
 $pdbid=$list->FEgetBidding('4');
 $pubid=$list->FEgetBidding('5');
@@ -56,23 +58,23 @@ $pubid=$list->FEgetBidding('5');
             <div class="panel-body">
 
 
-              <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-                  <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
+              <div class="col-sm-3 col-md-3 col-xs-6 text-center">
+                  <a href="instantclaim.php" class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
                   <h2>Instant Claim</h2>
                   </a>
               </div>
-              <div class="col-sm-3 col-md-3 col-xs-3 text-center">
+              <div class="col-sm-3 col-md-3 col-xs-6 text-center">
                   <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="">
                   <h2 >Coming Up Soon</h2>
                   </a>
               </div>
-              <div class="col-sm-3 col-md-3 col-xs-3 text-center">
+              <div class="col-sm-3 col-md-3 col-xs-6 text-center">
                   <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
                   <h2 >Winner Sharing</h2>
                   </a>
               </div>
 
-              <div class="col-sm-3 col-md-3 col-xs-3 text-center">
+              <div class="col-sm-3 col-md-3 col-xs-6 text-center">
                   <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="">
                   <h2 >Rules T&C</h2>
                   </a>
@@ -221,7 +223,7 @@ $('.countdown_time').each(function(index){
     // console.log('s');
     $(this).html(event.strftime('%-D days %H:%M:%S'));
   }).on('update.countdown', function() {
-    var val = $('#disppercent_'+id).html().trim();
+    // var val = $('#disppercent_'+id).html().trim();
     var cdiff = new Date() - moment(start,"YYYY/MM/DD HH:mm:ss");
     if(cdiff > 0){
       var percent = Math.floor(( cdiff / diff ) * 100);

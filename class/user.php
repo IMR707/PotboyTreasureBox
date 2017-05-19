@@ -10,6 +10,9 @@ if (!defined("_VALID_PHP")) {
       const uTable = "customer_entity";
       const aTable = "customer_address_entity";
       const smsTable = "aa_verifysms";
+      const FgamTable = "aa_game_free";
+      const tb_drtran = 'aa_dailyreward_transaction';
+
 
       public $logged_in = null;
       public $uid = 0;
@@ -116,6 +119,36 @@ if (!defined("_VALID_PHP")) {
             );
             $res = self::$db->update(self::uTable, $data2, "entity_id='" .$this->uid. "'");
             return ($res)? "success" : "error";
+      }
+      public function checkDailyGold($id)
+      {
+        if(!$id){
+        return 0;
+      }else {
+        $sql = "SELECT * FROM " . self::tb_drtran . " WHERE customer_id='" .$id. "' AND date(date_created)=date(NOW())";
+        $row = self::$db->first($sql);
+        if($row){
+          return 0;
+        }
+        else {
+          return 1;
+        }
+      }
+      }
+      public function checkDailyFreeGames($id)
+      {
+        if(!$id){
+        return 0;
+      }else {
+        $sql = "SELECT * FROM " . self::FgamTable . " WHERE customer_id='" .$id. "' AND date(date_created)=date(NOW())";
+        $row = self::$db->first($sql);
+        if($row){
+          return 0;
+        }
+        else {
+          return 1;
+        }
+      }
       }
       public function getUserAddress($id)
       {
