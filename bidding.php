@@ -140,12 +140,6 @@ $pubid=$list->FEgetBidding('5');
                       }?>
 										</div>
 
-
-                    <!--
-                    =$list->FEgetBidding('3');
-                    =$list->FEgetBidding('4');
-                    $pubid=$list->FEgetBidding('5'); -->
-
 										<div class="tab-pane" id="solid-rounded-justified-tab3">
                       <?php if(!$newbid){
                         ?>
