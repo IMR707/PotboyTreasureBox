@@ -141,13 +141,25 @@ $(document).ready(function(){
         var msg=data.msg;
         switch (msg) {
           case 'success':
-          var ss="Successfully Send TAC to "+data.tel;
-          var tel=$('#tacstatus').html(ss);
-            // alert(msg);
+          var ss="Your TAC Request is successful.<br> Your TAC number will be sent to your registered mobile phone number "+data.tel;
+          $('#tacstatus').html(ss);
+          $('#tacfield').html("Re-Send TAC");
+
             break;
 
             case 'exist':
-              alert(msg);
+            var ss="Your TAC Request is unsuccessful.<br> You have already submitted a TAC request earlier.To avoid multiple TAC requests, please wait a few minutes for your TAC to be sent to you before making another request ";
+            var tel=$('#tacstatus').html(ss);
+            $('#tacfield').html("Re-Send TAC");
+
+              /*
+
+(19 May 2017 12:05:37).
+
+
+              Your TAC Request is  (19 May 2017 12:03:22).
+Reject Code : [00A9]
+*/
               break;
 
               case 'error':
@@ -581,7 +593,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
            <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 ">
              <br>
              <?php if ($veritext): ?>
-            <button type="button" name="button" class="btn btn-warningcd " id="retacfield">Re-Send TAC</button>
+            <button type="button" name="button" class="btn btn-warningcd " id="tacfield">Re-Send TAC</button>
           <?php else: ?>
             <button type="button" name="button" class="btn btn-warningcd " id="tacfield">Send TAC</button>
           <?php endif; ?>

@@ -153,12 +153,26 @@ if (!defined("_VALID_PHP")) {
         );
                   $res = self::$db->update(self::aTable, $data, "entity_id='" .$value->entity_id. "'");
         }
+        $sql2 = "SELECT id,DATE_ADD(s.date_created, INTERVAL 1 DAY) as expired FROM " . self::smsTable . " s WHERE process=0 HAVING NOW() > expired order by s.date_created desc";
+        $row2 = self::$db->fetch_all($sql2);
+        foreach ($row2 as $key => $value) {
+          $data2 = array(
+              'process' => 1
+          );
+          $res = self::$db->update(self::smsTable, $data2, "id='" .$value->id. "'");
+        }
+
+
+
       }
       public function CheckUserMobileSMS($code,$cid)
       {
-        $sql = "SELECT * FROM " . self::smsTable . " a WHERE  customer_id ='" . $cid . "' AND code ='" . $code . "' ";
+        $sql = "SELECT * FROM " . self::smsTable . " a WHERE  customer_id ='" . $cid . "' ORDER BY date_created desc ";
         $row = self::$db->first($sql);
+
+        // AND code ='" . $code . "'
         if($row){
+          if($row->code==$code){
           $data = array(
               'accverify' => 1
           );
@@ -169,6 +183,10 @@ if (!defined("_VALID_PHP")) {
                     $res = self::$db->update(self::smsTable, $data2, "code='" .$code. "'");
           return array('msg'=>'success');
         }
+        else {
+          return array('msg'=>'error');
+        }
+      }
         else {
           return array('msg'=>'error');
         }
