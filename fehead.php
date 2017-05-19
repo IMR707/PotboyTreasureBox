@@ -69,15 +69,13 @@ if($log=='success')
      */
      switch (<?php echo $user->useraccess;?>) {
        case 0:
-       alert('Please Login First');
        $("#modal-login").modal();
        break;
        case 1:
-           alert('Please Update Shipping address and Mobile Number');
        $("#modal-address").modal();
        break;
        case 2:
-          //  alert('Please verify Your Mobile Number');
+
        $("#modal-verify").modal();
        break;
        case 3:
@@ -86,12 +84,38 @@ if($log=='success')
      }
 }
 
+
+//   retacfield
+$(document).ready(function(){
+  $('#tacfield').on('click',function () {
+    var tel=$('#telephone').val();
+    $.ajax({
+      type    : "GET",
+      url     : "API/mobile.php",
+      data    : "type=tac&tel="+tel+"&cid="+<?php echo ($user->logged_in) ? $user->uid:0;?>,
+      cache   : false,
+      dataType: 'json',
+      success : function(data)
+      {
+        // $('#upd_id').val(data.id);
+        // $('#upd_title').val(data.title);
+        // $('#upd_prio').val(data.prio);
+        // $('#upd_content').val(data.content);
+        // $('input[name=publish][class=upd_publish][value='+data.publish+']').prop('checked', 'checked');
+        // $('#modal_update').modal('show');
+      }
+    });
+  });
+});
+
+
+
 function verifymobile(id){
   alert(id);
   return;
   $.ajax({
-    type    : "POST",
-    url     : "backend/process.php",
+    type    : "GET",
+    url     : "API/mobile.php",
     data    : dataString,
     cache   : false,
     dataType: 'json',
@@ -251,9 +275,8 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 
              <h5 class="content-group">Login to your account <small class="display-block">Your credentials</small></h5>
            </div>
-           <?php if($errormsg){?>
-           <span class="help-block text-danger"><?php echo $errormsg;?></span>
-           <?php }?>
+
+           <span class="help-block text-danger text-center">Please Login First</span>
 
 
            <div class="form-group has-feedback has-feedback-left">
@@ -324,9 +347,8 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 
              <h5 class="content-group">Complete your Details <small class="display-block">Address and Mobile Number</small></h5>
            </div>
-           <?php if($errormsg){?>
-           <span class="help-block text-danger"><?php echo $errormsg;?></span>
-           <?php }?>
+           <span class="help-block text-danger text-center">Please Update Shipping address and Mobile Number</span>
+
 
            <?php
            $ud=$user->getUserbyID(($user->logged_in) ? $user->uid:0);
@@ -463,16 +485,18 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 
              <h5 class="content-group">Please Select and Verify <small class="display-block">Your Mobile Number</small></h5>
            </div>
-           <?php if($errormsg){?>
-           <span class="help-block text-danger"><?php echo $errormsg;?></span>
-           <?php }?>
+
+           <span class="help-block text-danger text-center">Please verify Your Mobile Number</span>
 
            <?php
            $um=$user->getUserMobile(($user->logged_in) ? $user->uid:0);
+           $umz=$user->getUserMobileSMS(($user->logged_in) ? $user->uid:0);
+           $veritext="";
+           if($umz){
+             $carbon = new Carbon\Carbon($umz->date_created);
+             $veritext=$umz->telephone." ".$carbon->diffForHumans();
+           }
 
-
-           $fn=$ud?$ud->firstname:"";
-           $ln=$ud?$ud->lastname:"";
            ?>
 
 
@@ -480,7 +504,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
            <div class="row">
            <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
              <div class="form-group has-feedback has-feedback-left">
-               <select class="form-control" required name="region">
+               <select class="form-control" required name="telephone" id="telephone">
                  <?php foreach ($um as $key => $value):  ?>
                    <option value="<?php echo $value['id'];?>" <?php echo $value['default']?"selected":"";?>><?php echo $key;?></option>
                  <?php endforeach; ?>
@@ -502,10 +526,18 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
            <div class="row text-center">
            <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 ">
              <br>
-             <button type="button" name="button" class="btn btn-warning" id="tacfield">Send TAC</button><br><br>
+             <?php if ($veritext): ?>
+            <button type="button" name="button" class="btn btn-warningcd " id="retacfield">Re-Send TAC</button>
+          <?php else: ?>
+            <button type="button" name="button" class="btn btn-warningcd " id="tacfield">Send TAC</button>
+          <?php endif; ?>
+
+             <br><br>
              <span class="text-success" id="tacstatus" >
-               Successfully Send TAC to +60122244417
-             </span>
+             <?php if ($veritext): ?>
+                 Successfully Send TAC to <?php echo $veritext;?>
+         <?php endif; ?>
+</span>
 
            </div>
            </div>

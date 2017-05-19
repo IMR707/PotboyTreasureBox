@@ -9,6 +9,8 @@ if (!defined("_VALID_PHP")) {
   {
       const uTable = "customer_entity";
       const aTable = "customer_address_entity";
+      const smsTable = "aa_verifysms";
+
       public $logged_in = null;
       public $uid = 0;
       public $name;
@@ -132,8 +134,61 @@ if (!defined("_VALID_PHP")) {
         return $row2;
       }
 
-      public function getUserMobile($id)
+
+
+      public function getUserMobileSMS($id)
       {
+
+        $sql = "SELECT *,DATE_ADD(s.date_created, INTERVAL 30 MINUTE) as expired FROM " . self::smsTable . " s  join ".self::aTable." a on s.address_id=a.entity_id WHERE  customer_id ='" . $id . "' HAVING NOW() < expired";
+        $row = self::$db->first($sql);
+        return $row;
+      }
+
+      public function repairNum()
+      {
+
+        $sql = "SELECT * FROM " . self::aTable . " WHERE `telephone` LIKE '0%'";
+        $row = self::$db->fetch_all($sql);
+        foreach ($row as $key => $value) {
+
+        $data = array(
+            'active' => "+6"$value->telephone;
+        );
+
+        pre($data);
+
+                  // $res = self::$db->update(self::aTable, $data, "entity_id='" .$id. "'");
+        }
+
+      }
+
+
+
+
+      public function generateUserMobileSMS($cid,$aid)
+      {
+        $tac=rand(pow(10,5), pow(10,6)-1);
+        $sql = "SELECT * FROM " . self::aTable . " a WHERE  entity_id ='" . $aid . "' ";
+        $row = self::$db->first($sql);
+        $telnum=$row->telephone;
+        pre($row);
+
+        $sendsms=1;
+
+        $data = array(
+      'tac' => $tac,
+      'created' => "NOW()",
+      'updated' => "NOW()",
+);
+pre($data);
+
+        // $sql = "SELECT *,DATE_ADD(s.date_created, INTERVAL 30 MINUTE) as expired FROM " . self::smsTable . " s  join ".self::aTable." a on s.address_id=a.entity_id WHERE  customer_id ='" . $id . "' HAVING NOW() < expired";
+        // $row = self::$db->first($sql);
+        // return $row;
+      }
+
+        public function getUserMobile($id)
+        {
         $sql = "SELECT default_shipping as ids FROM " . self::uTable . " WHERE  entity_id ='" . $id . "' AND default_shipping IS NOT NULL";
         $row = self::$db->first($sql);
 
