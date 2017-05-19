@@ -43,7 +43,7 @@ $allclaim=$list->FEgetAllClaim();
 
 
 
-        <div class="panel panel-flat">
+        <div class="panel panel-flat" style="height:100%">
           <div class="panel-body">
 
 
@@ -65,16 +65,16 @@ $allclaim=$list->FEgetAllClaim();
 
               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
                     <div class="panel panel-flat timeline-content">
-                      <div class="panel-body">
+                      <div class="panel-body" style="padding:5px">
 
-                        <div class="col-sm-3 col-md-3 col-xs-12 text-center">
+                        <div class="col-sm-4 col-md-4 col-xs-12 text-center">
 
                           <div class="col-sm-12 col-md-12 col-xs-12 text-center">
 
-                            <div class="bg-slate-400"><span>Instant Claim</span></div>
+                            <div class="bg-danger-600" style="padding:5px;margin-top:3px;border:2px solid white"><span>Instant Claim</span></div>
                           </div>
                           <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-                            <img src="<?php echo BACK_UPLOADS.$value->img_header;?>" class="img-responsive" alt="" width="100%">
+                            <img src="<?php echo BACK_UPLOADS.$value->img_header;?>" class="img-responsive" alt="" width="100%" style="border:2px solid white">
                           </div>
                         </div>
 
@@ -116,25 +116,13 @@ $allclaim=$list->FEgetAllClaim();
                         </div>
 
 
-                        <div class="col-sm-3 col-md-3 col-xs-12 text-center">
+                        <div class="col-sm-2 col-md-2 col-xs-12 text-center">
               <br>
                           <span class="pull-right">
                             <a href="<?php echo $value->id;?>" class="btn bg-purple">Claim Now</a>
                           </span>
 
                         </div>
-
-                        <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-
-
-                        </div>
-
-
-
-                      </div>
-
-                      <div class="panel-footer panel-footer-transparent">
-
                       </div>
                     </div>
 
