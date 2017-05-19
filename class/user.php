@@ -146,20 +146,14 @@ if (!defined("_VALID_PHP")) {
 
       public function repairNum()
       {
-
         $sql = "SELECT * FROM " . self::aTable . " WHERE `telephone` LIKE '0%'";
         $row = self::$db->fetch_all($sql);
         foreach ($row as $key => $value) {
-
         $data = array(
-            'active' => "+6"$value->telephone;
+            'telephone' => "+6".$value->telephone
         );
-
-        pre($data);
-
-                  // $res = self::$db->update(self::aTable, $data, "entity_id='" .$id. "'");
+                  $res = self::$db->update(self::aTable, $data, "entity_id='" .$value->entity_id. "'");
         }
-
       }
 
 
@@ -171,14 +165,16 @@ if (!defined("_VALID_PHP")) {
         $sql = "SELECT * FROM " . self::aTable . " a WHERE  entity_id ='" . $aid . "' ";
         $row = self::$db->first($sql);
         $telnum=$row->telephone;
-        pre($row);
+        //pre($row);
 
         $sendsms=1;
 
         $data = array(
+      'customer_id' => $cid,
+      'address_id' => $aid,
       'tac' => $tac,
-      'created' => "NOW()",
-      'updated' => "NOW()",
+      'date_created' => "NOW()",
+      'date_updated' => "NOW()",
 );
 pre($data);
 
