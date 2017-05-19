@@ -168,3 +168,51 @@
 .go-shop-gold i{
     font-size : 26px;
 }
+
+.top_ranking_box{
+  height:140px;
+  padding-left:0px;
+  padding-right:0px;
+  border-top:2px solid white;
+}
+
+.top_ranking_box img{
+  height:138px;
+
+}
+
+.bg-gold{
+  background-color: #D4AF37;
+}
+
+.bg-silver{
+  background-color: #C0C0C0;
+}
+
+.bg-bronze{
+  background-color: #CD7F32;
+}
+
+.top_ranking_number{
+  vertical-align: middle;
+  display: table;
+}
+
+.top_ranking_vote{
+  position:absolute;
+  bottom:5px;
+  color:white;
+  left:20px;
+  font-size:16px;
+}
+
+.top_ranking_number_disp{
+  font-size:90px;
+  display:table-cell;
+  vertical-align:middle;
+  color:white;
+}
+
+.vote_box{
+  padding:10px !important;
+}

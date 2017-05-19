@@ -3,7 +3,7 @@
 /************** BASIC CONFIG *************************/
 
 define('_VALID_PHP', true);
-$pname = 'Vote List';
+
 $menu = 'ADMIN_WISHLIST';
 $submenu = 'ADMIN_WISHLIST_MONTH';
 require_once 'init.php';
@@ -32,6 +32,8 @@ if(isset($_GET['wp']) && $_GET['wp'] != ''){
 }else{
   rd('admin-month.php');
 }
+$pname = $wish_detail->title.' Vote List';
+
 
 
 /************** END BASIC CONFIG *********************/
@@ -120,7 +122,7 @@ if(isset($_GET['wp']) && $_GET['wp'] != ''){
 
                             ?>
 
-                            <table class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover" id="sample_1">
                               <thead>
                                 <tr>
                                   <th class="text-center">Name</th>

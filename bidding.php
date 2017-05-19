@@ -82,8 +82,6 @@ $pubid=$list->FEgetBidding('5');
             </div>
           </div>
 
-
-
           	<div class="panel panel-flat">
 							<div class="panel-body">
 								<div class="tabbable">

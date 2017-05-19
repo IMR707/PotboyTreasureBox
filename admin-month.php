@@ -267,18 +267,18 @@ if(!$found && $s_id != 0){
                                       <td class="text-center"><?php echo $month; ?></td>
                                       <td class="text-left"><?php echo $row2->title; ?></td>
                                       <td class="text-left">
-                                        <ul>
+                                        <div class="list-group">
                                         <?php
 
                                         $products = $fz->getProductAndVote($row2->id);
 
                                         foreach($products as $key3 => $row3){
                                             $prod_detail = $fz->getProductByID($row3->product_id);
-                                            echo '<li><a href="admin-vote.php?s='.$row->id.'&w='.$row2->id.'&wp='.$row3->id.'">'.$prod_detail->name.' ( <i class="fa fa-thumbs-o-up text-success"></i> : '.$row3->vote.' )</a></li>';
+                                            echo '<a class="list-group-item" href="admin-vote.php?s='.$row->id.'&w='.$row2->id.'&wp='.$row3->id.'">'.$prod_detail->name.'  <span class="pull-right badge"><i class="fa fa-thumbs-o-up"></i> '.$row3->vote.' </span></a>';
                                         }
 
                                         ?>
-                                        </ul>
+                                      </div>
                                       </td>
                                       <td class="text-center">
 
