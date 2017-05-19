@@ -161,22 +161,21 @@ if (!defined("_VALID_PHP")) {
 
       public function generateUserMobileSMS($cid,$aid)
       {
-        $tac=rand(pow(10,5), pow(10,6)-1);
+        $tac=rand(pow(10,4), pow(10,5)-1);
         $sql = "SELECT * FROM " . self::aTable . " a WHERE  entity_id ='" . $aid . "' ";
         $row = self::$db->first($sql);
         $telnum=$row->telephone;
         //pre($row);
 
         $sendsms=1;
-
         $data = array(
       'customer_id' => $cid,
       'address_id' => $aid,
-      'tac' => $tac,
+      'code' => $tac,
       'date_created' => "NOW()",
       'date_updated' => "NOW()",
 );
-pre($data);
+self::$db->insert(self::smsTable, $data);
 
         // $sql = "SELECT *,DATE_ADD(s.date_created, INTERVAL 30 MINUTE) as expired FROM " . self::smsTable . " s  join ".self::aTable." a on s.address_id=a.entity_id WHERE  customer_id ='" . $id . "' HAVING NOW() < expired";
         // $row = self::$db->first($sql);
