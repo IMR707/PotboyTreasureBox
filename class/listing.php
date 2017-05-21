@@ -152,11 +152,11 @@ END) as percent,
       <div class="col-sm-6 col-md-6 col-xs-6 text-center">
             <div class="panel panel-flat timeline-content" style="margin-bottom:10px;">
               <div class="panel-body" style="padding:0px;padding-top:10px;">
-                <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+                <div class="col-sm-12 col-md-12 col-xs-12">
                 <a href="#" class="display-block content-group">
                   <img src="<?php echo BACK_UPLOADS;?><?php echo $value->img_header;?>" class="img-responsive" alt="" style="height:80px">
                 </a>
-                  <h6 class="content-group text-left"><?php echo styleword($value->name);?>-<?php if($value->bid_base!=3){ echo " min ";} echo $value->min_bid; echo ($value->bid_type==1)?" Gold":" Diamond";?></h6>
+                  <span class="content-group text-left"><?php echo styleword($value->name);?>-<?php if($value->bid_base!=3){ echo " min ";} echo $value->min_bid; echo ($value->bid_type==1)?" Gold":" Diamond";?></span>
                   <div class="progress">
                     <div class="progress-bar bg-purple" id='textval<?php echo $value->btid;?>' style="width: <?php echo stylewordpercent($percent);?>">
                       <?php if($percent>=15){
