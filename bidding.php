@@ -54,7 +54,7 @@ $pubid=$list->FEgetBidding('5');
           ?>
 
 
-          <div class="panel panel-flat">
+          <div class="panel panel-flat mb-5">
             <div class="panel-body">
 
 

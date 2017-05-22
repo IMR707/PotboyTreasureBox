@@ -1,5 +1,7 @@
+  <div class="clearfix"></div>
 </div><?php if (!MV) {
      ?>
+
  	<!-- Footer -->
   <br>
  	<div class="footer text-muted">

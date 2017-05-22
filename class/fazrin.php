@@ -1740,8 +1740,25 @@ class Fazrin
       }
     }
 
+    /********* FAKER **********************************************/
 
+    public function fakeBid()
+    {
+      for($i = 0;$i < 40;$i++){
 
+        $cus_id = rand(1,312);
+        $bid_amount = rand(300,10000);
+
+        $data = array(
+          'bidding_id' => 1,
+          'customer_id' => $cus_id,
+          'bid_amount' => $bid_amount,
+          'date_updated' => 'now()',
+          'date_created' => 'now()'
+        );
+        $res = self::$db->insert(self::tb_bidtrans, $data);
+      }
+    }
 
 
 

@@ -1,7 +1,7 @@
 <?php
 $homeSlider=$list->FEgetHomeSlider();
 ?>
-<div class="panel panel-flat">
+<div class="panel panel-flat mb-5">
   <div class="panel-body">
             <div class="col-sm-12 col-md-12">
               <div id="carousel-notification" class="bootstrap-carousel" data-indicators="true" data-controls="true">

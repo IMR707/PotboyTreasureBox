@@ -620,4 +620,4 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 <?php
 
 }?>
-<div class="page-container">
+<div class="page-container p-5 pb-20 mb-20">
