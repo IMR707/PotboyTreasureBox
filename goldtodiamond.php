@@ -114,7 +114,7 @@ if (isset($_GET['cid'])) {
  	<!-- /page container -->
   <script type="text/javascript">
     function dailyreward(day){
-      location.href="goldConversion.php?cid="+day;
+      location.href="dailyReward.php?day="+day;
     }
     <?php
      if ($msg) {
@@ -129,7 +129,7 @@ if (isset($_GET['cid'])) {
      },
      callback: function (result) {
          console.log('This was logged in the callback: ' + result);
-         location.href="goldConversion.php";
+         location.href="dailyReward.php";
      }
  });
     <?php

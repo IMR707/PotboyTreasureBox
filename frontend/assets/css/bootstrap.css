@@ -4267,10 +4267,15 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar-brand {
   float: left;
-  padding: 13px 20px;
+  padding: 4px 10px;
   font-size: 14px;
   line-height: 20px;
-  height: 46px;
+  height: 50px;
+}
+.btn-purple {
+  color: #ffffff;
+  background-color: #6F3996;
+  border-color: #6F3996;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {

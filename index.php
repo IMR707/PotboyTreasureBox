@@ -50,15 +50,15 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
                 <a href="dailyReward.php"  class="btn btn-purple" name="button" style="display: block; width: 100%;">
                   <?php if ($user->logged_in): ?>
                     <?php if ($ckdg): ?>
-                    Daily Gold Box
+                    <br>Daily Gold Box<br>
                     <?php else: ?>
                       Next Daily <br> GOLD box in <br><b><span class="countdown_time2" id="disp_time_daily" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></b>
                     <?php endif; ?>
 
                   <?php else: ?>
-                    Daily Gold Box
+                  <br>  Daily Gold Box<br>
                   <?php endif; ?>
-
+                  <br>
                 </a>
  							</div>
  						</div>
@@ -72,12 +72,12 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
                 <a onclick="verifylink('game1.php')" class="btn btn-purple" name="button" style="display: block; width: 100%;">
                   <?php if ($user->logged_in): ?>
                     <?php if ($ckfg): ?>
-                    <br>Free Games
+                    <br>Free Games<br>
                     <?php else: ?>
                   Free Games <br>in <br><b><span class="countdown_time2" id="disp_time_freegames" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></b>
                     <?php endif; ?>
                   <?php else: ?>
-                    <br>Free Games
+                    <br>Free Games<br>
                   <?php endif; ?>
 
                   <br>
@@ -95,7 +95,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  							<div class="panel-body" style="padding:5px 30px !important;">
  								<a href="goldConversion.php"><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
                 <a href="goldConversion.php"  class="btn btn-purple" name="button" style="display: block; width: 100%;">
-                  PotBoy Gold Conversion
+                  <br>PotBoy Gold Conversion<br>
+                  <br>
                   </a>
  							</div>
  						</div>
@@ -107,7 +108,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  							<div class="panel-body" style="padding:5px 30px !important;">
                 <a onclick="verifylink('game2.php')" ><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
                 <a onclick="verifylink('game2.php')" class="btn btn-purple" name="button" style="display: block; width: 100%;">
-                  Play it Now <b id="time">1 Diamond</b>
+                  <br>Play it Now <b id="time">1 Diamond</b><br>
+                  <br>
                 </a>
 
  							</div>
