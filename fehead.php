@@ -59,30 +59,7 @@ if($log=='success')
  ?>
  <script type="text/javascript">
 
-   function verifylink(url){
-     /*
-     useraccess
-     0 = Guest
-     1 = no default address
-     2 = no verify
-     3 = ok
-     */
-     switch (<?php echo $user->useraccess;?>) {
-       case 0:
-       $("#modal-login").modal();
-       break;
-       case 1:
-       $("#modal-address").modal();
-       break;
-       case 2:
 
-       $("#modal-verify").modal();
-       break;
-       case 3:
-       location.href=url;
-       break;
-     }
-}
 
 
 //   retacfield
@@ -195,6 +172,31 @@ function verifymobile(id){
       $('#modal_update').modal('show');
     }
   });
+}
+
+function verifylink(url){
+  /*
+  useraccess
+  0 = Guest
+  1 = no default address
+  2 = no verify
+  3 = ok
+  */
+  switch ('<?php echo $user->useraccess;?>') {
+    case '0':
+    $("#modal-login").modal();
+    break;
+    case '1':
+    $("#modal-address").modal();
+    break;
+    case '2':
+
+    $("#modal-verify").modal();
+    break;
+    case '3':
+    location.href=url;
+    break;
+  }
 }
  </script>
 
@@ -407,7 +409,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 
        <div class="modal-body">
          <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-         <form method="POST" action="" role="form">
+         <form method="POST" action="" role="form" class="form-horizontal">
 
            <div class="text-center">
 
@@ -423,100 +425,69 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
            ?>
 
 
-          <div class="col-sm-6 col-md-6 col-xs-12 text-center">
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="First Name" value="<?php echo $fn;?>" required name="firstname">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-3">Name</label>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <input type="text" class="form-control" placeholder="First Name" value="<?php echo $fn;?>" required name="firstname">
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <input type="text" class="form-control" placeholder="Last Name" value="<?php echo $ln;?>" required name="lastname">
               </div>
             </div>
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Last Name" value="<?php echo $ln;?>" required name="lastname">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Phone number" required name="telephone">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Fax number"  name="fax">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-
           </div>
 
-          <div class="col-sm-6 col-md-6 col-xs-12 text-center">
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Address line 1" required name="address1">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-3">Phone Number</label>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="text" class="form-control" placeholder="Phone number" required name="telephone">
               </div>
             </div>
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Address line 2"  name="address2">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="City" required name="city">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-
-            <div class="form-group has-feedback has-feedback-left">
-              <select class="form-control" required name="region">
-                <option class="form-control" value="">-State/Province-</option>
-                <option value="Selangor">Selangor</option>
-                <option value="Kuala Lumpur">Kuala Lumpur</option>
-                <option value="Sarawak">Sarawak</option>
-                <option value="Sabah">Sabah</option>
-                <option value="Pahang">Pahang</option>
-                <option value="Perak">Perak</option>
-                <option value="Johor">Johor</option>
-                <option value="Kelantan">Kelantan</option>
-                <option value="Terengganu">Terengganu</option>
-                <option value="Kedah">Kedah</option>
-                <option value="Negeri Sembilan">Negeri Sembilan</option>
-                <option value="Melaka">Melaka</option>
-                <option value="Pulau Pinang">Pulau Pinang</option>
-                <option value="Perlis">Perlis</option>
-                <option value="Labuan">Labuan</option>
-                <option value="Putrajaya">Putrajaya</option>
-              </select>
-              <input type="hidden" value="0"  name="region_id">
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
-            <div class="form-group has-feedback has-feedback-left">
-              <input type="text" class="form-control" placeholder="Zip/Postal Code" required name="postcode">
-              <input type="hidden" value="MY"  name="country_id">
-
-              <div class="form-control-feedback">
-                <i class="icon-user text-muted"></i>
-              </div>
-            </div>
-
           </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-3">Address</label>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="text" class="form-control mb-10" placeholder="Address line 1" required name="address1">
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="text" class="form-control mb-10" placeholder="Address line 2"  name="address2">
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="text" class="form-control mb-10" placeholder="City" required name="city">
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <select class="form-control mb-10" required name="region">
+                  <option class="form-control" value="">-State/Province-</option>
+                  <option value="Selangor">Selangor</option>
+                  <option value="Kuala Lumpur">Kuala Lumpur</option>
+                  <option value="Sarawak">Sarawak</option>
+                  <option value="Sabah">Sabah</option>
+                  <option value="Pahang">Pahang</option>
+                  <option value="Perak">Perak</option>
+                  <option value="Johor">Johor</option>
+                  <option value="Kelantan">Kelantan</option>
+                  <option value="Terengganu">Terengganu</option>
+                  <option value="Kedah">Kedah</option>
+                  <option value="Negeri Sembilan">Negeri Sembilan</option>
+                  <option value="Melaka">Melaka</option>
+                  <option value="Pulau Pinang">Pulau Pinang</option>
+                  <option value="Perlis">Perlis</option>
+                  <option value="Labuan">Labuan</option>
+                  <option value="Putrajaya">Putrajaya</option>
+                </select>
+                <input type="hidden" value="0"  name="region_id">
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <input type="text" class="form-control" placeholder="Zip/Postal Code" required name="postcode">
+              </div>
+            </div>
+          </div>
+
+
+
 
            <input type="hidden" value="<?php echo $refurl;?>" name="refurl" />
            <input type="hidden" value="1" name="doAddress" />
@@ -537,6 +508,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
      </div>
    </div>
  </div>
+
 
  <div id="modal-verify" class="modal fade">
    <div class="modal-dialog">
