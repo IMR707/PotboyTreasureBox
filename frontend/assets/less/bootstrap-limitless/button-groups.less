@@ -14,13 +14,19 @@
 // -------------------------
 
 // Prevent double borders when buttons are next to each other
-.btn-group,
-.input-group-btn {
+.btn-group {
     .btn + .btn,
     .btn + .btn-group,
     .btn-group + .btn,
     .btn-group + .btn-group {
         margin-left: 1px;
+    }
+
+    // In default button border is darker than bg
+    .btn + .btn-default,
+    .btn-default + .btn-group,
+    .btn-group + .btn-default {
+        margin-left: -1px;
     }
 }
 
@@ -64,43 +70,62 @@
 
 // Default button and button group
 .btn-group > .btn + .dropdown-toggle {
-    padding-left: @padding-base-vertical;
-    padding-right: @padding-base-vertical;
+    padding-left: (@padding-base-horizontal - 3);
+    padding-right: (@padding-base-horizontal - 3);
 }
 
 // XLarge button and button group
 .btn-group > .btn-xlg + .dropdown-toggle,
 .btn-group-xlg > .btn + .dropdown-toggle {
-    padding-left: @padding-xlarge-vertical;
-    padding-right: @padding-xlarge-vertical;
+    padding-left: (@padding-xlarge-horizontal - 3);
+    padding-right: (@padding-xlarge-horizontal - 3);
 }
 
 // Large button and button group
 .btn-group > .btn-lg + .dropdown-toggle,
 .btn-group-lg > .btn + .dropdown-toggle {
-    padding-left: @padding-large-vertical;
-    padding-right: @padding-large-vertical;
+    padding-left: (@padding-large-horizontal - 3);
+    padding-right: (@padding-large-horizontal - 3);
 }
 
 // Small button and button group
 .btn-group > .btn-sm + .dropdown-toggle,
 .btn-group-sm > .btn + .dropdown-toggle {
-    padding-left: @padding-small-vertical;
-    padding-right: @padding-small-vertical;
+    padding-left: (@padding-small-horizontal - 3);
+    padding-right: (@padding-small-horizontal - 3);
 }
 
 // Mini button and button group
 .btn-group > .btn-xs + .dropdown-toggle,
 .btn-group-xs > .btn + .dropdown-toggle {
-    padding-left: @padding-xs-vertical;
-    padding-right: @padding-xs-vertical;
+    padding-left: (@padding-xs-horizontal - 3);
+    padding-right: (@padding-xs-horizontal - 3);
 }
 
 
 // The clickable button for toggling the menu
 // ----------------------
 
-.btn-group.open .dropdown-toggle:not(.btn-flat):not(.btn-link),
-.input-group-btn.open .dropdown-toggle:not(.btn-flat):not(.btn-link) {
+.btn-group.open .dropdown-toggle {
     .box-shadow(0 0 0 100px fade(#000, 10%) inset);
+
+    &.btn-default {
+        .box-shadow(0 0 0 100px fade(#000, 3%) inset);
+    }
+}
+
+
+// Justified button groups
+// ----------------------
+
+.btn-group-justified {
+    > .btn + .btn,
+    > .btn-group + .btn-group > .btn {
+        border-left-color: fade(#fff, 20%);
+    }
+
+    > .btn + .btn-default,
+    > .btn-group + .btn-group > .btn-default {
+        border-left-width: 0;
+    }
 }

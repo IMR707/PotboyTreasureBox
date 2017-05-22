@@ -4,8 +4,8 @@
 *
 *  Extension that "freezes" in place the left most columns in a scrolling DataTable
 *
-*  Version: 1.1
-*  Latest update: Feb 25, 2016
+*  Version: 1.0
+*  Latest update: May 25, 2015
 *
 * ---------------------------------------------------------------------------- */
 
@@ -20,22 +20,12 @@
 
         // In left column
         .DTFC_LeftWrapper & {
-            > tbody > tr {
-                > th,
-                > td {
-                    border-right: 1px solid @table-border-color;
-                }
-            }
+            border-right: 1px solid @table-border-color;
         }
 
         // In right column
         .DTFC_RightWrapper & {
-            > tbody > tr {
-                > th,
-                > td {
-                    border-left: 1px solid @table-border-color;
-                }
-            }
+            border-left: 1px solid @table-border-color;
         }
     }
 }

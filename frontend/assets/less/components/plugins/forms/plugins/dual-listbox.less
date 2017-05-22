@@ -24,6 +24,17 @@
         margin-bottom: @line-height-computed;
     }
 
+    // Select
+    select.form-control {
+        padding: @list-spacing;
+        .border-top-radius(0);
+    }
+    option {
+        display: block;
+        padding: @padding-base-vertical @padding-base-horizontal;
+        border-radius: @border-radius-small;
+    }
+
     // Move option on select
     &.moveonselect {
 
@@ -37,7 +48,7 @@
         .moveall,
         .removeall {
             width: 100%;
-            border-radius: @border-radius-base!important;
+            .border-top-radius(@border-radius-base)!important;
         }
 
         // Add border to the next buttons
@@ -56,6 +67,7 @@
     // Main buttons
     .buttons {
         width: 100%;
+        margin-bottom: -1px;
     }
 
     // Clear buttons
@@ -91,6 +103,7 @@
     // Button group
     .btn-group .btn {
         margin: 0;
+        .border-bottom-radius(0);
 
         // Borders
         & + .btn {
@@ -151,6 +164,8 @@
         }
 
         .box1 {
+            padding-bottom: 5px;
+
             &:after {
                 content: '\e9c9';
                 font-size: @icon-font-size;

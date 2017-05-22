@@ -14,12 +14,12 @@
 // ------------------------------
 
 .tokenfield {
-    border-width: 0;
+    height: auto;
 
     // Remove default .form-control styling
     &.form-control {
         height: auto;
-        padding: 0;
+        padding: 0 0 @tags-spacing 0;
     }
 
     // Clear floating
@@ -31,13 +31,11 @@
 
     // Token
     .token {
-        margin-top: (@tags-spacing / 2);
-        margin-bottom: (@tags-spacing / 2);
-        margin-right: @tags-spacing;
+        margin: @tags-spacing 0 0 @tags-spacing;
         cursor: default;
         float: left;
         position: relative;
-        border-radius: 100px;
+        border-radius: @border-radius-small;
 
         // Skip tokens with custom background color
         &:not([class*=bg-]) {
@@ -59,7 +57,6 @@
             border-radius: 0;
             border-bottom: 1px dotted @brand-danger;
 
-            // Active
             &.active {
                 background-color: @gray-lighter;
                 border: 1px solid @gray-lighter;
@@ -71,8 +68,10 @@
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding: @padding-base-vertical @padding-base-horizontal;
-            padding-right: ((@padding-base-horizontal * 1.5) + @font-size-mini);
+            padding: @padding-xs-vertical @padding-small-horizontal;
+            padding-right: ((@padding-small-horizontal * 2) + (@icon-font-size / 2));
+            font-size: @font-size-small;
+            line-height: @line-height-small;
         }
 
         // Close button
@@ -82,7 +81,7 @@
             position: absolute;
             top: 50%;
             color: inherit;
-            right: @padding-base-horizontal;
+            right: @padding-small-horizontal;
             line-height: 1;
             margin-top: -(@font-size-mini / 2);
 
@@ -103,15 +102,6 @@
         }
     }
 
-    //
-    // Contextual classes
-    //
-
-    // Center icons vertically
-    & + .form-control-feedback {
-        margin-top: (@tags-spacing / 2);
-    }
-
 
     //
     // Input field
@@ -126,12 +116,14 @@
     .token-input {
         direction: ltr;
         background: none;
-        width: 80px!important;
+        width: 90px!important;
         max-width: 50%;
         min-width: 60px;
-        padding: @padding-base-vertical 0;
-        margin-top: (@tags-spacing / 2);
-        margin-bottom: (@tags-spacing / 2);
+        padding: (@padding-base-vertical - @tags-spacing) @padding-small-horizontal;
+        margin-top: @tags-spacing;
+        margin-left: @tags-spacing;
+        font-size: @font-size-small;
+        line-height: @line-height-small;
         border: 0;
         outline: 0;
     }
@@ -144,7 +136,7 @@
     // Readonly
     &.readonly .token {
         .token-label {
-            padding-right: @padding-base-horizontal;
+            padding-right: @padding-small-horizontal;
         }
 
         // Hide close button in readonly
@@ -155,6 +147,9 @@
 
     // Disabled
     &.disabled {
+        cursor: @cursor-disabled;
+        
+        // Token style
         .token {
 
             // Mute tokens
@@ -187,41 +182,52 @@
 // ------------------------------
 
 // Large
-.input-group-lg .token > .token-label,
-.tokenfield.input-lg .token > span {
-    padding: @padding-large-vertical @padding-large-horizontal;
-    padding-right: ((@padding-large-horizontal * 1.5) + @font-size-mini);
-}
-.input-group-lg .token-input,
-.tokenfield.input-lg .token-input {
-    padding-top: @padding-large-vertical;
-    padding-bottom: @padding-large-vertical;
-}
 .input-group-lg,
 .tokenfield.input-lg {
+
+    // Tag look
+    .token > .token-label,
+    .token > span,
+    .token-input {
+        font-size: @font-size-base;
+        line-height: @line-height-computed;
+        padding: (@padding-large-vertical - @tags-spacing) @padding-base-horizontal;
+    }
+
+    // Right spacing for close button
+    .token > .token-label,
+    .token > span {
+        padding-right: ((@padding-base-horizontal * 1.5) + @font-size-mini);
+    }
+
+    // Close button
     .token > .close {
-        right: @padding-large-horizontal;
+        right: @padding-base-horizontal;
     }
 
     // Readonly
     &.readonly .token > .token-label {
-        padding-right: @padding-large-horizontal;
+        padding-right: @padding-base-horizontal;
     }
 }
 
 // Small
-.input-group-sm .token > .token-label,
-.tokenfield.input-sm .token > span {
-    padding: @padding-small-vertical @padding-small-horizontal;
-    padding-right: ((@padding-small-horizontal * 1.5) + @font-size-mini);
-}
-.input-group-sm .token-input,
-.tokenfield.input-sm .token-input {
-    padding-top: @padding-small-vertical;
-    padding-bottom: @padding-small-vertical;
-}
 .input-group-sm,
 .tokenfield.input-sm {
+
+    // Tags
+    .token > .token-label,
+    .token > span {
+        padding: (@padding-small-vertical - @tags-spacing) @padding-small-horizontal;
+        padding-right: ((@padding-small-horizontal * 1.5) + @font-size-mini);
+    }
+
+    // Input
+    .token-input {
+        padding: (@padding-small-vertical - @tags-spacing) @padding-small-horizontal;
+    }
+
+    // Close button
     .token > .close {
         right: @padding-small-horizontal;
     }

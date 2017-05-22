@@ -24,10 +24,8 @@
         // Links
         > a,
         > span {
-            padding: (@padding-base-vertical + 1) (@padding-base-horizontal + 1);
+            padding: @padding-base-vertical @padding-base-horizontal;
             color: @gray-dark;
-            border-width: 0;
-            overflow: hidden;
             font-size: @font-size-base;
         }
 
@@ -38,7 +36,7 @@
             color: #fff;
         }
     }
-    
+
     // Add space between items
     li + li {
         margin-left: @content-padding-small;
@@ -71,7 +69,7 @@
 .pager-lg {
     li > a,
     li > span {
-        padding: (@padding-large-vertical + 1) (@padding-large-horizontal + 1);
+        padding: @padding-large-vertical @padding-large-horizontal;
         font-size: @font-size-large;
         line-height: @line-height-large;
     }
@@ -81,7 +79,7 @@
 .pager-sm {
     li > a,
     li > span {
-        padding: (@padding-small-vertical + 1) (@padding-small-horizontal + 1);
+        padding: @padding-small-vertical @padding-small-horizontal;
         font-size: @font-size-small;
         line-height: @line-height-small;
     }
@@ -91,7 +89,7 @@
 .pager-xs {
     li > a,
     li > span {
-        padding: (@padding-xs-vertical + 1) (@padding-xs-horizontal + 1);
+        padding: @padding-xs-vertical @padding-xs-horizontal;
         font-size: @font-size-small;
         line-height: @line-height-small;
     }
@@ -115,7 +113,6 @@
         > a,
         > span {
             border-color: transparent;
-            background-color: transparent;
             color: @link-color;
         }
 
@@ -133,7 +130,6 @@
         > a:hover,
         > a:focus,
         > span {
-            background-color: transparent;
             border-color: transparent;
         }
     }

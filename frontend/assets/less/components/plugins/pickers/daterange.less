@@ -77,10 +77,11 @@
     .calendar {
         display: none;
         background-color: @dropdown-bg;
+        border: 1px solid @dropdown-border;
         border-radius: @border-radius-base;
         margin: @list-spacing;
         padding: (@list-spacing * 2);
-        .box-shadow(@shadow-depth2);
+        .box-shadow(0 1px 3px fade(#000, 10%));
     }
 }
 
@@ -184,7 +185,7 @@
     .table-condensed {
         tr > th,
         tr > td {
-            padding: @content-padding-small;
+            padding: @padding-xs-horizontal;
             line-height: 1;
         }
 
@@ -195,7 +196,7 @@
 
         // Month heading
         .month {
-            font-size: @font-size-h5;
+            font-size: @font-size-h6;
             line-height: 1;
             color: @text-color;
             padding-top: @content-padding-base;
@@ -242,7 +243,7 @@
         // Calendar icons
         i {
             position: absolute;
-            right: 0;
+            right: @padding-small-horizontal;
             top: auto;
             bottom: ((@input-height-base - @icon-font-size) / 2);
             color: @text-muted;
@@ -250,7 +251,8 @@
 
         // Add right padding for inputs
         input {
-            padding-right: (@icon-font-size + @padding-base-vertical);
+            padding-left: @padding-small-horizontal;
+            padding-right: (@padding-small-horizontal + @icon-font-size + @padding-base-vertical);
         }
     }
 
@@ -274,11 +276,12 @@
 .ranges {
     background-color: @dropdown-bg;
     position: relative;
+    border: 1px solid @dropdown-border;
     border-radius: @border-radius-base;
     width: 200px;
     margin-top: @list-spacing;
-    .box-shadow(@shadow-depth2);
-    
+    .box-shadow(0 1px 3px fade(#000, 10%));
+
     // Remove left margin if on right side
     .opensright & {
         margin-left: 0;
@@ -303,7 +306,7 @@
         // List item
         li {
             color: @text-color;
-            padding: @padding-base-vertical @padding-base-horizontal;
+            padding: (@padding-base-vertical + 1) @padding-base-horizontal;
             cursor: pointer;
             margin-top: 1px;
 
@@ -328,28 +331,34 @@
     // Text inputs
     .daterangepicker-inputs {
         padding: @padding-base-horizontal;
+        padding-top: @padding-base-horizontal + @list-spacing; // we need to match menu vertical spacing
 
         // Inputs container
         .daterangepicker_input {
 
             // Add top margin to the second field
             & + .daterangepicker_input {
-                margin-top: @padding-base-horizontal;
+                margin-top: @padding-base-horizontal + @list-spacing;;
             }
 
             // Text label
             > span {
                 display: block;
                 font-size: @font-size-small;
+                margin-bottom: @padding-base-vertical;
                 color: @text-muted;
             }
+        }
+
+        // Add top divider
+        & + .range_inputs {
+            border-top: 1px solid @dropdown-divider-bg;
         }
     }
 
     // Buttons area
     .range_inputs {
         padding: @padding-base-horizontal;
-        padding-top: 0;
 
         // Buttons
         .btn {

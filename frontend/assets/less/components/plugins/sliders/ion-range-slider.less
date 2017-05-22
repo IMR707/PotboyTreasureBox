@@ -98,7 +98,7 @@
     left: 0;
     width: 0;
     height: @slider-base-size;
-    background-color: @color-indigo-400;
+    background-color: @color-blue-500;
     border-radius: 100px;
 }
 
@@ -137,25 +137,38 @@
     display: block;
     width: (@slider-base-size * 3);
     height: (@slider-base-size * 3);
-    background-color: @color-indigo-400;
+    background-color: #fcfcfc;
+    border: 1px solid #bbb;
     cursor: pointer;
     top: (@tooltip-arrow-width + (@padding-xs-vertical * 3) + @font-size-mini + (@slider-base-size) - (((@slider-base-size * 3) - @slider-base-size) / 2));
     border-radius: 100px;
     cursor: pointer;
     z-index: 1;
-    .scale(1);
-    .transition(-webkit-transform ease-in-out 0.15s);
+
+    // Small circle
+    &:after {
+        content: '';
+        display: inline-block;
+        width: @slider-base-size;
+        height: @slider-base-size;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -(@slider-base-size / 2);
+        margin-left: -(@slider-base-size / 2);
+        background-color: @color-grey-600;
+        border-radius: 100px;
+    }
 
     // Hover state
-    &:hover {
-        .scale(1.25);
+    &:hover,
+    &:focus {
+        background-color: #f7f7f7;
     }
 
     // Active state
-    &:focus,
     &:active {
-        .scale(1.5);
-        .box-shadow(0 0 0 10px fade(@color-indigo-400, 10%));
+        background-color: #fafafa;
     }
 
     // The last one is on top of the first one
@@ -221,8 +234,7 @@
         display: block;
         bottom: -(@tooltip-arrow-width * 2);
         left: 50%;
-        width: 0;
-        height: 0;
+        width: 0; height: 0;
         margin-left: -(@tooltip-arrow-width);
         overflow: hidden;
         border: @tooltip-arrow-width solid transparent;

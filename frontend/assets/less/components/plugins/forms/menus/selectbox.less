@@ -19,6 +19,7 @@
     display: inline-block;
     vertical-align: middle;
     width: 100%;
+    border-radius: @border-radius-base;
 
     // All children elements
     * {
@@ -49,8 +50,8 @@
 
     // Options list
     .selectboxit-options {
-        max-height: 250px;
         width: 100%;
+        max-height: 250px;
         padding: @list-spacing 0;
         overflow-x: hidden;
         overflow-y: auto;
@@ -70,14 +71,6 @@
         .opacity(0.65);
     }
 }
-.selectboxit.selectboxit-disabled {
-    &,
-    &:focus {
-        border-bottom-style: dashed;
-        border-bottom-color: @input-border;
-        .box-shadow(none);
-    }
-}
 
 // Hide original select
 .selectboxit-rendering {
@@ -91,6 +84,7 @@
 // Dropdown menu
 .selectboxit-list {
     background-color: @dropdown-bg;
+    border: 1px solid @dropdown-border;
     margin: 2px 0 0;
     width: 100%;
     min-width: 200px;
@@ -99,7 +93,7 @@
     cursor: pointer;
     display: none;
     border-radius: @border-radius-base;
-    .box-shadow(@shadow-depth2);
+    .box-shadow(0 1px 3px fade(#000, 10%));
 
     // Link
     .selectboxit-option-anchor {
@@ -152,35 +146,53 @@
 // Button
 .selectboxit-btn {
     background-color: @input-bg;
-    border: 1px solid transparent;
-    border-bottom-color: @input-border;
+    border: 1px solid @input-border;
     color: @input-color;
+    border-radius: @input-border-radius;
     height: @input-height-base;
-    padding: @padding-base-vertical 0;
-    padding-right: (@padding-base-vertical + @padding-base-horizontal);
+    padding: @padding-base-vertical @padding-base-horizontal;
+    padding-right: ((@padding-base-horizontal * 2) + 5);
+
+    // When hovered
+    &:hover {
+        .box-shadow(0 0 0 100px fade(#000, 1%) inset);
+    }
 
     // When opened
     &.selectboxit-open,
     &:focus {
-        border-bottom-color: @input-border-highlight-color;
-        .box-shadow(0 1px 0 @input-border-highlight-color);
+        .box-shadow(0 0 0 100px fade(#000, 3%) inset);
     }
 
-    // Arrow
-    .selectboxit-arrow-container {
-        right: 0;
+    // Inherit colors if custom bg color
+    .selectboxit-container[class*=bg-] & {
+        background-color: inherit;
+        border-color: inherit;
+        color: inherit;
+    }
+
+    // Inherit border color if custom bg color
+    .selectboxit-container[class*=border-] & {
+        border-color: inherit;
+    }
+
+    // Darken on hover and focus
+    &[class*=bg-],
+    .selectboxit-container[class*=bg-] & {
+        &:hover {
+            .box-shadow(0 0 0 100px fade(#000, 5%) inset);
+        }
+
+        &.selectboxit-open,
+        &:focus {
+            .box-shadow(0 0 0 100px fade(#000, 10%) inset);
+        }
     }
 }
 
 // Inside input group
 .input-group {
     .selectboxit-container {
-
-        // Input group addons
-        + .input-group-btn,
-        + .input-group-addon {
-            padding-left: @padding-base-horizontal;
-        }
 
         // Remove border radius
         > .selectboxit-btn {
@@ -236,7 +248,7 @@
     margin: 0;
     list-style-type: none;
 
-    .selectboxit-option-anchor {
+    .selectboxit-option-anchor{
         padding: @padding-base-vertical @padding-base-horizontal;
     }
 }
@@ -267,9 +279,10 @@
 .selectboxit-arrow-container {
     position: absolute;
     top: 50%;
-    font-size: @icon-font-size;
+    width: @icon-font-size;
     right: @padding-base-horizontal;
     margin-top: -(@icon-font-size / 2);
+    text-align: right;
     line-height: 1;
 
     // Remove top edge from arrow
@@ -293,7 +306,7 @@
 
     // Icon
     > [class*=icon-] {
-        margin-right: @padding-base-horizontal;
+        margin-right: @content-padding-small;
         width: auto;
     }
 
@@ -349,25 +362,37 @@
 // ------------------------------
 
 // Large
-.selectbox-lg + .selectboxit-container .selectboxit-btn {
-    padding: @padding-large-vertical 0;
-    padding-right: (@padding-large-vertical + @padding-large-horizontal);
+.selectbox-lg + .selectboxit-container .selectboxit {
+    padding: @padding-large-vertical @padding-large-horizontal;
+    padding-right: (@padding-large-horizontal * 2);
     height: @input-height-large;
     font-size: @font-size-large;
+
+    .selectboxit-arrow-container {
+        right: @padding-large-horizontal;
+    }
 }
 
 // Small
-.selectbox-sm + .selectboxit-container .selectboxit-btn {
-    padding: @padding-small-vertical 0;
-    padding-right: (@padding-small-vertical + @padding-small-horizontal);
+.selectbox-sm + .selectboxit-container .selectboxit {
+    padding: @padding-small-vertical @padding-small-horizontal;
+    padding-right: (@padding-small-horizontal * 2);
     height: @input-height-small;
+
+    .selectboxit-arrow-container {
+        right: @padding-small-horizontal;
+    }
 }
 
 // Mini
-.selectbox-xs + .selectboxit-container .selectboxit-btn {
-    padding: @padding-xs-vertical 0;
-    padding-right: (@padding-xs-vertical + @padding-xs-horizontal);
+.selectbox-xs + .selectboxit-container .selectboxit {
+    padding: @padding-xs-vertical @padding-xs-horizontal;
+    padding-right: ((@padding-xs-horizontal * 2) + 5);
     height: @input-height-mini;
     font-size: @font-size-small;
     line-height: @line-height-small;
+
+    .selectboxit-arrow-container {
+        right: @padding-xs-horizontal;
+    }
 }

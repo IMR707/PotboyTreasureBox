@@ -117,7 +117,7 @@
         "form": {
             "main": "Form components",
             "basic": "Basic inputs",
-            "checkers": "Checkboxes &amp; radios",
+            "checkers": "Checkboxes & radios",
             "groups": "Input groups",
             "extended": "Extended controls",
             "labels": "Floating labels",
@@ -166,7 +166,7 @@
 
         "picker": {
             "main": "Pickers",
-            "datetime": "Date &amp; time pickers",
+            "datetime": "Date & time pickers",
             "color": "Color pickers",
             "location": "Location pickers"
         },
@@ -395,7 +395,7 @@
             "line": "Line charts",
             "bar": "Bar charts",
             "pie": "Pie charts",
-            "bubble": "Bubble &amp; scatter charts",
+            "bubble": "Bubble & scatter charts",
             "other": "Other charts"
         },
 
@@ -550,7 +550,7 @@
         },
 
         "login": {
-            "main": "Login &amp; registration",
+            "main": "Login & registration",
             "header_1": "Basic",
             "header_2": "Service",
             "header_3": "Other",

@@ -43,9 +43,8 @@
 	border-radius: @border-radius-base;
 	max-height: 300px;
 	overflow-y: auto;
-	.box-shadow(@shadow-depth2);
+	.box-shadow(0 1px 3px fade(#000, 10%));
 
-	// Scrollable
 	.typeahead-scrollable & {
 		max-height: 250px;
 	}
@@ -58,7 +57,7 @@
 
 // Menu item
 .tt-suggestion {
-	padding: @padding-base-vertical @content-padding-base;
+	padding: (@padding-base-vertical + 1) @content-padding-base;
 	cursor: pointer;
 
 	// Hover state bg color
@@ -79,7 +78,7 @@
 .tt-heading {
 	font-size: @font-size-mini;
 	line-height: @line-height-mini;
-	padding: @padding-base-vertical @content-padding-base;
+	padding: (@padding-base-vertical + 1) @content-padding-base;
 	text-transform: uppercase;
 	display: block;
 	font-weight: 700;
@@ -89,6 +88,6 @@
 
 // Add padding for empty message
 .typeahead-template .empty-message {
-	padding: @padding-base-vertical @content-padding-base;
+	padding: (@padding-base-vertical + 1) @content-padding-base;
 	text-align: center;
 }

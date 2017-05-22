@@ -960,8 +960,8 @@
     // Base
     &.listbox {
         margin: 0;
-        background-color: @dropdown-bg;
-        .box-shadow(@shadow-depth2);
+        background-color: #fff;
+        border: 1px solid @dropdown-border;
 
         // Table
         .ht_master table {
@@ -1579,9 +1579,9 @@
 
     // Table with content
     .htCore {
-        background-color: @dropdown-bg;
+        border: 1px solid @dropdown-border;
+        background-color: #fff;
         padding: @list-spacing 0;
-        .box-shadow(@shadow-depth2);
     }
 
     // Hide borders
@@ -1627,7 +1627,7 @@
 
                 > div {
                     height: 1px;
-                    background-color: @dropdown-divider-bg;
+                    background-color: @dropdown-border;
                     margin: @list-spacing 0;
                 }
             }
@@ -1703,7 +1703,8 @@
     display: block;
     position: relative;
     background-color: @dropdown-bg;
-    .box-shadow(@shadow-depth2);
+    border: 1px solid @dropdown-border;
+    .box-shadow(0 1px 3px fade(#000, 10%));
 
     // Clearfix
     &:before,
@@ -1730,7 +1731,7 @@
 .pika-lendar {
     float: left;
     max-width: 250px;
-    margin: @padding-base-horizontal;
+    margin: 5px;
 }
 
 
@@ -1742,7 +1743,6 @@
 .pika-title {
     position: relative;
     text-align: center;
-    margin-bottom: (@padding-base-horizontal - 6);
 
     // Select
     select {
@@ -1766,7 +1766,7 @@
     margin: 0;
     padding-top: @content-padding-base;
     padding-bottom: @content-padding-base;
-    font-size: @font-size-h5;
+    font-size: @font-size-h6;
     line-height: 1;
 
     // Style year select
