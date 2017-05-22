@@ -152,7 +152,7 @@ END) as percent,
       <div class="col-sm-6 col-md-6 col-xs-6 text-center">
             <div class="panel panel-flat timeline-content" style="margin-bottom:10px;">
               <div class="panel-body" style="padding:0px;padding-top:10px;">
-                <div class="col-sm-12 col-md-12 col-xs-12 text-center">
+                <div class="col-sm-12 col-md-12 col-xs-12">
                 <a href="#" class="display-block content-group">
                   <img src="<?php echo BACK_UPLOADS;?><?php echo $value->img_header;?>" class="img-responsive" alt="" style="height:80px">
                 </a>
