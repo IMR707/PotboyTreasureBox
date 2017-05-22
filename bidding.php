@@ -85,7 +85,7 @@ $pubid=$list->FEgetBidding('5');
           	<div class="panel panel-flat">
 							<div class="panel-body" style="padding:0px;">
 								<div class="tabbable">
-									<ul class="nav nav-tabs nav-tabs-solid nav-tabs-component nav-justified" style="margin-bottom:10px;">
+									<!-- <ul class="nav nav-tabs nav-tabs-solid nav-tabs-component nav-justified" style="margin-bottom:10px;">
 										<li class="active"><a href="#solid-rounded-justified-tab1" data-toggle="tab"><i class="fa fa-fire"></i> Hot</a></li>
 										<li><a href="#solid-rounded-justified-tab2" data-toggle="tab">Ongoing</a></li>
                     <li><a href="#solid-rounded-justified-tab3" data-toggle="tab">New</a></li>
@@ -96,7 +96,30 @@ $pubid=$list->FEgetBidding('5');
 												<li><a href="#solid-rounded-justified-tab5" data-toggle="tab">Low to High</a></li>
 											</ul>
 										</li>
-									</ul>
+									</ul> -->
+                  <nav class="navbar navbar-default" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-nav-collapse">
+                              Sort <span class="glyphicon glyphicon-sort"></span>
+                            </button>
+                        </div>
+                        <div class="collapse navbar-collapse" id="example-nav-collapse">
+                            <ul class="nav navbar-nav navbar-right col-md-12 col-sm-12">
+                                <li class="active col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab1" data-toggle="tab"><i class="fa fa-fire"></i> Hot</a></li>
+                                <li class="col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab2" data-toggle="tab">Ongoing</a></li>
+                                <li class="col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab3" data-toggle="tab">New</a></li>
+                                <li class="dropdown col-md-3 col-sm-3 text-center">
+            											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Prize <span class="caret"></span></a>
+            											<ul class="dropdown-menu dropdown-menu-right">
+            												<li><a href="#solid-rounded-justified-tab4" data-toggle="tab">High to Low</a></li>
+            												<li><a href="#solid-rounded-justified-tab5" data-toggle="tab">Low to High</a></li>
+            											</ul>
+            										</li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
 
 									<div class="tab-content">
 										<div class="tab-pane active" id="solid-rounded-justified-tab1">
