@@ -245,22 +245,40 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
     $spin=$crdata->spin; ?>
 
        <li class="dropdown dropdown-user">
-         <a><div class="left" data-toggle="tooltip" title="Potboy Credit - You can use credit to buy groceries. Buy your Potboy Credit at discounted rate today!"> <img src="https://potboy.com.my/pub/media/customercredit/point.png" style="width:15px"> <span id="credit_navlink"><?php echo $credit; ?></span></div></a>
-       </li>
+         <a class="dropdown-toggle" data-toggle="dropdown">
+           <span>
+            <div class="left" data-toggle="tooltip" title="Potboy Credit - You can use credit to buy groceries. Buy your Potboy Credit at discounted rate today!">
+              <img src="https://potboy.com.my/pub/media/customercredit/point.png" style="width:15px"> <span id="credit_navlink"><?php echo $credit; ?></span>
+            </div>
+         </a>
+      </li>
 
        <li class="dropdown dropdown-user">
-         <a><div class="left" data-toggle="tooltip" title="Potboy Gold - You can further slash prices with Potboy Gold, collect Potboy Gold today!"> <img src="https://potboy.com.my/pub/media/logo/stores/1/gold.png" style="width:16px"> <span id="gold_navlink"><?php echo $gold; ?></span></div></a>
-       </li>
+         <a class="dropdown-toggle" data-toggle="dropdown">
+           <span>
+            <div class="left" data-toggle="tooltip" title="Potboy Gold - You can further slash prices with Potboy Gold, collect Potboy Gold today!">
+              <img src="https://potboy.com.my/pub/media/logo/stores/1/gold.png" style="width:16px"> <span id="gold_navlink"><?php echo $gold; ?></span>
+            </div>
+         </a>
+      </li>
 
        <li class="dropdown dropdown-user">
-         <a><div class="left" data-toggle="tooltip" title="Potboy Diamond - Earn Diamond with every RM50 purchase, you can convert Potboy Diamond to Potboy Gold!"><img src="https://potboy.com.my/pub/media/logo/stores/1/diamond.png" style="width:16px"> <span id="diamond_navlink"><?php echo $diamond; ?></span></div></a>
-       </li>
+         <a class="dropdown-toggle" data-toggle="dropdown">
+           <span>
+            <div class="left" data-toggle="tooltip" title="Potboy Diamond - Earn Diamond with every RM50 purchase, you can convert Potboy Diamond to Potboy Gold!">
+              <img src="https://potboy.com.my/pub/media/logo/stores/1/diamond.png" style="width:16px"> <span id="diamond_navlink"><?php echo $diamond; ?></span>
+            </div>
+         </a>
+      </li>
 
        <li class="dropdown dropdown-user">
-         <a><div class="left" data-toggle="tooltip" title="Potboy Spin - Earn Diamond , Gold or Spin again."><img src="img/spin.png" style="width:16px"> <span id="spin_navlink"><?php echo $spin; ?></span></div></a>
-       </li>
-
-
+         <a class="dropdown-toggle" data-toggle="dropdown">
+           <span>
+            <div class="left" data-toggle="tooltip" title="Potboy Spin - Earn Diamond , Gold or Spin again.">
+               <img src="img/spin.png" style="width:16px"> <span id="spin_navlink"><?php echo $spin; ?></span></span>
+            </div>
+         </a>
+      </li>
 
 
          <li class="dropdown dropdown-user">
