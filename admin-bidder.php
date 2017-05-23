@@ -107,7 +107,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                             $bidders = $fz->getCurParticipant($id);
                             ?>
 
-                            <table class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover" id="sample_1">
                               <thead>
                                 <tr>
                                   <th class="text-center" width="25%">Bidder</th>

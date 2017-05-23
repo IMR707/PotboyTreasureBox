@@ -124,9 +124,6 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                         <li>
                                                             <i class="fa fa-circle"></i> <?php echo $reward_detail->gold;?>
                                                         </li>
-                                                        <li>
-                                                            <i class="fa fa-usd"></i> <?php echo $reward_detail->credit;?>
-                                                        </li>
                                                     </ul>
                                                 </div>
                                                 <!--end col-md-8-->
@@ -145,6 +142,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                 <div class="tab-content">
                                                     <div class="tab-pane active" id="tab_1_11">
                                                         <div class="portlet-body">
+                                                          <button class="btn btn-success pull-right add_data" id="diamond">Add Diamond</button>
                                                             <table class="table table-striped table-bordered table-advance table-hover">
                                                                 <thead>
                                                                     <tr>
@@ -333,6 +331,36 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal fade in" id="modal_add" tabindex="-1" role="basic" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    <h4 class="modal-title" id="modal_title"></h4>
+                                </div>
+                                <div class="modal-body">
+                                  <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Amount</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" placeholder="Amount" name="amount" required id="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"></label>
+                                        <div class="col-md-9">
+                                          <button type="submit" class="btn blue btn_submit">Add</button>
+                                          <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="func" value="add_amount">
+                                    <input type="hidden" name="type" id="type" value="">
+                                  </form>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
                     <!-- END PAGE BASE CONTENT -->
                 </div>
                 <!-- END CONTENT BODY -->
@@ -341,6 +369,31 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
         </div>
         <!-- END CONTAINER -->
 <script type="text/javascript">
+
+$(document).ready(function(){
+
+  $('.add_data').on('click',function(){
+
+    $('#modal_title').html('');
+    $('#type').val('');
+
+    var id = $(this).attr('id');
+
+    if(id == 'diamond'){
+      $('#modal_title').html('Add Diamond Amount');
+      $('#type').val(id);
+    }else if(id == 'gold'){
+      $('#modal_title').html('Add Gold Amount');
+      $('#type').val(id);
+    }
+
+    $('#modal_add').modal('show');
+
+
+  });
+
+});
+
 
 </script>
 <?php include BACK_INC.'htmlfooter.php'; ?>

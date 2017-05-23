@@ -12,6 +12,8 @@ if (!defined("_VALID_PHP")) {
       const smsTable = "aa_verifysms";
       const FgamTable = "aa_game_free";
       const tb_drtran = 'aa_dailyreward_transaction';
+      const tb_rewardcus = 'lof_rewardpoints_customer';
+      const tb_rewardcredit = 'customer_credit';
 
 
       public $logged_in = null;
@@ -31,6 +33,7 @@ if (!defined("_VALID_PHP")) {
       public $accverify=0;
       public $userAddress=0;
       public $useraccess=0;
+
       public $last;
       private $lastlogin = "NOW()";
       private static $db;
@@ -56,6 +59,29 @@ if (!defined("_VALID_PHP")) {
           }
       }
 
+
+      public function FEgetRewardData($id)
+      {
+          $sql = 'SELECT available_points as diamond,available_golds as gold,total_spin as spin FROM '.self::tb_rewardcus." where customer_id ='$id'";
+          $row = self::$db->first($sql);
+          if (!$row) {
+              $row = new stdClass();
+              $row->diamond=0;
+              $row->gold=0;
+              $row->spin=0;
+          }
+          $sql2 = 'SELECT credit_balance as credit FROM '.self::tb_rewardcredit." where customer_id ='$id'";
+          $row2 = self::$db->first($sql2);
+          if (!$row2) {
+              $row->credit='0.00';
+          } else {
+              $num=$row2->credit;
+              $row->credit=sprintf('%.2f', $num);
+          }
+          $row->credit="RM ".$row->credit;
+          return $row;
+      }
+
       public function mydetail()
       {
           return $a=self::$uid;
@@ -71,6 +97,11 @@ if (!defined("_VALID_PHP")) {
               $this->userlevel = $_SESSION['userlevel'] = 1;
               $this->cookie_id = $_SESSION['cookie_id'];
               $this->accverify = $_SESSION['accverify'] = $row->accverify;
+              $a=$this->FEgetRewardData($this->uid);
+              $this->diamond=$a->diamond;
+              $this->gold=$a->gold;
+              $this->spin=$a->spin;
+              $this->credit=$a->credit;
               $this->userAddress = $_SESSION['userAddress'] =(!$row->default_shipping)?0:$row->default_shipping;
               if(!$this->userAddress){
                 $this->useraccess=1;

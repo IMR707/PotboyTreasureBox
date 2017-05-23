@@ -135,7 +135,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                       $cust_id = $row->cust_id;
                                       $cust_detail = $fz->getUserByID($cust_id);
 
-                                      echo '<label class="label label-success">Claimed</label> by '.$cust_detail->firstname.' '.$cust_detail->lastname;
+                                      echo '<label class="label label-success">Claimed</label> by <a href="admin-userprofile.php?id='.$cust_id.'">'.$cust_detail->firstname.' '.$cust_detail->lastname.'</a>';
                                     }else{
                                       echo '<label class="label label-danger">Available</label>';
                                     }

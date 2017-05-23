@@ -106,11 +106,11 @@ $pubid=$list->FEgetBidding('5');
                         </div>
                         <div class="collapse navbar-collapse" id="example-nav-collapse">
                             <ul class="nav navbar-nav navbar-right col-md-12 col-sm-12">
-                                <li class="active col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab1" data-toggle="tab"><i class="fa fa-fire"></i> Hot</a></li>
-                                <li class="col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab2" data-toggle="tab">Ongoing</a></li>
-                                <li class="col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab3" data-toggle="tab">New</a></li>
+                                <li class="active col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab1" data-toggle="tab"><span class="glyphicon glyphicon-fire"></span> Hot</a></li>
+                                <li class="col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab2" data-toggle="tab"><span class="glyphicon glyphicon-time"></span> Ongoing</a></li>
+                                <li class="col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab3" data-toggle="tab"><span class="glyphicon glyphicon-ok"></span> New</a></li>
                                 <li class="dropdown col-md-3 col-sm-3 text-center">
-            											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Prize <span class="caret"></span></a>
+            											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-gift"></span> Prize <span class="caret"></span></a>
             											<ul class="dropdown-menu dropdown-menu-right">
             												<li><a href="#solid-rounded-justified-tab4" data-toggle="tab">High to Low</a></li>
             												<li><a href="#solid-rounded-justified-tab5" data-toggle="tab">Low to High</a></li>

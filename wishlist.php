@@ -25,7 +25,21 @@ $pubid=$list->FEgetBidding('5');
  			<!-- Main content -->
  			<div class="content-wrapper">
 
-          	<div class="panel panel-flat">
+        <div class="panel panel-flat mb-10">
+          <div class="panel-body">
+            <div class="tabbable">
+    					<ul class="nav nav-tabs nav-tabs-bottom">
+    						<li class="active"><a href="#bottom-tab1" data-toggle="tab" aria-expanded="true">Potboy</a></li>
+    						<li class=""><a href="#bottom-tab2" data-toggle="tab" aria-expanded="false">Harvey Norman</a></li>
+    					</ul>
+    				</div>
+          </div>
+        </div>
+
+        <div class="tab-content">
+          <div class="tab-pane fade active in" id="bottom-tab1">
+
+          	<div class="panel panel-flat mb-10">
               <div class="panel-heading">
                 <h4 class="panel-title">July Voting Top Ranking</h4>
               </div>
@@ -84,6 +98,72 @@ $pubid=$list->FEgetBidding('5');
                 ?>
 							</div>
 						</div>
+          </div>
+
+          <div class="tab-pane fade" id="bottom-tab2">
+
+           <div class="panel panel-flat mb-10">
+             <div class="panel-heading">
+               <h4 class="panel-title">Julys Voting Top Ranking</h4>
+             </div>
+             <div class="panel-body">
+               <div class="col-md-12">
+                 <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-gold">
+                   <div class="top_ranking_number_disp">
+                     1
+                   </div>
+                 </div>
+                 <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
+                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" >
+                   <div class="top_ranking_vote">100,123 votes</div>
+                 </div>
+               </div>
+               <div class="col-md-12">
+                 <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-silver">
+                   <div class="top_ranking_number_disp">
+                     2
+                   </div>
+                 </div>
+                 <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
+                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" >
+                   <div class="top_ranking_vote">100,123 votes</div>
+                 </div>
+               </div>
+               <div class="col-md-12">
+                 <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-bronze">
+                   <div class="top_ranking_number_disp">
+                     3
+                   </div>
+                 </div>
+                 <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
+                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" >
+                   <div class="top_ranking_vote">100,123 votes</div>
+                 </div>
+               </div>
+             </div>
+           </div>
+
+           <div class="panel panel-flat">
+             <div class="panel-heading">
+               <h4 class="panel-title">VOTE NOW for next month prize !</h4>
+             </div>
+             <div class="panel-body">
+               <?php
+
+               for($i=0;$i<8;$i++){
+
+               ?>
+               <div class="col-md-3 vote_box">
+                 <img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive" >
+               </div>
+               <?php
+               }
+               ?>
+             </div>
+           </div>
+         </div>
+
+        </div>
  			</div>
  			<!-- /main content -->
 
