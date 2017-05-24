@@ -43,11 +43,11 @@ use Carbon\Carbon;
     								<div class="panel border-left-lg border-left-primary">
     									<div class="panel-body">
     										<div class="row">
-    											<div class="col-md-4 col-xs-12 col-sm-4">
-    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive" >
+    											<div class="col-md-3 col-xs-12 col-sm-4">
+    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center" >
     											</div>
 
-    											<div class="col-md-8 col-xs-12 col-sm-8 mt-10 ">
+    											<div class="col-md-9 col-xs-12 col-sm-8 mt-10 ">
 
                               <span class="title-custom">iPhone 7 (Red)</span>
                               <br>
@@ -77,11 +77,11 @@ use Carbon\Carbon;
                     <div class="panel border-left-lg border-left-primary">
     									<div class="panel-body">
     										<div class="row">
-    											<div class="col-md-4 col-xs-12 col-sm-4">
-    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive" >
+    											<div class="col-md-3 col-xs-12 col-sm-4">
+    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center" >
     											</div>
 
-    											<div class="col-md-8 col-xs-12 col-sm-8 mt-10 ">
+    											<div class="col-md-9 col-xs-12 col-sm-8 mt-10 ">
 
                               <span class="title-custom">iPhone 7 (Red)</span>
                               <br>
@@ -110,11 +110,11 @@ use Carbon\Carbon;
                     <div class="panel border-left-lg border-left-primary">
     									<div class="panel-body">
     										<div class="row">
-    											<div class="col-md-4 col-xs-12 col-sm-4">
-    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive" >
+    											<div class="col-md-3 col-xs-12 col-sm-4">
+    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center" >
     											</div>
 
-    											<div class="col-md-8 col-xs-12 col-sm-8 mt-10 ">
+    											<div class="col-md-9 col-xs-12 col-sm-8 mt-10 ">
 
                               <span class="title-custom">iPhone 7 (Red)</span>
                               <br>
@@ -160,11 +160,11 @@ use Carbon\Carbon;
     								<div class="panel border-left-lg border-left-primary">
     									<div class="panel-body">
     										<div class="row">
-    											<div class="col-md-4 col-xs-12 col-sm-4">
-    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive" >
+    											<div class="col-md-3 col-xs-12 col-sm-4">
+    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center" >
     											</div>
 
-    											<div class="col-md-8 col-xs-12 col-sm-8 mt-10 ">
+    											<div class="col-md-9 col-xs-12 col-sm-8 mt-10 ">
 
                               <span class="title-custom">iPhone 7 (Red)</span>
                               <br>
@@ -194,11 +194,11 @@ use Carbon\Carbon;
                     <div class="panel border-left-lg border-left-primary">
     									<div class="panel-body">
     										<div class="row">
-    											<div class="col-md-4 col-xs-12 col-sm-4">
-    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive" >
+    											<div class="col-md-3 col-xs-12 col-sm-4">
+    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center" >
     											</div>
 
-    											<div class="col-md-8 col-xs-12 col-sm-8 mt-10 ">
+    											<div class="col-md-9 col-xs-12 col-sm-8 mt-10 ">
 
                               <span class="title-custom">iPhone 7 (Red)</span>
                               <br>
@@ -227,11 +227,11 @@ use Carbon\Carbon;
                     <div class="panel border-left-lg border-left-primary">
     									<div class="panel-body">
     										<div class="row">
-    											<div class="col-md-4 col-xs-12 col-sm-4">
-    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive" >
+    											<div class="col-md-3 col-xs-12 col-sm-4">
+    												<img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center" >
     											</div>
 
-    											<div class="col-md-8 col-xs-12 col-sm-8 mt-10 ">
+    											<div class="col-md-9 col-xs-12 col-sm-8 mt-10 ">
 
                               <span class="title-custom">iPhone 7 (Red)</span>
                               <br>
