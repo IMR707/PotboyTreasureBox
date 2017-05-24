@@ -37,6 +37,7 @@ if($log=='success')
  <!-- Global stylesheets -->
  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
  <link href="<?php echo FRONTCSS;?>icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+ <link href="<?php echo FRONTCSS;?>icons/fontawesome/styles.min.css" rel="stylesheet" type="text/css">
  <link href="<?php echo FRONTCSS;?>bootstrap.css" rel="stylesheet" type="text/css">
  <link href="<?php echo FRONTCSS;?>core.css" rel="stylesheet" type="text/css">
  <link href="<?php echo FRONTCSS;?>components.css" rel="stylesheet" type="text/css">

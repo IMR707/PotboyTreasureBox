@@ -229,3 +229,12 @@
   font-size:15px;
   font-weight:bold;
 }
+
+.font-17{
+  font-size:17px;
+}
+
+.text-unstyled{
+  text-decoration: none;
+  color:#333333 !important;
+}
