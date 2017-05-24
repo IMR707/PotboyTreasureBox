@@ -28,8 +28,7 @@ use Carbon\Carbon;
 
 
             <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-                <img src="<?php echo BACK_UPLOADS; ?>banner.png" class="img-responsive" >
-
+                <img src="<?php echo BACK_UPLOADS; ?>banner.png" class="img-responsive" style="margin:0 auto;width:100%" >
             </div>
             <div class="col-sm-12 col-md-12 col-xs-12 text-center">
               <div class="col-sm-12 col-md-12 col-xs-12 text-center pt-20 pb-20 bg-purple-300">
