@@ -325,7 +325,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
      <ul class="nav navbar-nav">
        <li class="<?php echo isActived('DASH', $pagemenu, 'active')?>"><a href="index.php"><i class="icon-display4 position-left"></i> Dashboard</a></li>
        <li class="<?php echo isActived('BID', $pagemenu, 'active')?>"><a href="bidding.php"><i class="icon-display4 position-left"></i> Bidding</a></li>
-       <li class=""><a href="index.php"><i class="icon-display4 position-left"></i> Latest Winners</a></li>
+       <li class="<?php echo isActived('LATESTWINNER', $pagemenu, 'active')?>"><a href="latestwinner.php"><i class="icon-display4 position-left"></i> Latest Winners</a></li>
        <li class="<?php echo isActived('WISHLIST', $pagemenu, 'active')?>"><a href="wishlist.php"><i class="icon-display4 position-left"></i> Wishlist Voting</a></li>
        <?php
        if (!$user->logged_in) {

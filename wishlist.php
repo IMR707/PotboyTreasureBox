@@ -90,7 +90,7 @@ $pubid=$list->FEgetBidding('5');
                 for($i=0;$i<8;$i++){
 
                 ?>
-								<div class="col-md-3 vote_box">
+								<div class="col-md-3 col-sm-3 col-xs-6 vote_box">
                   <img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive" >
                 </div>
                 <?php
