@@ -154,7 +154,7 @@ END) as percent,
               <div class="panel-body" style="padding:0px;padding-top:10px;">
                 <div class="col-sm-12 col-md-12 col-xs-12">
                 <a href="#" class="display-block content-group">
-                  <img src="<?php echo BACK_UPLOADS;?><?php echo $value->img_header;?>" class="img-responsive" alt="" style="height:80px">
+                  <img src="<?php echo BACK_UPLOADS;?><?php echo $value->img_header;?>" class="img-responsive" alt="" style="width:100%;height:80px">
                 </a>
                   <h6 class="content-group text-left"><?php echo styleword($value->name);?><br><small><?php if($value->bid_base!=3){ echo " min ";} echo $value->min_bid; echo ($value->bid_type==1)?" Gold":" Diamond";?></small></h6>
                   <div class="progress">
@@ -186,9 +186,6 @@ END) as percent,
 
                         switch ($value->bid_base) {
                           case '1':
-
-                          // $dt=$value->end_time->diffForHumans(\Carbon\Carbon::now());
-                          // pre($dt);
                             ?>
                             <ul class="list-inline list-inline-condensed heading-text pull-left">
                             <li>Close in</li>

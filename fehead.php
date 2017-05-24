@@ -199,6 +199,27 @@ function verifylink(url){
     break;
   }
 }
+
+function verifyval(){
+  switch ('<?php echo $user->useraccess;?>') {
+    case '0':
+    $("#modal-login").modal();
+    return 0;
+    break;
+    case '1':
+    $("#modal-address").modal();
+    return 0;
+    break;
+    case '2':
+    $("#modal-verify").modal();
+    return 0;
+    break;
+    case '3':
+    return 1;
+    break;
+  }
+}
+
  </script>
 
  <!-- /core JS files -->

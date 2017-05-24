@@ -75,6 +75,9 @@ $gold_trans = $fz->getUserGoldTrans($user->uid);
             break;
           }
           ?>
+
+          <!-- <br>ACCOUNT INFORMATION
+       <br>Address Book -->
           <div class="tabbable">
 						<ul class="nav nav-tabs nav-tabs-bottom">
 							<li class="active"><a href="#right-icon-tab1" data-toggle="tab" aria-expanded="false">Diamond Transaction <i class="icon-diamond position-right"></i></a></li>
