@@ -25,15 +25,15 @@ use Carbon\Carbon;
           <div class="panel-body">
             <div class="tabbable">
     					<ul class="nav nav-tabs nav-tabs-bottom">
-    						<li class="active"><a href="#bottom-tab1" data-toggle="tab" aria-expanded="true">To be Announced</a></li>
-    						<li class=""><a href="#bottom-tab2" data-toggle="tab" aria-expanded="false">Announced</a></li>
+    						<li class=""><a href="#bottom-tab1" data-toggle="tab" aria-expanded="true">To be Announced</a></li>
+    						<li class="active"><a href="#bottom-tab2" data-toggle="tab" aria-expanded="false">Announced</a></li>
     					</ul>
     				</div>
           </div>
         </div>
 
         <div class="tab-content">
-          <div class="tab-pane fade active in" id="bottom-tab1">
+          <div class="tab-pane fade" id="bottom-tab1">
 
           	<div class="panel panel-flat mb-10">
 							<div class="panel-body">
