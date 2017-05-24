@@ -84,13 +84,9 @@ if (isset($_GET['day'])) {
                           // 4 = yesterday
                           // 5 = forwardday
                           case '1':
-                            ?>
-                            <span class="img-rounded daily-gold-claim pointer"onclick="dailyreward('<?php echo $value->day_num;?>');">Claim Now</span>
-                            <?php
-                            break;
                           case '2':
                             ?>
-                            <span class="img-rounded daily-gold-claim pointer" onclick="alert('Please Login to Claim the Daily Reward.');">Claim Now</span>
+                            <span class="img-rounded daily-gold-claim pointer"onclick="dailyreward('<?php echo $value->day_num;?>');">Claim Now</span>
                             <?php
                             break;
                           case '3':
@@ -129,7 +125,10 @@ if (isset($_GET['day'])) {
  	<!-- /page container -->
   <script type="text/javascript">
     function dailyreward(day){
+      var a=verifylogin();
+      if(a){
       location.href="dailyReward.php?day="+day;
+      }      
     }
     <?php
      if ($msg) {

@@ -2,15 +2,10 @@
 $announcement=$list->FEgetAnnouncement();
 ?>
 <div class="panel panel-flat mb-5">
-  <div class="panel-body">
-
+  <div class="panel-body p-10">
       <div class="col-md-2 col-sm-2 col-xs-3">
-        <img src="<?php echo FRONTIMAGE;?>liveupdate.png" class="img-responsive">
+        <img src="<?php echo FRONTIMAGE;?>liveupdate.png" class="img-responsive" style="max-width:80px">
       </div>
-      <div class="col-md-10 col-sm-10 col-xs-9">
-      <marquee class="marquee_ann"><?php echo $announcement;?></marquee>
-      </div>
-
-
+      <div class="col-md-10 col-sm-10 col-xs-9"><marquee class="marquee_ann"><?php echo $announcement;?></marquee></div>
   </div>
 </div>

@@ -174,7 +174,17 @@ function verifymobile(id){
     }
   });
 }
-
+function verifylogin(){
+  switch ('<?php echo $user->logged_in;?>') {
+    case '0':
+    $("#modal-login").modal();
+    return 0;
+    break;
+    case '1':
+    return 1;
+    break;
+  }
+}
 function verifylink(url){
   /*
   useraccess

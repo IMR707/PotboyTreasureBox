@@ -177,7 +177,7 @@ END) as percent,
                     <br>
                     <div class="clearfix"></div>
 
-                    <span class="pull-left">
+                    <div class="col-sm-12 col-md-6 col-xs-12 text-left">
 
 
                         <?php
@@ -187,40 +187,26 @@ END) as percent,
                         switch ($value->bid_base) {
                           case '1':
                             ?>
-                            <ul class="list-inline list-inline-condensed heading-text pull-left">
+                            <ul class="list-unstyled heading-text">
                             <li>Close in</li>
-
-
-                            </ul>
-                            <br>
-                            <ul class="list-inline list-inline-condensed heading-text pull-left">
-                            <li><b><span class="countdown_time" id="disp_time_<?php echo $value->btid; ?>" start-time="<?php echo $start_date; ?>" end-time="<?php echo $end_date; ?>">
-                              <?php echo $end_date; ?>
-                            </span>
+                            <li><b><span class="countdown_time" id="disp_time_<?php echo $value->btid; ?>" start-time="<?php echo $start_date; ?>" end-time="<?php echo $end_date; ?>"><?php echo $end_date; ?></span>
                             </b></li>
                             </ul>
-                            <br>
                             <?php
                             break;
 
                             case '2':
                             ?>
-                            <ul class="list-inline list-inline-condensed heading-text pull-left">
+                            <ul class="list-unstyled heading-text">
                             <li>Need : <b><?php echo $value->max_participant;?></b></li>
-                            </ul>
-                            <br>
-                            <ul class="list-inline list-inline-condensed heading-text pull-left">
                             <li>Bid : <b><?php echo $value->participant;?></b> <br></li>
                             </ul>
                             <?php
                               break;
                               case '3':
                               ?>
-                              <ul class="list-inline list-inline-condensed heading-text pull-left">
+                              <ul class="list-unstyled heading-text">
                               <li>Available : <b><?php echo $value->max_participant;?></b></li>
-                              </ul>
-                              <br>
-                              <ul class="list-inline list-inline-condensed heading-text pull-left">
                               <li>Claimed : <b><?php echo $value->participant;?></b> <br></li>
                               </ul>
                               <?php
@@ -228,9 +214,9 @@ END) as percent,
 
                         }?>
 
-                    </span>
+                    </div>
 
-                    <span class="pull-right">
+                    <div class="col-sm-12 col-md-6 col-xs-12 text-right">
                       <?php switch ($value->bid_base) {
                         case '3':
                           ?>
@@ -246,7 +232,7 @@ END) as percent,
                           break;
                       }?>
 
-                    </span>
+                    </div>
                   </div>
 
               </div>
