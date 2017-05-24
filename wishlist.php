@@ -86,12 +86,12 @@ $pubid=$list->FEgetBidding('5');
               </div>
 							<div class="panel-body">
                 <?php
-
+                $id = 5;
                 for($i=0;$i<8;$i++){
 
                 ?>
 								<div class="col-md-3 col-sm-3 col-xs-6 vote_box">
-                  <img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive" >
+                  <img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center thumbnail-vote <?php echo ($i == $id)? 'vote-active' : ''; ?>" >
                 </div>
                 <?php
                 }
@@ -114,7 +114,7 @@ $pubid=$list->FEgetBidding('5');
                    </div>
                  </div>
                  <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
-                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" >
+                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
                    <div class="top_ranking_vote">100,123 votes</div>
                  </div>
                </div>
@@ -125,7 +125,7 @@ $pubid=$list->FEgetBidding('5');
                    </div>
                  </div>
                  <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
-                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" >
+                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
                    <div class="top_ranking_vote">100,123 votes</div>
                  </div>
                </div>
@@ -136,7 +136,7 @@ $pubid=$list->FEgetBidding('5');
                    </div>
                  </div>
                  <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
-                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" >
+                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
                    <div class="top_ranking_vote">100,123 votes</div>
                  </div>
                </div>
@@ -154,7 +154,7 @@ $pubid=$list->FEgetBidding('5');
 
                ?>
                <div class="col-md-3 vote_box">
-                 <img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center" >
+                 <img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center thumbnail-vote" >
                </div>
                <?php
                }

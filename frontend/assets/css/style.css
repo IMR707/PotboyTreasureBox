@@ -242,3 +242,12 @@
 .img-center{
   margin:0 auto;
 }
+
+.thumbnail-vote{
+  padding:5px;
+  border:3px solid transparent;
+}
+
+.vote-active{
+  border:3px solid #7e1aad;
+}
