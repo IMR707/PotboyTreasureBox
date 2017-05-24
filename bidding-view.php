@@ -63,7 +63,12 @@ use Carbon\Carbon;
               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
                 <span class="font-17">You haven’t join this bid !</span>
                 <br>
-                minimum bid – 10000 POTBOY Gold
+                Minimum Bid – 10000 POTBOY Gold
+              </div>
+              <div class="col-sm-12 col-md-12 col-xs-12 text-center pt-20">
+                <button class="btn btn-purple btn-lg" style="width:100%;font-size:30px">
+                  JOIN NOW
+                </button>
               </div>
 
             </div>

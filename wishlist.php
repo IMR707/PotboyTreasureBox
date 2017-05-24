@@ -170,58 +170,26 @@ $pubid=$list->FEgetBidding('5');
  		</div>
 
 <script type="text/javascript">
-$('.countdown_time').each(function(index){
-  var ids = $(this).attr('id');
-  var id = ids.replace('disp_time_','');
-  var start = $(this).attr('start-time');
-  var end = $(this).attr('end-time');
-  var diff = moment(end,"YYYY/MM/DD HH:mm:ss").diff(moment(start,"YYYY/MM/DD HH:mm:ss"));
-  var time = $(this).html().trim();
-  $('#'+$(this).attr('id')).countdown(time, function(event) {
-    // console.log('s');
-    $(this).html(event.strftime('%-D days %H:%M:%S'));
-  }).on('update.countdown', function() {
-    var val = $('#disppercent_'+id).html().trim();
-    var cdiff = new Date() - moment(start,"YYYY/MM/DD HH:mm:ss");
-    if(cdiff > 0){
-      var percent = Math.floor(( cdiff / diff ) * 100);
-      $('#text'+id).html(percent+'%');
-      $('#textval'+id).css('width',percent+'%');
-    }
-  }).on('finish.countdown', function() {
-    location.href = 'admin-bidding.php';
-  });
-});
+$(document).ready(function(){
 
-function countdown(element, minutes, seconds) {
-  // Fetch the display element
-  var el = document.getElementById(element);
-
-  // Set the timer
-  var interval = setInterval(function() {
-      if(seconds == 0) {
-          if(minutes == 0) {
-              (el.innerHTML = "STOP!");
-
-              clearInterval(interval);
-              return;
-          } else {
-              minutes--;
-              seconds = 60;
+  $('.thumbnail-vote').on('click',function(){
+    bootbox.confirm({
+      message: "<h3>Confirm vote this item for this month ?</h3> <br> **Note : You only have <b>2 VOTE</b> left and you won't be able to change this vote.",
+      buttons: {
+          confirm: {
+              label: 'Confirm',
+              className: 'btn-success'
           }
+      },
+      callback: function (result) {
+          
       }
 
-      if(minutes > 0) {
-          var minute_text = minutes + (minutes > 1 ? ' minutes' : ' minute');
-      } else {
-          var minute_text = '';
-      }
+    });
 
-      var second_text = seconds > 1 ? '' : '';
-      el.innerHTML = minute_text + ' ' + seconds + ' ' + second_text + '';
-      seconds--;
-  }, 1000);
-}
+  });
+
+});
 
 </script>
   <?php

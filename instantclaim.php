@@ -99,15 +99,9 @@ $allclaim=$list->FEgetAllClaim();
                             }?>
                           </div>
 
-                          <span class="pull-left">
-                            <ul class="list-inline list-inline-condensed heading-text">
-                              <li><a href="#" class="text-default">Available<br>Claim<br> <?php echo $value->max_participant;?></a></li>
-                            </ul>
-                          </span>
-
                           <span class="pull-right">
                             <ul class="list-inline list-inline-condensed heading-text">
-                          <li><a href="#" class="text-default">Remaining<br>Claim<br> <?php echo ($value->max_participant-$value->participant);?></a></li>
+                          <li><a href="#" class="text-default">Voucher Available<br> <?php echo ($value->max_participant-$value->participant);?></a></li>
                             </ul>
                           </span>
 

@@ -59,23 +59,23 @@ $pubid=$list->FEgetBidding('5');
 
 
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-                  <a href="instantclaim.php" class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
+                  <a href="instantclaim.php" class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="" style="max-width:100px">
                   <br><b>Instant Claim</b>
                   </a>
               </div>
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-                  <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="">
+                  <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="" style="max-width:100px">
                   <br><b>Coming Up Soon</b>
                   </a>
               </div>
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-                  <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="">
+                  <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a4.svg" class="imgsmall" alt="" style="max-width:100px">
                   <br><b>Winner Sharing</b>
                   </a>
               </div>
 
               <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-                  <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="">
+                  <a href="instantclaim.php"  class="text-default"><img src="<?php echo UPLOADURL;?>a2.svg" class="imgsmall" alt="" style="max-width:100px">
                   <br><b>Rules T&C</b>
                   </a>
               </div>

@@ -90,10 +90,10 @@ $gold_trans = $fz->getUserGoldTrans($user->uid);
                     <thead>
                         <tr>
                             <th width="15%">
-                                <i class="fa fa-briefcase"></i> Date
+                                <i class="fa fa-calendar"></i> Date
                             </th>
                             <th width="55%">
-                                <i class="fa fa-question"></i> Type
+                                <i class="fa fa-question"></i> Description
                             </th>
                             <th>
                                 <i class="fa fa-usd"></i> Amount
