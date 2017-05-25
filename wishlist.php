@@ -11,9 +11,9 @@ use Carbon\Carbon;
 //     redirect_to(SITEURL.'/index.php');
 // }
 
-$cur_month = date("M Y");
-$cur_day = date("d-m-Y");
 
+$cur_day = date("d-m-Y");
+$cur_month = date("M Y");
 $last_month = date("F Y",strtotime($cur_month." -1 month"));
 
 $sponsors = $fz->getSponsor();
@@ -94,43 +94,39 @@ $sponsors = $fz->getSponsor();
 
                 }
                 ?>
-                <!-- <div class="col-md-12">
-                  <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-silver">
-                    <div class="top_ranking_number_disp">
-                      2
-                    </div>
-                  </div>
-                  <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
-                    <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
-                    <div class="top_ranking_vote">100,123 votes</div>
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-bronze">
-                    <div class="top_ranking_number_disp">
-                      3
-                    </div>
-                  </div>
-                  <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
-                    <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
-                    <div class="top_ranking_vote">100,123 votes</div>
-                  </div>
-                </div> -->
 							</div>
 						</div>
 
             <div class="panel panel-flat">
+              <?php
+
+              $products = $fz->getWishListProd($cur_month,$spon_id);
+              // pre($products);
+              $total_voted = 0;
+
+              foreach($products as $key => $product) {
+                 if($product->voted) $total_voted++;
+              }
+              $vote_left = 3 - $total_voted;
+              ?>
               <div class="panel-heading">
-                <h4 class="panel-title">VOTE NOW for next month prize !</h4>
+                <div class="row">
+                  <div class="col-md-6 col-sm-6 col-xs-6">
+                    <h4 class="panel-title">VOTE NOW for next month prize !</h4>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <label class="label label-success font-14"><?php echo $vote_left;?> vote left !</label>
+                  </div>
+                </div>
               </div>
 							<div class="panel-body">
                 <?php
-                $id = 5;
-                for($i=0;$i<8;$i++){
+
+                foreach($products as $key => $row){
 
                 ?>
 								<div class="col-md-3 col-sm-3 col-xs-6 vote_box">
-                  <img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center thumbnail-vote <?php echo ($i == $id)? 'vote-active' : ''; ?>" >
+                  <img src="<?php echo BACK_UPLOADS.$row->img_thumbnail; ?>" sponid="<?php echo $spon_id;?>" wpid="<?php echo $row->wp_id;?>"  class="img-responsive img-center thumbnail-vote <?php echo ($row->voted)? 'vote-active' : ''; ?>" >
                 </div>
                 <?php
                 }
@@ -155,19 +151,56 @@ $sponsors = $fz->getSponsor();
 $(document).ready(function(){
 
   $('.thumbnail-vote').on('click',function(){
-    bootbox.confirm({
-      message: "<h3>Confirm vote this item for this month ?</h3> <br> **Note : You only have <b>2 VOTE</b> left and you won't be able to change this vote.",
-      buttons: {
-          confirm: {
-              label: 'Confirm',
-              className: 'btn-success'
+    if(!$(this).hasClass('vote-active')){
+      var wp_id = $(this).attr('wpid');
+      var sponid = $(this).attr('sponid');
+
+
+      var dataString = "wpid="+wp_id+"&sponid="+sponid+"&func=checkVote";
+      $.ajax({
+        type    : "POST",
+        url     : "API/wishlist.php",
+        data    : dataString,
+        cache   : false,
+        success : function(data)
+        {
+          if(data > 0){
+            bootbox.confirm({
+              message: "<h3>Confirm vote this item for this month ? </h3> <br> **Note : You won't be able to change this vote.",
+              buttons: {
+                  confirm: {
+                      label: 'Confirm',
+                      className: 'btn-success'
+                  }
+              },
+              callback: function (result) {
+                if(result){
+                  var dataString = "wpid="+wp_id+"&func=voteWishlist";
+                  $.ajax({
+                    type    : "POST",
+                    url     : "API/wishlist.php",
+                    data    : dataString,
+                    cache   : false,
+                    dataType: 'json',
+                    success : function(data)
+                    {
+                      bootbox.alert("Thanks for voting !", function(){
+                        location.reload();
+                      });
+                    }
+                  });
+                }
+              }
+
+            });
+          }else{
+            bootbox.alert("Sorry you don't have any vote left. Stay tune you will get 3 votes next month !");
           }
-      },
-      callback: function (result) {
+        }
+      });
 
-      }
 
-    });
+    }
 
   });
 

@@ -1673,7 +1673,57 @@ class Fazrin
 
     }
 
+    public function checkVote($spon_id)
+    {
+      $user_id = $_SESSION['userid'];
+      $cur_month = date("M Y");
+      $month = date('Y-m-d H:i:s',strtotime($cur_month));
+
+      $sql = "SELECT a.id,a.time_month,b.id as wp_id,b.*,d.*,(select count(*) from ".self::tb_wishVote." where wp_id = b.id AND user_id = '$user_id') as voted FROM ".self::tb_wish." a, ".self::tb_wishProd." b, ".self::tb_prod." d WHERE a.id = b.wish_id AND b.product_id = d.id AND a.spon_id = '$spon_id' AND a.time_month = '$month' GROUP BY b.product_id";
+      $row = self::$db->fetch_all($sql);
+
+      $total_vote = 0;
+      foreach($row as $key => $product) {
+        if($product->voted) $total_vote++;
+      }
+      $vote_left = 3 - $total_vote;
+      return $vote_left;
+    }
+
+    public function getWishListProd($month,$spon_id)
+    {
+      $user_id = $_SESSION['userid'];
+      $month = date('Y-m-d H:i:s',strtotime($month));
+
+      $sql = "SELECT a.id,a.time_month,b.id as wp_id,b.*,d.*,(select count(*) from ".self::tb_wishVote." where wp_id = b.id AND user_id = '$user_id') as voted FROM ".self::tb_wish." a, ".self::tb_wishProd." b, ".self::tb_prod." d WHERE a.id = b.wish_id AND b.product_id = d.id AND a.spon_id = '$spon_id' AND a.time_month = '$month' GROUP BY b.product_id";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
     /********* VOTE **********************************************/
+
+    public function voteWishlist($wpid,$user_id)
+    {
+      $data = array(
+        'wp_id' => $wpid,
+        'user_id' => $user_id,
+        'date_updated' => 'now()',
+        'date_created' => 'now()'
+      );
+      $res = self::$db->insert(self::tb_wishVote, $data);
+      $out = array();
+      if(!$res){
+        $out['noti']['status'] = 'error';
+        $out['noti']['msg'] = 'Problem occured while deleting data.';
+      }else{
+        $out['noti']['status'] = 'success';
+        $out['noti']['msg'] = 'Data deleted successfully.';
+      }
+
+      return json_encode($out);
+
+    }
 
     public function getVoteCount($wp_id)
     {

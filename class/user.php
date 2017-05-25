@@ -17,7 +17,7 @@ if (!defined("_VALID_PHP")) {
 
 
       public $logged_in = null;
-      public $uid = 0;
+      public $uid = 0;      
       public $name;
       public $employeeid = 0;
       public $email;
