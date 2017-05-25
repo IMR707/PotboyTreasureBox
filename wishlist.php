@@ -6,14 +6,19 @@ $pagemenu="WISHLIST";
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
-$topbid=$list->FEgetBidding('1');
-$endsoonbid=$list->FEgetBidding('2');
-$newbid=$list->FEgetBidding('3');
-$pdbid=$list->FEgetBidding('4');
-$pubid=$list->FEgetBidding('5');
+
 // if (!$user->logged_in) {
 //     redirect_to(SITEURL.'/index.php');
 // }
+
+$cur_month = date("M Y");
+$cur_day = date("d-m-Y");
+
+$last_month = date("F Y",strtotime($cur_month." -1 month"));
+
+$sponsors = $fz->getSponsor();
+
+
 ?>
 <?php
  include 'fehead.php';
@@ -29,33 +34,67 @@ $pubid=$list->FEgetBidding('5');
           <div class="panel-body">
             <div class="tabbable">
     					<ul class="nav nav-tabs nav-tabs-bottom">
-    						<li class="active"><a href="#bottom-tab1" data-toggle="tab" aria-expanded="true">Potboy</a></li>
-    						<li class=""><a href="#bottom-tab2" data-toggle="tab" aria-expanded="false">Harvey Norman</a></li>
+                <?php
+                $first = true;
+                foreach($sponsors as $key => $row){
+
+                ?>
+    						<li class="<?php echo ($first)? 'active' : ''; ?>"><a href="#bottom-tab<?php echo $row->id;?>" data-toggle="tab" aria-expanded="true"><?php echo $row->name;?></a></li>
+                <?php
+                  $first = false;
+                }
+
+                ?>
     					</ul>
     				</div>
           </div>
         </div>
 
         <div class="tab-content">
-          <div class="tab-pane fade active in" id="bottom-tab1">
+          <?php
 
+          $first = true;
+          foreach($sponsors as $key => $row){
+
+            $spon_id = $row->id;
+
+          ?>
+          <div class="tab-pane fade <?php echo ($first)? 'active in' : ''; ?>" id="bottom-tab<?php echo $spon_id;?>">
+            <?php
+
+            $top_three = $fz->getTopThree($last_month,$spon_id);
+
+            // pre($top_three);
+
+            ?>
           	<div class="panel panel-flat mb-10">
               <div class="panel-heading">
-                <h4 class="panel-title">July Voting Top Ranking</h4>
+                <h4 class="panel-title"><?php echo $last_month;?> Voting Top Ranking</h4>
               </div>
 							<div class="panel-body">
+                <?php
+                $num = 1;
+                $color = 0;
+                $color_arr = array('bg-gold','bg-silver','bg-bronze');
+                foreach($top_three as $key2 => $row2){
+
+                ?>
 								<div class="col-md-12">
-                  <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-gold">
+                  <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center <?php echo $color_arr[$color++];?>">
                     <div class="top_ranking_number_disp">
-                      1
+                      <?php echo $num++;?>
                     </div>
                   </div>
                   <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
-                    <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
-                    <div class="top_ranking_vote">100,123 votes</div>
+                    <img src="<?php echo BACK_UPLOADS.$row2->img_header; ?>" class="img-responsive" style="width:100%">
+                    <div class="top_ranking_vote"><?php echo $row2->vote_count; ?> votes</div>
                   </div>
                 </div>
-                <div class="col-md-12">
+                <?php
+
+                }
+                ?>
+                <!-- <div class="col-md-12">
                   <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-silver">
                     <div class="top_ranking_number_disp">
                       2
@@ -76,7 +115,7 @@ $pubid=$list->FEgetBidding('5');
                     <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
                     <div class="top_ranking_vote">100,123 votes</div>
                   </div>
-                </div>
+                </div> -->
 							</div>
 						</div>
 
@@ -99,69 +138,12 @@ $pubid=$list->FEgetBidding('5');
 							</div>
 						</div>
           </div>
+          <?php
+            $first = false;
+          }
 
-          <div class="tab-pane fade" id="bottom-tab2">
+          ?>
 
-           <div class="panel panel-flat mb-10">
-             <div class="panel-heading">
-               <h4 class="panel-title">Julys Voting Top Ranking</h4>
-             </div>
-             <div class="panel-body">
-               <div class="col-md-12">
-                 <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-gold">
-                   <div class="top_ranking_number_disp">
-                     1
-                   </div>
-                 </div>
-                 <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
-                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
-                   <div class="top_ranking_vote">100,123 votes</div>
-                 </div>
-               </div>
-               <div class="col-md-12">
-                 <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-silver">
-                   <div class="top_ranking_number_disp">
-                     2
-                   </div>
-                 </div>
-                 <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
-                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
-                   <div class="top_ranking_vote">100,123 votes</div>
-                 </div>
-               </div>
-               <div class="col-md-12">
-                 <div class="col-md-2 col-sm-3 col-xs-12 top_ranking_box top_ranking_number text-center bg-bronze">
-                   <div class="top_ranking_number_disp">
-                     3
-                   </div>
-                 </div>
-                 <div class="col-md-10 col-sm-9 col-xs-12 top_ranking_box">
-                   <img src="<?php echo BACK_UPLOADS; ?>header.png" class="img-responsive" style="width:100%">
-                   <div class="top_ranking_vote">100,123 votes</div>
-                 </div>
-               </div>
-             </div>
-           </div>
-
-           <div class="panel panel-flat">
-             <div class="panel-heading">
-               <h4 class="panel-title">VOTE NOW for next month prize !</h4>
-             </div>
-             <div class="panel-body">
-               <?php
-
-               for($i=0;$i<8;$i++){
-
-               ?>
-               <div class="col-md-3 vote_box">
-                 <img src="<?php echo BACK_UPLOADS; ?>thumbnail.png" class="img-responsive img-center thumbnail-vote" >
-               </div>
-               <?php
-               }
-               ?>
-             </div>
-           </div>
-         </div>
 
         </div>
  			</div>
@@ -182,7 +164,7 @@ $(document).ready(function(){
           }
       },
       callback: function (result) {
-          
+
       }
 
     });

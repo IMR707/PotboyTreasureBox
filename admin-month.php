@@ -331,8 +331,8 @@ $(document).ready(function(){
   $('.date-picker').datepicker({
     autoclose: true,
     minViewMode: 1,
-    format: 'M yyyy',
-    startDate: new Date(year, month, '01')
+    format: 'M yyyy'
+    // startDate: new Date(year, month, '01')
   });
 
   $('.btn_WishListAdd').on('click',function(){

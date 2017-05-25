@@ -12,4 +12,4 @@ use Carbon\Carbon;
 // $AllConversion=$list->FEgetAllConversion($user->uid);
 // echo "AllConversion";
 // pre($AllConversion);
-$fz->fakeBid();
+$fz->fakeWishVote();

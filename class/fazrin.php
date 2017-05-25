@@ -1691,6 +1691,15 @@ class Fazrin
       return $row;
     }
 
+    public function getTopThree($month,$spon_id)
+    {
+      $month = date('Y-m-d H:i:s',strtotime($month));
+      $sql = "SELECT b.*,d.*,(count(c.id)) as vote_count FROM aa_wishlist a, aa_wishlistProduct b, aa_wishlistVote c, aa_product d WHERE a.id = b.wish_id AND b.id = c.wp_id AND b.product_id = d.id AND a.spon_id = '$spon_id' AND a.time_month = '$month' GROUP BY b.product_id ORDER BY vote_count DESC LIMIT 3";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
     /********* USER **********************************************/
 
     public function getUsers()
@@ -1757,6 +1766,23 @@ class Fazrin
           'date_created' => 'now()'
         );
         $res = self::$db->insert(self::tb_bidtrans, $data);
+      }
+    }
+
+    public function fakeWishVote()
+    {
+      for($i = 0;$i < 40;$i++){
+
+        $wp_id = 15;
+        $user_id = rand(100,314);
+
+        $data = array(
+          'wp_id' => $wp_id,
+          'user_id' => $user_id,
+          'date_updated' => 'now()',
+          'date_created' => 'now()'
+        );
+        $res = self::$db->insert(self::tb_wishVote, $data);
       }
     }
 
