@@ -230,6 +230,40 @@ function verifyval(){
   }
 }
 
+$(document).ready(function(){
+  $('.toggle_spin').on('click',function(){
+    $('#spin_left').html('');
+    var dataString = "func=getUserSpin";
+    $.ajax({
+      type    : "POST",
+      url     : "API/user.php",
+      data    : dataString,
+      cache   : false,
+      success : function(data)
+      {
+        $('#spin_left').html(data);
+        $('#modal_spin').modal();
+      }
+    });
+  });
+
+  $('#open_draw').on('click',function(){
+    var dataString = "func=openBox";
+    $.ajax({
+      type    : "POST",
+      url     : "API/spin.php",
+      data    : dataString,
+      cache   : false,
+      success : function(data)
+      {
+        $('#spin_left').html(data);
+        $('#modal_spin').modal();
+      }
+    });
+  });
+
+
+});
  </script>
 
  <!-- /core JS files -->
@@ -303,10 +337,10 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
          </a>
       </li>
 
-       <li class="dropdown dropdown-user">
+       <li class="dropdown dropdown-user toggle_spin" >
          <a class="dropdown-toggle" data-toggle="dropdown">
            <span>
-            <div class="left" data-toggle="tooltip" title="Potboy Spin - Earn Diamond , Gold or Spin again.">
+            <div class="left " data-toggle="tooltip" title="Potboy Spin - Earn Diamond , Gold or Spin again.">
                <img src="img/spin.png" style="width:16px"> <span id="spin_navlink"><?php echo $spin; ?></span></span>
             </div>
          </a>
@@ -648,6 +682,30 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
      </div>
    </div>
  </div>
+
+
+  <div id="modal_spin" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Lucky Draw</h4>
+      </div>
+      <div class="modal-body">
+        <span id="spin_left"></span>
+        <button class="btn btn-success" id="open_draw"><i class="fa fa-gift"></i></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
  <!-- /second navbar -->
 <?php
 

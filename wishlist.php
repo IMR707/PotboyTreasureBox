@@ -115,7 +115,7 @@ $sponsors = $fz->getSponsor();
                     <h4 class="panel-title">VOTE NOW for next month prize !</h4>
                   </div>
                   <div class="col-md-6 col-sm-6 col-xs-6 text-right">
-                    <label class="label label-success font-14"><?php echo $vote_left;?> vote left !</label>
+                    <?php echo isset($_SESSION['userid']) ? '<label class="label label-success font-14">'.$vote_left.' vote left !</label>' : '' ;?> 
                   </div>
                 </div>
               </div>
@@ -151,56 +151,60 @@ $sponsors = $fz->getSponsor();
 $(document).ready(function(){
 
   $('.thumbnail-vote').on('click',function(){
-    if(!$(this).hasClass('vote-active')){
-      var wp_id = $(this).attr('wpid');
-      var sponid = $(this).attr('sponid');
+
+    var a = verifylogin();
+
+    if(a){
+      if(!$(this).hasClass('vote-active')){
+        var wp_id = $(this).attr('wpid');
+        var sponid = $(this).attr('sponid');
 
 
-      var dataString = "wpid="+wp_id+"&sponid="+sponid+"&func=checkVote";
-      $.ajax({
-        type    : "POST",
-        url     : "API/wishlist.php",
-        data    : dataString,
-        cache   : false,
-        success : function(data)
-        {
-          if(data > 0){
-            bootbox.confirm({
-              message: "<h3>Confirm vote this item for this month ? </h3> <br> **Note : You won't be able to change this vote.",
-              buttons: {
-                  confirm: {
-                      label: 'Confirm',
-                      className: 'btn-success'
-                  }
-              },
-              callback: function (result) {
-                if(result){
-                  var dataString = "wpid="+wp_id+"&func=voteWishlist";
-                  $.ajax({
-                    type    : "POST",
-                    url     : "API/wishlist.php",
-                    data    : dataString,
-                    cache   : false,
-                    dataType: 'json',
-                    success : function(data)
-                    {
-                      bootbox.alert("Thanks for voting !", function(){
-                        location.reload();
-                      });
+        var dataString = "wpid="+wp_id+"&sponid="+sponid+"&func=checkVote";
+        $.ajax({
+          type    : "POST",
+          url     : "API/wishlist.php",
+          data    : dataString,
+          cache   : false,
+          success : function(data)
+          {
+            if(data > 0){
+              bootbox.confirm({
+                message: "<h3>Confirm vote this item for this month ? </h3> <br> **Note : You won't be able to change this vote.",
+                buttons: {
+                    confirm: {
+                        label: 'Confirm',
+                        className: 'btn-success'
                     }
-                  });
+                },
+                callback: function (result) {
+                  if(result){
+                    var dataString = "wpid="+wp_id+"&func=voteWishlist";
+                    $.ajax({
+                      type    : "POST",
+                      url     : "API/wishlist.php",
+                      data    : dataString,
+                      cache   : false,
+                      dataType: 'json',
+                      success : function(data)
+                      {
+                        bootbox.alert("Thanks for voting !", function(){
+                          location.reload();
+                        });
+                      }
+                    });
+                  }
                 }
-              }
 
-            });
-          }else{
-            bootbox.alert("Sorry you don't have any vote left. Stay tune you will get 3 votes next month !");
+              });
+            }else{
+              bootbox.alert("Sorry you don't have any vote left. Stay tune you will get 3 votes next month !");
+            }
           }
-        }
-      });
-
-
+        });
+      }
     }
+
 
   });
 

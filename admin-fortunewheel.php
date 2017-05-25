@@ -266,7 +266,7 @@ if (!$user->logged_in) {
                                               <label class="col-md-3 control-label">Icon</label>
                                               <div class="col-md-9">
                                                   <img src="" id="wof_icon_upd" class="img-thumbnail">
-                                                  <input type="file" class="form-control" name="wof_icon" required>
+                                                  <input type="file" class="form-control" name="wof_icon">
                                               </div>
                                           </div>
                                           <div class="form-group">

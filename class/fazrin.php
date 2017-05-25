@@ -495,7 +495,7 @@ class Fazrin
           }
         }
       }
-      rd('../admin-dailyreward.php');
+      rd('../admin-fortunewheel.php');
       die;
 
     }
@@ -534,6 +534,11 @@ class Fazrin
     		$countc++;
     	}
 
+    }
+
+    public function openBox()
+    {
+      
     }
 
     /********* CONVERSION RATE **********************************************/
@@ -1692,7 +1697,7 @@ class Fazrin
 
     public function getWishListProd($month,$spon_id)
     {
-      $user_id = $_SESSION['userid'];
+      $user_id = isset($_SESSION['userid']) ? $_SESSION['userid'] : 0 ;
       $month = date('Y-m-d H:i:s',strtotime($month));
 
       $sql = "SELECT a.id,a.time_month,b.id as wp_id,b.*,d.*,(select count(*) from ".self::tb_wishVote." where wp_id = b.id AND user_id = '$user_id') as voted FROM ".self::tb_wish." a, ".self::tb_wishProd." b, ".self::tb_prod." d WHERE a.id = b.wish_id AND b.product_id = d.id AND a.spon_id = '$spon_id' AND a.time_month = '$month' GROUP BY b.product_id";
