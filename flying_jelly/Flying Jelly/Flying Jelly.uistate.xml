@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2uistate>
+    <!--This is a UI state file - its content describes the user interface settings when the project was last open.
+It is entirely optional and the project will load without it.  If you are placing the project under source control,
+you probably do not want to add any .uistate.xml files to the repository.-->
+    <configurations>
+        <active>
+            <configuration name="HTML5" />
+        </active>
+        <display name="HTML5" />
+    </configurations>
+    <open-tabs>
+        <layout order="0">Game</layout>
+        <layout order="1">StartMenu</layout>
+        <layout active="1" order="2">Loading</layout>
+        <event-sheet order="3">GameSettings</event-sheet>
+        <event-sheet order="4">LoadingSettings</event-sheet>
+    </open-tabs>
+    <properties>
+        <property expanded="1" name="About" />
+        <property expanded="1" name="Project settings" />
+        <property expanded="1" name="Window Size" />
+        <property expanded="1" name="Configuration Settings" />
+    </properties>
+    <families-expanded root="1" />
+    <folders-expanded>
+        <folder expanded="0" path="object-folder/" />
+        <folder expanded="0" path="layout-folder/" />
+        <folder expanded="0" path="event-folder/" />
+        <folder expanded="0" path="file-folder/" />
+        <folder expanded="0" path="sound-folder/" />
+        <folder expanded="0" path="music-folder/" />
+        <folder expanded="1" path="file-folder/Icons/" />
+        <folder expanded="1" path="animation-folder/Jelly1/" />
+        <folder expanded="1" path="animation-folder/Jelly2/" />
+        <folder expanded="1" path="animation-folder/Jelly3/" />
+        <folder expanded="1" path="animation-folder/BackGround/" />
+        <folder expanded="1" path="animation-folder/Jelly4/" />
+        <folder expanded="1" path="animation-folder/Jelly5/" />
+        <folder expanded="1" path="animation-folder/Jelly6/" />
+        <folder expanded="1" path="animation-folder/MiniJelly1/" />
+        <folder expanded="1" path="animation-folder/MiniJelly2_1/" />
+        <folder expanded="1" path="animation-folder/MiniJelly3/" />
+        <folder expanded="1" path="animation-folder/MiniJelly4/" />
+        <folder expanded="1" path="animation-folder/MiniJelly2_2/" />
+        <folder expanded="1" path="animation-folder/MiniJelly2_3/" />
+        <folder expanded="1" path="animation-folder/MiniJelly5/" />
+        <folder expanded="1" path="animation-folder/MiniJelly6/" />
+        <folder expanded="1" path="animation-folder/HighScoreGui/" />
+        <folder expanded="1" path="animation-folder/Paused/" />
+        <folder expanded="1" path="animation-folder/Pause/" />
+        <folder expanded="1" path="animation-folder/MoreGames/" />
+        <folder expanded="1" path="animation-folder/Play/" />
+        <folder expanded="1" path="animation-folder/BestScore/" />
+        <folder expanded="1" path="animation-folder/Sun/" />
+        <folder expanded="1" path="animation-folder/WellDone/" />
+        <folder expanded="1" path="animation-folder/Restart/" />
+        <folder expanded="1" path="animation-folder/Menu/" />
+        <folder expanded="1" path="animation-folder/Collision/" />
+        <folder expanded="1" path="animation-folder/Sounds/" />
+        <folder expanded="1" path="animation-folder/Loading/" />
+        <folder expanded="1" path="animation-folder/LoadingBar/" />
+        <folder expanded="1" path="animation-folder/LoadingBarBackground/" />
+        <folder expanded="1" path="animation-folder/Cursor/" />
+        <folder expanded="1" path="animation-folder/CursorHover/" />
+        <folder expanded="1" path="animation-folder/Jelly/" />
+        <folder expanded="1" path="animation-folder/ScoreGui/" />
+        <folder expanded="1" path="animation-folder/LastScoreGui/" />
+        <folder expanded="1" path="animation-folder/MiniJelly2_0/" />
+    </folders-expanded>
+</c2uistate>
