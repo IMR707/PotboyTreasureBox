@@ -25,9 +25,10 @@ class Fazrin
     const tb_wishVote = 'aa_wishlistVote';
     const tb_user = 'customer_entity';
     const tb_userAdd = 'customer_address_entity';
-    const tb_reward = 'lof_rewardpoints_customer';
     const tb_credit = 'customer_credit';
+    const tb_reward = 'lof_rewardpoints_customer';
     const tb_rewardTrans = 'lof_rewardpoints_transaction';
+    const tb_spinTrans = 'lof_rewardpoints_spin_transaction';
 
 
     private static $db;
@@ -446,7 +447,7 @@ class Fazrin
         }
       }
 
-      rd('../admin-dailyreward.php');
+      rd('../admin-fortunewheel.php');
       die;
     }
 
@@ -508,6 +509,14 @@ class Fazrin
       return $row;
     }
 
+    public function getWofChance()
+    {
+      $sql = "SELECT * FROM ".self::tb_wof." WHERE active = 1 ORDER BY wof_percent DESC";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
     public function getWofByID()
     {
       $id = $_POST['id'];
@@ -557,6 +566,7 @@ class Fazrin
       $newc=[];
       $nsum=0;
       $currentval=0;
+      $newval = 0;
       foreach ($chances as $key => $value) {
         $newval=$currentval+$value;
         $newc[$key]=array('min' =>$currentval, 'max' => $newval);
@@ -566,6 +576,7 @@ class Fazrin
       foreach($newc as $k =>$v) {
           if ($rnd > $v['min'] && $rnd <= $v['max']) {
               $bet=$k;
+              break;
           }
       }
       return $bet;
@@ -573,6 +584,45 @@ class Fazrin
 
     public function openBox()
     {
+      // const tb_reward = 'lof_rewardpoints_customer';
+      // const tb_rewardTrans = 'lof_rewardpoints_transaction';
+      // const tb_spinTrans = 'lof_rewardpoints_spin_transaction';
+      $user_id = $_SESSION['userid'];
+      $cls_list = new Listing;
+      $res = $cls_list->FEgetRewardData($user_id);
+      $cur_spin = $res->spin;
+      $cur_gold = $res->gold;
+      $cur_diamond = $res->diamond;
+
+      $data = array(
+        'customer_id' => $user_id,
+        'amount' => '-1',
+        'title' => 'Open Lucky Box',
+        'desc' => '-1 Spin',
+        'code' => 'admin_add-aEEmIYncALynhaQQ',
+        'action' => 'admin_add',
+        'status' => 'complete',
+        'params' => '',
+        'is_expiration_email_sent' => 0,
+        'email_message' => '',
+        'apply_at' => '',
+        'is_applied' => 1,
+        'is_expired' => 0,
+        'expires_at' => '',
+        'updated_at' => 'now()',
+        'created_at' => 'now()',
+        'store_id' => 0,
+        'order_id' => 0,
+        'admin_user_id' => 1
+      );
+      $res = self::$db->insert(self::tb_spinTrans, $data);
+
+      $data = array(
+        "total_spin" => $cur_spin - 1,
+      );
+
+      $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
       $arr = $this->getWof();
       $arr_chance = array();
       foreach($arr as $key => $row){
@@ -582,6 +632,111 @@ class Fazrin
       $win_id = $this->calculateWinningChances($arr_chance);
 
       $prize = $this->getWofByID2($win_id);
+
+      $a = $this->getWofByID2($win_id);
+
+      // pre($a);
+
+      if($a->wof_type == 1){
+
+        $data = array(
+          'customer_id' => $user_id,
+          'amount' => 0,
+          'amount_used' => 0,
+          'amount_gold' => $a->wof_amount,
+          'amount_gold_used' => $a->wof_amount,
+          'title' => 'Open Lucky Box',
+          'desc' => $a->wof_amount.' Gold',
+          'code' => 'admin_add-aEEmIYncALynhaQQ',
+          'action' => 'admin_add',
+          'status' => 'complete',
+          'params' => '',
+          'is_expiration_email_sent' => 0,
+          'email_message' => '',
+          'apply_at' => '',
+          'is_applied' => 1,
+          'is_expired' => 0,
+          'expires_at' => '',
+          'updated_at' => 'now()',
+          'created_at' => 'now()',
+          'store_id' => 0,
+          'order_id' => 0,
+          'admin_user_id' => 1
+        );
+        $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+        $data = array(
+          "available_golds" => $cur_gold + $a->wof_amount,
+          "total_golds" => $cur_gold + $a->wof_amount
+        );
+
+        $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
+      }elseif($a->wof_type == 2){
+
+        $data = array(
+          'customer_id' => $user_id,
+          'amount' => $a->wof_amount,
+          'amount_used' => $a->wof_amount,
+          'amount_gold' => 0,
+          'amount_gold_used' => 0,
+          'title' => 'Open Lucky Box',
+          'desc' => $a->wof_amount.' Diamond',
+          'code' => 'admin_add-aEEmIYncALynhaQQ',
+          'action' => 'admin_add',
+          'status' => 'complete',
+          'params' => '',
+          'is_expiration_email_sent' => 0,
+          'email_message' => '',
+          'apply_at' => '',
+          'is_applied' => 1,
+          'is_expired' => 0,
+          'expires_at' => '',
+          'updated_at' => 'now()',
+          'created_at' => 'now()',
+          'store_id' => 0,
+          'order_id' => 0,
+          'admin_user_id' => 1
+        );
+        $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+        $data = array(
+          "available_points" => $cur_diamond + $a->wof_amount,
+          "total_points" => $cur_diamond + $a->wof_amount
+        );
+
+        $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
+      }elseif($a->wof_type == 3){
+        $data = array(
+          'customer_id' => $user_id,
+          'amount' => $a->wof_amount,
+          'title' => 'Open Lucky Box',
+          'desc' => $a->wof_amount.' Spin',
+          'code' => 'admin_add-aEEmIYncALynhaQQ',
+          'action' => 'admin_add',
+          'status' => 'complete',
+          'params' => '',
+          'is_expiration_email_sent' => 0,
+          'email_message' => '',
+          'apply_at' => '',
+          'is_applied' => 1,
+          'is_expired' => 0,
+          'expires_at' => '',
+          'updated_at' => 'now()',
+          'created_at' => 'now()',
+          'store_id' => 0,
+          'order_id' => 0,
+          'admin_user_id' => 1
+        );
+        $res = self::$db->insert(self::tb_spinTrans, $data);
+
+        $data = array(
+          "total_spin" => $cur_spin + $a->wof_amount
+        );
+
+        $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+      }
 
       return $prize;
     }
@@ -1820,7 +1975,7 @@ class Fazrin
 
     public function getUserDiamondTrans($id)
     {
-      $sql = "SELECT * FROM ".self::tb_rewardTrans." WHERE amount <> 0 AND customer_id = '$id'";
+      $sql = "SELECT * FROM ".self::tb_rewardTrans." WHERE amount <> 0 AND customer_id = '$id' ORDER BY created_at DESC";
       $row = self::$db->fetch_all($sql);
 
       return $row;
@@ -1828,7 +1983,7 @@ class Fazrin
 
     public function getUserGoldTrans($id)
     {
-      $sql = "SELECT * FROM ".self::tb_rewardTrans." WHERE amount_gold <> 0 AND customer_id = '$id'";
+      $sql = "SELECT * FROM ".self::tb_rewardTrans." WHERE amount_gold <> 0 AND customer_id = '$id' ORDER BY created_at DESC";
       $row = self::$db->fetch_all($sql);
 
       return $row;

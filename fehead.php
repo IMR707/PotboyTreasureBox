@@ -241,13 +241,14 @@ $(document).ready(function(){
       cache   : false,
       success : function(data)
       {
-        $('#spin_left').html(data);
+        $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
         $('#modal_spin').modal();
       }
     });
   });
 
   $('#open_draw').on('click',function(){
+    $('#gift_icon').html('<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">');
     var dataString = "func=openBox";
     $.ajax({
       type    : "POST",
@@ -257,13 +258,47 @@ $(document).ready(function(){
       dataType : 'json',
       success : function(data)
       {
-        $('#gift_icon').html('<img src="<?php echo BACK_UPLOADS; ?>'+data.wof_icon+'" class="img-responsive">');
-        $('#modal_spin').modal();
+        var wof_type = '';
+        if(data.wof_type == 1){
+          wof_type = 'Gold';
+        }else if(data.wof_type == 2){
+          wof_type = 'Diamond';
+        }else if(data.wof_type == 3){
+          wof_type = 'Open Box';
+        }
+        $('#spin_left').html('');
+
+        $('#gift_icon').html(
+          '<h2 class="text-center">Congratulations !</h2>'+
+          '<h4 class="text-center">You recieved</h4>'+
+          '<img src="<?php echo BACK_UPLOADS; ?>'+data.wof_icon+'" class="img-responsive img-center" style="display:block">'+
+          '<h3 class="text-center">'+data.wof_amount+'x '+wof_type+'</h3>'
+        );
+        $('#open_draw').hide();
+
+        setTimeout(function(){
+
+          var dataString = "func=getUserSpin";
+          $.ajax({
+            type    : "POST",
+            url     : "API/user.php",
+            data    : dataString,
+            cache   : false,
+            success : function(data)
+            {
+              $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
+            }
+          });
+
+          $('#gift_icon').html('<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">');
+          $('#open_draw').show();
+        }, 3000);
+
       }
     });
   });
 
-
+$('#modal_spin').modal();
 });
  </script>
 
@@ -696,12 +731,14 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
       </div>
       <div class="modal-body">
         <span id="spin_left"></span>
-        <div id="gift_icon"><i class="fa fa-gift"></i></div>
-        <button class="btn btn-success" id="open_draw">Open</button>
+        <div id="gift_icon" class="mb-10 mt-20">
+          <img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">
+        </div>
+
+
+        <button class="btn btn-success" id="open_draw" style="margin:0 auto;display:block">Open</button>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+
     </div>
 
   </div>

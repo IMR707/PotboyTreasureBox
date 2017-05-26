@@ -93,12 +93,6 @@ if (!$user->logged_in) {
                                   <div class="modal-body">
                           <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
                               <div class="form-group">
-                                  <label class="col-md-3 control-label">Priority</label>
-                                  <div class="col-md-9">
-                                      <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="wof_prio" required>
-                                  </div>
-                              </div>
-                              <div class="form-group">
                                   <label class="col-md-3 control-label">Type</label>
                                   <div class="col-md-9">
                                       <div class="mt-radio-list">
@@ -181,7 +175,6 @@ if (!$user->logged_in) {
                             <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
-                                  <th class="text-center">Priority</th>
                                   <th class="text-center">Icon</th>
                                   <th class="text-center">Type</th>
                                   <th class="text-center">Amount</th>
@@ -196,7 +189,6 @@ if (!$user->logged_in) {
                             ?>
 
                                 <tr>
-                                  <td class="text-center"><?php echo $row->wof_prio; ?></td>
                                   <td class="text-center">
                                     <img src="<?php echo BACK_UPLOADS.$row->wof_icon; ?>" class="img-thumbnail">
                                   </td>
@@ -236,13 +228,7 @@ if (!$user->logged_in) {
                                         <h4 class="modal-title">Update Setting</h4>
                                     </div>
                                     <div class="modal-body">
-                                      <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">
-                                          <div class="form-group">
-                                              <label class="col-md-3 control-label">Priority</label>
-                                              <div class="col-md-9">
-                                                  <input type="number" class="form-control" placeholder="Priority" value="1" min="1" name="wof_prio" required id="wof_prio_upd">
-                                              </div>
-                                          </div>
+                                      <form class="form-horizontal" role="form" action="backend/process.php" method="post" enctype="multipart/form-data">                                          
                                           <div class="form-group">
                                               <label class="col-md-3 control-label">Type</label>
                                               <div class="col-md-9">

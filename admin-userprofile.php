@@ -147,7 +147,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                                 <thead>
                                                                     <tr>
                                                                         <th width="15%">
-                                                                            <i class="fa fa-briefcase"></i> Date
+                                                                            <i class="fa fa-calendar"></i> Date
                                                                         </th>
                                                                         <th width="25%">
                                                                             <i class="fa fa-question"></i> Type
@@ -191,7 +191,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                               <thead>
                                                                   <tr>
                                                                       <th width="15%">
-                                                                          <i class="fa fa-briefcase"></i> Date
+                                                                          <i class="fa fa-calendar"></i> Date
                                                                       </th>
                                                                       <th width="25%">
                                                                           <i class="fa fa-question"></i> Type
