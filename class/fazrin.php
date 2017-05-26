@@ -517,6 +517,14 @@ class Fazrin
       echo json_encode($row);
     }
 
+    public function getWofByID2($id)
+    {
+      $sql = "SELECT * FROM ".self::tb_wof." where id='$id'";
+      $row = self::$db->first($sql);
+
+      return $row;
+    }
+
     public function sort_wof()
     {
 
@@ -536,9 +544,46 @@ class Fazrin
 
     }
 
+    function calculateWinningChances(array $chances)
+    {
+      $sum=0;
+      $bet=0;
+      foreach ($chances as $key => $value) {
+        $sum+=$value;
+      }
+      foreach ($chances as $key => $value) {
+        $chances[$key]=($value/$sum)*100;
+      }
+      $newc=[];
+      $nsum=0;
+      $currentval=0;
+      foreach ($chances as $key => $value) {
+        $newval=$currentval+$value;
+        $newc[$key]=array('min' =>$currentval, 'max' => $newval);
+        $currentval=$newval;
+      }
+      $rnd = rand(1,100);
+      foreach($newc as $k =>$v) {
+          if ($rnd > $v['min'] && $rnd <= $v['max']) {
+              $bet=$k;
+          }
+      }
+      return $bet;
+    }
+
     public function openBox()
     {
-      
+      $arr = $this->getWof();
+      $arr_chance = array();
+      foreach($arr as $key => $row){
+        $arr_chance[$row->id] = $row->wof_percent;
+      }
+
+      $win_id = $this->calculateWinningChances($arr_chance);
+
+      $prize = $this->getWofByID2($win_id);
+
+      return $prize;
     }
 
     /********* CONVERSION RATE **********************************************/

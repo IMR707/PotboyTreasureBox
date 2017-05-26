@@ -14,6 +14,8 @@ use Carbon\Carbon;
 // pre($AllConversion);
 //$fz->fakeWishVote();
 
+$fz->openBox();
+
 $chances = array(
   4 => 54,
   5 => 45,
@@ -23,33 +25,33 @@ $chances = array(
   77 => 42,
 );
 
-echo calculateWinningChances($chances);
+// echo calculateWinningChances($chances);
 
 function calculateWinningChances(array $chances)
 {
-$sum=0;
-$bet=0;
-foreach ($chances as $key => $value) {
-  $sum+=$value;
-}
-foreach ($chances as $key => $value) {
-  $chances[$key]=($value/$sum)*100;
-}
-$newc=[];
-$nsum=0;
-$currentval=0;
-foreach ($chances as $key => $value) {
-  $newval=$currentval+$value;
-  $newc[$key]=array('min' =>$currentval, 'max' => $newval);
-  $currentval=$newval;
-}
-$rnd = rand(1,100);
-foreach($newc as $k =>$v) {
-    if ($rnd > $v['min'] && $rnd <= $v['max']) {
-        $bet=$k;
-    }
-}
-return $bet;
+  $sum=0;
+  $bet=0;
+  foreach ($chances as $key => $value) {
+    $sum+=$value;
+  }
+  foreach ($chances as $key => $value) {
+    $chances[$key]=($value/$sum)*100;
+  }
+  $newc=[];
+  $nsum=0;
+  $currentval=0;
+  foreach ($chances as $key => $value) {
+    $newval=$currentval+$value;
+    $newc[$key]=array('min' =>$currentval, 'max' => $newval);
+    $currentval=$newval;
+  }
+  $rnd = rand(1,100);
+  foreach($newc as $k =>$v) {
+      if ($rnd > $v['min'] && $rnd <= $v['max']) {
+          $bet=$k;
+      }
+  }
+  return $bet;
 }
 
 

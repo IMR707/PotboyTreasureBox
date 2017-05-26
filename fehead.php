@@ -254,9 +254,10 @@ $(document).ready(function(){
       url     : "API/spin.php",
       data    : dataString,
       cache   : false,
+      dataType : 'json',
       success : function(data)
       {
-        $('#spin_left').html(data);
+        $('#gift_icon').html('<img src="<?php echo BACK_UPLOADS; ?>'+data.wof_icon+'" class="img-responsive">');
         $('#modal_spin').modal();
       }
     });
@@ -695,7 +696,8 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
       </div>
       <div class="modal-body">
         <span id="spin_left"></span>
-        <button class="btn btn-success" id="open_draw"><i class="fa fa-gift"></i></button>
+        <div id="gift_icon"><i class="fa fa-gift"></i></div>
+        <button class="btn btn-success" id="open_draw">Open</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -10,7 +10,7 @@ if(isset($_POST)){
 
     $res = $fz->openBox();
 
-    echo $res;
+    echo json_encode($res);
 
   }
 
