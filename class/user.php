@@ -17,7 +17,7 @@ if (!defined("_VALID_PHP")) {
 
 
       public $logged_in = null;
-      public $uid = 0;      
+      public $uid = 0;
       public $name;
       public $employeeid = 0;
       public $email;
@@ -195,6 +195,20 @@ if (!defined("_VALID_PHP")) {
         }
         $sql2 = "SELECT * $lala FROM " . self::aTable . " a WHERE  parent_id ='" . $id . "' $lili ";
         $row2 = self::$db->fetch_all($sql2);
+        return $row2;
+      }
+
+      public function getUserMainAddress($id)
+      {
+        $sql = "SELECT default_shipping as ids FROM " . self::uTable . " WHERE  entity_id ='" . $id . "' AND default_shipping IS NOT NULL";
+        $row = self::$db->first($sql);
+
+        if(!$row){
+          return 0;
+        }
+
+        $sql2 = "SELECT * FROM " . self::aTable . " a WHERE  parent_id ='" . $id . "' AND a.entity_id = '".$row->ids."' ";
+        $row2 = self::$db->first($sql2);
         return $row2;
       }
 

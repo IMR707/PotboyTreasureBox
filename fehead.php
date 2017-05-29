@@ -52,6 +52,9 @@ if($log=='success')
  <script type="text/javascript" src="<?php echo FRONTJS;?>plugins/ui/nicescroll.min.js"></script>
  <script type="text/javascript" src="<?php echo FRONTJS;?>plugins/ui/drilldown.js"></script>
  <script type="text/javascript" src="<?php echo FRONTJS;?>bootbox.min.js"></script>
+ <script type="text/javascript" src="<?php echo FRONTJS;?>plugins/tables/datatables/datatables.min.js"></script>
+ <script type="text/javascript" src="<?php echo FRONTJS;?>pages/datatables_basic.js"></script>
+ <script type="text/javascript" src="<?php echo FRONTJS;?>plugins/forms/selects/select2.min.js"></script>
  <script src="<?php echo BACK_PLUGIN; ?>moment.min.js" type="text/javascript"></script>
  <script type="text/javascript" src="<?php echo BACK_PAGES_SCRIPT; ?>jquery.countdown.js"></script>
  <?php //pre($user);
@@ -298,7 +301,11 @@ $(document).ready(function(){
     });
   });
 
-$('#modal_spin').modal();
+  $('#modal_spin').on('hidden.bs.modal', function () {
+    location.reload();
+  });
+
+// $('#modal_spin').modal();
 });
  </script>
 

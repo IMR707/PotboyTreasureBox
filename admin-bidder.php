@@ -111,7 +111,8 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                               <thead>
                                 <tr>
                                   <th class="text-center" width="25%">Bidder</th>
-                                  <th class="text-center">Amount</th>
+                                  <th class="text-center">Telephone</th>
+                                  <th class="text-center">Bid Amount</th>
                                   <th class="text-center" width="15%">Action</th>
                                 </tr>
                               </thead>
@@ -121,11 +122,14 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
 
                             foreach($bidders as $key => $row){
                               $cust_id = $row->customer_id;
+                              $cust_contact = $user->getUserMainAddress($cust_id);
+                              // pre($cust_contact);
                               $cust_detail = $fz->getUserByID($cust_id);
                             ?>
 
                                 <tr>
-                                  <td class="text-center"><?php echo $cust_detail->firstname.' '.$cust_detail->lastname; ?></td>
+                                  <td class="text-center"><a href="admin-userprofile.php?id=<?php echo $cust_id;?>" target="_blank"><?php echo $cust_detail ? $cust_detail->firstname.' '.$cust_detail->lastname : ''; ?></a></td>
+                                  <td class="text-center"><?php echo ($cust_contact)? $cust_contact->telephone : ''; ?></td>
                                   <td class="text-center"><?php echo $row->bid_amount; ?></td>
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateVoucher" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
