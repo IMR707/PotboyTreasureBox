@@ -13,8 +13,7 @@ if (!$user->logged_in) {
     redirect_to(SITEURL.'/index.php');
 }
 
-$diamond_trans = $fz->getUserDiamondTrans($user->uid);
-$gold_trans = $fz->getUserGoldTrans($user->uid);
+$claim_details = $fz->getUserClaim($user->uid);
 
 ?>
 <?php
@@ -42,9 +41,9 @@ $gold_trans = $fz->getUserGoldTrans($user->uid);
 
             <div class="panel panel-flat">
 							<div class="list-group no-border no-padding-top">
-								<a href="userAccount.php" class="list-group-item active"><i class="icon-cash3"></i> My Transaction</a>
+								<a href="userAccount.php" class="list-group-item"><i class="icon-cash3"></i> My Transaction</a>
                 <a href="userBid.php" class="list-group-item"><i class="icon-hammer"></i> My Bid</a>
-                <a href="userClaim.php" class="list-group-item"><i class="icon-cash3"></i> My Instant Claim</a>
+                <a href="userClaim.php" class="list-group-item active"><i class="icon-cash3"></i> My Instant Claim</a>
 								<!-- <a href="#" class="list-group-item"><i class="icon-cash3"></i> Balance</a>
 								<a href="#" class="list-group-item"><i class="icon-tree7"></i> Connections <span class="badge bg-danger pull-right">29</span></a>
 								<a href="#" class="list-group-item"><i class="icon-users"></i> Friends</a> -->
@@ -89,84 +88,39 @@ $gold_trans = $fz->getUserGoldTrans($user->uid);
 
           <!-- <br>ACCOUNT INFORMATION
        <br>Address Book -->
-          <div class="tabbable">
-						<ul class="nav nav-tabs nav-tabs-bottom">
-							<li class="active"><a href="#right-icon-tab1" data-toggle="tab" aria-expanded="false">Diamond Transaction <i class="icon-diamond position-right"></i></a></li>
-							<li class=""><a href="#right-icon-tab2" data-toggle="tab" aria-expanded="false">Gold Transaction <i class="icon-radio-unchecked position-right"></i></a></li>
-						</ul>
 
-						<div class="tab-content">
-							<div class="tab-pane active" id="right-icon-tab1">
-                <table class="table table-striped table-bordered table-advance table-hover">
-                    <thead>
-                        <tr>
-                            <th width="15%">
-                                <i class="fa fa-calendar"></i> Date
-                            </th>
-                            <th width="55%">
-                                <i class="fa fa-question"></i> Description
-                            </th>
-                            <th>
-                                <i class="fa fa-usd"></i> Amount
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <?php
+          <table class="table table-striped table-bordered table-advance table-hover">
+              <thead>
+                  <tr>
+                      <th width="15%">
+                          <i class="fa fa-calendar"></i> Date
+                      </th>
+                      <th width="35%">
+                          <i class="fa fa-question"></i> Item Name
+                      </th>
+                      <th>
+                          <i class="fa fa-usd"></i> Voucher Code
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                <?php
+                // pre($claim_details);
+                foreach($claim_details as $key => $row){
 
-                      foreach($diamond_trans as $key => $row){
+                ?>
+                  <tr>
+                      <td> <?php echo date("d/m/y \n h:ia",strtotime($row->date_updated)); ?> </td>
+                      <td> <?php echo $row->title; ?> </td>
+                      <td> <?php echo $row->voucher_code; ?> </td>                                          
+                  </tr>
+                <?php
+                }
 
-                      ?>
-                        <tr>
-                            <td> <?php echo date("d/m/y \n h:ia",strtotime($row->created_at)); ?> </td>
-                            <td> <?php echo $row->title.'<br>( '.$row->desc.' )'; ?> </td>
-                            <td> <span class="<?php echo $row->amount < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo $row->amount; ?> Diamond </span> </td>
-                        </tr>
-                      <?php
-                      }
+                ?>
+              </tbody>
+          </table>
 
-                      ?>
-                    </tbody>
-                </table>
-							</div>
-
-							<div class="tab-pane" id="right-icon-tab2">
-                <table class="table table-striped table-bordered table-advance table-hover">
-                    <thead>
-                        <tr>
-                            <th width="15%">
-                                <i class="fa fa-calendar"></i> Date
-                            </th>
-                            <th width="55%">
-                                <i class="fa fa-question"></i> Type
-                            </th>
-                            <th>
-                                <i class="fa fa-usd"></i> Amount
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-
-                      foreach($gold_trans as $key => $row){
-
-                      ?>
-                        <tr>
-                            <td> <?php echo date("d/m/y \n h:ia",strtotime($row->created_at)); ?> </td>
-                            <td> <?php echo $row->title.'<br>( '.$row->desc.' )'; ?> </td>
-                            <td> <span class="<?php echo $row->amount < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo $row->amount_gold; ?> Gold </span> </td>
-                        </tr>
-                      <?php
-                      }
-
-                      ?>
-                    </tbody>
-                </table>
-
-							</div>
-
-						</div>
-					</div>
  			</div>
  			<!-- /main content -->
 

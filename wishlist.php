@@ -115,7 +115,7 @@ $sponsors = $fz->getSponsor();
                     <h4 class="panel-title">VOTE NOW for next month prize !</h4>
                   </div>
                   <div class="col-md-6 col-sm-6 col-xs-6 text-right">
-                    <?php echo isset($_SESSION['userid']) ? '<label class="label label-success font-14">'.$vote_left.' vote left !</label>' : '' ;?> 
+                    <?php echo isset($_SESSION['userid']) ? '<label class="label label-success font-14">'.$vote_left.' vote left !</label>' : '' ;?>
                   </div>
                 </div>
               </div>

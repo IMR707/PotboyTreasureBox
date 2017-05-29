@@ -1391,6 +1391,14 @@ class Fazrin
       return $row;
     }
 
+    public function getUserBid($user_id)
+    {
+      $sql = "SELECT * FROM ".self::tb_bidtrans." a, ".self::tb_bid." b, ".self::tb_prod." c WHERE customer_id = '$user_id' AND a.bidding_id = b.id AND b.product_id = c.id AND a.active = 1 ORDER BY a.date_created DESC";
+      $row = self::$db->fetch_all($sql);
+
+      return $row;
+    }
+
 
 
     /********* CLAIM **********************************************/
@@ -1577,6 +1585,14 @@ class Fazrin
 
       $row->start_time_date = $start_time_date;
       $row->start_time_time = $start_time_time;
+
+      return $row;
+    }
+
+    public function getUserClaim($user_id)
+    {
+      $sql = "SELECT * FROM ".self::tb_vouc." a, ".self::tb_claim." b WHERE a.cust_id = '$user_id' AND a.instantclaim_id = b.id AND a.active = 1 ORDER BY a.date_updated DESC";
+      $row = self::$db->fetch_all($sql);
 
       return $row;
     }
