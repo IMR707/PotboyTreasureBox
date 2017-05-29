@@ -97,13 +97,13 @@ $gold_trans = $fz->getUserGoldTrans($user->uid);
 
 						<div class="tab-content">
 							<div class="tab-pane active" id="right-icon-tab1">
-                <table class="table table-striped table-bordered table-advance table-hover">
+                <table class="table table-striped table-bordered table-advance table-hover datatable-basic">
                     <thead>
                         <tr>
-                            <th width="15%">
+                            <th width="25%">
                                 <i class="fa fa-calendar"></i> Date
                             </th>
-                            <th width="55%">
+                            <th width="50%">
                                 <i class="fa fa-question"></i> Description
                             </th>
                             <th>
@@ -131,13 +131,13 @@ $gold_trans = $fz->getUserGoldTrans($user->uid);
 							</div>
 
 							<div class="tab-pane" id="right-icon-tab2">
-                <table class="table table-striped table-bordered table-advance table-hover">
+                <table class="table table-striped table-bordered table-advance table-hover datatable-basic">
                     <thead>
                         <tr>
-                            <th width="15%">
+                            <th width="25%">
                                 <i class="fa fa-calendar"></i> Date
                             </th>
-                            <th width="55%">
+                            <th width="50%">
                                 <i class="fa fa-question"></i> Type
                             </th>
                             <th>
@@ -154,7 +154,7 @@ $gold_trans = $fz->getUserGoldTrans($user->uid);
                         <tr>
                             <td> <?php echo date("d/m/y \n h:ia",strtotime($row->created_at)); ?> </td>
                             <td> <?php echo $row->title.'<br>( '.$row->desc.' )'; ?> </td>
-                            <td> <span class="<?php echo $row->amount < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo $row->amount_gold; ?> Gold </span> </td>
+                            <td> <span class="<?php echo $row->amount_gold < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo $row->amount_gold; ?> Gold </span> </td>
                         </tr>
                       <?php
                       }

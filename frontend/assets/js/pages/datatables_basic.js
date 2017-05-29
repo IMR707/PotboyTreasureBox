@@ -18,10 +18,12 @@ $(function() {
     // Setting datatable defaults
     $.extend( $.fn.dataTable.defaults, {
         autoWidth: false,
-        columnDefs: [{ 
+        "aaSorting": [],
+        columnDefs: [{
             orderable: false,
+            order: [],
             width: '100px',
-            targets: [ 5 ]
+            // targets: [ 5 ]
         }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
@@ -77,5 +79,5 @@ $(function() {
         minimumResultsForSearch: Infinity,
         width: 'auto'
     });
-    
+
 });

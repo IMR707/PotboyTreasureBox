@@ -8,6 +8,7 @@ require_once 'init.php';
 use Carbon\Carbon;
 $allclaim=$list->FEgetAllClaim();
 
+
 // pre($homeSlider);
 // if (!$user->logged_in) {
 //     redirect_to(SITEURL.'/index.php');
@@ -16,23 +17,6 @@ $allclaim=$list->FEgetAllClaim();
 <?php
  include 'fehead.php';
  ?>
-
-
-
-
- 	<!-- Page header -->
- 	<!-- <div class="page-header">
- 		<div class="page-header-content">
- 			<br>
-
-
- 		</div>
- 	</div> -->
- 	<!-- /page header -->
-
-
- 	<!-- Page container -->
-
 
  		<!-- Page content -->
  		<div class="page-content">
@@ -58,8 +42,11 @@ $allclaim=$list->FEgetAllClaim();
               </div>
                 <?php
             }
-
+            // pre($allclaim);
             foreach ($allclaim as $key => $value) {
+              $claim_id = $value->id;
+
+              $check_claim = $fz->checkUserClaim($claim_id);
 
               ?>
 
@@ -92,7 +79,7 @@ $allclaim=$list->FEgetAllClaim();
 
 
                             </div>
-                            <?php if($value->percent<10){
+                            <?php if($value->percent<=10){
                               ?>
                               <?php echo "<span id='text".$value->bidid."'>".stylewordpercent($value->percent)."</span>";?>
                               <?php
@@ -105,15 +92,25 @@ $allclaim=$list->FEgetAllClaim();
                             </ul>
                           </span>
 
-
-
                         </div>
 
 
                         <div class="col-sm-2 col-md-2 col-xs-12 text-center">
-              <br>
+                          <br>
                           <span class="pull-right">
-                            <a href="<?php echo $value->id;?>" class="btn bg-purple">Claim Now</a>
+                            <?php
+                            if($check_claim){
+                              ?>
+                              <button class="btn bg-purple" disabled>Claimed</button>
+                              <?php
+                            }else{
+                              ?>
+                              <button class="btn bg-purple btn_claim" id="<?php echo $value->id?>">Claim Now</button>
+                              <?php
+                            }
+
+                            ?>
+
                           </span>
 
                         </div>
@@ -127,28 +124,40 @@ $allclaim=$list->FEgetAllClaim();
             }
             ?>
 
-
           </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
  			</div>
  			<!-- /main content -->
 
  		</div>
+
+  <script type="text/javascript">
+
+  $(document).ready(function(){
+    $('.btn_claim').on('click',function(){
+      var id = $(this).attr('id');
+      var dataString = "claim_id="+id+"&func=submitclaim";
+      $.ajax({
+        type    : "POST",
+        url     : "API/claim.php",
+        data    : dataString,
+        cache   : false,
+        dataType: 'json',
+        success : function(data)
+        {
+          // console.log(data);
+          bootbox.alert(data.status+" : "+data.msg, function(){
+            if(data.status != 'Error'){
+              location.reload();
+            }            
+          });
+        }
+      });
+    });
+  });
+
+  </script>
 
   <?php
    include 'fefoot.php';

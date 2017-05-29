@@ -148,7 +148,6 @@ if (!$user->logged_in) {
                             <table class="table table-bordered table-hover">
                               <thead>
                                 <tr>
-                                  <th class="text-center">Priority</th>
                                   <th class="text-center">Title</th>
                                   <th class="text-center">Content</th>
                                   <th class="text-center">Publish</th>
@@ -159,8 +158,7 @@ if (!$user->logged_in) {
                               <?php
                               foreach($sliders as $key => $row){
                               ?>
-                                <tr>
-                                  <td class="text-center"><?php echo $row->prio; ?></td>
+                                <tr>                                  
                                   <td><?php echo $row->title; ?></td>
                                   <td><?php echo $row->content; ?></td>
                                   <td class="text-center">

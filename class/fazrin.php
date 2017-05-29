@@ -1597,6 +1597,108 @@ class Fazrin
       return $row;
     }
 
+    public function checkUserClaim($claim_id)
+    {
+      $user_id = $_SESSION['userid'];
+      $sql = "SELECT * FROM ".self::tb_vouc." where instantclaim_id = '$claim_id' AND cust_id='$user_id' AND active = 1";
+      $row = self::$db->first($sql);
+
+      return $row;
+    }
+
+    public function getAvailableVoucher($claim_id)
+    {
+      $sql = "SELECT id FROM ".self::tb_vouc." where instantclaim_id = '$claim_id' AND (cust_id IS NULL OR cust_id = 0) AND active = 1";
+      $row = self::$db->first($sql);
+
+      return $row->id;
+    }
+
+    public function submitClaim($claim_id)
+    {
+      $user_id = $_SESSION['userid'];
+
+      $claim_detail = $this->getClaimByID2($claim_id);
+      $gold_need = $claim_detail->gold_amount;
+
+      $list = new Listing;
+      $user_detail = $list->FEgetRewardData($user_id);
+      $user_gold = $user_detail->gold;
+      $userBalanceGold = $user_gold - $gold_need;
+
+      if($user_gold >= $gold_need){
+
+        $check = $this->checkUserClaim($claim_id);
+        $arr_out = array();
+        if(!$check){
+
+          $avail_id = $this->getAvailableVoucher($claim_id);
+
+          $data = array(
+            'cust_id' => $user_id,
+            'date_updated' => 'now()'
+          );
+          $res = self::$db->update(self::tb_vouc, $data, "id='$avail_id'");
+          if($res){
+            //do deduction
+
+            $data = array(
+              'customer_id' => $user_id,
+              'amount' => 0,
+              'amount_used' => 0,
+              'amount_gold' => '-'.$gold_need,
+              'amount_gold_used' => '-'.$gold_need,
+              'title' => 'Claim Voucher "'.$claim_detail->title.'"',
+              'desc' => $gold_need.' Gold',
+              'code' => 'admin_add-aEEmIYncALynhaQQ',
+              'action' => 'admin_add',
+              'status' => 'complete',
+              'params' => '',
+              'is_expiration_email_sent' => 0,
+              'email_message' => '',
+              'apply_at' => '',
+              'is_applied' => 1,
+              'is_expired' => 0,
+              'expires_at' => '',
+              'updated_at' => 'now()',
+              'created_at' => 'now()',
+              'store_id' => 0,
+              'order_id' => 0,
+              'admin_user_id' => 1
+            );
+            $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+            $data = array(
+              'available_golds' => $userBalanceGold,
+              'total_golds' => $userBalanceGold
+            );
+
+            $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
+            $arr_out['status'] = 'Success';
+            $arr_out['msg'] = 'You have successfully claimed this voucher. The voucher will be sent to you shortly. Stay tuned !';
+
+            // do email function here.
+
+
+          }else{
+            $arr_out['status'] = 'Error';
+            $arr_out['msg'] = 'An error occured.';
+          }
+
+        }else{
+          $arr_out['status'] = 'Error';
+          $arr_out['msg'] = 'You have already claimed this voucher previously.';
+        }
+      }else{
+        $arr_out['status'] = 'Error';
+        $arr_out['msg'] = 'You do not have enough gold to claim this voucher.';
+      }
+
+      return $arr_out;
+
+    }
+
     /********* VOUCHER **********************************************/
 
     public function checkVoucher($id,$code)
@@ -1999,7 +2101,7 @@ class Fazrin
 
     public function getUserGoldTrans($id)
     {
-      $sql = "SELECT * FROM ".self::tb_rewardTrans." WHERE amount_gold <> 0 AND customer_id = '$id' ORDER BY created_at DESC";
+      $sql = "SELECT * FROM ".self::tb_rewardTrans." WHERE amount_gold <> 0 AND customer_id = '$id' ORDER BY created_at DESC ";
       $row = self::$db->fetch_all($sql);
 
       return $row;
