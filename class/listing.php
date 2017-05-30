@@ -295,9 +295,62 @@ END) as percent,
         return $row;
     }
 
+    public function ff($id){
+      $today = Carbon::now();
+      $yesterday= Carbon::now()->subDay();
+      $sql = "SELECT bt.*";
+      $sql .= ",(case when (date(bt.date_created)=date('".$today."') ) THEN 2 ";
+      $sql .= "when (date(bt.date_created)=date('".$yesterday."') )THEN 1 ELSE 0 END) as day ";
+      $sql .= 'FROM '.self::tb_drtran." bt where bt.active = 1 AND bt.customer_id='".$id."'  order by date_created desc";
+      $row = self::$db->first($sql);
+      $todaydone=$row->day==2?1:0;
+      pre($row);
+      pre($todaydone);
+      echo $sql;
+      // foreach ($row as $key => $value) {
+      // pre($value);
+      // }
 
-    public function FEgetAllDailyReward($id)
-    {
+    }
+
+
+        public function FEgetAllDailyReward2($id)
+        {
+          $today = Carbon::now();
+          $yesterday= Carbon::now()->subDay();
+          $sql = "SELECT bt.*";
+           $sql .= 'FROM '.self::tb_drtran." bt where active = 1 AND customer_id='".$id."' AND (date(date_created) = date('".$today."') || date(date_created) = date('".$yesterday."')) order by date_created desc";
+          if(!self::$db->first($sql)){
+            $dt = Carbon::now()->subDay();
+            $sql = 'SELECT *,0 as done,0 as date_check FROM '.self::tb_dr." where active = 1 order by day_num";
+            $row = self::$db->fetch_all($sql);
+            for ($i=0; $i <count($row) ; $i++) {
+                $dt=$dt->addDay();
+                $dz=explode(" ", $dt);
+                $day=$dz[0];
+                $row[$i]->date_check=$day;
+                if ($row[$i]->gold_check == 1 && $row[$i]->spin_check == 1) {
+                    $row[$i]->type = 1;
+                } elseif ($row[$i]->gold_check == 1 && $row[$i]->spin_check == 0) {
+                    $row[$i]->type = 2;
+                } else {
+                    $row[$i]->type = 3;
+                }
+            }
+          }else {
+            $row=$this->ff($id);
+          }
+          return $row;
+        }
+
+
+
+
+
+
+
+              public function FEgetAllDailyReward($id)
+              {
         $dt = Carbon::now()->subDay();
         $sql = 'SELECT *,0 as done,0 as date_check FROM '.self::tb_dr." where active = 1 order by day_num";
         $row = self::$db->fetch_all($sql);
