@@ -1,0 +1,372 @@
+<!doctype html>  
+<!--[if IE 6 ]><html lang="en-us" class="ie6"> <![endif]-->
+<!--[if IE 7 ]><html lang="en-us" class="ie7"> <![endif]-->
+<!--[if IE 8 ]><html lang="en-us" class="ie8"> <![endif]-->
+<!--[if (gt IE 7)|!(IE)]><!-->
+<html lang="en-us"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	
+	<title>SKY KNIGHT v1.0 - The Documentation</title>
+	
+	<meta name="description" content="">
+	<meta name="author" content="Javanie">
+	<meta name="copyright" content="Javanie">
+	<meta name="generator" content="Documenter v2.0 http://rxa.li/documenter">
+	<meta name="date" content="2017-05-12T00:00:00+02:00">
+	
+	<link rel="stylesheet" href="assets/css/documenter_style.css" media="all">
+	<link rel="stylesheet" href="assets/js/google-code-prettify/prettify.css" media="screen">
+	<script src="assets/js/google-code-prettify/prettify.js"></script>
+
+	
+	
+	<script src="assets/js/jquery.js"></script>
+	
+	<script src="assets/js/jquery.scrollTo.js"></script>
+	<script src="assets/js/jquery.easing.js"></script>
+	
+	<script>document.createElement('section');var duration='500',easing='swing';</script>
+	<script src="assets/js/script.js"></script>
+	
+	<style>
+		html{background-color:#FFFFFF;color:#383838;}
+		::-moz-selection{background:#444444;color:#DDDDDD;}
+		::selection{background:#444444;color:#DDDDDD;}
+		#documenter_sidebar #documenter_logo{background-image:url(assets/images/image_3.png);}
+		a{color:#0000FF;}
+		.btn {
+			border-radius:3px;
+		}
+		.btn-primary {
+			  background-image: -moz-linear-gradient(top, #0088CC, #0044CC);
+			  background-image: -ms-linear-gradient(top, #0088CC, #0044CC);
+			  background-image: -webkit-gradient(linear, 0 0, 0 0088CC%, from(#DDDDDD), to(#0044CC));
+			  background-image: -webkit-linear-gradient(top, #0088CC, #0044CC);
+			  background-image: -o-linear-gradient(top, #0088CC, #0044CC);
+			  background-image: linear-gradient(top, #0088CC, #0044CC);
+			  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088CC', endColorstr='#0044CC', GradientType=0);
+			  border-color: #0044CC #0044CC #bfbfbf;
+			  color:#FFFFFF;
+		}
+		.btn-primary:hover,
+		.btn-primary:active,
+		.btn-primary.active,
+		.btn-primary.disabled,
+		.btn-primary[disabled] {
+		  border-color: #0088CC #0088CC #bfbfbf;
+		  background-color: #0044CC;
+		}
+		hr{border-top:1px solid #EBEBEB;border-bottom:1px solid #FFFFFF;}
+		#documenter_sidebar, #documenter_sidebar ul a{background-color:#DDDDDD;color:#222222;}
+		#documenter_sidebar ul a{-webkit-text-shadow:1px 1px 0px #EEEEEE;-moz-text-shadow:1px 1px 0px #EEEEEE;text-shadow:1px 1px 0px #EEEEEE;}
+		#documenter_sidebar ul{border-top:1px solid #AAAAAA;}
+		#documenter_sidebar ul a{border-top:1px solid #EEEEEE;border-bottom:1px solid #AAAAAA;color:#444444;}
+		#documenter_sidebar ul a:hover{background:#444444;color:#DDDDDD;border-top:1px solid #444444;}
+		#documenter_sidebar ul a.current{background:#444444;color:#DDDDDD;border-top:1px solid #444444;}
+		#documenter_copyright{display:block !important;visibility:visible !important;}
+	</style>
+	
+</head>
+<body class="documenter-project-sky-knight-v10">
+	<div id="documenter_sidebar">
+		<a href="#documenter_cover" id="documenter_logo"></a>
+		<ul id="documenter_nav">
+			<li><a class="current" href="#documenter_cover">Start</a></li>
+				
+			<li><a href="#intro" title="Intro">Intro</a></li>
+			<li><a href="#folder_files" title="Folder & Files">Folder & Files</a></li>
+			<li><a href="#project_structure" title="Project Structure">Project Structure</a></li>
+			<li><a href="#change_game_assets" title="Change Game Assets">Change Game Assets</a></li>
+			<li><a href="#config_center" title="Config Center">Config Center</a></li>
+			<li><a href="#instance_variables" title="Instance Variables">Instance Variables</a></li>
+			<li><a href="#export_game" title="Export Game">Export Game</a></li>
+			<li><a href="#license_credits" title="License & Credits">License & Credits</a></li>
+
+		</ul>
+		<div id="documenter_copyright">Copyright Javanie 2017<br>
+		made with the <a href="http://rxa.li/documenter">Documenter v2.0</a> 
+		</div>
+	</div>
+	<div id="documenter_content">
+	<section id="documenter_cover">
+	<h1>SKY KNIGHT v1.0</h1>
+	<h2>The Documentation</h2>
+	<div id="documenter_buttons">
+		<a href="https://codecanyon.net/item/nuwpys-adventure-platformer/19345468?ref=javanie" class="btn btn-primary btn-large">Nuwpy's Adventure</a> <a href="https://codecanyon.net/item/sniper-mission-html5-shooter-game/17345389?ref=javanie" class="btn btn-large">Sniper Mission</a> <a href="https://codecanyon.net/user/javanie/portfolio?ref=javanie" class="btn btn-large">More Games</a> 
+	</div>
+	<hr>
+	<ul>
+	<li>created: 05/11/2017</li>
+	<li>latest update: 05/12/2017</li>
+	<li>by: Javanie</li>
+	
+	<li>email: <a href="mailto:&#106;&#97;&#118;&#97;&#110;&#105;&#101;&#46;&#115;&#116;&#117;&#100;&#105;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#106;&#97;&#118;&#97;&#110;&#105;&#101;&#46;&#115;&#116;&#117;&#100;&#105;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></li>
+	</ul>
+	<p>Thank you for purchasing my game template. If you have any questions that are beyond the scope of this help file, please feel free to email me. Thanks so much!
+
+<div class="alert alert-info">
+	Note: You need Construct 2 v.244 with Personal License to modified this game.</div></p>
+	</section>
+	
+	<section id="intro">
+	<div class="page-header"><h3>Intro</h3><hr class="notop"></div>
+<p>
+	Sky Knight is Shoot &#39;em up (shmup) &nbsp;vertically scrolling top-down perspective shooter game. You need to defend the earth from the enemies attack, there are 7 weapons (bullet pattern) for help you each level, randomly dropped when the enemy destroyed. Can you survive from enemies attack? And fight the final boss to win this game.</p>
+<h4 id="intro_strongfeatures_strong"><strong>Features:</strong></h4>
+<ul>
+	<li>
+		10 Challenging levels.</li>
+	<li>
+		7 Bullet patterns for player weapon attack.</li>
+	<li>
+		2 Bosses waiting and ready to Challenge you.</li>
+	<li>
+		Using Construct 2 official plugins, without third party plugins,.</li>
+	<li>
+		Game Pad supported (only for player shot &amp; movement control).</li>
+	<li>
+		Game assets included.</li>
+	<li>
+		Cocoon.io free version supported.</li>
+	<li>
+		Auto save level progess.</li>
+	<li>
+		Mobile browser and mobile native optimized.</li>
+	<li>
+		1 Capx source code for desktop and mobile native version (Android &amp; iOS) with auto detect config.</li>
+</ul>
+<h4 id="intro_strongend_words_strong"><strong>End Words</strong></h4>
+<div>
+	The game is fully compatible with all most common mobile devices. Sounds are enabled for mobile but we can&#39;t grant full audio compatibility on all mobile devices due to some well-know issue between some mobile-browser and HTML5.</div>
+<div>
+	&nbsp;</div>
+<div>
+	If you face problems with this game, feel free to contact me by email ASAP. I will do my best to support you.</div>
+</section>
+<section id="folder_files">
+	<div class="page-header"><h3>Folder & Files</h3><hr class="notop"></div>
+<h4 id="folder_files_strongfolder_name_strong"><strong>Folder Name:</strong></h4>
+<p>
+	1. APK -&nbsp;contains this game APK for Android platform.</p>
+<p>
+	2. Documentation - contains this documentation.</p>
+<p>
+	3. Game Assets -&nbsp;contains game Audio, Graphic PNG and PSD files</p>
+<p>
+	4. HTML5 - contains full game for HTML5 platform.</p>
+<p>
+	6. Source Code - contains Construct 2 Capx source code of this game.</p>
+</section>
+<section id="project_structure">
+	<div class="page-header"><h3>Project Structure</h3><hr class="notop"></div>
+<h4 id="project_structure_stronglayouts_strong"><strong>Layouts</strong></h4>
+<p>
+	1. Preloader layout.</p>
+<p>
+	2. Menu Screen layout.</p>
+<p>
+	3. 10 Level layouts.</p>
+<p>
+	4. Weapon test layout.</p>
+<p>
+	5. Objects Bank layout.</p>
+<p>
+	6. End Screen layout.</p>
+<h4 id="project_structure_strongevent_sheets_strong"><strong>Event Sheets</strong></h4>
+<p>
+	1. Config Center: Variable for item drop chance, player start lives, boss 1 and 2 bonus score point and add your site URL.</p>
+<p>
+	2. End Screen: for end screen when player finisihed level 10.</p>
+<p>
+	3.&nbsp;Enemy AI: All about enemies AI you can find in this event sheet.</p>
+<p>
+	4. Global: default Data function and impact code.</p>
+<p>
+	5. HUD: Screen pause UI code, weapon test level UI code and Level UI code.</p>
+<p>
+	6. Items: Weapon power-up bullet patterns code.</p>
+<p>
+	7. Main: Main event sheet for level layout.</p>
+<p>
+	8. Menu: Menu screen code, detect device platform code, gamepad detection code, local storage check and load.</p>
+<p>
+	9. Music: music event sheet all about Level BGM you can find in this event sheet.</p>
+<p>
+	10. Player: Player movement control code and player weapon code.</p>
+<p>
+	11. Preloader: Event sheet for preload game resources.</p>
+<p>
+	12. Score: Save and load score code for highscore.</p>
+<h4 id="project_structure_bdefault_project_settings_b"><b>Default Project Settings</b></h4>
+<p>
+	<b><img alt="" src="assets/images/image_7.png" style="width: 780px; height: 640px; border-width: 1px; border-style: solid;"></b></p>
+</section>
+<section id="change_game_assets">
+	<div class="page-header"><h3>Change Game Assets</h3><hr class="notop"></div>
+<h4 id="change_game_assets_stronggraphics_strong"><strong>Graphics</strong></h4>
+<p>
+	Open Construct 2 then double click on the image in object types bar then replace the sprite image.</p>
+<p>
+	<img alt="" src="assets/images/image_10.png" style="width: 780px; height: 628px; border-width: 1px; border-style: solid;"></p>
+<h4 id="change_game_assets_strongsounds_strong"><strong>Sounds</strong></h4>
+<p>
+	Import Sound Effects to the folder Sounds and import Background Music to folder Music in Construct 2.</p>
+<p>
+	&nbsp;</p>
+</section>
+<section id="config_center">
+	<div class="page-header"><h3>Config Center</h3><hr class="notop"></div>
+<p>
+	In this event sheet you can change some player properties.</p>
+<p>
+	<img alt="" src="assets/images/image_12.png" style="width: 780px; height: 154px; border-width: 1px; border-style: solid;"></p>
+</section>
+<section id="instance_variables">
+	<div class="page-header"><h3>Instance Variables</h3><hr class="notop"></div>
+<h4 id="instance_variables_strongenemy_instance_variables_strong"><strong>Enemy Instance Variables</strong></h4>
+<p>
+	Each enemy have Instance Variables you can modified enemies hit points, trigger activation coordinate, etc. Click enemy you want to edit then look at Properties bar on Instance variables column.</p>
+<p>
+	<img alt="" src="assets/images/image_5.png" style="width: 780px; height: 675px; border-width: 1px; border-style: solid;"></p>
+<p>
+	&nbsp;If you change Points then you must edit&nbsp;<strong>&quot;On Enemy_Destroy&quot;</strong>&nbsp;function on&nbsp;<strong>&quot;Enemy_AI&quot;&nbsp;</strong>event sheet line 9.</p>
+<p>
+	<img alt="" src="assets/images/image_17.png" style="width: 780px; height: 382px; border-width: 1px; border-style: solid;"></p>
+<h4 id="instance_variables_player_weapon_instance_variables">Player Weapon Instance Variables</h4>
+<p>
+	You can change weapons damage in Player Bullet Family, please look at screenshot image below.</p>
+<p>
+	<img alt="" src="assets/images/image_13.png" style="width: 780px; height: 320px; border-width: 1px; border-style: solid;"></p>
+<p>
+	&nbsp;</p>
+</section>
+<section id="export_game">
+	<div class="page-header"><h3>Export Game</h3><hr class="notop"></div>
+<p>
+	Before export process make sure review these settings below.</p>
+<p>
+	<img alt="" src="assets/images/image_14.png" style="width: 780px; height: 634px; border-width: 1px; border-style: solid;"></p>
+<h4 id="export_game_stronghtml5_platform_strong"><strong>HTML5 Platform</strong></h4>
+<p>
+	Click &quot;<strong>Export Project</strong>&quot; then select &quot;<strong>HTML5 Platform</strong>&quot; then click next button and make sure &quot;<strong>minify script</strong>&quot; checked then select template style: Normal style, Advert bar style or Embed style then click export. After export process finished you can upload the result to you site or HTML5 platform site.</p>
+<h4 id="export_game_strongmobile_native_platform_strong"><strong>Mobile Native Platform</strong></h4>
+<p>
+	Check &quot;<strong>Use new Intel XDK project format</strong>&quot; if you want export the game using<strong> Intel XDK</strong>.</p>
+<p>
+	Uncheck &quot;<strong>Use new Intel XDK project format</strong>&quot; if you want export the game using <strong>Cocoon.io</strong>. I recommened you to use Cocoon.io for better performance.</p>
+<div class="alert">
+	<strong>Important:&nbsp;</strong></div>
+<div>
+	&nbsp;</div>
+<div>
+	Please add these line under &lt;access origin=&quot;*&quot;/&gt; in config.xml</div>
+<pre class="prettyprint lang-js linenums">
+&lt;allow-navigation href=&quot;*&quot;/&gt;
+
+
+&lt;allow-intent href=&quot;*&quot;/&gt;</pre>
+<div>
+	&nbsp;</div>
+<div>
+	This is for enable external link access on Android platform. See example picture below.</div>
+<div>
+	&nbsp;</div>
+<div>
+	<img alt="" src="assets/images/image_6.png" style="width: 780px; height: 612px; border-width: 1px; border-style: solid;"></div>
+<div>
+	&nbsp;</div>
+<div>
+	If you need guide for compile using cocoon.io please visit this link:</div>
+<div>
+	<a href="https://docs.cocoon.io/article/how-to-export-android-in-construct-2-with-cocoon-io/" target="_blank">https://docs.cocoon.io/article/how-to-export-android-in-construct-2-with-cocoon-io/</a></div>
+<div>
+	or</div>
+<div>
+	<a href="https://shatter-box.com/knowledgebase/cocoonio/" target="_blank">https://shatter-box.com/knowledgebase/cocoonio/</a></div>
+<div>
+	<p style="margin: 18px 0px; padding: 0px; border: 0px; outline: 0px; font-family: Arial, verdana, arial, sans-serif; vertical-align: baseline; line-height: 1.5em; color: rgb(56, 56, 56);">
+		For use Intel XDK for export to mobile platform, please check this tutotial link:<br>
+		<a href="https://shatter-box.com/knowledgebase/intel-xdk-complete-guide-for-construct-2/" style="font-family: inherit; margin: 0px; padding: 0px; border: 0px; outline: 0px; font-weight: inherit; font-style: inherit; vertical-align: baseline; color: rgb(0, 0, 255); text-decoration-line: none; cursor: pointer;" target="_blank">https://shatter-box.com/knowledgebase/intel-xdk-complete-guide-for-construct-2/</a></p>
+</div>
+<p>
+	&nbsp;</p>
+</section>
+<section id="license_credits">
+	<div class="page-header"><h3>License & Credits</h3><hr class="notop"></div>
+<div>
+	Some graphic assets in this game template with license CC-BY 3.0 and Public Domain. Please don&#39;t remove credits screen inside game if you still using assets with license CC-BY 3.0.&nbsp;</div>
+<div>
+	&nbsp;</div>
+<div class="alert alert-info">
+	<strong>Important Note:</strong></div>
+<div class="alert alert-info">
+	For license with CC-BY 3.0 You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</div>
+<p>
+	Title:&nbsp;Top Down River - Shooter Environment<br>
+	License: CC-BY 3.0<br>
+	Author: ansimuz<br>
+	Link:&nbsp;<a href="https://opengameart.org/content/top-down-river-shooter-environment" target="_blank">https://opengameart.org/content/top-down-river-shooter-environment</a></p>
+<p>
+	<img alt="" src="assets/images/image_4.png" style="width: 780px; height: 539px; border-width: 1px; border-style: solid;"></p>
+<p>
+	Title:&nbsp;Spaceships<br>
+	License: CC-BY 3.0<br>
+	Author: wuhu<br>
+	Link:&nbsp;<a href="https://opengameart.org/content/spaceships-1" target="_blank">https://opengameart.org/content/spaceships-1</a></p>
+<p>
+	<img alt="" src="assets/images/image_1.png" style="width: 780px; height: 385px; border-width: 1px; border-style: solid;"></p>
+<p>
+	Title:&nbsp;Space Ship Shooter Pixel Art Assets<br>
+	License: Public Domain / CC Zero<br>
+	Author: ansimuz<br>
+	Link:&nbsp;<a href="https://opengameart.org/content/space-ship-shooter-pixel-art-assets" target="_blank">https://opengameart.org/content/space-ship-shooter-pixel-art-assets</a></p>
+<p>
+	<img alt="" src="assets/images/image_11.png" style="width: 780px; height: 641px; border-width: 1px; border-style: solid;"></p>
+<p>
+	Title:&nbsp;Space Background<br>
+	License: Public Domain / CC Zero<br>
+	Author: ansimuz<br>
+	Link:&nbsp;<a href="https://opengameart.org/content/space-background-3" target="_blank">https://opengameart.org/content/space-background-3</a></p>
+<p>
+	<img alt="" src="assets/images/image_2.png" style="width: 780px; height: 401px; border-width: 1px; border-style: solid;"></p>
+<p>
+	Title:&nbsp;Circlerun - ZEQ2 - Victory to Stats<br>
+	License: CC-BY 3.0<br>
+	Author: Circlerun<br>
+	Link:&nbsp;<a href="https://opengameart.org/content/adventure-platform-menu-bgm-pack-i" target="_blank">https://opengameart.org/content/adventure-platform-menu-bgm-pack-i</a></p>
+<p>
+	<img alt="" src="assets/images/image_9.png" style="width: 780px; height: 772px; border-width: 1px; border-style: solid;"></p>
+<p>
+	Title:&nbsp;5 Chiptunes (Action)<br>
+	License: Public Domain / CC Zero<br>
+	Author:&nbsp;SubspaceAudio<br>
+	Link:&nbsp;<a href="https://opengameart.org/content/5-chiptunes-action" target="_blank">https://opengameart.org/content/5-chiptunes-action</a></p>
+<p>
+	<img alt="" src="assets/images/image_15.png" style="width: 780px; height: 685px; border-width: 1px; border-style: solid;"></p>
+<p>
+	Title:&nbsp;Capture It<br>
+	License: Public Domain / CC Zero<br>
+	Author:&nbsp;Magique Fonts<br>
+	Link:&nbsp;<a href="http://www.dafont.com/capture-it.font" target="_blank">http://www.dafont.com/capture-it.font</a></p>
+<p>
+	<img alt="" src="assets/images/image_8.png" style="width: 780px; height: 141px; border-width: 1px; border-style: solid;"></p>
+<p>
+	Title:&nbsp;Forced Square<br>
+	License: Public Domain / CC Zero<br>
+	Author:&nbsp;DrawPerfect<br>
+	Link:&nbsp;<a href="http://www.dafont.com/forced-square.font" target="_blank">http://www.dafont.com/forced-square.font</a></p>
+<p>
+	<img alt="" src="assets/images/image_16.png" style="width: 780px; height: 174px; border-width: 1px; border-style: solid;"></p>
+<hr>
+<p>
+	Sound Effects created using BFXR under license Public Domain<br>
+	Url:&nbsp;<a href="http://www.bfxr.net/" target="_blank">http://www.bfxr.net/</a></p>
+<hr>
+<p>
+	Cloud and Explotion Particles Effects, Game UI created by Javanie Game under license Public Domain, you are free &nbsp;to use it for commercial &nbsp;/ non commercial use but you can&#39;t resell it.</p>
+</section>
+
+	</div>
+</body>
+</html>
