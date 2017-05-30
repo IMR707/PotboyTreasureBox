@@ -89,10 +89,10 @@ $bid_details = $fz->getUserBid($user->uid);
           <!-- <br>ACCOUNT INFORMATION
        <br>Address Book -->
 
-          <table class="table table-striped table-bordered table-advance table-hover">
+          <table class="table table-striped table-bordered table-advance table-hover datatable-basic">
               <thead>
                   <tr>
-                      <th width="15%">
+                      <th width="20%">
                           <i class="fa fa-calendar"></i> Date
                       </th>
                       <th width="35%">

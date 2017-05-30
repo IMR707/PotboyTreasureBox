@@ -219,9 +219,20 @@ END) as percent,
                     <div class="col-sm-12 col-md-6 col-xs-12 text-right">
                       <?php switch ($value->bid_base) {
                         case '3':
+                          $fz = new Fazrin;
+                          $check_claim = $fz->checkUserClaim($value->id);
+
+                          if($check_claim){
+                          ?>
+                          <button class="btn bg-purple" disabled>Claimed</button>
+
+                          <?php
+                        }else{
                           ?>
                           <a onclick="verifylink('claimpage.php?bid=<?php echo $value->bidid;?>')" class="btn bg-purple">Claim Now</a>
                           <?php
+                        }
+
                           break;
 
                         default:

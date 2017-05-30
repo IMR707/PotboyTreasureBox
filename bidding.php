@@ -129,7 +129,7 @@ $pubid=$list->FEgetBidding('5');
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-                                No Bidding for a moment
+                                No Bidding for now
                         </div>
                         </div>
                         </div>
@@ -151,7 +151,7 @@ $pubid=$list->FEgetBidding('5');
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-                                No Bidding for a moment
+                                No Bidding for now
                         </div>
                         </div>
                         </div>
@@ -170,7 +170,7 @@ $pubid=$list->FEgetBidding('5');
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-                                No Bidding for a moment
+                                No Bidding for now
                         </div>
                         </div>
                         </div>
@@ -189,7 +189,7 @@ $pubid=$list->FEgetBidding('5');
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-                                No Bidding for a moment
+                                No Bidding for now
                         </div>
                         </div>
                         </div>
@@ -207,7 +207,7 @@ $pubid=$list->FEgetBidding('5');
                           <div class="panel panel-flat timeline-content">
                             <div class="panel-body">
                               <div class="col-sm-12 col-md-12 col-xs-12 text-center">
-                                No Bidding for a moment
+                                No Bidding for now
                         </div>
                         </div>
                         </div>

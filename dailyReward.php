@@ -29,7 +29,10 @@ if (isset($_GET['day'])) {
         <div class="col-md-12 col-sm-12 col-xs-12">
 
 
-          <?php foreach ($AllDailyReward as $key => $value):
+          <?php
+
+          // pre($AllDailyReward);
+          foreach ($AllDailyReward as $key => $value):
             $today=explode(' ',Carbon::now())[0]== $value->date_check? 1:0;
             if($today){
               $type=$value->done?3:1;
@@ -57,7 +60,7 @@ if (isset($_GET['day'])) {
                         ?>
                         <div class="text-center">
                           <img class="gold-coin" src="<?php echo FRONTIMAGE;?>gold-coin-icon.png">
-                          <div class="daily-gold-text">100</div>
+                          <div class="daily-gold-text"><?php echo $value->gold_amount; ?></div>
                         </div>
 
                       <?php
@@ -65,8 +68,8 @@ if (isset($_GET['day'])) {
                       if($value->spin_check){
                         ?>
                         <div class="text-center">
-                          <img class="gold-coin" src="<?php echo FRONTIMAGE;?>slot_machine.png" >
-                          <div class="daily-gold-text">100</div>
+                          <img class="gold-coin" src="<?php echo FRONTIMG;?>present.png" style="width:30px;margin:0 5px;">
+                          <div class="daily-gold-text"><?php echo $value->spin_amount; ?></div>
                         </div>
 
                       <?php
@@ -128,7 +131,7 @@ if (isset($_GET['day'])) {
       var a=verifylogin();
       if(a){
       location.href="dailyReward.php?day="+day;
-      }      
+      }
     }
     <?php
      if ($msg) {

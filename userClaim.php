@@ -89,10 +89,10 @@ $claim_details = $fz->getUserClaim($user->uid);
           <!-- <br>ACCOUNT INFORMATION
        <br>Address Book -->
 
-          <table class="table table-striped table-bordered table-advance table-hover">
+          <table class="table table-striped table-bordered table-advance table-hover datatable-basic">
               <thead>
                   <tr>
-                      <th width="15%">
+                      <th width="20%">
                           <i class="fa fa-calendar"></i> Date
                       </th>
                       <th width="35%">
@@ -112,7 +112,7 @@ $claim_details = $fz->getUserClaim($user->uid);
                   <tr>
                       <td> <?php echo date("d/m/y \n h:ia",strtotime($row->date_updated)); ?> </td>
                       <td> <?php echo $row->title; ?> </td>
-                      <td> <?php echo $row->voucher_code; ?> </td>                                          
+                      <td> <?php echo $row->voucher_code; ?> </td>
                   </tr>
                 <?php
                 }
