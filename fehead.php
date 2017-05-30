@@ -383,8 +383,9 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
        <li class="dropdown dropdown-user toggle_spin" >
          <a class="dropdown-toggle" data-toggle="dropdown">
            <span>
-            <div class="left " data-toggle="tooltip" title="Potboy Spin - Earn Diamond , Gold or Spin again.">
-               <img src="img/spin.png" style="width:16px"> <span id="spin_navlink"><?php echo $spin; ?></span></span>
+            <div class="left " data-toggle="tooltip" title="Potboy Lucky Draw - Earn Diamond , Gold or Another chance again.">
+               <img src="<?php echo FRONTIMG;?>present.png" style="width:16px;"> <span id="spin_navlink"><?php echo $spin; ?></span></span>
+
             </div>
          </a>
       </li>
