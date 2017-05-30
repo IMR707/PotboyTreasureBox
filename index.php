@@ -68,8 +68,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
-                <a onclick="verifylink('game1.php')" ><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a onclick="verifylink('game1.php')" class="btn btn-purple" name="button" style="display: block; width: 100%;">
+                <a onclick="verifylogin('flyingJelly/index.html')" ><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a onclick="verifylogin('flyingJelly/index.html')" class="btn btn-purple" name="button" style="display: block; width: 100%;">
                   <?php if ($user->logged_in): ?>
                     <?php if ($ckfg): ?>
                     <br>Free Games<br>
@@ -106,8 +106,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
-                <a onclick="verifylink('game2.php')" ><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a onclick="verifylink('game2.php')" class="btn btn-purple" name="button" style="display: block; width: 100%;">
+                <a onclick="verifylogin('game2.php')" ><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a onclick="verifylogin('game2.php')" class="btn btn-purple" name="button" style="display: block; width: 100%;">
                   <br>Play it Now <b id="time">1 Diamond</b><br>
                   <br>
                 </a>
