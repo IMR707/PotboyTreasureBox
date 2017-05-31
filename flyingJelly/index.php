@@ -149,26 +149,20 @@ $time_limit = $game_detail->time_limit;
 
 		function sendScore(score){
 
-      alert('<?php echo $user_id;?>');
-      // $.ajax({
-      //   method: "POST",
-      //   url: "<?php echo HOMETBURL."/API/score.php";?>",
-      //   data: {
-      //     get_score: score,
-      //     uid:'<?php echo $user->uid;?>',
-      //     gameid:'1'
-      //    }
-      // })
-      //   .done(function( msg ) {
-      //         console.log( "Data Saved: " + msg );
-      //   })
-      //   .fail(function() {
-      //         console.log( "file not found" );
-      //   })
-      //   .always(function() {
-      //         console.log( "complete" );
-      //   });
-      }
+      $.ajax({
+        method: "POST",
+        url: "../API/game.php",
+        data: {
+          score: score,
+          uid:'<?php echo $user->uid;?>',
+          func:'submitFreeGame'
+         }
+      })
+      .success(function( msg ) {
+        console.log(msg);
+          //location.href = '../index.php';
+      })
+    }
     </script>
 </body>
 </html>
