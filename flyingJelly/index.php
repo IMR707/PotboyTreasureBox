@@ -1,13 +1,17 @@
 <?php
 
-
-
 define('_VALID_PHP', true);
-$pname = 'Instant Claim View';
-$menu = 'Instant Claim View';
+$pname = 'Flying Jelly';
+$menu = 'Flying Jelly';
 $pagemenu="BID";
 $submenu = '';
 require_once '../init.php';
+
+$user_id = $_SESSION['userid'];
+
+$game_detail = $fz->getFreeGame();
+$time_limit = $game_detail->time_limit;
+
 ?>
 <!DOCTYPE html>
 <html manifest="offline.appcache">
@@ -145,25 +149,26 @@ require_once '../init.php';
 
 		function sendScore(score){
 
-            $.ajax({
-              method: "POST",
-              url: "<?php echo HOMETBURL."/API/score.php";?>",
-              data: {
-                get_score: score,
-                uid:'<?php echo $user->uid;?>',
-                gameid:'1'
-               }
-            })
-              .done(function( msg ) {
-                    console.log( "Data Saved: " + msg );
-              })
-              .fail(function() {
-                    console.log( "file not found" );
-              })
-              .always(function() {
-                    console.log( "complete" );
-              });
-        }
+      alert('<?php echo $user_id;?>');
+      // $.ajax({
+      //   method: "POST",
+      //   url: "<?php echo HOMETBURL."/API/score.php";?>",
+      //   data: {
+      //     get_score: score,
+      //     uid:'<?php echo $user->uid;?>',
+      //     gameid:'1'
+      //    }
+      // })
+      //   .done(function( msg ) {
+      //         console.log( "Data Saved: " + msg );
+      //   })
+      //   .fail(function() {
+      //         console.log( "file not found" );
+      //   })
+      //   .always(function() {
+      //         console.log( "complete" );
+      //   });
+      }
     </script>
 </body>
 </html>

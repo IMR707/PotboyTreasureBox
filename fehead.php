@@ -188,6 +188,16 @@ function verifylogin(){
     break;
   }
 }
+function verifylogin2(url){
+  switch ('<?php echo $user->logged_in;?>') {
+    case '0':
+    $("#modal-login").modal();
+    break;
+    case '1':
+    location.href=url;
+    break;
+  }
+}
 function verifylink(url){
   /*
   useraccess
@@ -244,7 +254,12 @@ $(document).ready(function(){
       cache   : false,
       success : function(data)
       {
-        $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
+        if(data > 0){
+          $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
+        }else{
+          $('#spin_left').html('You don\'t have any chances left !');
+          $('#gift_icon').html('');
+        }
         $('#modal_spin').modal();
       }
     });
@@ -261,42 +276,49 @@ $(document).ready(function(){
       dataType : 'json',
       success : function(data)
       {
-        var wof_type = '';
-        if(data.wof_type == 1){
-          wof_type = 'Gold';
-        }else if(data.wof_type == 2){
-          wof_type = 'Diamond';
-        }else if(data.wof_type == 3){
-          wof_type = 'Open Box';
+        if(data){
+          var wof_type = '';
+          if(data.wof_type == 1){
+            wof_type = 'Gold';
+          }else if(data.wof_type == 2){
+            wof_type = 'Diamond';
+          }else if(data.wof_type == 3){
+            wof_type = 'Open Box';
+          }
+          $('#spin_left').html('');
+
+          $('#gift_icon').html(
+            '<h2 class="text-center">Congratulations !</h2>'+
+            '<h4 class="text-center">You recieved</h4>'+
+            '<img src="<?php echo BACK_UPLOADS; ?>'+data.wof_icon+'" class="img-responsive img-center" style="display:block">'+
+            '<h3 class="text-center">'+data.wof_amount+'x '+wof_type+'</h3>'
+          );
+          $('#open_draw').hide();
+
+          setTimeout(function(){
+
+            var dataString = "func=getUserSpin";
+            $.ajax({
+              type    : "POST",
+              url     : "API/user.php",
+              data    : dataString,
+              cache   : false,
+              success : function(data)
+              {
+                // $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
+                if(data > 0){
+                  $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
+                }else{
+                  $('#spin_left').html('You don\'t have any chances left !');
+                  $('#gift_icon').html('');
+                }
+              }
+            });
+
+            $('#gift_icon').html('<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">');
+            $('#open_draw').show();
+          }, 3000);
         }
-        $('#spin_left').html('');
-
-        $('#gift_icon').html(
-          '<h2 class="text-center">Congratulations !</h2>'+
-          '<h4 class="text-center">You recieved</h4>'+
-          '<img src="<?php echo BACK_UPLOADS; ?>'+data.wof_icon+'" class="img-responsive img-center" style="display:block">'+
-          '<h3 class="text-center">'+data.wof_amount+'x '+wof_type+'</h3>'
-        );
-        $('#open_draw').hide();
-
-        setTimeout(function(){
-
-          var dataString = "func=getUserSpin";
-          $.ajax({
-            type    : "POST",
-            url     : "API/user.php",
-            data    : dataString,
-            cache   : false,
-            success : function(data)
-            {
-              $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
-            }
-          });
-
-          $('#gift_icon').html('<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">');
-          $('#open_draw').show();
-        }, 3000);
-
       }
     });
   });
@@ -740,11 +762,10 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
       <div class="modal-body">
         <span id="spin_left"></span>
         <div id="gift_icon" class="mb-10 mt-20">
-          <img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">
+          <img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block"><br>
+          <button class="btn btn-success" id="open_draw" style="margin:0 auto;display:block">Open</button>
         </div>
 
-
-        <button class="btn btn-success" id="open_draw" style="margin:0 auto;display:block">Open</button>
       </div>
 
     </div>

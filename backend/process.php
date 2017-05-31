@@ -187,6 +187,16 @@ elseif($_POST['func'] == 'getProductByWishID'){
   $fz->getProductByWishID();
 }
 
+// Games
+
+elseif($_POST['func'] == 'update_free_game'){
+  $fz->update_free_game();
+}
+
+elseif($_POST['func'] == 'update_paid_game'){
+  $fz->update_paid_game();
+}
+
 // Delete Item
 
 elseif($_POST['func'] == 'deleteItem'){

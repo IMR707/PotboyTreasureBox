@@ -116,6 +116,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                 <tr>
                                   <th class="text-center" width="25%">Voucher Code</th>
                                   <th class="text-center">Status</th>
+
                                   <th class="text-center" width="15%">Action</th>
                                 </tr>
                               </thead>
@@ -135,12 +136,16 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                       $cust_id = $row->cust_id;
                                       $cust_detail = $fz->getUserByID($cust_id);
 
-                                      echo '<label class="label label-success">Claimed</label> by <a href="admin-userprofile.php?id='.$cust_id.'">'.$cust_detail->firstname.' '.$cust_detail->lastname.'</a>';
+                                      echo '<label class="label label-success">Claimed</label> by <a class="margin-right-10" href="admin-userprofile.php?id='.$cust_id.'">'.$cust_detail->firstname.' '.$cust_detail->lastname.'</a>'
+                                        .'<a href="mailto:'.$cust_detail->email.'" target="_top" class="btn btn-success">Send Voucher</a>'
+
+                                      ;
                                     }else{
                                       echo '<label class="label label-danger">Available</label>';
                                     }
                                     ?>
                                   </td>
+
                                   <td class="text-center">
                                     <button class="btn btn-sm btn-warning btn_updateVoucher" id="<?php echo $row->id; ?>"><i class="fa fa-pencil"></i></button>
                                     <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>

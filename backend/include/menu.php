@@ -28,6 +28,28 @@
                 <span class="title">Announcement</span>
             </a>
         </li>
+        <li class="nav-item start <?php isBackMenu($menu,'ADMIN_GAMES'); ?>">
+          <a href="javascript:;" class="nav-link nav-toggle">
+              <i class="icon-game-controller"></i>
+              <span class="title">Games</span>
+              <span class="selected"></span>
+              <span class="arrow <?php echo isBackMulti($menu,'ADMIN_GAMES'); ?>"></span>
+          </a>
+            <ul class="sub-menu">
+                <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_GAMES_FREE'); ?>">
+                    <a href="admin-flyingjelly.php" class="nav-link ">
+                        <span class="title">Flying Jelly</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+                <li class="nav-item <?php isBackSubMenu($submenu,'ADMIN_GAMES_PAY'); ?>">
+                    <a href="admin-skyknight.php" class="nav-link ">
+                        <span class="title">Sky Knight</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li class="nav-item start <?php isBackMenu($menu,'ADMIN_DAILYREWARD'); ?>">
           <a href="javascript:;" class="nav-link nav-toggle">
               <i class="icon-diamond"></i>

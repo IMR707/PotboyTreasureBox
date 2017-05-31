@@ -29,6 +29,8 @@ class Fazrin
     const tb_reward = 'lof_rewardpoints_customer';
     const tb_rewardTrans = 'lof_rewardpoints_transaction';
     const tb_spinTrans = 'lof_rewardpoints_spin_transaction';
+    const tb_freeGameConfig = 'aa_gamefree_setting';
+    const tb_paidGameConfig = 'aa_gamepaid_setting';
 
 
     private static $db;
@@ -594,125 +596,12 @@ class Fazrin
       $cur_gold = $res->gold;
       $cur_diamond = $res->diamond;
 
-      $data = array(
-        'customer_id' => $user_id,
-        'amount' => '-1',
-        'title' => 'Open Lucky Box',
-        'desc' => '-1 Spin',
-        'code' => 'admin_add-aEEmIYncALynhaQQ',
-        'action' => 'admin_add',
-        'status' => 'complete',
-        'params' => '',
-        'is_expiration_email_sent' => 0,
-        'email_message' => '',
-        'apply_at' => '',
-        'is_applied' => 1,
-        'is_expired' => 0,
-        'expires_at' => '',
-        'updated_at' => 'now()',
-        'created_at' => 'now()',
-        'store_id' => 0,
-        'order_id' => 0,
-        'admin_user_id' => 1
-      );
-      $res = self::$db->insert(self::tb_spinTrans, $data);
-
-      $data = array(
-        "total_spin" => $cur_spin - 1,
-      );
-
-      $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
-
-      $arr = $this->getWof();
-      $arr_chance = array();
-      foreach($arr as $key => $row){
-        $arr_chance[$row->id] = $row->wof_percent;
-      }
-
-      $win_id = $this->calculateWinningChances($arr_chance);
-
-      $prize = $this->getWofByID2($win_id);
-
-      $a = $this->getWofByID2($win_id);
-
-      // pre($a);
-
-      if($a->wof_type == 1){
-
+      if($cur_spin > 0){
         $data = array(
           'customer_id' => $user_id,
-          'amount' => 0,
-          'amount_used' => 0,
-          'amount_gold' => $a->wof_amount,
-          'amount_gold_used' => $a->wof_amount,
+          'amount' => '-1',
           'title' => 'Open Lucky Box',
-          'desc' => $a->wof_amount.' Gold',
-          'code' => 'admin_add-aEEmIYncALynhaQQ',
-          'action' => 'admin_add',
-          'status' => 'complete',
-          'params' => '',
-          'is_expiration_email_sent' => 0,
-          'email_message' => '',
-          'apply_at' => '',
-          'is_applied' => 1,
-          'is_expired' => 0,
-          'expires_at' => '',
-          'updated_at' => 'now()',
-          'created_at' => 'now()',
-          'store_id' => 0,
-          'order_id' => 0,
-          'admin_user_id' => 1
-        );
-        $res = self::$db->insert(self::tb_rewardTrans, $data);
-
-        $data = array(
-          "available_golds" => $cur_gold + $a->wof_amount,
-          "total_golds" => $cur_gold + $a->wof_amount
-        );
-
-        $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
-
-      }elseif($a->wof_type == 2){
-
-        $data = array(
-          'customer_id' => $user_id,
-          'amount' => $a->wof_amount,
-          'amount_used' => $a->wof_amount,
-          'amount_gold' => 0,
-          'amount_gold_used' => 0,
-          'title' => 'Open Lucky Box',
-          'desc' => $a->wof_amount.' Diamond',
-          'code' => 'admin_add-aEEmIYncALynhaQQ',
-          'action' => 'admin_add',
-          'status' => 'complete',
-          'params' => '',
-          'is_expiration_email_sent' => 0,
-          'email_message' => '',
-          'apply_at' => '',
-          'is_applied' => 1,
-          'is_expired' => 0,
-          'expires_at' => '',
-          'updated_at' => 'now()',
-          'created_at' => 'now()',
-          'store_id' => 0,
-          'order_id' => 0,
-          'admin_user_id' => 1
-        );
-        $res = self::$db->insert(self::tb_rewardTrans, $data);
-
-        $data = array(
-          "available_points" => $cur_diamond + $a->wof_amount,
-          "total_points" => $cur_diamond + $a->wof_amount
-        );
-
-        $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
-
-      }elseif($a->wof_type == 3){
-        $data = array(
-          'customer_id' => $user_id,
-          'amount' => $a->wof_amount,
-          'title' => 'Open Lucky Box',
-          'desc' => $a->wof_amount.' Spin',
+          'desc' => '-1 Spin',
           'code' => 'admin_add-aEEmIYncALynhaQQ',
           'action' => 'admin_add',
           'status' => 'complete',
@@ -732,13 +621,130 @@ class Fazrin
         $res = self::$db->insert(self::tb_spinTrans, $data);
 
         $data = array(
-          "total_spin" => $cur_spin + $a->wof_amount
+          "total_spin" => $cur_spin - 1,
         );
 
         $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
-      }
 
-      return $prize;
+        $arr = $this->getWof();
+        $arr_chance = array();
+        foreach($arr as $key => $row){
+          $arr_chance[$row->id] = $row->wof_percent;
+        }
+
+        $win_id = $this->calculateWinningChances($arr_chance);
+
+        $prize = $this->getWofByID2($win_id);
+
+        $a = $this->getWofByID2($win_id);
+
+        // pre($a);
+
+        if($a->wof_type == 1){
+
+          $data = array(
+            'customer_id' => $user_id,
+            'amount' => 0,
+            'amount_used' => 0,
+            'amount_gold' => $a->wof_amount,
+            'amount_gold_used' => $a->wof_amount,
+            'title' => 'Open Lucky Box',
+            'desc' => $a->wof_amount.' Gold',
+            'code' => 'admin_add-aEEmIYncALynhaQQ',
+            'action' => 'admin_add',
+            'status' => 'complete',
+            'params' => '',
+            'is_expiration_email_sent' => 0,
+            'email_message' => '',
+            'apply_at' => '',
+            'is_applied' => 1,
+            'is_expired' => 0,
+            'expires_at' => '',
+            'updated_at' => 'now()',
+            'created_at' => 'now()',
+            'store_id' => 0,
+            'order_id' => 0,
+            'admin_user_id' => 1
+          );
+          $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+          $data = array(
+            "available_golds" => $cur_gold + $a->wof_amount,
+            "total_golds" => $cur_gold + $a->wof_amount
+          );
+
+          $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
+        }elseif($a->wof_type == 2){
+
+          $data = array(
+            'customer_id' => $user_id,
+            'amount' => $a->wof_amount,
+            'amount_used' => $a->wof_amount,
+            'amount_gold' => 0,
+            'amount_gold_used' => 0,
+            'title' => 'Open Lucky Box',
+            'desc' => $a->wof_amount.' Diamond',
+            'code' => 'admin_add-aEEmIYncALynhaQQ',
+            'action' => 'admin_add',
+            'status' => 'complete',
+            'params' => '',
+            'is_expiration_email_sent' => 0,
+            'email_message' => '',
+            'apply_at' => '',
+            'is_applied' => 1,
+            'is_expired' => 0,
+            'expires_at' => '',
+            'updated_at' => 'now()',
+            'created_at' => 'now()',
+            'store_id' => 0,
+            'order_id' => 0,
+            'admin_user_id' => 1
+          );
+          $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+          $data = array(
+            "available_points" => $cur_diamond + $a->wof_amount,
+            "total_points" => $cur_diamond + $a->wof_amount
+          );
+
+          $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
+        }elseif($a->wof_type == 3){
+          $data = array(
+            'customer_id' => $user_id,
+            'amount' => $a->wof_amount,
+            'title' => 'Open Lucky Box',
+            'desc' => $a->wof_amount.' Spin',
+            'code' => 'admin_add-aEEmIYncALynhaQQ',
+            'action' => 'admin_add',
+            'status' => 'complete',
+            'params' => '',
+            'is_expiration_email_sent' => 0,
+            'email_message' => '',
+            'apply_at' => '',
+            'is_applied' => 1,
+            'is_expired' => 0,
+            'expires_at' => '',
+            'updated_at' => 'now()',
+            'created_at' => 'now()',
+            'store_id' => 0,
+            'order_id' => 0,
+            'admin_user_id' => 1
+          );
+          $res = self::$db->insert(self::tb_spinTrans, $data);
+
+          $data = array(
+            "total_spin" => $cur_spin + $a->wof_amount
+          );
+
+          $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+        }
+
+        return $prize;
+      }else{
+        return 0;
+      }
     }
 
     /********* CONVERSION RATE **********************************************/
@@ -2106,6 +2112,80 @@ class Fazrin
 
       return $row;
     }
+
+    /********* GAMES **********************************************/
+
+    public function getFreeGame()
+    {
+      $sql = "SELECT * FROM ".self::tb_freeGameConfig." WHERE id = 1 ";
+      $row = self::$db->first($sql);
+
+      return $row;
+    }
+
+    public function getPaidGame()
+    {
+      $sql = "SELECT * FROM ".self::tb_paidGameConfig." WHERE id = 1 ";
+      $row = self::$db->first($sql);
+
+      return $row;
+    }
+
+    public function update_free_game()
+    {
+      $name = $_POST['name'];
+      $time_limit = $_POST['time_limit'];
+      $chances = $_POST['chances'];
+      $score_multiplier = $_POST['score_multiplier'];
+
+      $data = array(
+        'name' => $name,
+        'time_limit' => $time_limit,
+        'chances' => $chances,
+        'score_multiplier' => $score_multiplier
+      );
+
+      $res = self::$db->update(self::tb_freeGameConfig, $data,"id='1'");
+      if($res){
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Data updated successfully';
+      }else{
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while updating data.';
+      }
+
+      rd('../admin-flyingjelly.php');
+      exit;
+    }
+
+    public function update_paid_game()
+    {
+      $name = $_POST['name'];
+      $pay_amount = $_POST['pay_amount'];
+      $time_limit = $_POST['time_limit'];      
+      $score_multiplier = $_POST['score_multiplier'];
+
+      $data = array(
+        'name' => $name,
+        'pay_amount' => $pay_amount,
+        'time_limit' => $time_limit,
+        'score_multiplier' => $score_multiplier
+      );
+
+      $res = self::$db->update(self::tb_paidGameConfig, $data,"id='1'");
+      if($res){
+        $_SESSION['noti']['status'] = 'success';
+        $_SESSION['noti']['msg'] = 'Data updated successfully';
+      }else{
+        $_SESSION['noti']['status'] = 'error';
+        $_SESSION['noti']['msg'] = 'Problem occured while updating data.';
+      }
+
+      rd('../admin-skyknight.php');
+      exit;
+    }
+
+
 
     /********* DELETE ITEM **********************************************/
 

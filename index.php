@@ -46,8 +46,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
- 								<a href="dailyReward.php"><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a href="dailyReward.php"  class="btn btn-purple" name="button" style="display: block; width: 100%;">
+ 								<a href="dailyReward.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a href="dailyReward.php"  class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
                   <?php if ($user->logged_in): ?>
                     <?php if ($ckdg): ?>
                     <br>Daily Gold Box<br>
@@ -68,20 +68,38 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
-                <a onclick="verifylogin('flyingJelly/index.html')" ><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a onclick="verifylogin('flyingJelly/index.html')" class="btn btn-purple" name="button" style="display: block; width: 100%;">
-                  <?php if ($user->logged_in): ?>
-                    <?php if ($ckfg): ?>
-                    <br>Free Games<br>
-                    <?php else: ?>
-                  Free Games <br>in <br><b><span class="countdown_time2" id="disp_time_freegames" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></b>
-                    <?php endif; ?>
-                  <?php else: ?>
-                    <br>Free Games<br>
-                  <?php endif; ?>
+                <?php
 
-                  <br>
-                </a>
+                if($user->logged_in){
+                  if ($ckfg){ //klu ada chance
+                    ?>
+                    <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                    <a onclick="verifylogin2('flyingJelly/index.php')" class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
+                      <br>Play It Now ! <label class="label bg-pink-600"><?php echo $ckfg; ?> <i class="fa fa-heart"></i></label><br>
+                      <br>
+                    </a>
+                    <?php
+                  }else{ //klu chance dah abeh
+                    ?>
+                    <a ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                    <a class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
+                      Free Games <br>in <br><b><span class="countdown_time2" id="disp_time_freegames" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></b>
+                      <br>
+                    </a>
+                    <?php
+                  }
+                }else{ //klu user x login
+                  ?>
+                  <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                  <a onclick="verifylogin2('flyingJelly/index.php')" class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
+                    <br>Free Games<br>
+                    <br>
+                  </a>
+                  <?php
+                }
+
+                ?>
+
  							</div>
  						</div>
  						<!-- /horizotal form -->
@@ -93,8 +111,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
- 								<a href="goldConversion.php"><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a href="goldConversion.php"  class="btn btn-purple" name="button" style="display: block; width: 100%;">
+ 								<a href="goldConversion.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a href="goldConversion.php"  class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
                   <br>PotBoy Gold Conversion<br>
                   <br>
                   </a>
@@ -106,8 +124,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
-                <a onclick="verifylogin('game2.php')" ><img src="backend/uploads/pot_of_gold.png" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a onclick="verifylogin('game2.php')" class="btn btn-purple" name="button" style="display: block; width: 100%;">
+                <a onclick="verifylogin2('game2.php')" ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a onclick="verifylogin2('game2.php')" class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
                   <br>Play it Now <b id="time">1 Diamond</b><br>
                   <br>
                 </a>

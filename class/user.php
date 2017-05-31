@@ -169,17 +169,19 @@ if (!defined("_VALID_PHP")) {
       public function checkDailyFreeGames($id)
       {
         if(!$id){
-        return 0;
-      }else {
-        $sql = "SELECT * FROM " . self::FgamTable . " WHERE customer_id='" .$id. "' AND date(date_created)=date(NOW())";
-        $row = self::$db->first($sql);
-        if($row){
           return 0;
+        }else {
+          $fz = new Fazrin;
+          $game_detail = $fz->getFreeGame();
+          $chances = $game_detail->chances;
+
+          $sql = "SELECT COUNT(*) as total_played FROM " . self::FgamTable . " WHERE customer_id='" .$id. "' AND date(date_created)=date(NOW())";
+          $row = self::$db->first($sql);
+
+          $chance_left = $chances - $row->total_played;
+
+          return $chance_left;
         }
-        else {
-          return 1;
-        }
-      }
       }
       public function getUserAddress($id)
       {
