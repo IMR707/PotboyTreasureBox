@@ -1388,6 +1388,14 @@ class Fazrin
       return $row;
     }
 
+    public function getBidProductByID($id)
+    {
+      $sql = "SELECT b.* FROM ".self::tb_bid." a, ".self::tb_prod." b where a.product_id = b.id AND a.id='$id'";
+      $row = self::$db->first($sql);
+
+      return $row;
+    }
+
     /********* BIDDING TRANSACTION **********************************************/
 
     public function getCurParticipant($bid_id)
@@ -2138,12 +2146,22 @@ class Fazrin
       $time_limit = $_POST['time_limit'];
       $chances = $_POST['chances'];
       $score_multiplier = $_POST['score_multiplier'];
+      $score_yellow = $_POST['score_yellow'];
+      $score_red = $_POST['score_red'];
+      $score_green = $_POST['score_green'];
+      $score_blue = $_POST['score_blue'];
+      $score_pink = $_POST['score_pink'];
 
       $data = array(
         'name' => $name,
         'time_limit' => $time_limit,
         'chances' => $chances,
-        'score_multiplier' => $score_multiplier
+        'score_multiplier' => $score_multiplier,
+        'score_yellow' => $score_yellow,
+        'score_red' => $score_red,
+        'score_green' => $score_green,
+        'score_blue' => $score_blue,
+        'score_pink' => $score_pink
       );
 
       $res = self::$db->update(self::tb_freeGameConfig, $data,"id='1'");

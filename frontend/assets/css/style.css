@@ -273,3 +273,7 @@
 .vote-active{
   border:3px solid #7e1aad;
 }
+
+.p-0{
+  padding:0px !important;
+}

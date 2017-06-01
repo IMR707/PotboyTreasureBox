@@ -104,6 +104,7 @@ END) as percent,
 
     public function FEgetBiddingUI($value){
       //if($value->bid_base==1)pre($value);
+      // pre($value);
       $start_date = $value->start_time;
       $start = strtotime($start_date);
 
@@ -149,7 +150,7 @@ END) as percent,
 //$percent=10;
       ?>
 
-      <div class="col-sm-6 col-md-6 col-xs-6 text-center">
+      <div class="col-sm-6 col-md-6 col-xs-6 text-center p-0">
             <div class="panel panel-flat timeline-content" style="margin-bottom:10px;">
               <div class="panel-body" style="padding:0px;padding-top:10px;">
                 <div class="col-sm-12 col-md-12 col-xs-12">
@@ -188,8 +189,11 @@ END) as percent,
                           case '1':
                             ?>
                             <ul class="list-unstyled heading-text">
-                            <li>Close in</li>
-                            <li><b><span class="countdown_time" id="disp_time_<?php echo $value->btid; ?>" start-time="<?php echo $start_date; ?>" end-time="<?php echo $end_date; ?>"><?php echo $end_date; ?></span>
+                            <li><?php echo $stat; ?></li>
+                            <li><b>
+                              <span class="countdown_time" id="disp_time_<?php echo $value->btid; ?>" start-time="<?php echo $start_date; ?>" end-time="<?php echo $end_date; ?>">
+                                <?php echo $disp_time; ?>
+                              </span>
                             </b></li>
                             </ul>
                             <?php
@@ -232,13 +236,12 @@ END) as percent,
                           <a onclick="verifylink('claimpage.php?bid=<?php echo $value->bidid;?>')" class="btn bg-purple">Claim Now</a>
                           <?php
                         }
-
-                          break;
+                        break;
 
                         default:
                         ?>
-                        <a onclick="verifylink('bidpage.php?bid=<?php echo $value->bidid;?>')" class="btn bg-purple">Join Now</a>
-
+                        <!-- <button onclick="verifylink('bidpage.php?bid=<?php echo $value->bidid;?>')" class="btn bg-purple">Join Now</button> -->
+                        <button id="<?php echo $value->bidid;?>" class="btn bg-purple joinBid">Join Now</button>
                         <?php
                           break;
                       }?>

@@ -149,6 +149,15 @@ elseif($_POST['func'] == 'getBiddingByID'){
   $fz->getBiddingByID();
 }
 
+elseif($_POST['func'] == 'getBidProductByID'){
+  $id = $_POST['id'];
+  $res = $fz->getBidProductByID($id);
+
+  echo json_encode($res);
+}
+
+
+
 //Claim
 
 elseif($_POST['func'] == 'create_claim'){

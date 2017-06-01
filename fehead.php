@@ -341,7 +341,7 @@ $(document).ready(function(){
 </head>
 
 <body>
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-8 col-md-offset-2" style="padding:0">
 
  <!-- Main navbar -->
  <?php if (!MV) {
@@ -778,4 +778,4 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 <?php
 
 }?>
-<div class="page-container p-5 pb-20 mb-20">
+<div class="page-container p-0 pb-20 mb-20">
