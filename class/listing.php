@@ -233,7 +233,7 @@ END) as percent,
                           <?php
                         }else{
                           ?>
-                          <a onclick="verifylink('claimpage.php?bid=<?php echo $value->bidid;?>')" class="btn bg-purple">Claim Now</a>
+                          <button class="btn bg-purple btn_claim" id="<?php echo $value->id?>">Claim Now</button>
                           <?php
                         }
                         break;

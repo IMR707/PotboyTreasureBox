@@ -327,7 +327,70 @@ $(document).ready(function(){
     location.reload();
   });
 
-// $('#modal_spin').modal();
+  $('.btn_claim').on('click',function(){
+    var id = $(this).attr('id');
+
+    if(verifylogin()){
+      var dataString = "claim_id="+id+"&func=submitclaim";
+      $.ajax({
+        type    : "POST",
+        url     : "API/claim.php",
+        data    : dataString,
+        cache   : false,
+        dataType: 'json',
+        success : function(data)
+        {
+          // console.log(data);
+          bootbox.alert(data.status+" : "+data.msg, function(){
+            if(data.status != 'Error'){
+              location.reload();
+            }
+          });
+        }
+      });
+    }
+  });
+
+  $('.joinBid').on('click',function(){
+    var id = $(this).attr('id');
+
+    if(verifylogin()){
+      var dataString = "id="+id+"&func=getUserGold";
+      $.ajax({
+        type    : "POST",
+        url     : "API/user.php",
+        data    : dataString,
+        cache   : false,
+        dataType: 'json',
+        success : function(data)
+        {
+          var gold = data;
+          var dataString = "id="+id+"&func=getBidProductByID";
+          $.ajax({
+            type    : "POST",
+            url     : "API/bidding.php",
+            data    : dataString,
+            cache   : false,
+            dataType: 'json',
+            success : function(data)
+            {
+              if(data.min_bid > gold){
+                console.log('no');
+              }else{
+                console.log('ok');
+              }
+
+
+            }
+          });
+
+        }
+      });
+
+      $('#modal_bid').modal('show');
+    }
+  });
+
 });
  </script>
 
@@ -772,6 +835,26 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 
   </div>
 </div>
+
+<div id="modal_bid" class="modal fade in">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h5 class="modal-title">Enter your bid amount !</h5>
+        </div>
+
+        <div class="modal-body">
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
  <!-- /second navbar -->

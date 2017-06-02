@@ -1390,7 +1390,7 @@ class Fazrin
 
     public function getBidProductByID($id)
     {
-      $sql = "SELECT b.* FROM ".self::tb_bid." a, ".self::tb_prod." b where a.product_id = b.id AND a.id='$id'";
+      $sql = "SELECT a.*,b.* FROM ".self::tb_bid." a, ".self::tb_prod." b where a.product_id = b.id AND a.id='$id'";
       $row = self::$db->first($sql);
 
       return $row;
@@ -1614,11 +1614,15 @@ class Fazrin
 
     public function checkUserClaim($claim_id)
     {
-      $user_id = $_SESSION['userid'];
-      $sql = "SELECT * FROM ".self::tb_vouc." where instantclaim_id = '$claim_id' AND cust_id='$user_id' AND active = 1";
-      $row = self::$db->first($sql);
+      $user_id = isset($_SESSION['userid']) ? $_SESSION['userid'] : 0 ;
+      if($user_id){
+        $sql = "SELECT * FROM ".self::tb_vouc." where instantclaim_id = '$claim_id' AND cust_id='$user_id' AND active = 1";
+        $row = self::$db->first($sql);
 
-      return $row;
+        return $row;
+      }else{
+        return 0;
+      }
     }
 
     public function getAvailableVoucher($claim_id)

@@ -149,12 +149,6 @@ elseif($_POST['func'] == 'getBiddingByID'){
   $fz->getBiddingByID();
 }
 
-elseif($_POST['func'] == 'getBidProductByID'){
-  $id = $_POST['id'];
-  $res = $fz->getBidProductByID($id);
-
-  echo json_encode($res);
-}
 
 
 

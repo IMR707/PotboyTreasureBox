@@ -135,26 +135,7 @@ $allclaim=$list->FEgetAllClaim();
   <script type="text/javascript">
 
   $(document).ready(function(){
-    $('.btn_claim').on('click',function(){
-      var id = $(this).attr('id');
-      var dataString = "claim_id="+id+"&func=submitclaim";
-      $.ajax({
-        type    : "POST",
-        url     : "API/claim.php",
-        data    : dataString,
-        cache   : false,
-        dataType: 'json',
-        success : function(data)
-        {
-          // console.log(data);
-          bootbox.alert(data.status+" : "+data.msg, function(){
-            if(data.status != 'Error'){
-              location.reload();
-            }            
-          });
-        }
-      });
-    });
+    
   });
 
   </script>

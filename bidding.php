@@ -222,25 +222,7 @@ $pubid=$list->FEgetBidding('5');
 							</div>
 						</div>
  			</div>
-      <div id="modal_bid" class="modal fade in">
-					<div class="modal-dialog modal-sm">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">×</button>
-								<h5 class="modal-title">Enter your bid amount !</h5>
-							</div>
-
-							<div class="modal-body">
-
-							</div>
-
-							<div class="modal-footer">
-								<button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save changes</button>
-							</div>
-						</div>
-					</div>
-				</div>
+      
  			<!-- /main content -->
 
  		</div>
@@ -248,28 +230,6 @@ $pubid=$list->FEgetBidding('5');
 <script type="text/javascript">
 
 $(document).ready(function(){
-
-  $('.joinBid').on('click',function(){
-    var id = $(this).attr('id');
-
-    var dataString = "id="+id+"&func=getBidProductByID";
-    $.ajax({
-      type    : "POST",
-      url     : "backend/process.php",
-      data    : dataString,
-      cache   : false,
-      dataType: 'json',
-      success : function(data)
-      {
-        console.log(data);
-
-      }
-    });
-
-    $('#modal_bid').modal('show');
-
-
-  });
 
   $('.countdown_time').each(function(index){
     var ids = $(this).attr('id');
