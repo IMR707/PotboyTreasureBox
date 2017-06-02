@@ -14,6 +14,8 @@ if(isset($_POST)){
 
   }
 
+  // submitDiamondGame
+
   // elseif($_POST['func'] == 'checkVote'){
   //   $wpid = $_POST['wpid'];
   //   $sponid = $_POST['sponid'];

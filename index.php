@@ -124,8 +124,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
-                <a onclick="verifylogin2('game2.php')" ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a onclick="verifylogin2('game2.php')" class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
+                <a onclick="verifylogin2('skyKnight/index.php')" ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a onclick="verifylogin2('skyKnight/index.php')" class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
                   <br>Play it Now <b id="time">1 Diamond</b><br>
                   <br>
                 </a>

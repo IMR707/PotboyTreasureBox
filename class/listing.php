@@ -602,7 +602,7 @@ END) as percent,
         $row = self::$db->fetch_all($sql);
         $text="";
         foreach ($row as $key => $value) {
-            $text.=$value->content."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            $text.= "<li>".$value->content."</li>";
         }
         return $text;
     }

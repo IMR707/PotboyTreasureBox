@@ -18,17 +18,15 @@ if(isset($_POST)){
     echo json_encode($res);
   }
 
+  elseif($_POST['func'] == 'submitBid'){
+    $id = $_POST['bid_id'];
+    $amount = $_POST['bid_amount'];
+
+    $res = $fz->submitBid($id,$amount);
+
+    echo json_encode($res);
+  }
 
 
-
-  // elseif($_POST['func'] == 'checkVote'){
-  //   $wpid = $_POST['wpid'];
-  //   $sponid = $_POST['sponid'];
-  //
-  //   $res = $fz->checkVote($sponid);
-  //
-  //   echo $res;
-  //
-  // }
 
 }

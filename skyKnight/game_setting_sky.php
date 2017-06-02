@@ -1,6 +1,11 @@
 <?php
 
-	$time_to_die = 250;
+	define('_VALID_PHP', true);
+	require_once '../init.php';
+
+	$gameSetting = $fz->getDiamondGame();
+
+	$time_to_die = 650;
 	$enemy1_score = 20;
 	$enemy2_score = 30;
 	$enemy3_score = 40;
@@ -14,18 +19,16 @@
 	$gold_score = 100;
 	$silver_score = 50;
 
-	$send_score_url = "../ajax/saveship_score.php";
-	
+	$send_score_url = "../API/game.php";
+
 	$data_first = array(
 			array($time_to_die),
 			array($multiplier),
 			array($send_score_url),
-			
-			
 	);
-	
+
 	$data_second = array(
-		array($gold_score), 
+		array($gold_score),
 		array($silver_score)
 	);
 	$data_third = array(
@@ -39,19 +42,19 @@
 		array($final_boss_score),
 		array($seaship_score)
 	);
-	
+
 	$data = array(
 		$data_first,
 		$data_second,
 		$data_third
 	);
-	
+
 	$return_value = array(
 			"c2array"=> true,
 			"size" => array(count($data),count($data_third),1), // num_of_row, num_of_field, 3d_array_row
 			"data" => ($data)
 	);
-	
+
 	echo json_encode($return_value);
-	
+
 	//echo $time_to_die;

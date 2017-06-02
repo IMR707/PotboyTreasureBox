@@ -1414,6 +1414,125 @@ class Fazrin
       return $row;
     }
 
+    public function submitBid($id,$amount)
+    {
+      $user_id = $_SESSION['userid'];
+
+      $list = new Listing;
+      $user_detail = $list->FEgetRewardData($user_id);
+      $user_gold = $user_detail->gold;
+      $user_diamond = $user_detail->diamond;
+
+      $bid_detail = $this->getBiddingByID2($id);
+      $bid_title = $bid_detail->title;
+      $bid_type = $bid_detail->bid_type;
+      $min_bid = $bid_detail->min_bid;
+      $currency = '';
+      if($bid_type == 1){
+        $currency = 'Gold';
+      }elseif($bid_type == 2){
+        $currency = 'Diamond';
+      }
+
+      if($min_bid <= $amount){
+        $data = array(
+          'bidding_id' => $id,
+          'customer_id' => $user_id,
+          'bid_amount' => $amount,
+          'date_updated' => 'now()',
+          'date_created' => 'now()'
+        );
+        $res = self::$db->insert(self::tb_bidtrans, $data);
+
+        if($res){
+
+          if($bid_type == 1){
+
+            $data = array(
+              'customer_id' => $user_id,
+              'amount' => 0,
+              'amount_used' => 0,
+              'amount_gold' => '-'.$amount,
+              'amount_gold_used' => '-'.$amount,
+              'title' => 'Join Bid - '.$bid_title,
+              'desc' => 'Placed '.$amount.' '.$currency,
+              'code' => 'admin_add-aEEmIYncALynhaQQ',
+              'action' => 'admin_add',
+              'status' => 'complete',
+              'params' => '',
+              'is_expiration_email_sent' => 0,
+              'email_message' => '',
+              'apply_at' => '',
+              'is_applied' => 1,
+              'is_expired' => 0,
+              'expires_at' => '',
+              'updated_at' => 'now()',
+              'created_at' => 'now()',
+              'store_id' => 0,
+              'order_id' => 0,
+              'admin_user_id' => 1
+            );
+            $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+            $data = array(
+              "available_golds" => $user_gold - $amount,
+              "total_golds" => $user_gold - $amount
+            );
+
+            $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
+          }elseif($bid_type == 2){
+
+            $data = array(
+              'customer_id' => $user_id,
+              'amount' => '-'.$amount,
+              'amount_used' => '-'.$amount,
+              'amount_gold' => 0,
+              'amount_gold_used' => 0,
+              'title' => 'Join Bid - '.$bid_title,
+              'desc' => 'Placed '.$amount.' '.$currency,
+              'code' => 'admin_add-aEEmIYncALynhaQQ',
+              'action' => 'admin_add',
+              'status' => 'complete',
+              'params' => '',
+              'is_expiration_email_sent' => 0,
+              'email_message' => '',
+              'apply_at' => '',
+              'is_applied' => 1,
+              'is_expired' => 0,
+              'expires_at' => '',
+              'updated_at' => 'now()',
+              'created_at' => 'now()',
+              'store_id' => 0,
+              'order_id' => 0,
+              'admin_user_id' => 1
+            );
+            $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+            $data = array(
+              "available_points" => $user_diamond - $amount,
+              "total_points" => $user_diamond - $amount
+            );
+
+            $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
+          }
+
+          $arr_out['status'] = 'Success';
+          $arr_out['msg'] = 'You have successfully placed your bid <b>'.$amount.' '.$currency.'</b>. We will announce the winner soon. <br>Stay tuned !';
+        }else{
+          $arr_out['status'] = 'Error';
+          $arr_out['msg'] = 'An error occured.';
+        }
+
+      }else{
+        $arr_out['status'] = 'Error';
+        $arr_out['msg'] = 'The amount you placed is not sufficient. The minimum bid for this item is '.$min_bid.' '.$currency;
+      }
+
+      return $arr_out;
+    }
+
 
 
     /********* CLAIM **********************************************/

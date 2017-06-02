@@ -353,18 +353,24 @@ $(document).ready(function(){
 
   $('.joinBid').on('click',function(){
     var id = $(this).attr('id');
+    $('#modal_bid_productName').html('');
+    $('#modal_bid_productBody').html('');
+    $('#modal_bid_bidAmount').html('');
+    $('#modal_bid_minBid').html('');
+    $('#bid_id').val(id);
 
     if(verifylogin()){
-      var dataString = "id="+id+"&func=getUserGold";
+      var dataString = "id="+id+"&func=getUserReward";
       $.ajax({
         type    : "POST",
         url     : "API/user.php",
         data    : dataString,
         cache   : false,
         dataType: 'json',
-        success : function(data)
+        success : function(data2)
         {
-          var gold = data;
+          var gold = parseInt(data2.gold);
+          var diamond = parseInt(data2.diamond);
           var dataString = "id="+id+"&func=getBidProductByID";
           $.ajax({
             type    : "POST",
@@ -374,10 +380,33 @@ $(document).ready(function(){
             dataType: 'json',
             success : function(data)
             {
-              if(data.min_bid > gold){
-                console.log('no');
-              }else{
-                console.log('ok');
+              var bidType = data.bid_type;
+              var currency = '';
+              if(bidType == 1){
+                currency = 'Gold';
+              }else if(bidType == 2){
+                currency = 'Diamond';
+              }
+
+              $('#modal_bid_minBid').html('**Note : Minimum bid for this item is '+data.min_bid+' '+currency);
+              $('#modal_bid_productName').html(data.name);
+              $('#modal_bid_productBody').html(
+                '<img src="<?php echo BACK_UPLOADS; ?>'+data.img_header+'" class="img-responsive">'+
+                '<p class="mt-5">'+data.desc+'</p>'
+              );
+
+              if(bidType == 1){
+                if(data.min_bid > gold){
+                  $('#modal_bid_bidAmount').html('You don\'t have enough gold. You cannot participate in this bidding.');
+                }else{
+                  $('#modal_bid_bidAmount').html('<input type="number" class="form-control" placeholder="'+currency+'" min="'+data.min_bid+'" name="bid_amount" required="required">');
+                }
+              }else if(bidType == 2){
+                if(data.min_bid > diamond){
+                  $('#modal_bid_bidAmount').html('You don\'t have enough diamond. You cannot participate in this bidding.');
+                }else{
+                  $('#modal_bid_bidAmount').html('<input type="number" class="form-control" placeholder="'+currency+'" min="'+data.min_bid+'" name="bid_amount" required="required">');
+                }
               }
 
 
@@ -391,6 +420,30 @@ $(document).ready(function(){
     }
   });
 
+  $('#modal_bid_form').on('submit',function(e){
+    e.preventDefault();
+
+    var dataString = $('#modal_bid_form').serialize();
+
+    $.ajax({
+      type    : "POST",
+      url     : "API/bidding.php",
+      data    : dataString,
+      cache   : false,
+      dataType: 'json',
+      success : function(data)
+      {
+        bootbox.alert(data.status+" : "+data.msg, function(){
+          if(data.status != 'Error'){
+            location.reload();
+          }
+        });
+      }
+    });
+
+
+  });
+
 });
  </script>
 
@@ -399,6 +452,7 @@ $(document).ready(function(){
  <!-- Theme JS files -->
  <script type="text/javascript" src="<?php echo FRONTJS;?>core/app.js"></script>
  <script src="<?php echo FRONTJS;?>bootstrap-carousel.js"></script>
+ <script type='text/javascript' src='//cdn.jsdelivr.net/jquery.marquee/1.4.0/jquery.marquee.min.js'></script>
  <!-- /theme JS files -->
 
 </head>
@@ -839,19 +893,29 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 <div id="modal_bid" class="modal fade in">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <h5 class="modal-title">Enter your bid amount !</h5>
-        </div>
+        <form method="post" enctype="multipart/form-data" id="modal_bid_form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h5 class="modal-title">Enter your bid amount !</h5>
+          </div>
 
-        <div class="modal-body">
+          <div class="modal-body" id="">
+            <i class="" id="modal_bid_minBid"></i>
+            <div id="modal_bid_bidAmount">
+            </div>
+            <hr>
+            <h6 class="text-semibold" id="modal_bid_productName"></h6>
+            <div id="modal_bid_productBody">
+            </div>
+          </div>
 
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Place Bid !</button>
+          </div>
+          <input type="hidden" name="bid_id" id="bid_id" value="">
+          <input type="hidden" name="func" value="submitBid">
+        </form>
       </div>
     </div>
   </div>
