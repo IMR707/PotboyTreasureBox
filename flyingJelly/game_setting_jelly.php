@@ -6,7 +6,9 @@
 	$jelly4_score = 3;
 	$jelly5_score = 4;
 	$jelly6_score = 5;
+	//$send_score_url = "../API/game.php";
 	$send_score_url = "../ajax/savejelly_score.php";
+	$multiplier = 3;
 	
 	//$game_setting = array("time_to_die"=>$time_to_die);
 	
@@ -19,7 +21,8 @@
 			array($jelly4_score),
 			array($jelly5_score),
 			array($jelly6_score),
-			array($send_score_url)
+			array($send_score_url),
+			array($multiplier)
 	);
 	$data_second = array();
 	$data_third = array();
