@@ -47,16 +47,17 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
  								<a href="dailyReward.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a href="dailyReward.php"  class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
+                <a href="dailyReward.php"  class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
                   <?php if ($user->logged_in): ?>
                     <?php if ($ckdg): ?>
-                    <br>Daily Gold Box<br>
+                    <span class="disp-tablecell">Daily Gold Box</span>
                     <?php else: ?>
-                      Next Daily <br> GOLD box in <br><b><span class="countdown_time2" id="disp_time_daily" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></b>
+                      <span class="disp-tablecell">
+                        Next Daily GOLD box <br>in <b><span class="countdown_time2" id="disp_time_daily" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></b></span>
                     <?php endif; ?>
 
                   <?php else: ?>
-                  <br>  Daily Gold Box<br>
+                  <span class="disp-tablecell">Daily Gold Box</span>
                   <?php endif; ?>
                   <br>
                 </a>
@@ -73,27 +74,24 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
                 if($user->logged_in){
                   if ($ckfg){ //klu ada chance
                     ?>
-                    <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                    <a onclick="verifylogin2('flyingJelly/index.php')" class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
-                      <br>Play It Now ! <label class="label bg-pink-600"><?php echo $ckfg; ?> <i class="fa fa-heart"></i></label><br>
-                      <br>
+                    <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                    <a onclick="verifylogin2('flyingJelly/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
+                      <span class="disp-tablecell">Play It Now ! <label class="label bg-pink-600"><?php echo $ckfg; ?> <i class="fa fa-heart"></i></label></span>
                     </a>
                     <?php
                   }else{ //klu chance dah abeh
                     ?>
-                    <a ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                    <a class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
-                      Free Games <br>in <br><b><span class="countdown_time2" id="disp_time_freegames" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></b>
-                      <br>
+                    <a ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                    <a class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
+                      <span class="disp-tablecell">Free Games <br>in <b><span class="countdown_time2" id="disp_time_freegames" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></span>
                     </a>
                     <?php
                   }
                 }else{ //klu user x login
                   ?>
-                  <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                  <a onclick="verifylogin2('flyingJelly/index.php')" class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
-                    <br>Free Games<br>
-                    <br>
+                  <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                  <a onclick="verifylogin2('flyingJelly/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
+                    <span class="disp-tablecell">Free Games</span>
                   </a>
                   <?php
                 }
@@ -112,9 +110,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
  								<a href="goldConversion.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a href="goldConversion.php"  class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
-                  <br>PotBoy Gold Conversion<br>
-                  <br>
+                <a href="goldConversion.php"  class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
+                  <span class="disp-tablecell">Convert <b>Diamond</b> <br>to <b>Gold</b></span>
                   </a>
  							</div>
  						</div>
@@ -124,10 +121,9 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
-                <a onclick="verifylogin2('skyKnight/index.php')" ><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a onclick="verifylogin2('skyKnight/index.php')" class="btn btn-purple" name="button" style="display: block; width: 100%; height:80px;">
-                  <br>Play it Now <b id="time">1 Diamond</b><br>
-                  <br>
+                <a onclick="verifylogin2('skyKnight/index.php')" ><img src="img/skyKnight.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a onclick="verifylogin2('skyKnight/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
+                  <span class="disp-tablecell">Play it Now <br><b id="time">1 Diamond</b></span>
                 </a>
 
  							</div>

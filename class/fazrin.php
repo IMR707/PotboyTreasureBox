@@ -1430,8 +1430,22 @@ class Fazrin
       $currency = '';
       if($bid_type == 1){
         $currency = 'Gold';
+        if($user_gold < $min_bid){
+          $arr_out['status'] = 'Error';
+          $arr_out['msg'] = 'You don\'t have enough gold to participate in this bid.';
+
+          return $arr_out;
+          exit;
+        }
       }elseif($bid_type == 2){
         $currency = 'Diamond';
+        if($user_diamond < $min_bid){
+          $arr_out['status'] = 'Error';
+          $arr_out['msg'] = 'You don\'t have enough diamond to participate in this bid.';
+
+          return $arr_out;
+          exit;
+        }
       }
 
       if($min_bid <= $amount){
@@ -2255,7 +2269,7 @@ class Fazrin
       return $row;
     }
 
-    public function getPaidGame()
+    public function getDiamondGame()
     {
       $sql = "SELECT * FROM ".self::tb_paidGameConfig." WHERE id = 1 ";
       $row = self::$db->first($sql);

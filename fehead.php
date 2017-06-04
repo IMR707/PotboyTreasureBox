@@ -398,14 +398,18 @@ $(document).ready(function(){
               if(bidType == 1){
                 if(data.min_bid > gold){
                   $('#modal_bid_bidAmount').html('You don\'t have enough gold. You cannot participate in this bidding.');
+                  $('#btn_submitBid').prop('disabled',true);
                 }else{
                   $('#modal_bid_bidAmount').html('<input type="number" class="form-control" placeholder="'+currency+'" min="'+data.min_bid+'" name="bid_amount" required="required">');
+                  $('#btn_submitBid').prop('disabled',false);
                 }
               }else if(bidType == 2){
                 if(data.min_bid > diamond){
                   $('#modal_bid_bidAmount').html('You don\'t have enough diamond. You cannot participate in this bidding.');
+                  $('#btn_submitBid').prop('disabled',true);
                 }else{
                   $('#modal_bid_bidAmount').html('<input type="number" class="form-control" placeholder="'+currency+'" min="'+data.min_bid+'" name="bid_amount" required="required">');
+                  $('#btn_submitBid').prop('disabled',false);
                 }
               }
 
@@ -911,7 +915,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
 
           <div class="modal-footer">
             <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Place Bid !</button>
+            <button type="submit" class="btn btn-primary" id="btn_submitBid">Place Bid !</button>
           </div>
           <input type="hidden" name="bid_id" id="bid_id" value="">
           <input type="hidden" name="func" value="submitBid">

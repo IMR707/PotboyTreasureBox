@@ -136,14 +136,8 @@ if (isset($_GET['day'])) {
     <?php
      if ($msg) {
          ?>
-         bootbox.confirm({
+         bootbox.alert({
      message: "<?php echo $msg; ?>",
-     buttons: {
-         confirm: {
-             label: 'Yes',
-             className: 'btn-success'
-         }
-     },
      callback: function (result) {
          console.log('This was logged in the callback: ' + result);
          location.href="dailyReward.php";
