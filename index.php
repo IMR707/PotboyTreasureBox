@@ -47,17 +47,18 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
  								<a href="dailyReward.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a href="dailyReward.php"  class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
+                <a href="dailyReward.php"  class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px;">
                   <?php if ($user->logged_in): ?>
                     <?php if ($ckdg): ?>
-                    <span class="disp-tablecell">Daily Gold Box</span>
+                    <span class="disp-tablecell" style="font-size:15px;"><b>Daily Gold</b> Box</span>
                     <?php else: ?>
-                      <span class="disp-tablecell">
-                        Next Daily GOLD box <br>in <b><span class="countdown_time2" id="disp_time_daily" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></b></span>
+                      <span class="disp-tablecell" style="font-size:15px;">
+                        Next Daily GOLD box <br>in <b><span class="countdown_time2" id="disp_time_daily" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></b>
+                      </span>
                     <?php endif; ?>
 
                   <?php else: ?>
-                  <span class="disp-tablecell">Daily Gold Box</span>
+                  <span class="disp-tablecell" style="font-size:15px;"><b>Daily Gold</b> Box</span>
                   <?php endif; ?>
                   <br>
                 </a>
@@ -82,8 +83,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
                   }else{ //klu chance dah abeh
                     ?>
                     <a ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                    <a class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
-                      <span class="disp-tablecell">Free Games <br>in <b><span class="countdown_time2" id="disp_time_freegames" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></span>
+                    <a class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px;">
+                      <span class="disp-tablecell" style="font-size:15px;">Free Games <br>in <b><span class="countdown_time2" id="disp_time_freegames" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></span>
                     </a>
                     <?php
                   }
@@ -110,8 +111,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
  								<a href="goldConversion.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a href="goldConversion.php"  class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
-                  <span class="disp-tablecell">Convert <b>Diamond</b> <br>to <b>Gold</b></span>
+                <a href="goldConversion.php"  class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px">
+                  <span class="disp-tablecell" style="font-size:15px">Convert <b>Diamond</b> <br>to <b>Gold</b></span>
                   </a>
  							</div>
  						</div>
@@ -122,8 +123,8 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
                 <a onclick="verifylogin2('skyKnight/index.php')" ><img src="img/skyKnight.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a onclick="verifylogin2('skyKnight/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
-                  <span class="disp-tablecell">Play it Now <br><b id="time">1 Diamond</b></span>
+                <a onclick="verifylogin2('skyKnight/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px">
+                  <span class="disp-tablecell" style="font-size:15px;">Play it Now <br><b id="time">1 Diamond</b></span>
                 </a>
 
  							</div>
