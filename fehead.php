@@ -269,7 +269,7 @@ $(document).ready(function(){
 
   $('#open_draw').on('click',function(){
     $('#gift_icon').html(
-      '<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">'
+      '<img src="<?php echo FRONTIMG;?>present.png" class="img-center img-responsive" style="display:block">'
     );
     var dataString = "func=openBox";
     $.ajax({
@@ -322,7 +322,7 @@ $(document).ready(function(){
             });
 
             $('#gift_icon').html(
-              '<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">'
+              '<img src="<?php echo FRONTIMG;?>present.png" class="img-center  img-responsive" style="display:block">'
             );
           }, 3000);
         }
@@ -890,7 +890,7 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
       <div class="modal-body">
         <span id="spin_left"></span>
         <div id="gift_icon" class="mb-10 mt-20">
-          <img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block"><br>
+          <img src="<?php echo FRONTIMG;?>present.png" class="img-center img-responsive" style="display:block"><br>
 
         </div>
         <button class="btn btn-success" id="open_draw" style="margin:0 auto;display:block">Open</button>
