@@ -256,9 +256,11 @@ $(document).ready(function(){
       {
         if(data > 0){
           $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
+          $('#open_draw').show();
         }else{
           $('#spin_left').html('You don\'t have any chances left !');
           $('#gift_icon').html('');
+          $('#open_draw').hide();
         }
         $('#modal_spin').modal();
       }
@@ -266,7 +268,9 @@ $(document).ready(function(){
   });
 
   $('#open_draw').on('click',function(){
-    $('#gift_icon').html('<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">');
+    $('#gift_icon').html(
+      '<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">'
+    );
     var dataString = "func=openBox";
     $.ajax({
       type    : "POST",
@@ -308,15 +312,18 @@ $(document).ready(function(){
                 // $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
                 if(data > 0){
                   $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
+                  $('#open_draw').show();
                 }else{
                   $('#spin_left').html('You don\'t have any chances left !');
                   $('#gift_icon').html('');
+                  $('#open_draw').hide();
                 }
               }
             });
 
-            $('#gift_icon').html('<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">');
-            $('#open_draw').show();
+            $('#gift_icon').html(
+              '<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">'
+            );
           }, 3000);
         }
       }
@@ -884,9 +891,9 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
         <span id="spin_left"></span>
         <div id="gift_icon" class="mb-10 mt-20">
           <img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block"><br>
-          <button class="btn btn-success" id="open_draw" style="margin:0 auto;display:block">Open</button>
-        </div>
 
+        </div>
+        <button class="btn btn-success" id="open_draw" style="margin:0 auto;display:block">Open</button>
       </div>
 
     </div>

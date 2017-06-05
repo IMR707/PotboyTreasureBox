@@ -1430,14 +1430,14 @@ class Fazrin
       $currency = '';
       if($bid_type == 1){
         $currency = 'Gold';
-        if($user_gold < $min_bid){
+        if($user_gold < $min_bid || $user_gold < $amount){
           $arr_out['status'] = 'Error';
           $arr_out['msg'] = 'You don\'t have enough gold to participate in this bid.';
 
           return $arr_out;
           exit;
         }
-      }elseif($bid_type == 2){
+      }elseif($bid_type == 2 || $user_gold < $amount){
         $currency = 'Diamond';
         if($user_diamond < $min_bid){
           $arr_out['status'] = 'Error';
@@ -2320,12 +2320,35 @@ class Fazrin
       $pay_amount = $_POST['pay_amount'];
       $time_limit = $_POST['time_limit'];
       $score_multiplier = $_POST['score_multiplier'];
+      $enemy1_score = $_POST['enemy1_score'];
+      $enemy2_score = $_POST['enemy2_score'];
+      $enemy3_score = $_POST['enemy3_score'];
+      $enemy4_score = $_POST['enemy4_score'];
+      $enemy5_score = $_POST['enemy5_score'];
+
+      $medium_boss_score = $_POST['medium_boss_score'];
+      $final_boss_score = $_POST['final_boss_score'];
+      $asteroid_score = $_POST['asteroid_score'];
+      $seaship_score = $_POST['seaship_score'];
+      $silver_score = $_POST['silver_score'];
+      $gold_score = $_POST['gold_score'];
 
       $data = array(
         'name' => $name,
         'pay_amount' => $pay_amount,
         'time_limit' => $time_limit,
-        'score_multiplier' => $score_multiplier
+        'score_multiplier' => $score_multiplier,
+        'enemy1_score' => $enemy1_score,
+        'enemy2_score' => $enemy2_score,
+        'enemy3_score' => $enemy3_score,
+        'enemy4_score' => $enemy4_score,
+        'enemy5_score' => $enemy5_score,
+        'medium_boss_score' => $medium_boss_score,
+        'final_boss_score' => $final_boss_score,
+        'asteroid_score' => $asteroid_score,
+        'seaship_score' => $seaship_score,
+        'silver_score' => $silver_score,
+        'gold_score' => $gold_score
       );
 
       $res = self::$db->update(self::tb_paidGameConfig, $data,"id='1'");

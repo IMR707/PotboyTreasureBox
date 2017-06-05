@@ -104,8 +104,6 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- /horizotal form -->
  					</div>
 
-
-
           <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left:2px !important;padding-right:2px !important;">
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">

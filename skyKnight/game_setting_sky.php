@@ -5,19 +5,21 @@
 
 	$gameSetting = $fz->getDiamondGame();
 
-	$time_to_die = 650;
-	$enemy1_score = 20;
-	$enemy2_score = 30;
-	$enemy3_score = 40;
-	$enemy4_score = 50;
-	$enemy5_score = 80;
-	$medium_boss_score = 80;
-	$asteroid_score = 90;
-	$seaship_score = 90;
-	$final_boss_score = 120;
-	$multiplier = 2;
-	$gold_score = 100;
-	$silver_score = 50;
+	$time_to_die = $gameSetting->time_limit;
+
+	$enemy1_score = $gameSetting->enemy1_score;
+	$enemy2_score = $gameSetting->enemy2_score;
+	$enemy3_score = $gameSetting->enemy3_score;
+	$enemy4_score = $gameSetting->enemy4_score;
+	$enemy5_score = $gameSetting->enemy5_score;
+	$medium_boss_score = $gameSetting->medium_boss_score;
+	$asteroid_score = $gameSetting->asteroid_score;
+	$seaship_score = $gameSetting->seaship_score;
+	$final_boss_score = $gameSetting->final_boss_score;
+	$gold_score = $gameSetting->gold_score;
+	$silver_score = $gameSetting->silver_score;
+
+	$multiplier = $gameSetting->score_multiplier;
 
 	$send_score_url = "../API/game.php";
 
