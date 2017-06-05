@@ -480,7 +480,7 @@ $(document).ready(function(){
 
 
      <ul class="nav navbar-nav pull-right visible-xs-block">
-       <li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
+       <li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-more2"></i></a></li>
      </ul>
    </div>
 
