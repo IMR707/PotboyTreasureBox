@@ -306,17 +306,59 @@ END) as percent,
         return $row;
     }
 
-    public function ff($id){
+    public function HaveDailyRewardTodayorYesterday($id){
       $today = Carbon::now();
       $yesterday= Carbon::now()->subDay();
-      $sql = "SELECT bt.*";
+      $sql = "SELECT bt.*,1 as done";
       $sql .= ",(case when (date(bt.date_created)=date('".$today."') ) THEN 2 ";
-      $sql .= "when (date(bt.date_created)=date('".$yesterday."') )THEN 1 ELSE 0 END) as day ";
+      $sql .= "when (date(bt.date_created)=date('".$yesterday."') )THEN 1 ELSE 0 END) as daytype ";
       $sql .= 'FROM '.self::tb_drtran." bt where bt.active = 1 AND bt.customer_id='".$id."'  order by date_created desc";
-      $row = self::$db->first($sql);
-      $todaydone=$row->day==2?1:0;
-      pre($row);
-      pre($todaydone);
+      $row2 = self::$db->first($sql);
+      $row = self::$db->fetch_all($sql);
+      if($row2->daytype!=2){
+        $row2->id=$row2->id+1;
+        $row2->date_updated=$row2->date_created=$today->format('Y-m-d H:i:s');
+        $row2->done=0;
+        $row2->daytype=2;
+        array_unshift($row,$row2);
+      }
+
+
+      $new=[];
+      $dt = Carbon::now()->addDay();
+      foreach ($row as $key => $value) {
+        $dt=$dt->subDay();
+        $date1=$dt->format('Y-m-d');
+        $date2 = explode(" ",$value->date_created)[0];
+        if($date1==$date2){
+        $new[]=$value;
+        }
+        else {
+          break;
+        }
+      }
+      $sql3 = 'SELECT count(*) as daycount FROM '.self::tb_dr." where active = 1 ";
+      $row3 = self::$db->first($sql3);
+      $cn=count($new);
+      $cd=$row3->daycount;
+      if($cn>$cd){
+      $val=($cn/$cd);
+      settype($val, "integer");
+      echo $ccomplete=$val*$cd;
+
+        pre($cn."|".$cd);
+        echo "<br>".$val;
+
+
+
+      }else {
+        echo "2";
+      }
+
+      pre($new);
+
+
+      //pre($todaydone);
       echo $sql;
       // foreach ($row as $key => $value) {
       // pre($value);
@@ -333,8 +375,8 @@ END) as percent,
            $sql .= 'FROM '.self::tb_drtran." bt where active = 1 AND customer_id='".$id."' AND (date(date_created) = date('".$today."') || date(date_created) = date('".$yesterday."')) order by date_created desc";
           if(!self::$db->first($sql)){
             $dt = Carbon::now()->subDay();
-            $sql = 'SELECT *,0 as done,0 as date_check FROM '.self::tb_dr." where active = 1 order by day_num";
-            $row = self::$db->fetch_all($sql);
+            $sql2 = 'SELECT *,0 as done,0 as date_check FROM '.self::tb_dr." where active = 1 order by day_num";
+            $row = self::$db->fetch_all($sql2);
             for ($i=0; $i <count($row) ; $i++) {
                 $dt=$dt->addDay();
                 $dz=explode(" ", $dt);
@@ -349,7 +391,7 @@ END) as percent,
                 }
             }
           }else {
-            $row=$this->ff($id);
+            $row=$this->HaveDailyRewardTodayorYesterday($id);
           }
           return $row;
         }

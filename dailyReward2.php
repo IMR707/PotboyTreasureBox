@@ -6,6 +6,8 @@ $pagemenu = 'DASH';
 $submenu = '';
 require_once 'init.php';
 use Carbon\Carbon;
+// $AllDailyReward = $list->FEgetAllDailyReward($user->uid);
+// pre($AllDailyReward);
 $AllDailyReward = $list->FEgetAllDailyReward2($user->uid);
 $msg = '';
 if (isset($_GET['day'])) {
