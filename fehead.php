@@ -256,9 +256,11 @@ $(document).ready(function(){
       {
         if(data > 0){
           $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
+          $('#open_draw').show();
         }else{
           $('#spin_left').html('You don\'t have any chances left !');
           $('#gift_icon').html('');
+          $('#open_draw').hide();
         }
         $('#modal_spin').modal();
       }
@@ -266,7 +268,9 @@ $(document).ready(function(){
   });
 
   $('#open_draw').on('click',function(){
-    $('#gift_icon').html('<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">');
+    $('#gift_icon').html(
+      '<img src="<?php echo FRONTIMG;?>present.png" class="img-center img-responsive" style="display:block">'
+    );
     var dataString = "func=openBox";
     $.ajax({
       type    : "POST",
@@ -308,15 +312,18 @@ $(document).ready(function(){
                 // $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
                 if(data > 0){
                   $('#spin_left').html('You have '+data+' chance ! Open the box now to get awesome prizes !');
+                  $('#open_draw').show();
                 }else{
                   $('#spin_left').html('You don\'t have any chances left !');
                   $('#gift_icon').html('');
+                  $('#open_draw').hide();
                 }
               }
             });
 
-            $('#gift_icon').html('<img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block">');
-            $('#open_draw').show();
+            $('#gift_icon').html(
+              '<img src="<?php echo FRONTIMG;?>present.png" class="img-center  img-responsive" style="display:block">'
+            );
           }, 3000);
         }
       }
@@ -327,7 +334,127 @@ $(document).ready(function(){
     location.reload();
   });
 
-// $('#modal_spin').modal();
+  $('.btn_claim').on('click',function(){
+    var id = $(this).attr('id');
+
+    if(verifylogin()){
+      var dataString = "claim_id="+id+"&func=submitclaim";
+      $.ajax({
+        type    : "POST",
+        url     : "API/claim.php",
+        data    : dataString,
+        cache   : false,
+        dataType: 'json',
+        success : function(data)
+        {
+          // console.log(data);
+          bootbox.alert(data.status+" : "+data.msg, function(){
+            if(data.status != 'Error'){
+              location.reload();
+            }
+          });
+        }
+      });
+    }
+  });
+
+  $('.joinBid').on('click',function(){
+    var id = $(this).attr('id');
+    $('#modal_bid_productName').html('');
+    $('#modal_bid_productBody').html('');
+    $('#modal_bid_bidAmount').html('');
+    $('#modal_bid_minBid').html('');
+    $('#bid_id').val(id);
+
+    if(verifylogin()){
+      var dataString = "id="+id+"&func=getUserReward";
+      $.ajax({
+        type    : "POST",
+        url     : "API/user.php",
+        data    : dataString,
+        cache   : false,
+        dataType: 'json',
+        success : function(data2)
+        {
+          var gold = parseInt(data2.gold);
+          var diamond = parseInt(data2.diamond);
+          var dataString = "id="+id+"&func=getBidProductByID";
+          $.ajax({
+            type    : "POST",
+            url     : "API/bidding.php",
+            data    : dataString,
+            cache   : false,
+            dataType: 'json',
+            success : function(data)
+            {
+              var bidType = data.bid_type;
+              var currency = '';
+              if(bidType == 1){
+                currency = 'Gold';
+              }else if(bidType == 2){
+                currency = 'Diamond';
+              }
+
+              $('#modal_bid_minBid').html('**Note : Minimum bid for this item is '+data.min_bid+' '+currency);
+              $('#modal_bid_productName').html(data.name);
+              $('#modal_bid_productBody').html(
+                '<img src="<?php echo BACK_UPLOADS; ?>'+data.img_header+'" class="img-responsive">'+
+                '<p class="mt-5">'+data.desc+'</p>'
+              );
+
+              if(bidType == 1){
+                if(data.min_bid > gold){
+                  $('#modal_bid_bidAmount').html('You don\'t have enough gold. You cannot participate in this bidding.');
+                  $('#btn_submitBid').prop('disabled',true);
+                }else{
+                  $('#modal_bid_bidAmount').html('<input type="number" class="form-control" placeholder="'+currency+'" min="'+data.min_bid+'" name="bid_amount" required="required">');
+                  $('#btn_submitBid').prop('disabled',false);
+                }
+              }else if(bidType == 2){
+                if(data.min_bid > diamond){
+                  $('#modal_bid_bidAmount').html('You don\'t have enough diamond. You cannot participate in this bidding.');
+                  $('#btn_submitBid').prop('disabled',true);
+                }else{
+                  $('#modal_bid_bidAmount').html('<input type="number" class="form-control" placeholder="'+currency+'" min="'+data.min_bid+'" name="bid_amount" required="required">');
+                  $('#btn_submitBid').prop('disabled',false);
+                }
+              }
+
+
+            }
+          });
+
+        }
+      });
+
+      $('#modal_bid').modal('show');
+    }
+  });
+
+  $('#modal_bid_form').on('submit',function(e){
+    e.preventDefault();
+
+    var dataString = $('#modal_bid_form').serialize();
+
+    $.ajax({
+      type    : "POST",
+      url     : "API/bidding.php",
+      data    : dataString,
+      cache   : false,
+      dataType: 'json',
+      success : function(data)
+      {
+        bootbox.alert(data.status+" : "+data.msg, function(){
+          if(data.status != 'Error'){
+            location.reload();
+          }
+        });
+      }
+    });
+
+
+  });
+
 });
  </script>
 
@@ -336,12 +463,13 @@ $(document).ready(function(){
  <!-- Theme JS files -->
  <script type="text/javascript" src="<?php echo FRONTJS;?>core/app.js"></script>
  <script src="<?php echo FRONTJS;?>bootstrap-carousel.js"></script>
+ <script type='text/javascript' src='//cdn.jsdelivr.net/jquery.marquee/1.4.0/jquery.marquee.min.js'></script>
  <!-- /theme JS files -->
 
 </head>
 
 <body>
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-8 col-md-offset-2" style="padding:0">
 
  <!-- Main navbar -->
  <?php if (!MV) {
@@ -352,7 +480,7 @@ $(document).ready(function(){
 
 
      <ul class="nav navbar-nav pull-right visible-xs-block">
-       <li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
+       <li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-more2"></i></a></li>
      </ul>
    </div>
 
@@ -762,10 +890,10 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
       <div class="modal-body">
         <span id="spin_left"></span>
         <div id="gift_icon" class="mb-10 mt-20">
-          <img src="<?php echo FRONTIMG;?>present.png" class="img-center" style="display:block"><br>
-          <button class="btn btn-success" id="open_draw" style="margin:0 auto;display:block">Open</button>
-        </div>
+          <img src="<?php echo FRONTIMG;?>present.png" class="img-center img-responsive" style="display:block"><br>
 
+        </div>
+        <button class="btn btn-success" id="open_draw" style="margin:0 auto;display:block">Open</button>
       </div>
 
     </div>
@@ -773,9 +901,39 @@ $crdata=$list->FEgetRewardData(($user->logged_in) ? $user->uid:0);
   </div>
 </div>
 
+<div id="modal_bid" class="modal fade in">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <form method="post" enctype="multipart/form-data" id="modal_bid_form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h5 class="modal-title">Enter your bid amount !</h5>
+          </div>
+
+          <div class="modal-body" id="">
+            <i class="" id="modal_bid_minBid"></i>
+            <div id="modal_bid_bidAmount">
+            </div>
+            <hr>
+            <h6 class="text-semibold" id="modal_bid_productName"></h6>
+            <div id="modal_bid_productBody">
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btn_submitBid">Place Bid !</button>
+          </div>
+          <input type="hidden" name="bid_id" id="bid_id" value="">
+          <input type="hidden" name="func" value="submitBid">
+        </form>
+      </div>
+    </div>
+  </div>
+
 
  <!-- /second navbar -->
 <?php
 
 }?>
-<div class="page-container p-5 pb-20 mb-20">
+<div class="page-container p-0 pb-20 mb-20">

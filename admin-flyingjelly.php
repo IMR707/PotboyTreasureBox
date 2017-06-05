@@ -111,6 +111,49 @@ $game_detail = $fz->getFreeGame();
                                         <input type="number" class="form-control" placeholder="Chances" name="chances" required value="<?php echo $game_detail->chances; ?>">
                                     </div>
                                 </div>
+																<hr>
+																<div class="form-group">
+                                    <label class="col-md-3 control-label">
+																			<img src="<?php echo FRONTIMAGE; ?>jelly_yellow.png" style="width:30px;">
+																		</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="score" name="score_yellow" required value="<?php echo $game_detail->score_yellow; ?>">
+                                    </div>
+                                </div>
+																<div class="form-group">
+                                    <label class="col-md-3 control-label">
+																			<img src="<?php echo FRONTIMAGE; ?>jelly_red.png" style="width:30px;">
+																		</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="score" name="score_red" required value="<?php echo $game_detail->score_red; ?>">
+                                    </div>
+                                </div>
+																<div class="form-group">
+                                    <label class="col-md-3 control-label">
+																			<img src="<?php echo FRONTIMAGE; ?>jelly_green.png" style="width:30px;">
+																		</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="score" name="score_green" required value="<?php echo $game_detail->score_green; ?>">
+                                    </div>
+                                </div>
+																<div class="form-group">
+                                    <label class="col-md-3 control-label">
+																			<img src="<?php echo FRONTIMAGE; ?>jelly_blue.png" style="width:30px;">
+																		</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="score" name="score_blue" required value="<?php echo $game_detail->score_blue; ?>">
+                                    </div>
+                                </div>
+																<div class="form-group">
+                                    <label class="col-md-3 control-label">
+																			<img src="<?php echo FRONTIMAGE; ?>jelly_pink.png" style="width:30px;">
+																		</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="score" name="score_pink" required value="<?php echo $game_detail->score_pink; ?>">
+                                    </div>
+                                </div>
+
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"></label>
                                     <div class="col-md-8">

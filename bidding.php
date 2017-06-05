@@ -107,7 +107,7 @@ $pubid=$list->FEgetBidding('5');
                         <div class="collapse navbar-collapse" id="example-nav-collapse">
                             <ul class="nav navbar-nav navbar-right col-md-12 col-sm-12">
                                 <li class="active col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab1" data-toggle="tab"><span class="glyphicon glyphicon-fire"></span> Hot</a></li>
-                                <li class="col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab2" data-toggle="tab"><span class="glyphicon glyphicon-time"></span> Ongoing</a></li>
+                                <li class="col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab2" data-toggle="tab"><span class="glyphicon glyphicon-time"></span> Ending Soon</a></li>
                                 <li class="col-md-3 col-sm-3 text-center"><a href="#solid-rounded-justified-tab3" data-toggle="tab"><span class="glyphicon glyphicon-ok"></span> New</a></li>
                                 <li class="dropdown col-md-3 col-sm-3 text-center">
             											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-gift"></span> Prize <span class="caret"></span></a>
@@ -222,63 +222,71 @@ $pubid=$list->FEgetBidding('5');
 							</div>
 						</div>
  			</div>
+      
  			<!-- /main content -->
 
  		</div>
 
 <script type="text/javascript">
-$('.countdown_time').each(function(index){
-  var ids = $(this).attr('id');
-  var id = ids.replace('disp_time_','');
-  var start = $(this).attr('start-time');
-  var end = $(this).attr('end-time');
-  var diff = moment(end,"YYYY/MM/DD HH:mm:ss").diff(moment(start,"YYYY/MM/DD HH:mm:ss"));
-  var time = $(this).html().trim();
-  $('#'+$(this).attr('id')).countdown(time, function(event) {
-    // console.log('s');
-    $(this).html(event.strftime('%-D days %H:%M:%S'));
-  }).on('update.countdown', function() {
-    // var val = $('#disppercent_'+id).html().trim();
-    var cdiff = new Date() - moment(start,"YYYY/MM/DD HH:mm:ss");
-    if(cdiff > 0){
-      var percent = Math.floor(( cdiff / diff ) * 100);
-      $('#text'+id).html(percent+'%');
-      $('#textval'+id).css('width',percent+'%');
-    }
-  }).on('finish.countdown', function() {
-    location.href = 'admin-bidding.php';
+
+$(document).ready(function(){
+
+  $('.countdown_time').each(function(index){
+    var ids = $(this).attr('id');
+    var id = ids.replace('disp_time_','');
+    var start = $(this).attr('start-time');
+    var end = $(this).attr('end-time');
+    var diff = moment(end,"YYYY/MM/DD HH:mm:ss").diff(moment(start,"YYYY/MM/DD HH:mm:ss"));
+    var time = $(this).html().trim();
+    $('#'+$(this).attr('id')).countdown(time, function(event) {
+      // console.log('s');
+      $(this).html(event.strftime('%-D days %H:%M:%S'));
+    }).on('update.countdown', function() {
+      // var val = $('#disppercent_'+id).html().trim();
+      var cdiff = new Date() - moment(start,"YYYY/MM/DD HH:mm:ss");
+      if(cdiff > 0){
+        var percent = Math.floor(( cdiff / diff ) * 100);
+        $('#text'+id).html(percent+'%');
+        $('#textval'+id).css('width',percent+'%');
+      }
+    }).on('finish.countdown', function() {
+      location.href = 'admin-bidding.php';
+    });
   });
+
+  function countdown(element, minutes, seconds) {
+    // Fetch the display element
+    var el = document.getElementById(element);
+
+    // Set the timer
+    var interval = setInterval(function() {
+        if(seconds == 0) {
+            if(minutes == 0) {
+                (el.innerHTML = "STOP!");
+
+                clearInterval(interval);
+                return;
+            } else {
+                minutes--;
+                seconds = 60;
+            }
+        }
+
+        if(minutes > 0) {
+            var minute_text = minutes + (minutes > 1 ? ' minutes' : ' minute');
+        } else {
+            var minute_text = '';
+        }
+
+        var second_text = seconds > 1 ? '' : '';
+        el.innerHTML = minute_text + ' ' + seconds + ' ' + second_text + '';
+        seconds--;
+    }, 1000);
+  }
+
 });
 
-function countdown(element, minutes, seconds) {
-  // Fetch the display element
-  var el = document.getElementById(element);
 
-  // Set the timer
-  var interval = setInterval(function() {
-      if(seconds == 0) {
-          if(minutes == 0) {
-              (el.innerHTML = "STOP!");
-
-              clearInterval(interval);
-              return;
-          } else {
-              minutes--;
-              seconds = 60;
-          }
-      }
-
-      if(minutes > 0) {
-          var minute_text = minutes + (minutes > 1 ? ' minutes' : ' minute');
-      } else {
-          var minute_text = '';
-      }
-
-      var second_text = seconds > 1 ? '' : '';
-      el.innerHTML = minute_text + ' ' + seconds + ' ' + second_text + '';
-      seconds--;
-  }, 1000);
-}
 
 </script>
   <?php

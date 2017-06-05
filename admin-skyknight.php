@@ -13,7 +13,7 @@ if (!$user->logged_in) {
     //redirect_to(SITEURL.'/index.php');
 }
 
-$game_detail = $fz->getPaidGame();
+$game_detail = $fz->getDiamondGame();
 
 /************** END BASIC CONFIG *********************/
 
@@ -110,7 +110,76 @@ $game_detail = $fz->getPaidGame();
                                     <div class="col-md-8">
                                         <input type="decimal" class="form-control" placeholder="0.0" name="score_multiplier" required value="<?php echo $game_detail->score_multiplier; ?>">
                                     </div>
-                                </div>                                
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Enemy 1</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="enemy1_score" required value="<?php echo $game_detail->enemy1_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Enemy 2</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="enemy2_score" required value="<?php echo $game_detail->enemy2_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Enemy 3</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="enemy3_score" required value="<?php echo $game_detail->enemy3_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Enemy 4</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="enemy4_score" required value="<?php echo $game_detail->enemy4_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Enemy 5</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="enemy5_score" required value="<?php echo $game_detail->enemy5_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Sea ship</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="seaship_score" required value="<?php echo $game_detail->seaship_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Asteroid</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="asteroid_score" required value="<?php echo $game_detail->asteroid_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Silver Coin</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="silver_score" required value="<?php echo $game_detail->silver_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Gold Coin</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="gold_score" required value="<?php echo $game_detail->gold_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Medium Boss</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="medium_boss_score" required value="<?php echo $game_detail->medium_boss_score; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Final Boss</label>
+                                    <div class="col-md-8">
+                                        <input type="number" class="form-control" placeholder="0" name="final_boss_score" required value="<?php echo $game_detail->final_boss_score; ?>">
+                                    </div>
+                                </div>
+
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"></label>
                                     <div class="col-md-8">

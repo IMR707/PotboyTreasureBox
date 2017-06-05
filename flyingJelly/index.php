@@ -1,19 +1,4 @@
-<?php
-
-define('_VALID_PHP', true);
-$pname = 'Flying Jelly';
-$menu = 'Flying Jelly';
-$pagemenu="BID";
-$submenu = '';
-require_once '../init.php';
-
-$user_id = $_SESSION['userid'];
-
-$game_detail = $fz->getFreeGame();
-$time_limit = $game_detail->time_limit;
-
-?>
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html manifest="offline.appcache">
 <head>
     <meta charset="UTF-8" />
@@ -98,7 +83,7 @@ $time_limit = $game_detail->time_limit;
 
     <!-- The runtime script.  You can rename it, but don't forget to rename the reference here as well.
     This file will have been minified and obfuscated if you enabled "Minify script" during export. -->
-	<script src="c2runtime.js"></script>
+	<script src="c2runtime.js?version=2"></script>
 
     <script>
 		// Start the Construct 2 project running on window load.
@@ -146,29 +131,6 @@ $time_limit = $game_detail->time_limit;
 				OnRegisterSWError(e);
 			}
 		};
-
-		function sendScore(score){
-
-      alert('<?php echo $user_id;?>');
-      // $.ajax({
-      //   method: "POST",
-      //   url: "<?php echo HOMETBURL."/API/score.php";?>",
-      //   data: {
-      //     get_score: score,
-      //     uid:'<?php echo $user->uid;?>',
-      //     gameid:'1'
-      //    }
-      // })
-      //   .done(function( msg ) {
-      //         console.log( "Data Saved: " + msg );
-      //   })
-      //   .fail(function() {
-      //         console.log( "file not found" );
-      //   })
-      //   .always(function() {
-      //         console.log( "complete" );
-      //   });
-      }
     </script>
 </body>
 </html>

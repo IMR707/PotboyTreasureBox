@@ -149,6 +149,9 @@ elseif($_POST['func'] == 'getBiddingByID'){
   $fz->getBiddingByID();
 }
 
+
+
+
 //Claim
 
 elseif($_POST['func'] == 'create_claim'){

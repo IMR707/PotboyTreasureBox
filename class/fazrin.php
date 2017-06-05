@@ -31,6 +31,7 @@ class Fazrin
     const tb_spinTrans = 'lof_rewardpoints_spin_transaction';
     const tb_freeGameConfig = 'aa_gamefree_setting';
     const tb_paidGameConfig = 'aa_gamepaid_setting';
+    const tb_freeGame = 'aa_game_free';
 
 
     private static $db;
@@ -1387,6 +1388,14 @@ class Fazrin
       return $row;
     }
 
+    public function getBidProductByID($id)
+    {
+      $sql = "SELECT a.*,b.* FROM ".self::tb_bid." a, ".self::tb_prod." b where a.product_id = b.id AND a.id='$id'";
+      $row = self::$db->first($sql);
+
+      return $row;
+    }
+
     /********* BIDDING TRANSACTION **********************************************/
 
     public function getCurParticipant($bid_id)
@@ -1403,6 +1412,139 @@ class Fazrin
       $row = self::$db->fetch_all($sql);
 
       return $row;
+    }
+
+    public function submitBid($id,$amount)
+    {
+      $user_id = $_SESSION['userid'];
+
+      $list = new Listing;
+      $user_detail = $list->FEgetRewardData($user_id);
+      $user_gold = $user_detail->gold;
+      $user_diamond = $user_detail->diamond;
+
+      $bid_detail = $this->getBiddingByID2($id);
+      $bid_title = $bid_detail->title;
+      $bid_type = $bid_detail->bid_type;
+      $min_bid = $bid_detail->min_bid;
+      $currency = '';
+      if($bid_type == 1){
+        $currency = 'Gold';
+        if($user_gold < $min_bid || $user_gold < $amount){
+          $arr_out['status'] = 'Error';
+          $arr_out['msg'] = 'You don\'t have enough gold to participate in this bid.';
+
+          return $arr_out;
+          exit;
+        }
+      }elseif($bid_type == 2 || $user_gold < $amount){
+        $currency = 'Diamond';
+        if($user_diamond < $min_bid){
+          $arr_out['status'] = 'Error';
+          $arr_out['msg'] = 'You don\'t have enough diamond to participate in this bid.';
+
+          return $arr_out;
+          exit;
+        }
+      }
+
+      if($min_bid <= $amount){
+        $data = array(
+          'bidding_id' => $id,
+          'customer_id' => $user_id,
+          'bid_amount' => $amount,
+          'date_updated' => 'now()',
+          'date_created' => 'now()'
+        );
+        $res = self::$db->insert(self::tb_bidtrans, $data);
+
+        if($res){
+
+          if($bid_type == 1){
+
+            $data = array(
+              'customer_id' => $user_id,
+              'amount' => 0,
+              'amount_used' => 0,
+              'amount_gold' => '-'.$amount,
+              'amount_gold_used' => '-'.$amount,
+              'title' => 'Join Bid - '.$bid_title,
+              'desc' => 'Placed '.$amount.' '.$currency,
+              'code' => 'admin_add-aEEmIYncALynhaQQ',
+              'action' => 'admin_add',
+              'status' => 'complete',
+              'params' => '',
+              'is_expiration_email_sent' => 0,
+              'email_message' => '',
+              'apply_at' => '',
+              'is_applied' => 1,
+              'is_expired' => 0,
+              'expires_at' => '',
+              'updated_at' => 'now()',
+              'created_at' => 'now()',
+              'store_id' => 0,
+              'order_id' => 0,
+              'admin_user_id' => 1
+            );
+            $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+            $data = array(
+              "available_golds" => $user_gold - $amount,
+              "total_golds" => $user_gold - $amount
+            );
+
+            $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
+          }elseif($bid_type == 2){
+
+            $data = array(
+              'customer_id' => $user_id,
+              'amount' => '-'.$amount,
+              'amount_used' => '-'.$amount,
+              'amount_gold' => 0,
+              'amount_gold_used' => 0,
+              'title' => 'Join Bid - '.$bid_title,
+              'desc' => 'Placed '.$amount.' '.$currency,
+              'code' => 'admin_add-aEEmIYncALynhaQQ',
+              'action' => 'admin_add',
+              'status' => 'complete',
+              'params' => '',
+              'is_expiration_email_sent' => 0,
+              'email_message' => '',
+              'apply_at' => '',
+              'is_applied' => 1,
+              'is_expired' => 0,
+              'expires_at' => '',
+              'updated_at' => 'now()',
+              'created_at' => 'now()',
+              'store_id' => 0,
+              'order_id' => 0,
+              'admin_user_id' => 1
+            );
+            $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+            $data = array(
+              "available_points" => $user_diamond - $amount,
+              "total_points" => $user_diamond - $amount
+            );
+
+            $res = self::$db->update(self::tb_reward, $data,"customer_id='$user_id'");
+
+          }
+
+          $arr_out['status'] = 'Success';
+          $arr_out['msg'] = 'You have successfully placed your bid <b>'.$amount.' '.$currency.'</b>. We will announce the winner soon. <br>Stay tuned !';
+        }else{
+          $arr_out['status'] = 'Error';
+          $arr_out['msg'] = 'An error occured.';
+        }
+
+      }else{
+        $arr_out['status'] = 'Error';
+        $arr_out['msg'] = 'The amount you placed is not sufficient. The minimum bid for this item is '.$min_bid.' '.$currency;
+      }
+
+      return $arr_out;
     }
 
 
@@ -1605,11 +1747,15 @@ class Fazrin
 
     public function checkUserClaim($claim_id)
     {
-      $user_id = $_SESSION['userid'];
-      $sql = "SELECT * FROM ".self::tb_vouc." where instantclaim_id = '$claim_id' AND cust_id='$user_id' AND active = 1";
-      $row = self::$db->first($sql);
+      $user_id = isset($_SESSION['userid']) ? $_SESSION['userid'] : 0 ;
+      if($user_id){
+        $sql = "SELECT * FROM ".self::tb_vouc." where instantclaim_id = '$claim_id' AND cust_id='$user_id' AND active = 1";
+        $row = self::$db->first($sql);
 
-      return $row;
+        return $row;
+      }else{
+        return 0;
+      }
     }
 
     public function getAvailableVoucher($claim_id)
@@ -2123,7 +2269,7 @@ class Fazrin
       return $row;
     }
 
-    public function getPaidGame()
+    public function getDiamondGame()
     {
       $sql = "SELECT * FROM ".self::tb_paidGameConfig." WHERE id = 1 ";
       $row = self::$db->first($sql);
@@ -2137,12 +2283,22 @@ class Fazrin
       $time_limit = $_POST['time_limit'];
       $chances = $_POST['chances'];
       $score_multiplier = $_POST['score_multiplier'];
+      $score_yellow = $_POST['score_yellow'];
+      $score_red = $_POST['score_red'];
+      $score_green = $_POST['score_green'];
+      $score_blue = $_POST['score_blue'];
+      $score_pink = $_POST['score_pink'];
 
       $data = array(
         'name' => $name,
         'time_limit' => $time_limit,
         'chances' => $chances,
-        'score_multiplier' => $score_multiplier
+        'score_multiplier' => $score_multiplier,
+        'score_yellow' => $score_yellow,
+        'score_red' => $score_red,
+        'score_green' => $score_green,
+        'score_blue' => $score_blue,
+        'score_pink' => $score_pink
       );
 
       $res = self::$db->update(self::tb_freeGameConfig, $data,"id='1'");
@@ -2162,14 +2318,37 @@ class Fazrin
     {
       $name = $_POST['name'];
       $pay_amount = $_POST['pay_amount'];
-      $time_limit = $_POST['time_limit'];      
+      $time_limit = $_POST['time_limit'];
       $score_multiplier = $_POST['score_multiplier'];
+      $enemy1_score = $_POST['enemy1_score'];
+      $enemy2_score = $_POST['enemy2_score'];
+      $enemy3_score = $_POST['enemy3_score'];
+      $enemy4_score = $_POST['enemy4_score'];
+      $enemy5_score = $_POST['enemy5_score'];
+
+      $medium_boss_score = $_POST['medium_boss_score'];
+      $final_boss_score = $_POST['final_boss_score'];
+      $asteroid_score = $_POST['asteroid_score'];
+      $seaship_score = $_POST['seaship_score'];
+      $silver_score = $_POST['silver_score'];
+      $gold_score = $_POST['gold_score'];
 
       $data = array(
         'name' => $name,
         'pay_amount' => $pay_amount,
         'time_limit' => $time_limit,
-        'score_multiplier' => $score_multiplier
+        'score_multiplier' => $score_multiplier,
+        'enemy1_score' => $enemy1_score,
+        'enemy2_score' => $enemy2_score,
+        'enemy3_score' => $enemy3_score,
+        'enemy4_score' => $enemy4_score,
+        'enemy5_score' => $enemy5_score,
+        'medium_boss_score' => $medium_boss_score,
+        'final_boss_score' => $final_boss_score,
+        'asteroid_score' => $asteroid_score,
+        'seaship_score' => $seaship_score,
+        'silver_score' => $silver_score,
+        'gold_score' => $gold_score
       );
 
       $res = self::$db->update(self::tb_paidGameConfig, $data,"id='1'");
@@ -2185,6 +2364,69 @@ class Fazrin
       exit;
     }
 
+    public function submitFreeGame($uid,$score)
+    {
+      $game_detail = $this->getFreeGame();
+      $score_multiplier = $game_detail->score_multiplier;
+
+      $gold = $score_multiplier * $score;
+
+      $data = array(
+        'customer_id' => $uid,
+        'score' => $score,
+        'gold' => $gold,
+        'date_updated' => 'now()',
+        'date_created' => 'now()'
+      );
+
+      $res = self::$db->insert(self::tb_freeGame, $data);
+
+      $cls_list = new Listing;
+      $res = $cls_list->FEgetRewardData($uid);
+      $cur_gold = $res->gold;
+
+      $extra = '';
+      if($score_multiplier > 1){
+        $extra = ' x '.$score_multiplier;
+      }
+
+      //insert record gold
+      $data = array(
+        'customer_id' => $uid,
+        'amount' => 0,
+        'amount_used' => 0,
+        'amount_gold' => $gold,
+        'amount_gold_used' => $gold,
+        'title' => 'Play Flying Jelly',
+        'desc' => 'Score : '.$score.$extra,
+        'code' => 'admin_add-aEEmIYncALynhaQQ',
+        'action' => 'admin_add',
+        'status' => 'complete',
+        'params' => '',
+        'is_expiration_email_sent' => 0,
+        'email_message' => '',
+        'apply_at' => '',
+        'is_applied' => 1,
+        'is_expired' => 0,
+        'expires_at' => '',
+        'updated_at' => 'now()',
+        'created_at' => 'now()',
+        'store_id' => 0,
+        'order_id' => 0,
+        'admin_user_id' => 1
+      );
+      $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+      $data = array(
+        "available_golds" => $cur_gold + $gold,
+        "total_golds" => $cur_gold + $gold
+      );
+
+      $res = self::$db->update(self::tb_reward, $data,"customer_id='$uid'");
+
+      return $res;
+
+    }
 
 
     /********* DELETE ITEM **********************************************/

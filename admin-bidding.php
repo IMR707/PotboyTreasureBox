@@ -564,8 +564,8 @@ $(document).ready(function(){
       {
         var sp = JSON.parse(data.sponsor);
         $('#title_upd').val(data.title);
-        $('#product_id_upd').select2('val',data.product_id);
         $('#sponsor_id_upd').val(sp).trigger('change');
+        $('#product_id_upd').select2('val',data.product_id);
         $('#start_time_date_upd').val(data.start_time_date);
         $('#start_time_time_upd').val(data.start_time_time);
         $('#base_add_upd').select2('val',data.bid_base);

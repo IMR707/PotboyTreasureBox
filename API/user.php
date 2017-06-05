@@ -14,14 +14,26 @@ if(isset($_POST)){
 
   }
 
-  // elseif($_POST['func'] == 'checkVote'){
-  //   $wpid = $_POST['wpid'];
-  //   $sponid = $_POST['sponid'];
-  //
-  //   $res = $fz->checkVote($sponid);
-  //
-  //   echo $res;
-  //
-  // }
+  elseif($_POST['func'] == 'getUserGold'){
+
+    $user_id = $_SESSION['userid'];
+
+    $res = $list->FEgetRewardData($user_id);
+
+    echo $res->gold;
+
+  }
+
+  elseif($_POST['func'] == 'getUserReward'){
+
+    $user_id = $_SESSION['userid'];
+
+    $res = $list->FEgetRewardData($user_id);
+
+    echo json_encode($res);
+
+  }
+
+
 
 }
