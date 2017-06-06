@@ -46,7 +46,7 @@ $ckpg=$user->checkPaidGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
- 								<a href="dailyReward.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+ 								<a href="dailyReward.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive img-center"></a>
                 <a href="dailyReward.php"  class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px;">
                   <?php if ($user->logged_in): ?>
                     <?php if ($ckdg): ?>
@@ -75,14 +75,14 @@ $ckpg=$user->checkPaidGames(($user->logged_in) ? $user->uid:0);
                 if($user->logged_in){
                   if ($ckfg){ //klu ada chance
                     ?>
-                    <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                    <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive img-center"></a>
                     <a onclick="verifylogin2('flyingJelly/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
                       <span class="disp-tablecell" style="font-size:15px;">Play It Now ! <label class="label bg-pink-600"><?php echo $ckfg; ?> <i class="fa fa-heart"></i></label></span>
                     </a>
                     <?php
                   }else{ //klu chance dah abeh
                     ?>
-                    <a ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                    <a ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive img-center"></a>
                     <a class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px;">
                       <span class="disp-tablecell" style="font-size:15px;">Free Games <br>in <b><span class="countdown_time2" id="disp_time_freegames" start-time="<?php echo $now;?>" end-time="<?php echo $endday;?>"><?php echo $end;?></span></span>
                     </a>
@@ -90,7 +90,7 @@ $ckpg=$user->checkPaidGames(($user->logged_in) ? $user->uid:0);
                   }
                 }else{ //klu user x login
                   ?>
-                  <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                  <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive img-center"></a>
                   <a onclick="verifylogin2('flyingJelly/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
                     <span class="disp-tablecell" style="font-size:15px;">Free Games</span>
                   </a>
@@ -108,7 +108,7 @@ $ckpg=$user->checkPaidGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
- 								<a href="goldConversion.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+ 								<a href="goldConversion.php"><img src="img/pot_of_gold.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive img-center"></a>
                 <a href="goldConversion.php"  class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px">
                   <span class="disp-tablecell" style="font-size:15px">Convert <b>Diamond</b> <br>to <b>Gold</b></span>
                   </a>
@@ -125,14 +125,14 @@ $ckpg=$user->checkPaidGames(($user->logged_in) ? $user->uid:0);
                 if($ckpg){
 
                 ?>
-                <a onclick="verifylogin2('skyKnight/index.php')" ><img src="img/skyKnight.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a onclick="verifylogin2('skyKnight/index.php')" ><img src="img/skyKnight.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive img-center"></a>
                 <a onclick="verifylogin2('skyKnight/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px">
                   <span class="disp-tablecell" style="font-size:15px;">Play it Now <br><b id="time">1 Diamond</b></span>
                 </a>
                 <?php
                 }else{
                 ?>
-                <a ><img src="img/skyKnight.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a ><img src="img/skyKnight.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive img-center"></a>
                 <a class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px">
                   <span class="disp-tablecell" style="font-size:15px;">Play it Now <br><b id="time">1 Diamond</b></span>
                 </a>

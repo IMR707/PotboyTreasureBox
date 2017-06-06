@@ -2465,6 +2465,7 @@ class Fazrin
       $cls_list = new Listing;
       $res = $cls_list->FEgetRewardData($uid);
       $cur_gold = $res->gold;
+      $cur_diamond = $res->diamond;
 
       $extra = '';
       if($score_multiplier > 1){
