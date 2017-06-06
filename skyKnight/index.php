@@ -1,6 +1,12 @@
 ﻿<?php
 
-	session_start();
+define('_VALID_PHP', true);
+require_once '../init.php';
+
+if (!$user->logged_in) {
+    redirect_to('../login.php');
+}
+
 
 ?>
 <!DOCTYPE html>
