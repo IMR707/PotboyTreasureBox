@@ -10,7 +10,7 @@ use Carbon\Carbon;
 $AllDailyReward = [];
 
 if (!$user->logged_in) {
-    redirect_to(SITEURL.'/index.php');
+    redirect_to(SITEURL.'/login.php');
 }
 
 $diamond_trans = $fz->getUserDiamondTrans($user->uid);
