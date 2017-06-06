@@ -1,7 +1,7 @@
 ﻿{
 	"name": "SKY KNIGHT",
 	"short_name": "SKY KNIGHT",
-	"start_url": "index.html",
+	"start_url": "index.php",
 	"display": "fullscreen",
 	"orientation": "portrait",
 	"icons": [{
