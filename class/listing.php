@@ -144,6 +144,13 @@ END) as percent,
         $max_participant = $value->max_participant;
         $total_cur_participant =  $value->participant;
         $percent = floor(($total_cur_participant/$max_participant) * 100);
+
+      }elseif($bid_base == 3){
+
+        $end_date = '';
+        $max_participant = $value->max_participant;
+        $total_cur_participant =  $value->participant;
+        $percent = floor(($total_cur_participant/$max_participant) * 100);
       }
 
 
@@ -157,7 +164,9 @@ END) as percent,
                 <a href="#" class="display-block content-group">
                   <img src="<?php echo BACK_UPLOADS;?><?php echo $value->img_header;?>" class="img-responsive" alt="" style="width:100%;height:80px">
                 </a>
-                  <h6 class="content-group text-left"><?php echo styleword($value->name);?><br><small><?php if($value->bid_base!=3){ echo " min ";} echo $value->min_bid; echo ($value->bid_type==1)?" Gold":" Diamond";?></small></h6>
+                  <h6 class="content-group text-left">
+                    <div class="product_title"><?php echo styleword($value->name);?></div>
+                    <small><?php if($value->bid_base!=3){ echo " min ";} echo $value->min_bid; echo ($value->bid_type==1)?" Gold":" Diamond";?></small></h6>
                   <div class="progress">
                     <div class="progress-bar bg-purple" id='textval<?php echo $value->btid;?>' style="width: <?php echo stylewordpercent($percent);?>">
                       <?php if($percent>=15){
@@ -268,7 +277,7 @@ END) as percent,
         $type=0;
       }
       $type=$type."11";
-      $sql = 'SELECT *,'.$type.' as typesort,img_thumbnail as img_header,
+      $sql = 'SELECT *,'.$type.' as typesort,
       3 as bid_base,
       1 as bid_type,
       id as bidid,

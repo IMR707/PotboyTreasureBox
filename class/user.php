@@ -183,6 +183,22 @@ if (!defined("_VALID_PHP")) {
           return $chance_left;
         }
       }
+
+      public function checkPaidGames($id)
+      {
+        if(!$id){
+          return 0;
+        }else {
+          $list = new Listing;
+          $user_reward = $list->FEgetRewardData($id);
+          $user_diamond = $user_reward->diamond;
+
+          return $user_diamond;
+
+        }
+      }
+
+
       public function getUserAddress($id)
       {
         $sql = "SELECT default_shipping as ids FROM " . self::uTable . " WHERE  entity_id ='" . $id . "' AND default_shipping IS NOT NULL";

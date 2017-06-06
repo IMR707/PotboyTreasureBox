@@ -32,6 +32,7 @@ class Fazrin
     const tb_freeGameConfig = 'aa_gamefree_setting';
     const tb_paidGameConfig = 'aa_gamepaid_setting';
     const tb_freeGame = 'aa_game_free';
+    const tb_paidGame = 'aa_game_paid';
 
 
     private static $db;
@@ -1430,9 +1431,17 @@ class Fazrin
       $currency = '';
       if($bid_type == 1){
         $currency = 'Gold';
-        if($user_gold < $min_bid || $user_gold < $amount){
+        if($user_gold < $min_bid){
           $arr_out['status'] = 'Error';
           $arr_out['msg'] = 'You don\'t have enough gold to participate in this bid.';
+
+          return $arr_out;
+          exit;
+        }
+
+        if($user_gold < $amount){
+          $arr_out['status'] = 'Error';
+          $arr_out['msg'] = 'The amount you entered exceeds your current gold.';
 
           return $arr_out;
           exit;
@@ -1442,6 +1451,14 @@ class Fazrin
         if($user_diamond < $min_bid){
           $arr_out['status'] = 'Error';
           $arr_out['msg'] = 'You don\'t have enough diamond to participate in this bid.';
+
+          return $arr_out;
+          exit;
+        }
+
+        if($user_diamond < $amount){
+          $arr_out['status'] = 'Error';
+          $arr_out['msg'] = 'The amount you entered exceeds your current diamond.';
 
           return $arr_out;
           exit;
@@ -2398,6 +2415,70 @@ class Fazrin
         'amount_gold' => $gold,
         'amount_gold_used' => $gold,
         'title' => 'Play Flying Jelly',
+        'desc' => 'Score : '.$score.$extra,
+        'code' => 'admin_add-aEEmIYncALynhaQQ',
+        'action' => 'admin_add',
+        'status' => 'complete',
+        'params' => '',
+        'is_expiration_email_sent' => 0,
+        'email_message' => '',
+        'apply_at' => '',
+        'is_applied' => 1,
+        'is_expired' => 0,
+        'expires_at' => '',
+        'updated_at' => 'now()',
+        'created_at' => 'now()',
+        'store_id' => 0,
+        'order_id' => 0,
+        'admin_user_id' => 1
+      );
+      $res = self::$db->insert(self::tb_rewardTrans, $data);
+
+      $data = array(
+        "available_golds" => $cur_gold + $gold,
+        "total_golds" => $cur_gold + $gold
+      );
+
+      $res = self::$db->update(self::tb_reward, $data,"customer_id='$uid'");
+
+      return $res;
+
+    }
+
+    public function submitDiamondGame($uid,$score)
+    {
+      $game_detail = $this->getDiamondGame();
+      $score_multiplier = $game_detail->score_multiplier;
+
+      $gold = $score_multiplier * $score;
+
+      $data = array(
+        'customer_id' => $uid,
+        'score' => $score,
+        'gold' => $gold,
+        'date_updated' => 'now()',
+        'date_created' => 'now()'
+      );
+
+      $res = self::$db->insert(self::tb_paidGame, $data);
+
+      $cls_list = new Listing;
+      $res = $cls_list->FEgetRewardData($uid);
+      $cur_gold = $res->gold;
+
+      $extra = '';
+      if($score_multiplier > 1){
+        $extra = ' x '.$score_multiplier;
+      }
+
+      //insert record gold
+      $data = array(
+        'customer_id' => $uid,
+        'amount' => 0,
+        'amount_used' => 0,
+        'amount_gold' => $gold,
+        'amount_gold_used' => $gold,
+        'title' => 'Play Sky Knight',
         'desc' => 'Score : '.$score.$extra,
         'code' => 'admin_add-aEEmIYncALynhaQQ',
         'action' => 'admin_add',

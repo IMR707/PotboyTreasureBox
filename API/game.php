@@ -14,6 +14,17 @@ if(isset($_POST)){
 
   }
 
+  elseif($_POST['func'] == 'submitDiamondGame'){
+
+    $uid = $_SESSION['userid'];
+    $score = $_POST['score'];
+    $res = $fz->submitDiamondGame($uid,$score);
+
+    echo $res;
+    echo 'ok';
+
+  }
+
   // submitDiamondGame
 
   // elseif($_POST['func'] == 'checkVote'){

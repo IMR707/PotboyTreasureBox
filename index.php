@@ -10,7 +10,7 @@ $now = Carbon::now();
 $end = Carbon::tomorrow('Asia/Kuala_Lumpur');
 $ckdg=$user->checkDailyGold(($user->logged_in) ? $user->uid:0);
 $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
-
+$ckpg=$user->checkPaidGames(($user->logged_in) ? $user->uid:0);
 
 
 
@@ -120,10 +120,26 @@ $ckfg=$user->checkDailyFreeGames(($user->logged_in) ? $user->uid:0);
  						<!-- Horizontal form -->
  						<div class="panel panel-flat" style="margin-bottom:5px !important">
  							<div class="panel-body" style="padding:5px 30px !important;">
+                <?php
+
+                if($ckpg){
+
+                ?>
                 <a onclick="verifylogin2('skyKnight/index.php')" ><img src="img/skyKnight.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
                 <a onclick="verifylogin2('skyKnight/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px">
                   <span class="disp-tablecell" style="font-size:15px;">Play it Now <br><b id="time">1 Diamond</b></span>
                 </a>
+                <?php
+                }else{
+                ?>
+                <a ><img src="img/skyKnight.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
+                <a class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px">                  
+                  <span class="disp-tablecell" style="font-size:15px;">Play it Now <br><b id="time">1 Diamond</b></span>
+                </a>
+                <?php
+                }
+
+                ?>
 
  							</div>
  						</div>
