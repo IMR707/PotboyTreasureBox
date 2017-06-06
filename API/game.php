@@ -21,6 +21,7 @@ if(isset($_POST)){
     $res = $fz->submitDiamondGame($uid,$score);
 
     echo $res;
+
   }
 
   // submitDiamondGame

@@ -143,15 +143,16 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                     <div class="tab-pane active" id="tab_1_11">
                                                         <div class="margin-bottom-10">
                                                           <button class="btn btn-success pull-right add_data" id="diamond">Add Diamond</button>
+                                                          <div class="clearfix"></div>
                                                         </div>
                                                         <p>
-                                                            <table class="table table-striped table-bordered table-advance table-hover">
+                                                            <table class="table table-striped table-bordered table-advance table-hover sample_2">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th width="15%">
+                                                                        <th>
                                                                             <i class="fa fa-calendar"></i> Date
                                                                         </th>
-                                                                        <th width="25%">
+                                                                        <th>
                                                                             <i class="fa fa-question"></i> Type
                                                                         </th>
                                                                         <th>
@@ -159,9 +160,6 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                                         </th>
                                                                         <th>
                                                                             <i class="fa fa-usd"></i> Amount
-                                                                        </th>
-                                                                        <th>
-                                                                            <i class="fa fa-bookmark"></i> Status
                                                                         </th>
                                                                     </tr>
                                                                 </thead>
@@ -176,7 +174,6 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                                         <td> <?php echo $row->title; ?> </td>
                                                                         <td> <?php echo $row->desc; ?> </td>
                                                                         <td> <span class="<?php echo $row->amount < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo $row->amount; ?> Diamond </span> </td>
-                                                                        <td> <?php echo $row->status; ?> </td>
                                                                     </tr>
                                                                   <?php
                                                                   }
@@ -188,14 +185,18 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                     </div>
                                                     <!--tab-pane-->
                                                     <div class="tab-pane" id="tab_1_22">
-
-                                                          <table class="table table-striped table-bordered table-advance table-hover">
+                                                      <div class="margin-bottom-10">
+                                                        <button class="btn btn-success pull-right add_data" id="gold">Add Gold</button>
+                                                        <div class="clearfix"></div>
+                                                      </div>
+                                                      <p>
+                                                          <table class="table table-striped table-bordered table-advance table-hover sample_2">
                                                               <thead>
                                                                   <tr>
-                                                                      <th width="15%">
+                                                                      <th>
                                                                           <i class="fa fa-calendar"></i> Date
                                                                       </th>
-                                                                      <th width="25%">
+                                                                      <th>
                                                                           <i class="fa fa-question"></i> Type
                                                                       </th>
                                                                       <th>
@@ -203,9 +204,6 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                                       </th>
                                                                       <th>
                                                                           <i class="fa fa-usd"></i> Amount
-                                                                      </th>
-                                                                      <th>
-                                                                          <i class="fa fa-bookmark"></i> Status
                                                                       </th>
                                                                   </tr>
                                                               </thead>
@@ -220,7 +218,6 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                                       <td> <?php echo $row->title; ?> </td>
                                                                       <td> <?php echo $row->desc; ?> </td>
                                                                       <td> <span class="<?php echo $row->amount_gold < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo $row->amount_gold; ?> Gold </span> </td>
-                                                                      <td> <?php echo $row->status; ?> </td>
                                                                   </tr>
                                                                 <?php
                                                                 }
@@ -228,7 +225,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                                 ?>
                                                               </tbody>
                                                           </table>
-
+                                                        </p>
                                                     </div>
                                                     <!--tab-pane-->
                                                 </div>
