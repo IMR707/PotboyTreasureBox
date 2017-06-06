@@ -141,8 +141,10 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                 </ul>
                                                 <div class="tab-content">
                                                     <div class="tab-pane active" id="tab_1_11">
-                                                        <div class="portlet-body">
+                                                        <div class="margin-bottom-10">
                                                           <button class="btn btn-success pull-right add_data" id="diamond">Add Diamond</button>
+                                                        </div>
+                                                        <p>
                                                             <table class="table table-striped table-bordered table-advance table-hover">
                                                                 <thead>
                                                                     <tr>
@@ -182,11 +184,11 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                                   ?>
                                                                 </tbody>
                                                             </table>
-                                                        </div>
+                                                          </p>
                                                     </div>
                                                     <!--tab-pane-->
                                                     <div class="tab-pane" id="tab_1_22">
-                                                      <div class="portlet-body">
+
                                                           <table class="table table-striped table-bordered table-advance table-hover">
                                                               <thead>
                                                                   <tr>
@@ -226,7 +228,7 @@ if(isset($_GET['id']) && $_GET['id'] != ''){
                                                                 ?>
                                                               </tbody>
                                                           </table>
-                                                      </div>
+
                                                     </div>
                                                     <!--tab-pane-->
                                                 </div>

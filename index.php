@@ -77,7 +77,7 @@ $ckpg=$user->checkPaidGames(($user->logged_in) ? $user->uid:0);
                     ?>
                     <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
                     <a onclick="verifylogin2('flyingJelly/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
-                      <span class="disp-tablecell">Play It Now ! <label class="label bg-pink-600"><?php echo $ckfg; ?> <i class="fa fa-heart"></i></label></span>
+                      <span class="disp-tablecell" style="font-size:15px;">Play It Now ! <label class="label bg-pink-600"><?php echo $ckfg; ?> <i class="fa fa-heart"></i></label></span>
                     </a>
                     <?php
                   }else{ //klu chance dah abeh
@@ -92,7 +92,7 @@ $ckpg=$user->checkPaidGames(($user->logged_in) ? $user->uid:0);
                   ?>
                   <a onclick="verifylogin2('flyingJelly/index.php')" ><img src="img/flyingJelly.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
                   <a onclick="verifylogin2('flyingJelly/index.php')" class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;">
-                    <span class="disp-tablecell">Free Games</span>
+                    <span class="disp-tablecell" style="font-size:15px;">Free Games</span>
                   </a>
                   <?php
                 }
@@ -133,7 +133,7 @@ $ckpg=$user->checkPaidGames(($user->logged_in) ? $user->uid:0);
                 }else{
                 ?>
                 <a ><img src="img/skyKnight.png" style="" data-title="doge" data-content="Hey there!" class="img-responsive"></a>
-                <a class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px">                  
+                <a class="btn bg-purple-400 bg-gradient disp-table" name="button" style="width: 100%; height:60px;padding:0px">
                   <span class="disp-tablecell" style="font-size:15px;">Play it Now <br><b id="time">1 Diamond</b></span>
                 </a>
                 <?php
